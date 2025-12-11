@@ -558,6 +558,21 @@
       background: var(--danger);
     }
 
+    .passenger-input {
+      width: 60px;
+      padding: 2px 4px;
+      font-size: 0.78rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+    }
+
+    .passenger-input:focus {
+      outline: none;
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 1px #0ea5e9;
+    }
+
     /* MAPA */
 
     #trip-map {
@@ -613,7 +628,7 @@
             </span>
           </div>
           <div class="hero-countdown-sub">
-            Período: <span id="hero-trip-period">07 a 22/01/2027</span> • Embarque garantido para quem quitar o valor da viagem.
+            Período: <span id="hero-trip-period">07 a 22/01/2027</span> • Embarque garantido para quem iniciar o pagamento.
           </div>
         </div>
 
@@ -626,7 +641,7 @@
             <span id="hero-badge-people">– passageiros</span>
           </div>
           <div class="badge">
-            <span>💳</span> Assentos definidos após quitação
+            <span>💳</span> Confirmado a partir da 1ª parcela
           </div>
         </div>
       </div>
@@ -640,10 +655,7 @@
         <div class="hero-bus-overlay"></div>
         <div class="hero-bus-caption">
           <span>🛣️</span>
-          <span
-            ><strong>Marcopolo G8 Dirontur</strong> — estrada, histórias e boas
-            companhias</span
-          >
+          <span><strong>Marcopolo G8 Dirontur</strong> — estrada, histórias e boas companhias</span>
         </div>
       </div>
     </div>
@@ -685,8 +697,9 @@
         </li>
         <li>
           <strong>Resumo financeiro:</strong>
-          <span id="info-paying-people">–</span> poltronas pagantes
-          (R$ 1.100,00 cada). <span id="info-paid-people">–</span>
+          <span id="info-paying-people">–</span> poltronas pagantes,
+          <span id="info-started-people">–</span> com pagamento iniciado e
+          <span id="info-full-people">–</span> totalmente quitado(s).
         </li>
         <li>
           <strong>Vagas:</strong>
@@ -695,8 +708,8 @@
       </ul>
 
       <div class="info-highlight">
-        Os assentos serão distribuídos somente após a quitação de cada passageiro.
-        Nenhum valor individual é mostrado no site, apenas o acompanhamento geral.
+        Os assentos serão distribuídos somente após o pagamento de cada passageiro.
+        Nenhum valor individual em dinheiro é mostrado no site, apenas o progresso geral.
       </div>
     </section>
 
@@ -711,7 +724,7 @@
             </div>
             <p class="card-subtitle">
               A barra mostra o percentual já pago em relação ao valor total necessário
-              (internamente fixado em 59.400). Não exibimos o total em reais.
+              (internamente R$ 59.400). A confirmação aparece a partir da 1ª parcela.
             </p>
           </div>
           <div class="pill">
@@ -722,12 +735,12 @@
 
         <div class="stats-row">
           <div>
-            <small>Passageiros quitados</small>
-            <strong id="stats-paid-people">0 / 0</strong>
+            <small>Pagamentos iniciados</small>
+            <strong id="stats-started-people">0 / 0</strong>
           </div>
           <div>
-            <small>Passageiros restantes</small>
-            <strong id="stats-remaining-people">0</strong>
+            <small>Passageiros quitados</small>
+            <strong id="stats-full-people">0</strong>
           </div>
           <div>
             <small>Percentual do total pago</small>
@@ -741,7 +754,7 @@
             <div class="progress-marker"></div>
           </div>
           <div class="progress-label">
-            <span>Progresso geral dos pagamentos</span>
+            <span>Progresso geral das parcelas pagas</span>
             <strong id="payment-percent-label">0%</strong>
           </div>
         </div>
@@ -761,7 +774,7 @@
           </div>
           <div class="pill">
             <span class="pill-dot warn"></span>
-            Assentos só após quitação
+            Assentos só após pagamento
           </div>
         </div>
 
@@ -827,8 +840,9 @@
             Lista de passageiros
           </div>
           <p class="card-subtitle">
-            Apenas nomes, tipo (poltrona/colo), status de pagamento e situação do assento.
-            Datas de nascimento não aparecem aqui.
+            Use a coluna <strong>Parcelas</strong> para registrar de 0 a 10 parcelas pagas.
+            A partir de 1 parcela a situação já aparece como <em>Confirmado</em>.
+            Nenhum valor em reais é exibido por pessoa.
           </p>
         </div>
       </div>
@@ -843,6 +857,7 @@
               <th>Passageiro(a)</th>
               <th>Tipo</th>
               <th>Situação</th>
+              <th>Parcelas</th>
               <th>Assento</th>
             </tr>
           </thead>
@@ -858,7 +873,7 @@
       Nenhuma informação de valor individual é exibida.
     </div>
     <div>
-      Para atualizar, edite os dados no <strong>&lt;script&gt;</strong> desta página.
+      As parcelas podem ser atualizadas diretamente na tabela acima.
     </div>
   </footer>
 
@@ -875,65 +890,67 @@
     const PLANNING_START_DATE = new Date("2025-12-09T00:00:00");
 
     // Valor por poltrona (para informação) e total necessário (para percentual)
-    const FARE_PER_PERSON = 1100.0; // R$ 1.100
-    const MAX_INSTALLMENTS = 10; // até 10x
-    const TRIP_TOTAL_VALUE = 59400.0; // total necessário (não exibido)
+    const FARE_PER_PERSON = 1100.0;       // R$ 1.100
+    const MAX_INSTALLMENTS = 10;          // até 10x
+    const TRIP_TOTAL_VALUE = 59400.0;     // total necessário (não exibido)
+
+    const STORAGE_KEY = "viagemFamilia2027Parcelas";
 
     // Lista de passageiros
     // seatType: "Poltrona" ou "Colo"
-    // paid: true = pagamento quitado (confirmado)
+    // installmentsPaid: número de parcelas pagas (0 a 10)
     // seat: número da poltrona após quitação (string)
     const passengers = [
-      { name: "Janduy", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Adeilza", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Ana Carolina", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Robson", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Davi", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Luíza", seatType: "Colo", paid: false, seat: "" },
-      { name: "Wandem", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Liz", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Theo", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Joel", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Edina", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Ana Mercia", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Mida", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Francisca", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Francisco", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Walisson", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Thais", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Luís", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Francisco", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Rosa Maria", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Rhalisson", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Zilda", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Dissér", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Janival", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Juracy", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Mª Aparecida", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "André", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Gisele", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "João Neto", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Cláudio", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Suely", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Juninho", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Jean Ismael", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Cynthia Rodrigues", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "João Bosco", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Gabriel Lima", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Jéssica", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Lindemberg", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Valentina", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Angelina", seatType: "Poltrona", paid: false, seat: "" },
+      { name: "Janduy", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Adeilza", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Ana Carolina", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Robson", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Davi", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Luíza", seatType: "Colo", installmentsPaid: 0, seat: "" },
+      { name: "Wandem", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Liz", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Theo", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Joel", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Edina", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Ana Mercia", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Mida", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Francisca", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Francisco", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Walisson", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Thais", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Luís", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Francisco", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Rosa Maria", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Rhalisson", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Zilda", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Dissér", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Janival", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Juracy", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Mª Aparecida", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "André", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Gisele", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "João Neto", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Cláudio", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Suely", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Juninho", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Jean Ismael", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Cynthia Rodrigues", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "João Bosco", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Gabriel Lima", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Jéssica", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Lindemberg", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Valentina", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Angelina", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       {
         name: "Maria Ferreira de Andrade",
         seatType: "Poltrona",
-        paid: false,
+        installmentsPaid: 0,
         seat: "",
       },
       {
         name: "Israel Agripino Ferreira dos Santos",
         seatType: "Poltrona",
-        paid: false,
+        installmentsPaid: 0,
         seat: "",
       },
     ];
@@ -949,13 +966,58 @@
 
     const msPerDay = 1000 * 60 * 60 * 24;
 
+    function getInstallments(p) {
+      const v = Number(p.installmentsPaid);
+      if (!Number.isFinite(v) || v < 0) return 0;
+      return clamp(v, 0, MAX_INSTALLMENTS);
+    }
+
     const getPayingPassengersCount = () =>
       passengers.filter((p) => p.seatType !== "Colo").length;
 
-    const getPaidPassengersCount = () =>
-      passengers.filter((p) => p.paid).length;
+    const getStartedPassengersCount = () =>
+      passengers.filter((p) => getInstallments(p) > 0).length;
 
-    const getTripPaidValue = () => getPaidPassengersCount() * FARE_PER_PERSON;
+    const getFullPassengersCount = () =>
+      passengers.filter((p) => getInstallments(p) >= MAX_INSTALLMENTS).length;
+
+    function getTripPaidValue() {
+      return passengers.reduce((sum, p) => {
+        const inst = getInstallments(p);
+        const share = (inst / MAX_INSTALLMENTS) * FARE_PER_PERSON;
+        return sum + share;
+      }, 0);
+    }
+
+    function loadPassengersFromStorage() {
+      if (typeof localStorage === "undefined") return;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return;
+        parsed.forEach((stored, idx) => {
+          if (!passengers[idx]) return;
+          const val = Number(stored.installmentsPaid);
+          if (!Number.isFinite(val)) return;
+          passengers[idx].installmentsPaid = clamp(val, 0, MAX_INSTALLMENTS);
+        });
+      } catch (e) {
+        console.warn("Não foi possível carregar dados salvos:", e);
+      }
+    }
+
+    function savePassengersToStorage() {
+      if (typeof localStorage === "undefined") return;
+      try {
+        const payload = passengers.map((p) => ({
+          installmentsPaid: getInstallments(p),
+        }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch (e) {
+        console.warn("Não foi possível salvar dados:", e);
+      }
+    }
 
     // ===============================
     // ATUALIZAÇÃO DOS PAINÉIS
@@ -991,10 +1053,12 @@
         "info-installment-value"
       );
       const infoPayingPeople = document.getElementById("info-paying-people");
-      const infoPaidPeople = document.getElementById("info-paid-people");
+      const infoStartedPeople = document.getElementById("info-started-people");
+      const infoFullPeople = document.getElementById("info-full-people");
 
       const payingCount = getPayingPassengersCount();
-      const paidCount = getPaidPassengersCount();
+      const startedCount = getStartedPassengersCount();
+      const fullCount = getFullPassengersCount();
 
       infoPeriod.textContent =
         TRIP_START_DATE.toLocaleDateString("pt-BR") +
@@ -1008,38 +1072,29 @@
       );
 
       infoPayingPeople.textContent = `${payingCount}`;
-      infoPaidPeople.textContent =
-        paidCount === 0
-          ? "Ainda não há ninguém totalmente quitado."
-          : `${paidCount} passageiro(s) já quitaram.`;
+      infoStartedPeople.textContent = `${startedCount}`;
+      infoFullPeople.textContent = `${fullCount}`;
     }
 
     function updatePaymentPanel() {
-      const paidPeopleLabel = document.getElementById("stats-paid-people");
-      const remainingPeopleLabel = document.getElementById(
-        "stats-remaining-people"
-      );
+      const startedLabel = document.getElementById("stats-started-people");
+      const fullLabel = document.getElementById("stats-full-people");
       const smallPercentLabel = document.getElementById("stats-percent-small");
       const progressFill = document.getElementById("payment-progress-fill");
       const percentLabel = document.getElementById("payment-percent-label");
 
-      const totalValue = TRIP_TOTAL_VALUE;
-      const paidValue = getTripPaidValue();
-      const totalPassengersPaying = getPayingPassengersCount();
-      const paidPassengers = getPaidPassengersCount();
-      const remainingPassengers = Math.max(
-        totalPassengersPaying - paidPassengers,
-        0
-      );
+      const payingCount = getPayingPassengersCount();
+      const started = getStartedPassengersCount();
+      const full = getFullPassengersCount();
 
+      const paidValue = getTripPaidValue();
       const rawPercent =
-        totalValue > 0 ? (paidValue / totalValue) * 100 : 0;
+        TRIP_TOTAL_VALUE > 0 ? (paidValue / TRIP_TOTAL_VALUE) * 100 : 0;
       const percent = clamp(Math.round(rawPercent), 0, 100);
 
-      paidPeopleLabel.textContent = `${paidPassengers} / ${totalPassengersPaying}`;
-      remainingPeopleLabel.textContent = `${remainingPassengers}`;
+      startedLabel.textContent = `${started} / ${payingCount}`;
+      fullLabel.textContent = `${full}`;
       smallPercentLabel.textContent = percent + "%";
-
       progressFill.style.width = percent + "%";
       percentLabel.textContent = percent + "%";
     }
@@ -1068,7 +1123,9 @@
       );
 
       const percent =
-        totalDays > 0 ? clamp(Math.round((elapsedDays / totalDays) * 100), 0, 100) : 0;
+        totalDays > 0
+          ? clamp(Math.round((elapsedDays / totalDays) * 100), 0, 100)
+          : 0;
 
       tripDateLabel.textContent =
         TRIP_START_DATE.toLocaleDateString("pt-BR") +
@@ -1099,16 +1156,18 @@
       const totalPassengers = passengers.length;
       const totalLap = passengers.filter((p) => p.seatType === "Colo").length;
       const totalSeats = totalPassengers - totalLap;
-      const totalPaid = getPaidPassengersCount();
+      const totalStarted = getStartedPassengersCount();
+      const totalFull = getFullPassengersCount();
       const confirmedSeats = passengers.filter(
-        (p) => p.paid && p.seatType !== "Colo"
+        (p) => getInstallments(p) > 0 && p.seatType !== "Colo"
       ).length;
 
       const pieces = [
         `👨‍👩‍👧‍👦 ${totalPassengers} passageiros`,
         `🪑 ${totalSeats} poltronas`,
         `🍼 ${totalLap} no colo`,
-        `✅ ${totalPaid} pagamento(s) concluído(s)`,
+        `✅ ${totalStarted} com pagamento iniciado`,
+        `💯 ${totalFull} totalmente quitado(s)`,
         `🎟️ ${confirmedSeats} poltrona(s) já podem ser marcada(s)`,
       ];
 
@@ -1120,6 +1179,8 @@
 
       passengers.forEach((p, index) => {
         const tr = document.createElement("tr");
+
+        const installments = getInstallments(p);
 
         const positionTd = document.createElement("td");
         positionTd.textContent = index + 1;
@@ -1134,20 +1195,38 @@
         statusTd.classList.add("status");
         const statusPill = document.createElement("span");
         statusPill.classList.add("status-pill");
-        statusPill.classList.add(p.paid ? "paid" : "pending");
+        statusPill.classList.add(installments > 0 ? "paid" : "pending");
         const dot = document.createElement("span");
         dot.classList.add("dot");
         statusPill.appendChild(dot);
-        const text = document.createTextNode(
-          p.paid ? "Confirmado (pago)" : "Pendente"
-        );
-        statusPill.appendChild(text);
+
+        let statusText;
+        if (installments >= MAX_INSTALLMENTS) {
+          statusText = "Confirmado (quitado)";
+        } else if (installments > 0) {
+          statusText = "Confirmado (em parcelas)";
+        } else {
+          statusText = "Pendente";
+        }
+
+        statusPill.appendChild(document.createTextNode(statusText));
         statusTd.appendChild(statusPill);
+
+        const installmentsTd = document.createElement("td");
+        const input = document.createElement("input");
+        input.type = "number";
+        input.min = "0";
+        input.max = String(MAX_INSTALLMENTS);
+        input.value = installments;
+        input.className = "passenger-input";
+        input.dataset.index = index;
+        input.addEventListener("change", onInstallmentsChange);
+        installmentsTd.appendChild(input);
 
         const seatTd = document.createElement("td");
         if (p.seatType === "Colo") {
           seatTd.textContent = "No colo (sem poltrona)";
-        } else if (!p.paid) {
+        } else if (installments === 0) {
           seatTd.textContent = "A definir após pagamento";
         } else if (p.seat) {
           seatTd.textContent = "Poltrona " + p.seat;
@@ -1159,10 +1238,26 @@
         tr.appendChild(nameTd);
         tr.appendChild(typeTd);
         tr.appendChild(statusTd);
+        tr.appendChild(installmentsTd);
         tr.appendChild(seatTd);
 
         tbody.appendChild(tr);
       });
+    }
+
+    function onInstallmentsChange(event) {
+      const index = Number(event.target.dataset.index);
+      if (!Number.isFinite(index) || index < 0 || index >= passengers.length) {
+        return;
+      }
+      let value = Number(event.target.value);
+      if (!Number.isFinite(value)) value = 0;
+      value = clamp(value, 0, MAX_INSTALLMENTS);
+      passengers[index].installmentsPaid = value;
+      savePassengersToStorage();
+      updateTripInfoCard();
+      updatePaymentPanel();
+      buildPassengerTable();
     }
 
     // ===============================
@@ -1273,6 +1368,7 @@
     // ===============================
 
     document.addEventListener("DOMContentLoaded", () => {
+      loadPassengersFromStorage();
       updateHero();
       updateTripInfoCard();
       updatePaymentPanel();
