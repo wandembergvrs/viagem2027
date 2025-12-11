@@ -2,22 +2,36 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Viagem de Família 2027 - Paradiso G8 1800</title>
+  <title>Viagem de Família 2027 - Marcopolo G8 Dirontur</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Leaflet (mapa interativo) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
   <style>
     :root {
-      --bg: #020617;
-      --bg-soft: #0f172a;
-      --card: #020617;
-      --accent: #facc15;  /* amarelo */
+      --bg: #f3f4f6;
+      --bg-soft: #e5e7eb;
+      --card: #ffffff;
+      --accent: #facc15;   /* amarelo */
       --accent-soft: #22c55e; /* verde */
       --accent-dark: #15803d;
-      --text: #e5e7eb;
-      --text-muted: #9ca3af;
-      --border: #1f2933;
-      --danger: #f97316;
+      --text: #0f172a;
+      --text-muted: #6b7280;
+      --border: #d1d5db;
+      --danger: #ea580c;
       --radius-xl: 18px;
-      --shadow-soft: 0 16px 30px rgba(0, 0, 0, 0.4);
+      --shadow-soft: 0 16px 30px rgba(15, 23, 42, 0.12);
     }
 
     * {
@@ -26,17 +40,33 @@
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, #1e293b 0, #020617 40%, #000 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: linear-gradient(180deg, #e5e7eb 0, #f9fafb 45%, #e5e7eb 100%);
       color: var(--text);
       min-height: 100vh;
+    }
+
+    a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
 
     header {
       position: relative;
       overflow: hidden;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
-      background: linear-gradient(135deg, #facc15 0%, #22c55e 40%, #020617 80%);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.45);
+      background: linear-gradient(
+        135deg,
+        #facc15 0%,
+        #22c55e 40%,
+        #e5e7eb 85%
+      );
       color: #020617;
     }
 
@@ -73,7 +103,7 @@
       margin-top: 16px;
       padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(248, 250, 252, 0.88);
+      background: rgba(248, 250, 252, 0.96);
       border: 1px solid rgba(148, 163, 184, 0.65);
       display: flex;
       flex-direction: column;
@@ -81,7 +111,7 @@
       font-size: 0.9rem;
       color: #020617;
       max-width: 520px;
-      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.25);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
     }
 
     .hero-countdown-line {
@@ -111,13 +141,14 @@
     .badge {
       padding: 4px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(15, 23, 42, 0.35);
+      border: 1px solid rgba(15, 23, 42, 0.12);
       font-size: 0.75rem;
       font-weight: 600;
-      background: rgba(15, 23, 42, 0.04);
+      background: rgba(248, 250, 252, 0.9);
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      color: #1f2937;
     }
 
     .badge span {
@@ -132,7 +163,12 @@
       display: flex;
       align-items: flex-end;
       justify-content: flex-end;
-      background: radial-gradient(circle at 20% 0, #eab308 0, #0f172a 40%, #020617 100%);
+      background: radial-gradient(
+        circle at 20% 0,
+        #eab308 0,
+        #0f172a 40%,
+        #020617 100%
+      );
       min-height: 220px;
     }
 
@@ -146,14 +182,19 @@
     .hero-bus-overlay {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 20% 0, transparent 0%, rgba(15, 23, 42, 0.7) 40%, rgba(15, 23, 42, 0.9) 100%);
+      background: radial-gradient(
+        circle at 20% 0,
+        transparent 0%,
+        rgba(15, 23, 42, 0.6) 40%,
+        rgba(15, 23, 42, 0.8) 100%
+      );
     }
 
     .hero-bus-caption {
       position: absolute;
       left: 18px;
       bottom: 16px;
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15, 23, 42, 0.84);
       padding: 8px 12px;
       border-radius: 999px;
       font-size: 0.8rem;
@@ -193,11 +234,11 @@
     }
 
     .card {
-      background: radial-gradient(circle at top left, #111827 0, #020617 60%);
+      background: var(--card);
       border-radius: var(--radius-xl);
-      border: 1px solid rgba(148, 163, 184, 0.3);
+      border: 1px solid var(--border);
       padding: 16px 16px 14px;
-      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.85);
+      box-shadow: var(--shadow-soft);
       position: relative;
       overflow: hidden;
     }
@@ -206,8 +247,11 @@
       content: "";
       position: absolute;
       inset: -120px;
-      background: radial-gradient(circle at 0 0, rgba(250, 204, 21, 0.06), transparent 55%);
-      opacity: 0.9;
+      background: radial-gradient(
+        circle at 0 0,
+        rgba(250, 204, 21, 0.08),
+        transparent 55%
+      );
       pointer-events: none;
     }
 
@@ -237,7 +281,7 @@
       border-radius: 999px;
       display: grid;
       place-items: center;
-      background: rgba(250, 204, 21, 0.15);
+      background: rgba(250, 204, 21, 0.18);
       border: 1px solid rgba(250, 204, 21, 0.5);
       font-size: 0.9rem;
     }
@@ -252,8 +296,8 @@
     .pill {
       padding: 3px 9px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.7);
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(248, 250, 252, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.7);
       font-size: 0.74rem;
       display: inline-flex;
       align-items: center;
@@ -303,20 +347,25 @@
       width: 100%;
       height: 14px;
       border-radius: 999px;
-      background: linear-gradient(90deg, #020617 0%, #020617 40%);
-      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: linear-gradient(90deg, #e5e7eb 0%, #e5e7eb 40%);
+      border: 1px solid rgba(148, 163, 184, 0.75);
       overflow: hidden;
-      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+      box-shadow: inset 0 0 0 1px rgba(203, 213, 225, 0.5);
       position: relative;
     }
 
     .progress-fill {
       height: 100%;
       border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent-soft), var(--accent), #f97316);
+      background: linear-gradient(
+        90deg,
+        var(--accent-soft),
+        var(--accent),
+        #f97316
+      );
       width: 0%;
       transition: width 0.8s ease-out;
-      box-shadow: 0 0 16px rgba(250, 204, 21, 0.6);
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
       position: relative;
     }
 
@@ -328,9 +377,9 @@
       width: 4px;
       height: 18px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.65);
-      box-shadow: 0 0 10px rgba(15, 23, 42, 0.9);
+      background: #ffffff;
+      border: 1px solid rgba(148, 163, 184, 0.85);
+      box-shadow: 0 0 10px rgba(148, 163, 184, 0.8);
     }
 
     .progress-label {
@@ -344,132 +393,11 @@
     }
 
     .progress-label strong {
-      color: var(--accent);
+      color: var(--accent-dark);
       font-size: 0.88rem;
     }
 
-    /* PASSAGEIROS */
-
-    #passengers-card {
-      margin-top: 4px;
-    }
-
-    .passenger-summary {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      font-size: 0.8rem;
-      margin-bottom: 8px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .passenger-summary span {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      color: var(--text-muted);
-    }
-
-    .table-wrapper {
-      max-height: 420px;
-      overflow: auto;
-      border-radius: 12px;
-      border: 1px solid rgba(51, 65, 85, 0.8);
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
-      position: relative;
-      z-index: 1;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.86rem;
-      min-width: 380px;
-    }
-
-    thead {
-      position: sticky;
-      top: 0;
-      background: linear-gradient(90deg, #020617, #020617);
-      z-index: 2;
-      box-shadow: 0 2px 0 rgba(15, 23, 42, 0.9);
-    }
-
-    th, td {
-      padding: 7px 10px;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    th {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      border-bottom: 1px solid rgba(51, 65, 85, 0.9);
-    }
-
-    tbody tr:nth-child(even) {
-      background: rgba(15, 23, 42, 0.85);
-    }
-
-    tbody tr:nth-child(odd) {
-      background: rgba(15, 23, 42, 0.96);
-    }
-
-    tbody tr:hover {
-      background: rgba(31, 41, 55, 0.9);
-    }
-
-    td {
-      border-bottom: 1px solid rgba(15, 23, 42, 0.85);
-      color: #e5e7eb;
-    }
-
-    td.status {
-      font-size: 0.8rem;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: rgba(15, 23, 42, 0.9);
-    }
-
-    .status-pill.paid {
-      border-color: rgba(34, 197, 94, 0.7);
-      color: #bbf7d0;
-      background: rgba(22, 163, 74, 0.2);
-    }
-
-    .status-pill.pending {
-      border-color: rgba(249, 115, 22, 0.7);
-      color: #fed7aa;
-      background: rgba(124, 45, 18, 0.2);
-    }
-
-    .status-pill span.dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-    }
-
-    .status-pill.pending span.dot {
-      background: var(--danger);
-    }
-
-    /* Informações da viagem */
+    /* INFORMAÇÕES DA VIAGEM */
 
     #trip-info-card {
       margin-bottom: 20px;
@@ -499,13 +427,154 @@
     }
 
     .info-list strong {
-      color: #e5e7eb;
+      color: var(--text);
     }
 
     .info-highlight {
       margin-top: 4px;
       font-size: 0.8rem;
       color: var(--text-muted);
+    }
+
+    /* PASSAGEIROS */
+
+    #passengers-card {
+      margin-top: 4px;
+    }
+
+    .passenger-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .passenger-summary span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      color: var(--text-muted);
+    }
+
+    .table-wrapper {
+      max-height: 420px;
+      overflow: auto;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      position: relative;
+      z-index: 1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      min-width: 380px;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      background: #f3f4f6;
+      z-index: 2;
+      box-shadow: 0 2px 0 rgba(209, 213, 219, 0.9);
+    }
+
+    th,
+    td {
+      padding: 7px 10px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: #ffffff;
+    }
+
+    tbody tr:hover {
+      background: #eef2ff;
+    }
+
+    td {
+      border-bottom: 1px solid #e5e7eb;
+      color: var(--text);
+    }
+
+    td.status {
+      font-size: 0.8rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+    }
+
+    .status-pill.paid {
+      border-color: rgba(34, 197, 94, 0.7);
+      color: #14532d;
+      background: #ecfdf3;
+    }
+
+    .status-pill.pending {
+      border-color: rgba(249, 115, 22, 0.7);
+      color: #7c2d12;
+      background: #fff7ed;
+    }
+
+    .status-pill span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+    }
+
+    .status-pill.pending span.dot {
+      background: var(--danger);
+    }
+
+    /* MAPA */
+
+    #trip-map {
+      width: 100%;
+      height: 340px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      margin-top: 6px;
+    }
+
+    .map-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      position: relative;
+      z-index: 1;
     }
 
     footer {
@@ -519,15 +588,6 @@
       flex-wrap: wrap;
       gap: 10px;
     }
-
-    footer a {
-      color: var(--accent-soft);
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
   </style>
 </head>
 <body>
@@ -538,7 +598,11 @@
         <p class="hero-subtitle">
           Nossa grande viagem em família está chegando! Uma experiência tranquila,
           divertida e cheia de boas risadas a bordo de um
-          <strong>Marcopolo Paradiso G8 1800</strong>.
+          <strong>Marcopolo G8 da empresa Dirontur</strong>.
+          Veja a foto do ônibus
+          <a href="dirontur-marcopolo-g8.jpg" target="_blank" rel="noopener noreferrer">
+            clicando aqui
+          </a>.
         </p>
 
         <div class="hero-countdown">
@@ -555,7 +619,7 @@
 
         <div class="hero-badges">
           <div class="badge">
-            <span>🚌</span> Paradiso G8 1800 • Viagem rodoviária
+            <span>🚌</span> Marcopolo G8 Dirontur • Viagem rodoviária
           </div>
           <div class="badge">
             <span>👨‍👩‍👧‍👦</span>
@@ -568,13 +632,18 @@
       </div>
 
       <div class="hero-bus">
-        <!-- Substitua o src abaixo pela foto real do ônibus -->
-        <img src="onibus-g8-familia.jpg"
-             alt="Ônibus Marcopolo G8 da viagem de família" />
+        <!-- Coloque o arquivo dirontur-marcopolo-g8.jpg na mesma pasta deste HTML -->
+        <img
+          src="dirontur-marcopolo-g8.jpg"
+          alt="Ônibus Marcopolo G8 da empresa Dirontur"
+        />
         <div class="hero-bus-overlay"></div>
         <div class="hero-bus-caption">
           <span>🛣️</span>
-          <span><strong>G8 1800</strong> — estrada, histórias e boas companhias</span>
+          <span
+            ><strong>Marcopolo G8 Dirontur</strong> — estrada, histórias e boas
+            companhias</span
+          >
         </div>
       </div>
     </div>
@@ -616,9 +685,8 @@
         </li>
         <li>
           <strong>Resumo financeiro:</strong>
-          <span id="info-paying-people">–</span> poltronas pagantes, total previsto de
-          <span id="info-total-expected">–</span>.  
-          <span id="info-paid-people">–</span>
+          <span id="info-paying-people">–</span> poltronas pagantes
+          (R$ 1.100,00 cada). <span id="info-paid-people">–</span>
         </li>
         <li>
           <strong>Vagas:</strong>
@@ -627,8 +695,8 @@
       </ul>
 
       <div class="info-highlight">
-        Os assentos serão distribuídos somente após a quitação de cada passageiro
-        (não mostramos aqui quanto cada um pagou, apenas o total geral).
+        Os assentos serão distribuídos somente após a quitação de cada passageiro.
+        Nenhum valor individual é mostrado no site, apenas o acompanhamento geral.
       </div>
     </section>
 
@@ -642,8 +710,8 @@
               Pagamento da viagem
             </div>
             <p class="card-subtitle">
-              A barra mostra o quanto da viagem já foi pago em relação ao total esperado
-              (valor por poltrona × número de pagantes).
+              A barra mostra o percentual já pago em relação ao valor total necessário
+              (internamente fixado em 59.400). Não exibimos o total em reais.
             </p>
           </div>
           <div class="pill">
@@ -654,16 +722,16 @@
 
         <div class="stats-row">
           <div>
-            <small>Total esperado</small>
-            <strong id="trip-total-label">R$ 0,00</strong>
+            <small>Passageiros quitados</small>
+            <strong id="stats-paid-people">0 / 0</strong>
           </div>
           <div>
-            <small>Já pago (quitados)</small>
-            <strong id="trip-paid-label">R$ 0,00</strong>
+            <small>Passageiros restantes</small>
+            <strong id="stats-remaining-people">0</strong>
           </div>
           <div>
-            <small>Faltam</small>
-            <strong id="trip-remaining-label">R$ 0,00</strong>
+            <small>Percentual do total pago</small>
+            <strong id="stats-percent-small">0%</strong>
           </div>
         </div>
 
@@ -673,7 +741,7 @@
             <div class="progress-marker"></div>
           </div>
           <div class="progress-label">
-            <span>Progresso dos pagamentos</span>
+            <span>Progresso geral dos pagamentos</span>
             <strong id="payment-percent-label">0%</strong>
           </div>
         </div>
@@ -688,7 +756,7 @@
               Contagem para o embarque
             </div>
             <p class="card-subtitle">
-              Barra de tempo entre o início do planejamento e o dia da viagem.
+              Barra de tempo entre o início do planejamento e o dia de início da viagem.
             </p>
           </div>
           <div class="pill">
@@ -725,6 +793,31 @@
       </section>
     </div>
 
+    <!-- MAPA DA ROTA -->
+    <section class="card" id="map-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <span class="icon">🗺️</span>
+            Rota da viagem
+          </div>
+          <p class="card-subtitle">
+            Visualize o trajeto da família no mapa: Brasília → Fortaleza → Bom Sucesso (PB) → Maceió → Brasília.
+          </p>
+        </div>
+      </div>
+
+      <div id="trip-map"></div>
+
+      <div class="map-note">
+        <strong>Etapas da rota:</strong><br />
+        • 08/01/2027 • 18h — saída de Brasília (DF) para Fortaleza (CE)<br />
+        • 13/01/2027 — saída de Fortaleza (CE) para Bom Sucesso (PB)<br />
+        • 17/01/2027 — saída de Bom Sucesso (PB) para Maceió (AL)<br />
+        • 22/01/2027 — saída de Maceió (AL) para retorno a Brasília (DF)
+      </div>
+    </section>
+
     <!-- PASSAGEIROS -->
     <section class="card" id="passengers-card">
       <div class="card-header">
@@ -740,9 +833,7 @@
         </div>
       </div>
 
-      <div class="passenger-summary" id="passenger-summary">
-        <!-- preenchido via JavaScript -->
-      </div>
+      <div class="passenger-summary" id="passenger-summary"></div>
 
       <div class="table-wrapper">
         <table>
@@ -755,9 +846,7 @@
               <th>Assento</th>
             </tr>
           </thead>
-          <tbody id="passenger-table-body">
-            <!-- linhas preenchidas via JavaScript -->
-          </tbody>
+          <tbody id="passenger-table-body"></tbody>
         </table>
       </div>
     </section>
@@ -769,7 +858,7 @@
       Nenhuma informação de valor individual é exibida.
     </div>
     <div>
-      Para atualizar: edite os dados no <strong>&lt;script&gt;</strong> desta página.
+      Para atualizar, edite os dados no <strong>&lt;script&gt;</strong> desta página.
     </div>
   </footer>
 
@@ -778,17 +867,17 @@
     // CONFIGURAÇÕES PRINCIPAIS
     // ===============================
 
-    // Datas da viagem
+    // Datas gerais da viagem (período 07 a 22/01/2027)
     const TRIP_START_DATE = new Date("2027-01-07T00:00:00");
-    const TRIP_END_DATE   = new Date("2027-01-22T00:00:00");
+    const TRIP_END_DATE = new Date("2027-01-22T00:00:00");
 
     // Início do planejamento (para barra de tempo)
-    // Ajuste se quiser considerar outra data de início
     const PLANNING_START_DATE = new Date("2025-12-09T00:00:00");
 
-    // Valor por poltrona e parcelamento
-    const FARE_PER_PERSON = 1100.00; // R$ 1.100
-    const MAX_INSTALLMENTS = 10;     // até 10x
+    // Valor por poltrona (para informação) e total necessário (para percentual)
+    const FARE_PER_PERSON = 1100.0; // R$ 1.100
+    const MAX_INSTALLMENTS = 10; // até 10x
+    const TRIP_TOTAL_VALUE = 59400.0; // total necessário (não exibido)
 
     // Lista de passageiros
     // seatType: "Poltrona" ou "Colo"
@@ -835,8 +924,18 @@
       { name: "Lindemberg", seatType: "Poltrona", paid: false, seat: "" },
       { name: "Valentina", seatType: "Poltrona", paid: false, seat: "" },
       { name: "Angelina", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Maria Ferreira de Andrade", seatType: "Poltrona", paid: false, seat: "" },
-      { name: "Israel Agripino Ferreira dos Santos", seatType: "Poltrona", paid: false, seat: "" }
+      {
+        name: "Maria Ferreira de Andrade",
+        seatType: "Poltrona",
+        paid: false,
+        seat: "",
+      },
+      {
+        name: "Israel Agripino Ferreira dos Santos",
+        seatType: "Poltrona",
+        paid: false,
+        seat: "",
+      },
     ];
 
     // ===============================
@@ -856,11 +955,7 @@
     const getPaidPassengersCount = () =>
       passengers.filter((p) => p.paid).length;
 
-    const getTripTotalValue = () =>
-      getPayingPassengersCount() * FARE_PER_PERSON;
-
-    const getTripPaidValue = () =>
-      getPaidPassengersCount() * FARE_PER_PERSON;
+    const getTripPaidValue = () => getPaidPassengersCount() * FARE_PER_PERSON;
 
     // ===============================
     // ATUALIZAÇÃO DOS PAINÉIS
@@ -875,8 +970,7 @@
       const lapCount = passengers.filter((p) => p.seatType === "Colo").length;
       const seatCount = totalPassengers - lapCount;
 
-      heroBadgePeople.textContent =
-        `${totalPassengers} passageiros • ${seatCount} poltronas + ${lapCount} no colo`;
+      heroBadgePeople.textContent = `${totalPassengers} passageiros • ${seatCount} poltronas + ${lapCount} no colo`;
 
       const today = new Date();
       const rawRemaining = (TRIP_START_DATE - today) / msPerDay;
@@ -893,14 +987,14 @@
       const infoPeriod = document.getElementById("info-period");
       const infoFare = document.getElementById("info-fare");
       const infoInstallments = document.getElementById("info-installments");
-      const infoInstallmentValue = document.getElementById("info-installment-value");
+      const infoInstallmentValue = document.getElementById(
+        "info-installment-value"
+      );
       const infoPayingPeople = document.getElementById("info-paying-people");
-      const infoTotalExpected = document.getElementById("info-total-expected");
       const infoPaidPeople = document.getElementById("info-paid-people");
 
       const payingCount = getPayingPassengersCount();
       const paidCount = getPaidPassengersCount();
-      const totalValue = getTripTotalValue();
 
       infoPeriod.textContent =
         TRIP_START_DATE.toLocaleDateString("pt-BR") +
@@ -909,11 +1003,11 @@
 
       infoFare.textContent = brCurrency(FARE_PER_PERSON);
       infoInstallments.textContent = `${MAX_INSTALLMENTS}x`;
-      infoInstallmentValue.textContent = brCurrency(FARE_PER_PERSON / MAX_INSTALLMENTS);
+      infoInstallmentValue.textContent = brCurrency(
+        FARE_PER_PERSON / MAX_INSTALLMENTS
+      );
 
       infoPayingPeople.textContent = `${payingCount}`;
-      infoTotalExpected.textContent = brCurrency(totalValue);
-
       infoPaidPeople.textContent =
         paidCount === 0
           ? "Ainda não há ninguém totalmente quitado."
@@ -921,31 +1015,43 @@
     }
 
     function updatePaymentPanel() {
-      const totalLabel = document.getElementById("trip-total-label");
-      const paidLabel = document.getElementById("trip-paid-label");
-      const remainingLabel = document.getElementById("trip-remaining-label");
+      const paidPeopleLabel = document.getElementById("stats-paid-people");
+      const remainingPeopleLabel = document.getElementById(
+        "stats-remaining-people"
+      );
+      const smallPercentLabel = document.getElementById("stats-percent-small");
       const progressFill = document.getElementById("payment-progress-fill");
       const percentLabel = document.getElementById("payment-percent-label");
 
-      const totalValue = getTripTotalValue();
+      const totalValue = TRIP_TOTAL_VALUE;
       const paidValue = getTripPaidValue();
-      const remaining = Math.max(totalValue - paidValue, 0);
+      const totalPassengersPaying = getPayingPassengersCount();
+      const paidPassengers = getPaidPassengersCount();
+      const remainingPassengers = Math.max(
+        totalPassengersPaying - paidPassengers,
+        0
+      );
 
       const rawPercent =
         totalValue > 0 ? (paidValue / totalValue) * 100 : 0;
       const percent = clamp(Math.round(rawPercent), 0, 100);
 
-      totalLabel.textContent = brCurrency(totalValue);
-      paidLabel.textContent = brCurrency(paidValue);
-      remainingLabel.textContent = brCurrency(remaining);
+      paidPeopleLabel.textContent = `${paidPassengers} / ${totalPassengersPaying}`;
+      remainingPeopleLabel.textContent = `${remainingPassengers}`;
+      smallPercentLabel.textContent = percent + "%";
+
       progressFill.style.width = percent + "%";
       percentLabel.textContent = percent + "%";
     }
 
     function updateTimePanel() {
       const tripDateLabel = document.getElementById("trip-date-label");
-      const daysRemainingLabel = document.getElementById("days-remaining-label");
-      const planningWindowLabel = document.getElementById("planning-window-label");
+      const daysRemainingLabel = document.getElementById(
+        "days-remaining-label"
+      );
+      const planningWindowLabel = document.getElementById(
+        "planning-window-label"
+      );
       const timeFill = document.getElementById("time-progress-fill");
       const timePercentLabel = document.getElementById("time-percent-label");
 
@@ -956,7 +1062,10 @@
 
       const totalDays = totalMs / msPerDay;
       const elapsedDays = clamp(elapsedMs / msPerDay, 0, totalDays);
-      const remainingDays = Math.max(Math.ceil((TRIP_START_DATE - today) / msPerDay), 0);
+      const remainingDays = Math.max(
+        Math.ceil((TRIP_START_DATE - today) / msPerDay),
+        0
+      );
 
       const percent =
         totalDays > 0 ? clamp(Math.round((elapsedDays / totalDays) * 100), 0, 100) : 0;
@@ -1000,7 +1109,7 @@
         `🪑 ${totalSeats} poltronas`,
         `🍼 ${totalLap} no colo`,
         `✅ ${totalPaid} pagamento(s) concluído(s)`,
-        `🎟️ ${confirmedSeats} poltrona(s) já podem ser marcada(s)`
+        `🎟️ ${confirmedSeats} poltrona(s) já podem ser marcada(s)`,
       ];
 
       pieces.forEach((text) => {
@@ -1056,13 +1165,120 @@
       });
     }
 
-    // Inicialização
+    // ===============================
+    // MAPA INTERATIVO
+    // ===============================
+
+    function initMap() {
+      const mapElement = document.getElementById("trip-map");
+      if (!mapElement || typeof L === "undefined") return;
+
+      // Coordenadas aproximadas das cidades
+      const stops = [
+        {
+          id: "bsb",
+          name: "Brasília (DF)",
+          coords: [-15.79389, -47.88278],
+        },
+        {
+          id: "for",
+          name: "Fortaleza (CE)",
+          coords: [-3.73186, -38.52667],
+        },
+        {
+          id: "bom",
+          name: "Bom Sucesso (PB)",
+          coords: [-7.18333, -36.3667],
+        },
+        {
+          id: "mac",
+          name: "Maceió (AL)",
+          coords: [-9.66583, -35.735],
+        },
+      ];
+
+      const segments = [
+        {
+          from: "bsb",
+          to: "for",
+          date: "08/01/2027 • 18h",
+          label: "Brasília → Fortaleza",
+        },
+        {
+          from: "for",
+          to: "bom",
+          date: "13/01/2027",
+          label: "Fortaleza → Bom Sucesso",
+        },
+        {
+          from: "bom",
+          to: "mac",
+          date: "17/01/2027",
+          label: "Bom Sucesso → Maceió",
+        },
+        {
+          from: "mac",
+          to: "bsb",
+          date: "22/01/2027",
+          label: "Maceió → Brasília",
+        },
+      ];
+
+      const map = L.map("trip-map", {
+        scrollWheelZoom: false,
+      }).setView([-10, -40], 4.5);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        attribution: "&copy; OpenStreetMap contributors",
+      }).addTo(map);
+
+      const stopById = {};
+      const latlngsAll = [];
+
+      stops.forEach((stop) => {
+        stopById[stop.id] = stop;
+        const marker = L.circleMarker(stop.coords, {
+          radius: 7,
+          weight: 2,
+          color: "#f97316",
+          fillColor: "#facc15",
+          fillOpacity: 0.9,
+        }).addTo(map);
+        marker.bindPopup(`<strong>${stop.name}</strong>`);
+        latlngsAll.push(stop.coords);
+      });
+
+      segments.forEach((seg, idx) => {
+        const from = stopById[seg.from];
+        const to = stopById[seg.to];
+        if (!from || !to) return;
+
+        const polyline = L.polyline([from.coords, to.coords], {
+          weight: 4,
+          color: idx % 2 === 0 ? "#22c55e" : "#0ea5e9",
+          opacity: 0.9,
+        }).addTo(map);
+
+        polyline.bindPopup(
+          `<strong>${seg.label}</strong><br>${seg.date}`
+        );
+      });
+
+      map.fitBounds(latlngsAll, { padding: [20, 20] });
+    }
+
+    // ===============================
+    // INICIALIZAÇÃO
+    // ===============================
+
     document.addEventListener("DOMContentLoaded", () => {
       updateHero();
       updateTripInfoCard();
       updatePaymentPanel();
       updateTimePanel();
       buildPassengerTable();
+      initMap();
     });
   </script>
 </body>
