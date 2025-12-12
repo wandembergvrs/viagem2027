@@ -408,8 +408,6 @@
       color: var(--text-muted);
     }
 
-    /* PASSAGEIROS */
-
     .passenger-summary {
       display: flex;
       flex-wrap: wrap;
@@ -526,8 +524,6 @@
       background: var(--danger);
     }
 
-    /* MAPA */
-
     #trip-map {
       width: 100%;
       height: 260px;
@@ -544,8 +540,6 @@
       position: relative;
       z-index: 1;
     }
-
-    /* ASSENTOS */
 
     .seat-controls {
       display: flex;
@@ -615,11 +609,11 @@
     }
 
     #seat-grid-upper {
-      grid-template-columns: repeat(5, 28px); /* 2 + corredor + 2 */
+      grid-template-columns: repeat(4, 28px); /* 2 + corredor + 2 */
     }
 
     #seat-grid-lower {
-      grid-template-columns: repeat(4, 28px); /* 2 + corredor + 1 */
+      grid-template-columns: repeat(4, 28px);
     }
 
     .seat {
@@ -778,7 +772,7 @@
             Informações da viagem
           </div>
           <p class="card-subtitle">
-            Período, valor por poltrona e regra das crianças.
+            Período, valor por poltrona, regra das crianças e visão geral.
           </p>
         </div>
       </div>
@@ -802,7 +796,7 @@
           não pagam e vão no colo do responsável (sem poltrona marcada).
         </li>
         <li>
-          <strong>Resumo financeiro:</strong>
+          <strong>Resumo:</strong>
           <span id="info-paying-people">–</span> poltronas pagantes,
           <span id="info-started-people">–</span> com pagamento iniciado e
           <span id="info-full-people">–</span> totalmente quitado(s).
@@ -823,7 +817,7 @@
             Pagamento da viagem
           </div>
           <p class="card-subtitle">
-            Progresso geral das parcelas pagas. As parcelas são atualizadas dentro do código do site.
+            Acompanhamento geral das parcelas da família. Nenhum valor individual é exibido.
           </p>
         </div>
         <div class="pill">
@@ -853,7 +847,7 @@
           <div class="progress-marker"></div>
         </div>
         <div class="progress-label">
-          <span>Percentual das parcelas já pagas</span>
+          <span>Percentual das parcelas já pagas (sobre o total planejado)</span>
           <strong id="payment-percent-label">0%</strong>
         </div>
       </div>
@@ -868,7 +862,7 @@
             Contagem para o embarque
           </div>
           <p class="card-subtitle">
-            Acompanhe quantos dias faltam para a viagem.
+            Progresso do tempo entre o início do planejamento e o dia da viagem.
           </p>
         </div>
         <div class="pill">
@@ -924,7 +918,7 @@
         • 08/01/2027 • 18h — saída de Brasília (DF) para Fortaleza (CE)<br />
         • 13/01/2027 — Fortaleza (CE) → Bom Sucesso (PB)<br />
         • 17/01/2027 — Bom Sucesso (PB) → Maceió (AL)<br />
-        • 23/01/2027 — retorno Maceió (AL) → Brasília (DF)
+        • 22/01/2027 — saída de Maceió (AL) para Brasília (DF)
       </div>
     </section>
 
@@ -937,7 +931,8 @@
             Lista de passageiros
           </div>
           <p class="card-subtitle">
-            Parcelas são atualizadas no código. Poltronas só serão marcadas após quitação (10 parcelas).
+            Nomes e situação geral. Parcelas são ajustadas na planilha
+            <code>passageiros.csv</code>.
           </p>
         </div>
       </div>
@@ -970,7 +965,7 @@
             Mapa de assentos - Marcopolo G8
           </div>
           <p class="card-subtitle">
-            Superior: poltronas 1–48 (2 + corredor + 2). Inferior: poltronas 49–57.
+            Piso superior: poltronas 1–48. Piso inferior: 49–57.
             Apenas passageiros quitados podem escolher poltrona.
           </p>
         </div>
@@ -989,7 +984,7 @@
       <div class="seat-layout">
         <div class="deck">
           <div class="deck-header">
-            <span>Nível superior</span>
+            <span>Piso superior</span>
             <span>Poltronas 1–48</span>
           </div>
           <div class="seat-grid" id="seat-grid-upper"></div>
@@ -997,7 +992,7 @@
 
         <div class="deck">
           <div class="deck-header">
-            <span>Nível inferior</span>
+            <span>Piso inferior</span>
             <span>Poltronas 49–57</span>
           </div>
           <div class="seat-grid" id="seat-grid-lower"></div>
@@ -1026,13 +1021,13 @@
       Site privado para organizar a viagem da família, mostrando apenas o andamento coletivo.
     </div>
     <div>
-      Parcelas são ajustadas no código; assentos podem ser escolhidos aqui após quitação.
+      Parcelas são ajustadas na planilha; assentos são escolhidos aqui após quitação.
     </div>
   </footer>
 
   <script>
     // ===============================
-    // CONFIGURAÇÕES PRINCIPAIS
+    // CONFIGURAÇÕES
     // ===============================
 
     const TRIP_START_DATE = new Date("2027-01-08T00:00:00");
@@ -1041,7 +1036,7 @@
 
     const FARE_PER_PERSON = 1100.0;
     const MAX_INSTALLMENTS = 10;
-    const TRIP_TOTAL_VALUE = 59400.0; // apenas para o cálculo do %
+    const TRIP_TOTAL_VALUE = 59400.0; // apenas para cálculo do %
 
     const STORAGE_KEY = "viagemFamilia2027Seats";
 
@@ -1051,95 +1046,134 @@
     const brCurrency = (value) =>
       value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-    // category: "adult" | "childSeat" | "childLap"
-    const passengers = [
-      { name: "Janduy", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Adeilza", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Ana Carolina", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Robson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Davi", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Luíza", category: "childLap", seatType: "Colo", installmentsPaid: 0, seat: "" },
-      { name: "Wandem", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Liz", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Theo", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Joel", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Edina", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Ana Mercia", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Mida", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Francisca", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Francisco (1954)", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Walisson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Thais", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Luís", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Francisco (1972)", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Rosa Maria", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Rhalisson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Zilda", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Dissér", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Janival", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Juracy", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Mª Aparecida", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "André", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Gisele", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "João Neto", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Cláudio", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Suely", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Juninho", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Jean Ismael", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Cynthia Rodrigues", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "João Bosco", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Gabriel Lima", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Jéssica", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Lindemberg", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Valentina", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Angelina", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      {
-        name: "Maria Ferreira de Andrade",
-        category: "adult",
-        seatType: "Poltrona",
-        installmentsPaid: 0,
-        seat: "",
-      },
-      {
-        name: "Israel Agripino Ferreira dos Santos",
-        category: "adult",
-        seatType: "Poltrona",
-        installmentsPaid: 0,
-        seat: "",
-      },
-    ];
+    // ===============================
+    // PASSAGEIROS (carregados via CSV)
+    // ===============================
 
-    function getInstallments(p) {
-      const v = Number(p.installmentsPaid);
-      if (!Number.isFinite(v) || v < 0) return 0;
-      return clamp(v, 0, MAX_INSTALLMENTS);
+    let passengers = [];
+
+    function getDefaultPassengers() {
+      // Lista padrão (caso não consiga ler o CSV)
+      return [
+        { name: "Janduy", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Adeilza", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Ana Carolina", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Robson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Davi", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Luíza", category: "childLap", seatType: "Colo", installmentsPaid: 0, seat: "" },
+        { name: "Wandem", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Liz", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Theo", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Joel", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Edina", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Ana Mercia", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Mida", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Francisca", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Francisco (1954)", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Walisson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Thais", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Luís", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Francisco (1972)", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Rosa Maria", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Rhalisson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Zilda", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Dissér", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Janival", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Juracy", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Mª Aparecida", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "André", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Gisele", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "João Neto", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Cláudio", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Suely", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Juninho", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Jean Ismael", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Cynthia Rodrigues", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "João Bosco", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Gabriel Lima", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Jéssica", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Lindemberg", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Valentina", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        { name: "Angelina", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+        {
+          name: "Maria Ferreira de Andrade",
+          category: "adult",
+          seatType: "Poltrona",
+          installmentsPaid: 0,
+          seat: "",
+        },
+        {
+          name: "Israel Agripino Ferreira dos Santos",
+          category: "adult",
+          seatType: "Poltrona",
+          installmentsPaid: 0,
+          seat: "",
+        },
+      ];
     }
 
-    const getPayingPassengersCount = () =>
-      passengers.filter((p) => p.seatType !== "Colo").length;
-
-    const getStartedPassengersCount = () =>
-      passengers.filter((p) => getInstallments(p) > 0).length;
-
-    const getFullPassengersCount = () =>
-      passengers.filter((p) => getInstallments(p) >= MAX_INSTALLMENTS).length;
-
-    function getTripPaidValue() {
-      return passengers.reduce((sum, p) => {
-        const inst = getInstallments(p);
-        const share = (inst / MAX_INSTALLMENTS) * FARE_PER_PERSON;
-        return sum + share;
-      }, 0);
+    // Lê passageiros do CSV
+    async function loadPassengersFromCSV() {
+      const response = await fetch("passageiros.csv");
+      if (!response.ok) {
+        throw new Error("Não foi possível carregar passageiros.csv");
+      }
+      const text = await response.text();
+      passengers = parsePassengersCSV(text);
     }
 
-    function getPassengerIcon(p) {
-      if (p.category === "childLap") return "👶";
-      if (p.category === "childSeat") return "🧒";
-      return "🧑";
+    // Converte o CSV em objetos
+    function parsePassengersCSV(text) {
+      const lines = text.trim().split(/\r?\n/);
+      if (!lines.length) return getDefaultPassengers();
+
+      const headerLine = lines.shift();
+      const delimiter = headerLine.includes(";") ? ";" : ",";
+      const headers = headerLine
+        .split(delimiter)
+        .map((h) => h.trim().toLowerCase());
+
+      const idxNome = headers.indexOf("nome");
+      const idxCategoria = headers.indexOf("categoria");
+      const idxParcelas = headers.indexOf("parcelas");
+
+      if (idxNome === -1 || idxCategoria === -1 || idxParcelas === -1) {
+        alert(
+          "Cabeçalho do passageiros.csv deve ter: Nome;Categoria;Parcelas"
+        );
+        return getDefaultPassengers();
+      }
+
+      return lines
+        .filter((l) => l.trim())
+        .map((line) => {
+          const cols = line.split(delimiter).map((c) => c.trim());
+
+          const nome = cols[idxNome] || "Sem nome";
+          const catCsv = (cols[idxCategoria] || "adulto").toLowerCase();
+          const parcelas = Number(cols[idxParcelas] || 0) || 0;
+
+          let category = "adult";
+          if (catCsv.startsWith("crianca_colo")) {
+            category = "childLap";
+          } else if (catCsv.startsWith("crianca_poltrona")) {
+            category = "childSeat";
+          } else {
+            category = "adult";
+          }
+
+          return {
+            name: nome,
+            category,
+            seatType: category === "childLap" ? "Colo" : "Poltrona",
+            installmentsPaid: parcelas,
+            seat: "",
+          };
+        });
     }
 
     // ===============================
-    // STORAGE (apenas assentos)
+    // STORAGE (assentos apenas)
     // ===============================
 
     function loadPassengersFromStorage() {
@@ -1170,6 +1204,40 @@
       } catch (e) {
         console.warn("Não foi possível salvar assentos:", e);
       }
+    }
+
+    // ===============================
+    // AUXILIARES DE PAGAMENTO
+    // ===============================
+
+    function getInstallments(p) {
+      const v = Number(p.installmentsPaid);
+      if (!Number.isFinite(v) || v < 0) return 0;
+      return clamp(v, 0, MAX_INSTALLMENTS);
+    }
+
+    const getPayingPassengersCount = () =>
+      passengers.filter((p) => p.seatType !== "Colo").length;
+
+    const getStartedPassengersCount = () =>
+      passengers.filter((p) => getInstallments(p) > 0).length;
+
+    const getFullPassengersCount = () =>
+      passengers.filter((p) => getInstallments(p) >= MAX_INSTALLMENTS).length;
+
+    function getTripPaidValue() {
+      return passengers.reduce((sum, p) => {
+        if (p.seatType === "Colo") return sum;
+        const inst = getInstallments(p);
+        const share = (inst / MAX_INSTALLMENTS) * FARE_PER_PERSON;
+        return sum + share;
+      }, 0);
+    }
+
+    function getPassengerIcon(p) {
+      if (p.category === "childLap") return "👶";
+      if (p.category === "childSeat") return "🧒";
+      return "🧑";
     }
 
     // ===============================
@@ -1230,7 +1298,7 @@
     }
 
     // ===============================
-    // PAGAMENTOS E TEMPO
+    // PAGAMENTO & TEMPO
     // ===============================
 
     function updatePaymentPanel() {
@@ -1420,6 +1488,46 @@
 
     let selectedPassengerIndex = null;
 
+    // Layout do piso superior (conforme imagem):
+    // 01 02  04 03
+    // 05 06  08 07
+    // 09 10  12 11
+    // 13 14  [escada]
+    // 15 16  20 19
+    // 17 18  24 23
+    // 21 22  28 27
+    // 25 26  32 31
+    // 29 30  36 35
+    // 33 34  40 39
+    // 37 38  44 43
+    // 41 42  48 47
+    // 45 46  [frigobar]
+    const upperLayout = [
+      [1, 2, 4, 3],
+      [5, 6, 8, 7],
+      [9, 10, 12, 11],
+      [13, 14, null, null],   // escada
+      [15, 16, 20, 19],
+      [17, 18, 24, 23],
+      [21, 22, 28, 27],
+      [25, 26, 32, 31],
+      [29, 30, 36, 35],
+      [33, 34, 40, 39],
+      [37, 38, 44, 43],
+      [41, 42, 48, 47],
+      [45, 46, null, null],   // frigobar
+    ];
+
+    // Piso inferior:
+    // 49 50  51
+    // 52 53  54
+    // 55 56  57
+    const lowerLayout = [
+      [49, 50, null, 51],
+      [52, 53, null, 54],
+      [55, 56, null, 57],
+    ];
+
     function findPassengerBySeat(seatNumber) {
       const sn = String(seatNumber);
       return passengers.findIndex((p) => p.seat && String(p.seat) === sn);
@@ -1512,22 +1620,17 @@
       if (!container) return;
       container.innerHTML = "";
 
-      let seatNumber = 1;
-      const rows = 12; // 12 linhas x 4 poltronas = 48
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < 5; c++) {
-          // colunas: 0 (janela esq), 1 (corredor esq), 2 (corredor - vazio), 3 (corredor dir), 4 (janela dir)
-          if (c === 2) {
+      upperLayout.forEach((row) => {
+        row.forEach((cell) => {
+          if (cell == null) {
             const gap = document.createElement("div");
             gap.className = "seat-gap";
             container.appendChild(gap);
-            continue;
+          } else {
+            container.appendChild(createSeatElement(cell));
           }
-          container.appendChild(createSeatElement(seatNumber));
-          seatNumber++;
-        }
-      }
+        });
+      });
     }
 
     function buildLowerDeck() {
@@ -1535,16 +1638,9 @@
       if (!container) return;
       container.innerHTML = "";
 
-      // Layout 2 + corredor + 1, como na imagem (49–57)
-      const layout = [
-        [49, 50, null, 51],
-        [52, 53, null, 54],
-        [55, 56, null, 57],
-      ];
-
-      layout.forEach((row) => {
+      lowerLayout.forEach((row) => {
         row.forEach((cell) => {
-          if (cell === null) {
+          if (cell == null) {
             const gap = document.createElement("div");
             gap.className = "seat-gap";
             container.appendChild(gap);
@@ -1591,11 +1687,8 @@
         passengers[currentOwnerIdx].seat = "";
       }
 
-      if (selectedPassenger.seat) {
-        const prevSeat = selectedPassenger.seat;
-        if (prevSeat !== seatNumber) {
-          selectedPassenger.seat = "";
-        }
+      if (selectedPassenger.seat && selectedPassenger.seat !== seatNumber) {
+        selectedPassenger.seat = "";
       }
 
       selectedPassenger.seat = String(seatNumber);
@@ -1606,7 +1699,7 @@
     }
 
     // ===============================
-    // MAPA INTERATIVO
+    // MAPA
     // ===============================
 
     function initMap() {
@@ -1624,10 +1717,13 @@
         { from: "bsb", to: "for", date: "08/01/2027 • 18h", label: "Brasília → Fortaleza" },
         { from: "for", to: "bom", date: "13/01/2027", label: "Fortaleza → Bom Sucesso" },
         { from: "bom", to: "mac", date: "17/01/2027", label: "Bom Sucesso → Maceió" },
-        { from: "mac", to: "bsb", date: "23/01/2027", label: "Maceió → Brasília" },
+        { from: "mac", to: "bsb", date: "22/01/2027", label: "Maceió → Brasília" },
       ];
 
-      const map = L.map("trip-map", { scrollWheelZoom: false }).setView([-10, -40], 4.5);
+      const map = L.map("trip-map", { scrollWheelZoom: false }).setView(
+        [-10, -40],
+        4.5
+      );
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 18,
@@ -1673,7 +1769,7 @@
     // INICIALIZAÇÃO
     // ===============================
 
-    document.addEventListener("DOMContentLoaded", () => {
+    function initAfterPassengersLoaded() {
       loadPassengersFromStorage();
       updateHero();
       updateTripInfoCard();
@@ -1683,8 +1779,22 @@
       updateSeatPassengerSelect();
       buildSeatLayout();
       initMap();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadPassengersFromCSV()
+        .then(() => {
+          initAfterPassengersLoaded();
+        })
+        .catch((err) => {
+          console.warn(
+            "Erro ao carregar passageiros.csv, usando lista padrão:",
+            err
+          );
+          passengers = getDefaultPassengers();
+          initAfterPassengersLoaded();
+        });
     });
   </script>
 </body>
 </html>
-
