@@ -510,6 +510,17 @@
 
     .status-pill.pending span.dot { background: var(--danger); }
 
+    /* Linhas clicáveis para seleção de passageiro quitado */
+    .table-row-selectable {
+      cursor: pointer;
+    }
+
+    .table-row-selected {
+      outline: 2px solid #0ea5e9;
+      outline-offset: -2px;
+      background: #dbeafe !important;
+    }
+
     #trip-map {
       width: 100%;
       height: 260px;
@@ -529,23 +540,12 @@
 
     .seat-controls {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 6px;
+      flex-direction: column;
+      gap: 4px;
       font-size: 0.76rem;
       margin: 4px 0 8px;
       position: relative;
       z-index: 1;
-    }
-
-    .seat-controls label { font-weight: 600; }
-
-    .seat-select {
-      padding: 3px 7px;
-      border-radius: 999px;
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
-      font-size: 0.76rem;
     }
 
     .seat-helper {
@@ -959,12 +959,9 @@
       </div>
 
       <div class="seat-controls">
-        <label for="seat-passenger-select">Passageiro quitado:</label>
-        <select id="seat-passenger-select" class="seat-select">
-          <option value="">Nenhum selecionado</option>
-        </select>
+        <span id="seat-selected-label"><strong>Nenhum passageiro selecionado.</strong></span>
         <span class="seat-helper" id="seat-helper-text">
-          Ainda não há passageiros totalmente quitados.
+          Para marcar poltronas, toque em um passageiro <strong>quitado</strong> na lista e depois toque em uma poltrona livre.
         </span>
       </div>
 
@@ -992,7 +989,7 @@
           Livre
         </div>
         <div class="legend-item">
-          <span class="legend-color.occupied legend-color occupied"></span>
+          <span class="legend-color occupied"></span>
           Ocupado
         </div>
         <div class="legend-item">
@@ -1033,13 +1030,13 @@
     const brCurrency = (value) =>
       value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
+    let passengers = [];
+    let selectedPassengerIndex = null;
+
     // ===============================
     // PASSAGEIROS (carregados via CSV)
     // ===============================
 
-    let passengers = [];
-
-    // carrega passageiros do arquivo passageiros.csv
     async function loadPassengersFromCSV() {
       const response = await fetch("passageiros.csv");
       if (!response.ok) {
@@ -1049,7 +1046,6 @@
       passengers = parsePassengersCSV(text);
     }
 
-    // converte texto CSV em array de passageiros
     function parsePassengersCSV(text) {
       const lines = text.trim().split(/\r?\n/);
       if (!lines.length) return [];
@@ -1163,6 +1159,12 @@
       return str;
     }
 
+    function getInstallments(p) {
+      const v = Number(p.installmentsPaid);
+      if (!Number.isFinite(v) || v < 0) return 0;
+      return clamp(v, 0, MAX_INSTALLMENTS);
+    }
+
     function buildCsvFromPassengers() {
       const header = ["Nome", "Categoria", "Parcelas", "Poltrona"].join(";");
       const lines = passengers.map((p) => {
@@ -1197,12 +1199,6 @@
     // ===============================
     // AUXILIARES DE PAGAMENTO
     // ===============================
-
-    function getInstallments(p) {
-      const v = Number(p.installmentsPaid);
-      if (!Number.isFinite(v) || v < 0) return 0;
-      return clamp(v, 0, MAX_INSTALLMENTS);
-    }
 
     const getPayingPassengersCount = () =>
       passengers.filter((p) => p.seatType !== "Colo").length;
@@ -1312,7 +1308,6 @@
       progressFill.style.width = percent + "%";
       percentLabel.textContent = percent + "%";
 
-      // Destaque separado para quitados (sem mostrar valores, só nomes)
       if (paidHighlight) {
         const fullPassengers = passengers.filter(
           (p) => getInstallments(p) >= MAX_INSTALLMENTS && p.seatType !== "Colo"
@@ -1377,6 +1372,43 @@
     }
 
     // ===============================
+    // LABEL DO PASSAGEIRO SELECIONADO
+    // ===============================
+
+    function updateSelectedPassengerLabel() {
+      const label = document.getElementById("seat-selected-label");
+      const helper = document.getElementById("seat-helper-text");
+      if (!label || !helper) return;
+
+      if (!passengers.length) {
+        label.innerHTML = "<strong>Nenhum passageiro carregado.</strong>";
+        helper.textContent = "Verifique o arquivo passageiros.csv.";
+        return;
+      }
+
+      const fullCount = getFullPassengersCount();
+
+      if (fullCount === 0) {
+        label.innerHTML = "<strong>Nenhum passageiro quitado ainda.</strong>";
+        helper.textContent =
+          "Assim que alguém quitar as 10 parcelas, poderá escolher poltrona.";
+        return;
+      }
+
+      if (selectedPassengerIndex === null) {
+        label.innerHTML = "<strong>Nenhum passageiro selecionado.</strong>";
+        helper.textContent =
+          "Toque em um passageiro quitado na lista e, depois, toque em uma poltrona livre.";
+      } else {
+        const p = passengers[selectedPassengerIndex];
+        label.innerHTML =
+          "<strong>Selecionado:</strong> " + getPassengerIcon(p) + " " + p.name;
+        helper.textContent =
+          "Agora toque em uma poltrona livre no mapa para marcá-la.";
+      }
+    }
+
+    // ===============================
     // TABELA DE PASSAGEIROS
     // ===============================
 
@@ -1417,8 +1449,19 @@
 
       passengers.forEach((p, index) => {
         const tr = document.createElement("tr");
-
         const installments = getInstallments(p);
+        const isLap = p.category === "childLap";
+        const isFull = installments >= MAX_INSTALLMENTS && !isLap;
+
+        tr.dataset.index = String(index);
+
+        if (isFull) {
+          tr.classList.add("table-row-selectable");
+        }
+
+        if (selectedPassengerIndex === index) {
+          tr.classList.add("table-row-selected");
+        }
 
         const positionTd = document.createElement("td");
         positionTd.textContent = index + 1;
@@ -1466,7 +1509,7 @@
         installmentsTd.textContent = `${installments} / ${MAX_INSTALLMENTS}`;
 
         const seatTd = document.createElement("td");
-        if (p.category === "childLap") {
+        if (isLap) {
           seatTd.textContent = "No colo (sem poltrona)";
         } else if (installments < MAX_INSTALLMENTS) {
           seatTd.textContent = "Após quitação";
@@ -1483,24 +1526,45 @@
         tr.appendChild(installmentsTd);
         tr.appendChild(seatTd);
 
+        // Clique na linha para selecionar passageiro quitado
+        tr.addEventListener("click", () => {
+          if (isLap) {
+            alert("Crianças que vão no colo não têm poltrona atribuída.");
+            return;
+          }
+          if (!isFull) {
+            alert(
+              "Este passageiro ainda não está quitado. A poltrona será liberada após as 10 parcelas."
+            );
+            return;
+          }
+          // Seleciona/alternar
+          if (selectedPassengerIndex === index) {
+            selectedPassengerIndex = null;
+          } else {
+            selectedPassengerIndex = index;
+          }
+          buildPassengerTable();
+          buildSeatLayout();
+          updateSelectedPassengerLabel();
+        });
+
         tbody.appendChild(tr);
       });
+
+      updateSelectedPassengerLabel();
     }
 
     // ===============================
     // ASSENTOS
     // ===============================
 
-    let selectedPassengerIndex = null;
-
-    // Piso superior – 13/14 e 15/16 só do lado esquerdo;
-    // depois o alinhamento volta com 17 18   20 19
     const upperLayout = [
       [1, 2, 4, 3],
       [5, 6, 8, 7],
       [9, 10, 12, 11],
-      [13, 14, null, null],   // sem poltronas do lado direito
-      [15, 16, null, null],   // idem
+      [13, 14, null, null],
+      [15, 16, null, null],
       [17, 18, 20, 19],
       [21, 22, 24, 23],
       [25, 26, 28, 27],
@@ -1520,59 +1584,6 @@
     function findPassengerBySeat(seatNumber) {
       const sn = String(seatNumber);
       return passengers.findIndex((p) => p.seat && String(p.seat) === sn);
-    }
-
-    function updateSeatPassengerSelect() {
-      const select = document.getElementById("seat-passenger-select");
-      const helper = document.getElementById("seat-helper-text");
-      if (!select || !helper) return;
-
-      const previous = select.value;
-      select.innerHTML = "";
-      const defaultOpt = document.createElement("option");
-      defaultOpt.value = "";
-      defaultOpt.textContent = "Nenhum selecionado";
-      select.appendChild(defaultOpt);
-
-      const eligible = [];
-      passengers.forEach((p, idx) => {
-        if (p.seatType === "Colo") return;
-        if (getInstallments(p) < MAX_INSTALLMENTS) return;
-        eligible.push({ idx, name: p.name });
-      });
-
-      eligible.forEach((e) => {
-        const opt = document.createElement("option");
-        opt.value = String(e.idx);
-        opt.textContent = e.name;
-        select.appendChild(opt);
-      });
-
-      if (eligible.length === 0) {
-        helper.textContent =
-          "A escolha de poltronas será liberada após a quitação (10 parcelas).";
-        select.value = "";
-        selectedPassengerIndex = null;
-      } else {
-        helper.textContent =
-          "Selecione um passageiro quitado e clique em uma poltrona livre.";
-        if (previous && eligible.some((e) => String(e.idx) === previous)) {
-          select.value = previous;
-          selectedPassengerIndex = Number(previous);
-        } else {
-          select.value = "";
-          selectedPassengerIndex = null;
-        }
-      }
-
-      select.onchange = function () {
-        if (this.value === "") {
-          selectedPassengerIndex = null;
-        } else {
-          selectedPassengerIndex = Number(this.value);
-        }
-        buildSeatLayout();
-      };
     }
 
     function createSeatElement(seatNumber) {
@@ -1646,7 +1657,7 @@
 
       if (selectedPassengerIndex === null) {
         alert(
-          "Selecione primeiro um passageiro quitado no campo acima para atribuir a poltrona."
+          "Selecione primeiro um passageiro quitado na lista para atribuir a poltrona."
         );
         return;
       }
@@ -1766,7 +1777,6 @@
       updatePaymentPanel();
       updateTimePanel();
       buildPassengerTable();
-      updateSeatPassengerSelect();
       buildSeatLayout();
       updateCsvDownloadLink();
       initMap();
