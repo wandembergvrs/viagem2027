@@ -31,7 +31,7 @@
       --border: #d1d5db;
       --danger: #ea580c;
       --radius-xl: 18px;
-      --shadow-soft: 0 16px 30px rgba(15, 23, 42, 0.12);
+      --shadow-soft: 0 12px 24px rgba(15, 23, 42, 0.12);
     }
 
     * {
@@ -71,93 +71,88 @@
     }
 
     .hero {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 24px 20px 28px;
+      padding: 18px 14px 22px;
       display: grid;
-      grid-template-columns: 1.5fr 1.1fr;
-      gap: 24px;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 16px;
       align-items: center;
     }
 
-    @media (max-width: 840px) {
+    @media (max-width: 768px) {
       .hero {
         grid-template-columns: 1fr;
       }
     }
 
     .hero-title {
-      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-size: clamp(1.8rem, 4.2vw, 2.4rem);
       font-weight: 800;
       letter-spacing: 0.02em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .hero-subtitle {
-      font-size: 0.98rem;
+      font-size: 0.92rem;
       max-width: 520px;
     }
 
     .hero-countdown {
-      margin-top: 16px;
-      padding: 10px 14px;
+      margin-top: 12px;
+      padding: 8px 12px;
       border-radius: 999px;
       background: rgba(248, 250, 252, 0.96);
       border: 1px solid rgba(148, 163, 184, 0.65);
       display: flex;
       flex-direction: column;
       gap: 2px;
-      font-size: 0.9rem;
+      font-size: 0.86rem;
       color: #020617;
       max-width: 520px;
-      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
     }
 
     .hero-countdown-line {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
       align-items: baseline;
       justify-content: space-between;
     }
 
     .hero-countdown-line strong {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
     }
 
     .hero-countdown-sub {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #334155;
     }
 
     .hero-badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 16px;
+      gap: 6px;
+      margin-top: 10px;
+      font-size: 0.75rem;
     }
 
     .badge {
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: 999px;
       border: 1px solid rgba(15, 23, 42, 0.12);
-      font-size: 0.75rem;
-      font-weight: 600;
       background: rgba(248, 250, 252, 0.9);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       color: #1f2937;
-    }
-
-    .badge span {
-      font-size: 1rem;
     }
 
     .hero-bus {
       position: relative;
-      border-radius: 24px;
+      border-radius: 20px;
       overflow: hidden;
       box-shadow: var(--shadow-soft);
       display: flex;
@@ -169,7 +164,7 @@
         #0f172a 40%,
         #020617 100%
       );
-      min-height: 220px;
+      min-height: 180px;
     }
 
     .hero-bus img {
@@ -192,15 +187,15 @@
 
     .hero-bus-caption {
       position: absolute;
-      left: 18px;
-      bottom: 16px;
-      background: rgba(15, 23, 42, 0.84);
-      padding: 8px 12px;
+      left: 12px;
+      bottom: 12px;
+      background: rgba(15, 23, 42, 0.85);
+      padding: 6px 10px;
       border-radius: 999px;
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       color: #e5e7eb;
       backdrop-filter: blur(8px);
       border: 1px solid rgba(148, 163, 184, 0.5);
@@ -211,33 +206,20 @@
     }
 
     main {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 20px 16px 32px;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      gap: 20px;
-      margin-bottom: 18px;
-    }
-
-    @media (max-width: 880px) {
-      .grid-2 {
-        grid-template-columns: 1fr;
-      }
+      padding: 14px 10px 22px;
     }
 
     section {
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .card {
       background: var(--card);
       border-radius: var(--radius-xl);
       border: 1px solid var(--border);
-      padding: 16px 16px 14px;
+      padding: 12px 12px 10px;
       box-shadow: var(--shadow-soft);
       position: relative;
       overflow: hidden;
@@ -260,54 +242,54 @@
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       position: relative;
       z-index: 1;
     }
 
     .card-title {
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .card-title span.icon {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       border-radius: 999px;
       display: grid;
       place-items: center;
       background: rgba(250, 204, 21, 0.18);
       border: 1px solid rgba(250, 204, 21, 0.5);
-      font-size: 0.9rem;
+      font-size: 0.86rem;
     }
 
     .card-subtitle {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
       position: relative;
       z-index: 1;
     }
 
     .pill {
-      padding: 3px 9px;
+      padding: 3px 7px;
       border-radius: 999px;
       background: rgba(248, 250, 252, 0.9);
       border: 1px solid rgba(148, 163, 184, 0.7);
-      font-size: 0.74rem;
+      font-size: 0.7rem;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       color: var(--text-muted);
     }
 
     .pill-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 999px;
       background: var(--accent-soft);
     }
@@ -319,9 +301,9 @@
     .stats-row {
       display: flex;
       justify-content: space-between;
-      gap: 16px;
-      margin: 10px 0;
-      font-size: 0.85rem;
+      gap: 10px;
+      margin: 8px 0;
+      font-size: 0.8rem;
       position: relative;
       z-index: 1;
     }
@@ -329,25 +311,25 @@
     .stats-row div small {
       display: block;
       color: var(--text-muted);
-      font-size: 0.75rem;
-      margin-bottom: 2px;
+      font-size: 0.72rem;
+      margin-bottom: 1px;
     }
 
     .stats-row div strong {
-      font-size: 0.9rem;
+      font-size: 0.86rem;
     }
 
     .progress-container {
-      margin-top: 6px;
+      margin-top: 4px;
       position: relative;
       z-index: 1;
     }
 
     .progress-track {
       width: 100%;
-      height: 14px;
+      height: 12px;
       border-radius: 999px;
-      background: linear-gradient(90deg, #e5e7eb 0%, #e5e7eb 40%);
+      background: #e5e7eb;
       border: 1px solid rgba(148, 163, 184, 0.75);
       overflow: hidden;
       box-shadow: inset 0 0 0 1px rgba(203, 213, 225, 0.5);
@@ -375,7 +357,7 @@
       right: 0;
       transform: translateX(50%);
       width: 4px;
-      height: 18px;
+      height: 16px;
       border-radius: 999px;
       background: #ffffff;
       border: 1px solid rgba(148, 163, 184, 0.85);
@@ -383,37 +365,31 @@
     }
 
     .progress-label {
-      margin-top: 6px;
-      font-size: 0.78rem;
+      margin-top: 4px;
+      font-size: 0.74rem;
       color: var(--text-muted);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .progress-label strong {
       color: var(--accent-dark);
-      font-size: 0.88rem;
-    }
-
-    /* INFORMAÇÕES DA VIAGEM */
-
-    #trip-info-card {
-      margin-bottom: 20px;
+      font-size: 0.82rem;
     }
 
     .info-list {
       list-style: none;
       padding-left: 0;
-      margin: 6px 0 4px;
-      font-size: 0.86rem;
+      margin: 4px 0 2px;
+      font-size: 0.82rem;
       position: relative;
       z-index: 1;
     }
 
     .info-list li {
-      padding: 4px 0;
+      padding: 3px 0;
       display: flex;
       gap: 6px;
       align-items: baseline;
@@ -426,27 +402,19 @@
       font-size: 0.9rem;
     }
 
-    .info-list strong {
-      color: var(--text);
-    }
-
     .info-highlight {
-      margin-top: 4px;
-      font-size: 0.8rem;
+      margin-top: 3px;
+      font-size: 0.76rem;
       color: var(--text-muted);
     }
 
     /* PASSAGEIROS */
 
-    #passengers-card {
-      margin-top: 4px;
-    }
-
     .passenger-summary {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      font-size: 0.8rem;
+      gap: 6px;
+      font-size: 0.76rem;
       margin-bottom: 8px;
       position: relative;
       z-index: 1;
@@ -455,8 +423,8 @@
     .passenger-summary span {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 3px 8px;
+      gap: 4px;
+      padding: 3px 7px;
       border-radius: 999px;
       background: #f9fafb;
       border: 1px solid #e5e7eb;
@@ -464,9 +432,9 @@
     }
 
     .table-wrapper {
-      max-height: 420px;
+      max-height: 340px;
       overflow: auto;
-      border-radius: 12px;
+      border-radius: 10px;
       border: 1px solid #e5e7eb;
       background: #ffffff;
       position: relative;
@@ -476,8 +444,8 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.86rem;
-      min-width: 380px;
+      font-size: 0.8rem;
+      min-width: 360px;
     }
 
     thead {
@@ -490,13 +458,13 @@
 
     th,
     td {
-      padding: 7px 10px;
+      padding: 6px 8px;
       text-align: left;
       white-space: nowrap;
     }
 
     th {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--text-muted);
@@ -521,16 +489,16 @@
     }
 
     td.status {
-      font-size: 0.8rem;
+      font-size: 0.76rem;
     }
 
     .status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 2px 8px;
+      gap: 5px;
+      padding: 2px 7px;
       border-radius: 999px;
-      font-size: 0.76rem;
+      font-size: 0.7rem;
       border: 1px solid #e5e7eb;
       background: #f9fafb;
     }
@@ -548,8 +516,8 @@
     }
 
     .status-pill span.dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 999px;
       background: var(--accent-soft);
     }
@@ -558,57 +526,34 @@
       background: var(--danger);
     }
 
-    .passenger-input {
-      width: 60px;
-      padding: 2px 4px;
-      font-size: 0.78rem;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
-    }
-
-    .passenger-input:focus {
-      outline: none;
-      border-color: #0ea5e9;
-      box-shadow: 0 0 0 1px #0ea5e9;
-    }
-
     /* MAPA */
 
     #trip-map {
       width: 100%;
-      height: 340px;
-      border-radius: 16px;
+      height: 260px;
+      border-radius: 14px;
       overflow: hidden;
       border: 1px solid #e5e7eb;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     .map-note {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       color: var(--text-muted);
-      margin-top: 6px;
+      margin-top: 5px;
       position: relative;
       z-index: 1;
     }
 
-    /* LAYOUT DE ASSENTOS */
-
-    #seat-layout-card {
-      margin-top: 8px;
-    }
-
-    .seat-layout-card .card-subtitle {
-      max-width: 540px;
-    }
+    /* ASSENTOS */
 
     .seat-controls {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      margin: 6px 0 10px;
+      gap: 6px;
+      font-size: 0.76rem;
+      margin: 4px 0 8px;
       position: relative;
       z-index: 1;
     }
@@ -618,45 +563,39 @@
     }
 
     .seat-select {
-      padding: 4px 8px;
+      padding: 3px 7px;
       border-radius: 999px;
       border: 1px solid #d1d5db;
       background: #f9fafb;
-      font-size: 0.8rem;
+      font-size: 0.76rem;
     }
 
     .seat-helper {
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
     }
 
     .seat-layout {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
+      grid-template-columns: 1fr;
+      gap: 10px;
       position: relative;
       z-index: 1;
     }
 
-    @media (max-width: 840px) {
-      .seat-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .deck {
-      padding: 8px 10px 10px;
-      border-radius: 16px;
+      padding: 6px 8px 8px;
+      border-radius: 14px;
       background: #f9fafb;
       border: 1px solid #e5e7eb;
     }
 
     .deck-header {
-      font-size: 0.8rem;
+      font-size: 0.74rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -669,19 +608,26 @@
 
     .seat-grid {
       display: grid;
-      grid-template-columns: repeat(5, 32px);
-      grid-auto-rows: 32px;
-      gap: 6px;
+      grid-auto-rows: 28px;
+      gap: 4px;
       justify-content: center;
-      margin-top: 4px;
+      margin-top: 2px;
+    }
+
+    #seat-grid-upper {
+      grid-template-columns: repeat(5, 28px); /* 2 + corredor + 2 */
+    }
+
+    #seat-grid-lower {
+      grid-template-columns: repeat(4, 28px); /* 2 + corredor + 1 */
     }
 
     .seat {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
       border: 1px solid #d1d5db;
-      font-size: 0.7rem;
+      font-size: 0.66rem;
       background: #e5e7eb;
       display: flex;
       align-items: center;
@@ -708,7 +654,7 @@
 
     .seat:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(15, 23, 42, 0.16);
+      box-shadow: 0 3px 6px rgba(15, 23, 42, 0.16);
     }
 
     .seat:active {
@@ -717,17 +663,17 @@
     }
 
     .seat-gap {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
     }
 
     .seat-legend {
-      margin-top: 8px;
-      font-size: 0.78rem;
+      margin-top: 6px;
+      font-size: 0.72rem;
       color: var(--text-muted);
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
     }
 
@@ -738,8 +684,8 @@
     }
 
     .legend-color {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       border-radius: 4px;
       border: 1px solid #d1d5db;
       background: #f3f4f6;
@@ -757,15 +703,15 @@
     }
 
     footer {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 0 16px 20px;
-      font-size: 0.74rem;
+      padding: 0 10px 14px;
+      font-size: 0.7rem;
       color: var(--text-muted);
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
   </style>
 </head>
@@ -775,8 +721,7 @@
       <div>
         <div class="hero-title">Viagem de Família 2027</div>
         <p class="hero-subtitle">
-          Nossa grande viagem em família está chegando! Uma experiência tranquila,
-          divertida e cheia de boas risadas a bordo de um
+          Uma viagem tranquila e divertida em família a bordo de um
           <strong>Marcopolo G8 da empresa Dirontur</strong>.
           Veja a foto do ônibus
           <a href="dirontur-marcopolo-g8.jpg" target="_blank" rel="noopener noreferrer">
@@ -792,20 +737,19 @@
             </span>
           </div>
           <div class="hero-countdown-sub">
-            Período: <span id="hero-trip-period">07 a 22/01/2027</span>
+            Período: <span id="hero-trip-period">08 a 23/01/2027</span>
           </div>
         </div>
 
         <div class="hero-badges">
           <div class="badge">
-            <span>🚌</span> Marcopolo G8 Dirontur • Viagem rodoviária
+            🚌 Marcopolo G8 Dirontur
           </div>
           <div class="badge">
-            <span>👨‍👩‍👧‍👦</span>
-            <span id="hero-badge-people">– passageiros</span>
+            👨‍👩‍👧‍👦 <span id="hero-badge-people">– passageiros</span>
           </div>
           <div class="badge">
-            <span>🧑</span> Adultos &nbsp;&nbsp;|&nbsp;&nbsp; <span>🧒</span> Crianças
+            🧑 Adultos &nbsp;|&nbsp; 🧒 Crianças &nbsp;|&nbsp; 👶 Colo
           </div>
         </div>
       </div>
@@ -834,7 +778,7 @@
             Informações da viagem
           </div>
           <p class="card-subtitle">
-            Resumo da viagem: período, valor e regra das crianças.
+            Período, valor por poltrona e regra das crianças.
           </p>
         </div>
       </div>
@@ -842,7 +786,7 @@
       <ul class="info-list">
         <li>
           <strong>Período:</strong>
-          <span id="info-period">07 a 22/01/2027</span>
+          <span id="info-period">08 a 23/01/2027</span>
         </li>
         <li>
           <strong>Valor por pessoa (poltrona):</strong>
@@ -855,7 +799,7 @@
         </li>
         <li>
           <strong>Crianças até 5 anos:</strong>
-          não pagam, mas vão no colo do responsável (sem poltrona marcada).
+          não pagam e vão no colo do responsável (sem poltrona marcada).
         </li>
         <li>
           <strong>Resumo financeiro:</strong>
@@ -866,101 +810,99 @@
       </ul>
 
       <div class="info-highlight">
-        Os assentos serão distribuídos somente após o pagamento de cada passageiro.
+        As poltronas serão marcadas somente após a quitação de todas as parcelas de cada passageiro.
       </div>
     </section>
 
-    <div class="grid-2">
-      <!-- CARTÃO PAGAMENTOS -->
-      <section class="card" id="payment-card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">💳</span>
-              Pagamento da viagem
-            </div>
-            <p class="card-subtitle">
-              A barra mostra o progresso dos pagamentos da viagem. A confirmação aparece a partir da 1ª parcela.
-            </p>
+    <!-- PAGAMENTO -->
+    <section class="card" id="payment-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <span class="icon">💳</span>
+            Pagamento da viagem
           </div>
-          <div class="pill">
-            <span class="pill-dot"></span>
-            Painel geral dos pagamentos
-          </div>
+          <p class="card-subtitle">
+            Progresso geral das parcelas pagas. As parcelas são atualizadas dentro do código do site.
+          </p>
         </div>
+        <div class="pill">
+          <span class="pill-dot"></span>
+          Visão consolidada da família
+        </div>
+      </div>
 
-        <div class="stats-row">
-          <div>
-            <small>Pagamentos iniciados</small>
-            <strong id="stats-started-people">0 / 0</strong>
-          </div>
-          <div>
-            <small>Passageiros quitados</small>
-            <strong id="stats-full-people">0</strong>
-          </div>
-          <div>
-            <small>Progresso geral pago</small>
-            <strong id="stats-percent-small">0%</strong>
-          </div>
+      <div class="stats-row">
+        <div>
+          <small>Pagamentos iniciados</small>
+          <strong id="stats-started-people">0 / 0</strong>
         </div>
+        <div>
+          <small>Passageiros quitados</small>
+          <strong id="stats-full-people">0</strong>
+        </div>
+        <div>
+          <small>Progresso geral pago</small>
+          <strong id="stats-percent-small">0%</strong>
+        </div>
+      </div>
 
-        <div class="progress-container">
-          <div class="progress-track">
-            <div id="payment-progress-fill" class="progress-fill"></div>
-            <div class="progress-marker"></div>
-          </div>
-          <div class="progress-label">
-            <span>Progresso das parcelas pagas</span>
-            <strong id="payment-percent-label">0%</strong>
-          </div>
+      <div class="progress-container">
+        <div class="progress-track">
+          <div id="payment-progress-fill" class="progress-fill"></div>
+          <div class="progress-marker"></div>
         </div>
-      </section>
+        <div class="progress-label">
+          <span>Percentual das parcelas já pagas</span>
+          <strong id="payment-percent-label">0%</strong>
+        </div>
+      </div>
+    </section>
 
-      <!-- CARTÃO TEMPO -->
-      <section class="card" id="time-card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">⏳</span>
-              Contagem para o embarque
-            </div>
-            <p class="card-subtitle">
-              Acompanhe a contagem até o dia da viagem.
-            </p>
+    <!-- TEMPO -->
+    <section class="card" id="time-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <span class="icon">⏳</span>
+            Contagem para o embarque
           </div>
-          <div class="pill">
-            <span class="pill-dot warn"></span>
-            Assentos só após pagamento
-          </div>
+          <p class="card-subtitle">
+            Acompanhe quantos dias faltam para a viagem.
+          </p>
         </div>
+        <div class="pill">
+          <span class="pill-dot warn"></span>
+          Assentos só após quitação
+        </div>
+      </div>
 
-        <div class="stats-row">
-          <div>
-            <small>Datas da viagem</small>
-            <strong id="trip-date-label">–</strong>
-          </div>
-          <div>
-            <small>Dias que faltam</small>
-            <strong id="days-remaining-label">–</strong>
-          </div>
-          <div>
-            <small>Janela de planejamento</small>
-            <strong id="planning-window-label">–</strong>
-          </div>
+      <div class="stats-row">
+        <div>
+          <small>Datas da viagem</small>
+          <strong id="trip-date-label">–</strong>
         </div>
+        <div>
+          <small>Dias que faltam</small>
+          <strong id="days-remaining-label">–</strong>
+        </div>
+        <div>
+          <small>Planejamento</small>
+          <strong id="planning-window-label">–</strong>
+        </div>
+      </div>
 
-        <div class="progress-container">
-          <div class="progress-track">
-            <div id="time-progress-fill" class="progress-fill"></div>
-            <div class="progress-marker"></div>
-          </div>
-          <div class="progress-label">
-            <span>Tempo decorrido até a viagem</span>
-            <strong id="time-percent-label">0%</strong>
-          </div>
+      <div class="progress-container">
+        <div class="progress-track">
+          <div id="time-progress-fill" class="progress-fill"></div>
+          <div class="progress-marker"></div>
         </div>
-      </section>
-    </div>
+        <div class="progress-label">
+          <span>Tempo decorrido até a viagem</span>
+          <strong id="time-percent-label">0%</strong>
+        </div>
+      </div>
+    </section>
 
     <!-- MAPA DA ROTA -->
     <section class="card" id="map-card">
@@ -971,7 +913,7 @@
             Rota da viagem
           </div>
           <p class="card-subtitle">
-            Visualize o trajeto: Brasília → Fortaleza → Bom Sucesso (PB) → Maceió → Brasília.
+            Brasília → Fortaleza → Bom Sucesso (PB) → Maceió → Brasília.
           </p>
         </div>
       </div>
@@ -979,11 +921,10 @@
       <div id="trip-map"></div>
 
       <div class="map-note">
-        <strong>Etapas da rota:</strong><br />
         • 08/01/2027 • 18h — saída de Brasília (DF) para Fortaleza (CE)<br />
-        • 13/01/2027 — saída de Fortaleza (CE) para Bom Sucesso (PB)<br />
-        • 17/01/2027 — saída de Bom Sucesso (PB) para Maceió (AL)<br />
-        • 22/01/2027 — saída de Maceió (AL) para retorno a Brasília (DF)
+        • 13/01/2027 — Fortaleza (CE) → Bom Sucesso (PB)<br />
+        • 17/01/2027 — Bom Sucesso (PB) → Maceió (AL)<br />
+        • 23/01/2027 — retorno Maceió (AL) → Brasília (DF)
       </div>
     </section>
 
@@ -996,7 +937,7 @@
             Lista de passageiros
           </div>
           <p class="card-subtitle">
-            Parcelas atualizadas no código do site. A poltrona é liberada após quitação (10 parcelas).
+            Parcelas são atualizadas no código. Poltronas só serão marcadas após quitação (10 parcelas).
           </p>
         </div>
       </div>
@@ -1021,7 +962,7 @@
     </section>
 
     <!-- LAYOUT DE ASSENTOS -->
-    <section class="card seat-layout-card" id="seat-layout-card">
+    <section class="card" id="seat-layout-card">
       <div class="card-header">
         <div>
           <div class="card-title">
@@ -1029,8 +970,8 @@
             Mapa de assentos - Marcopolo G8
           </div>
           <p class="card-subtitle">
-            Assentos 1–12 no nível inferior e 13–60 no nível superior.
-            Apenas passageiros quitados (10 parcelas) podem escolher poltrona.
+            Superior: poltronas 1–48 (2 + corredor + 2). Inferior: poltronas 49–57.
+            Apenas passageiros quitados podem escolher poltrona.
           </p>
         </div>
       </div>
@@ -1048,18 +989,18 @@
       <div class="seat-layout">
         <div class="deck">
           <div class="deck-header">
-            <span>Nível inferior</span>
-            <span>Assentos 1–12</span>
+            <span>Nível superior</span>
+            <span>Poltronas 1–48</span>
           </div>
-          <div class="seat-grid" id="seat-grid-lower"></div>
+          <div class="seat-grid" id="seat-grid-upper"></div>
         </div>
 
         <div class="deck">
           <div class="deck-header">
-            <span>Nível superior</span>
-            <span>Assentos 13–60</span>
+            <span>Nível inferior</span>
+            <span>Poltronas 49–57</span>
           </div>
-          <div class="seat-grid" id="seat-grid-upper"></div>
+          <div class="seat-grid" id="seat-grid-lower"></div>
         </div>
       </div>
 
@@ -1070,7 +1011,7 @@
         </div>
         <div class="legend-item">
           <span class="legend-color occupied"></span>
-          Ocupado (já atribuído a algum passageiro)
+          Ocupado
         </div>
         <div class="legend-item">
           <span class="legend-color mine"></span>
@@ -1082,10 +1023,10 @@
 
   <footer>
     <div>
-      Site privado para organização da viagem em família, focado apenas no andamento coletivo.
+      Site privado para organizar a viagem da família, mostrando apenas o andamento coletivo.
     </div>
     <div>
-      As parcelas são atualizadas diretamente no código; os assentos podem ser escolhidos aqui.
+      Parcelas são ajustadas no código; assentos podem ser escolhidos aqui após quitação.
     </div>
   </footer>
 
@@ -1094,13 +1035,13 @@
     // CONFIGURAÇÕES PRINCIPAIS
     // ===============================
 
-    const TRIP_START_DATE = new Date("2027-01-07T00:00:00");
-    const TRIP_END_DATE = new Date("2027-01-22T00:00:00");
+    const TRIP_START_DATE = new Date("2027-01-08T00:00:00");
+    const TRIP_END_DATE = new Date("2027-01-23T00:00:00");
     const PLANNING_START_DATE = new Date("2025-12-09T00:00:00");
 
     const FARE_PER_PERSON = 1100.0;
     const MAX_INSTALLMENTS = 10;
-    const TRIP_TOTAL_VALUE = 59400.0; // usado só para cálculo do % (não mostrado)
+    const TRIP_TOTAL_VALUE = 59400.0; // apenas para o cálculo do %
 
     const STORAGE_KEY = "viagemFamilia2027Seats";
 
@@ -1118,11 +1059,11 @@
       { name: "Robson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Davi", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Luíza", category: "childLap", seatType: "Colo", installmentsPaid: 0, seat: "" },
-      { name: "Wandem", category: "adult", seatType: "Poltrona", installmentsPaid: 1, seat: "" },
-      { name: "Liz", category: "childSeat", seatType: "Poltrona", installmentsPaid: 1, seat: "" },
-      { name: "Theo", category: "childSeat", seatType: "Poltrona", installmentsPaid: 1, seat: "" },
-      { name: "Joel", category: "adult", seatType: "Poltrona", installmentsPaid: 2, seat: "" },
-      { name: "Edina", category: "adult", seatType: "Poltrona", installmentsPaid: 2, seat: "" },
+      { name: "Wandem", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Liz", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Theo", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Joel", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Edina", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Ana Mercia", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Mida", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Francisca", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
@@ -1133,14 +1074,14 @@
       { name: "Francisco (1972)", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Rosa Maria", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Rhalisson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "Zilda", category: "adult", seatType: "Poltrona", installmentsPaid: 1, seat: "" },
-      { name: "Dissér", category: "adult", seatType: "Poltrona", installmentsPaid: 1, seat: "" },
+      { name: "Zilda", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
+      { name: "Dissér", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Janival", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Juracy", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Mª Aparecida", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "André", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Gisele", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-      { name: "João Neto", category: "adult", seatType: "Poltrona", installmentsPaid: 1, seat: "" },
+      { name: "João Neto", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Cláudio", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Suely", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
       { name: "Juninho", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
@@ -1241,7 +1182,7 @@
       const heroPeriod = document.getElementById("hero-trip-period");
 
       const totalPassengers = passengers.length;
-      const lapCount = passengers.filter((p) => p.seatType === "Colo").length;
+      const lapCount = passengers.filter((p) => p.category === "childLap").length;
       const seatCount = totalPassengers - lapCount;
 
       heroBadgePeople.textContent = `${totalPassengers} passageiros • ${seatCount} poltronas + ${lapCount} no colo`;
@@ -1380,8 +1321,8 @@
       const totalSeats = totalPassengers - totalLap;
       const totalStarted = getStartedPassengersCount();
       const totalFull = getFullPassengersCount();
-      const confirmedSeats = passengers.filter(
-        (p) => getInstallments(p) > 0 && p.seatType !== "Colo"
+      const markedSeats = passengers.filter(
+        (p) => getInstallments(p) >= MAX_INSTALLMENTS && p.seat
       ).length;
 
       const pieces = [
@@ -1392,7 +1333,7 @@
         `🪑 ${totalSeats} poltronas`,
         `✅ ${totalStarted} com pagamento iniciado`,
         `💯 ${totalFull} totalmente quitado(s)`,
-        `🎟️ ${confirmedSeats} poltrona(s) já podem ser marcada(s)`,
+        `🎟️ ${markedSeats} poltrona(s) marcadas (quitados)`,
       ];
 
       pieces.forEach((text) => {
@@ -1454,8 +1395,8 @@
         const seatTd = document.createElement("td");
         if (p.category === "childLap") {
           seatTd.textContent = "No colo (sem poltrona)";
-        } else if (installments === 0) {
-          seatTd.textContent = "A definir após pagamento";
+        } else if (installments < MAX_INSTALLMENTS) {
+          seatTd.textContent = "Após quitação";
         } else if (p.seat) {
           seatTd.textContent = "Poltrona " + p.seat;
         } else {
@@ -1474,7 +1415,7 @@
     }
 
     // ===============================
-    // LAYOUT DE ASSENTOS
+    // ASSENTOS
     // ===============================
 
     let selectedPassengerIndex = null;
@@ -1512,12 +1453,12 @@
 
       if (eligible.length === 0) {
         helper.textContent =
-          "Ainda não há passageiros totalmente quitados. A escolha de poltronas será liberada após o pagamento das 10 parcelas.";
+          "A escolha de poltronas será liberada após a quitação (10 parcelas).";
         select.value = "";
         selectedPassengerIndex = null;
       } else {
         helper.textContent =
-          "Selecione um passageiro quitado e clique em uma poltrona livre para atribuir o assento.";
+          "Selecione um passageiro quitado e clique em uma poltrona livre.";
         if (previous && eligible.some((e) => String(e.idx) === previous)) {
           select.value = previous;
           selectedPassengerIndex = Number(previous);
@@ -1537,51 +1478,81 @@
       };
     }
 
-    function buildSeatLayout() {
-      buildDeck("seat-grid-lower", 1, 3);   // 3 linhas -> 12 assentos
-      buildDeck("seat-grid-upper", 13, 12); // 12 linhas -> 48 assentos (13–60)
+    function createSeatElement(seatNumber) {
+      const seatEl = document.createElement("button");
+      seatEl.type = "button";
+      seatEl.className = "seat";
+      seatEl.dataset.number = seatNumber;
+
+      const occupantIdx = findPassengerBySeat(seatNumber);
+      if (occupantIdx >= 0) {
+        seatEl.classList.add("occupied");
+        const name = passengers[occupantIdx].name;
+        seatEl.title = "Ocupado por " + name;
+        if (selectedPassengerIndex === occupantIdx) {
+          seatEl.classList.add("mine");
+        }
+      } else {
+        seatEl.classList.add("free");
+        seatEl.title = "Livre";
+      }
+
+      seatEl.textContent = seatNumber;
+      seatEl.addEventListener("click", onSeatClick);
+      return seatEl;
     }
 
-    function buildDeck(containerId, startNumber, rows) {
-      const container = document.getElementById(containerId);
+    function buildSeatLayout() {
+      buildUpperDeck();
+      buildLowerDeck();
+    }
+
+    function buildUpperDeck() {
+      const container = document.getElementById("seat-grid-upper");
       if (!container) return;
       container.innerHTML = "";
-      let seatNumber = startNumber;
+
+      let seatNumber = 1;
+      const rows = 12; // 12 linhas x 4 poltronas = 48
 
       for (let r = 0; r < rows; r++) {
-        for (let c = 1; c <= 5; c++) {
-          if (c === 3) {
+        for (let c = 0; c < 5; c++) {
+          // colunas: 0 (janela esq), 1 (corredor esq), 2 (corredor - vazio), 3 (corredor dir), 4 (janela dir)
+          if (c === 2) {
             const gap = document.createElement("div");
             gap.className = "seat-gap";
             container.appendChild(gap);
             continue;
           }
-
-          const seatEl = document.createElement("button");
-          seatEl.type = "button";
-          seatEl.className = "seat";
-          seatEl.dataset.number = seatNumber;
-
-          const occupantIdx = findPassengerBySeat(seatNumber);
-          if (occupantIdx >= 0) {
-            seatEl.classList.add("occupied");
-            const name = passengers[occupantIdx].name;
-            seatEl.title = "Ocupado por " + name;
-            if (selectedPassengerIndex === occupantIdx) {
-              seatEl.classList.add("mine");
-            }
-          } else {
-            seatEl.classList.add("free");
-            seatEl.title = "Livre";
-          }
-
-          seatEl.textContent = seatNumber;
-          seatEl.addEventListener("click", onSeatClick);
-
-          container.appendChild(seatEl);
+          container.appendChild(createSeatElement(seatNumber));
           seatNumber++;
         }
       }
+    }
+
+    function buildLowerDeck() {
+      const container = document.getElementById("seat-grid-lower");
+      if (!container) return;
+      container.innerHTML = "";
+
+      // Layout 2 + corredor + 1, como na imagem (49–57)
+      const layout = [
+        [49, 50, null, 51],
+        [52, 53, null, 54],
+        [55, 56, null, 57],
+      ];
+
+      layout.forEach((row) => {
+        row.forEach((cell) => {
+          if (cell === null) {
+            const gap = document.createElement("div");
+            gap.className = "seat-gap";
+            container.appendChild(gap);
+          } else {
+            container.appendChild(createSeatElement(cell));
+          }
+        });
+      });
     }
 
     function onSeatClick(event) {
@@ -1604,7 +1575,7 @@
 
       if (getInstallments(selectedPassenger) < MAX_INSTALLMENTS) {
         alert(
-          "Este passageiro ainda não está quitado. Atribuição de assento só é liberada após as 10 parcelas."
+          "Este passageiro ainda não está quitado. A poltrona só pode ser marcada após as 10 parcelas."
         );
         return;
       }
@@ -1653,7 +1624,7 @@
         { from: "bsb", to: "for", date: "08/01/2027 • 18h", label: "Brasília → Fortaleza" },
         { from: "for", to: "bom", date: "13/01/2027", label: "Fortaleza → Bom Sucesso" },
         { from: "bom", to: "mac", date: "17/01/2027", label: "Bom Sucesso → Maceió" },
-        { from: "mac", to: "bsb", date: "22/01/2027", label: "Maceió → Brasília" },
+        { from: "mac", to: "bsb", date: "23/01/2027", label: "Maceió → Brasília" },
       ];
 
       const map = L.map("trip-map", { scrollWheelZoom: false }).setView([-10, -40], 4.5);
@@ -1669,7 +1640,7 @@
       stops.forEach((stop) => {
         stopById[stop.id] = stop;
         const marker = L.circleMarker(stop.coords, {
-          radius: 7,
+          radius: 6,
           weight: 2,
           color: "#f97316",
           fillColor: "#facc15",
@@ -1695,7 +1666,7 @@
         );
       });
 
-      map.fitBounds(latlngsAll, { padding: [20, 20] });
+      map.fitBounds(latlngsAll, { padding: [16, 16] });
     }
 
     // ===============================
