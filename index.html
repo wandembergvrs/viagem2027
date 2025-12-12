@@ -1064,6 +1064,9 @@
     // ===============================
 
     function getInstallments(p) {
+      // Criança de colo não paga parcelas
+      if (p.seatType === "Colo") return 0;
+
       const v = Number(p.installmentsPaid);
       if (!Number.isFinite(v) || v < 0) return 0;
       return clamp(v, 0, MAX_INSTALLMENTS);
@@ -1073,10 +1076,14 @@
       passengers.filter((p) => p.seatType !== "Colo").length;
 
     const getStartedPassengersCount = () =>
-      passengers.filter((p) => getInstallments(p) > 0).length;
+      passengers.filter(
+        (p) => p.seatType !== "Colo" && getInstallments(p) > 0
+      ).length;
 
     const getFullPassengersCount = () =>
-      passengers.filter((p) => getInstallments(p) >= MAX_INSTALLMENTS).length;
+      passengers.filter(
+        (p) => p.seatType !== "Colo" && getInstallments(p) >= MAX_INSTALLMENTS
+      ).length;
 
     function getTripPaidValue() {
       return passengers.reduce((sum, p) => {
@@ -1179,7 +1186,7 @@
 
       if (paidHighlight) {
         const fullPassengers = passengers.filter(
-          (p) => getInstallments(p) >= MAX_INSTALLMENTS && p.seatType !== "Colo"
+          (p) => p.seatType !== "Colo" && getInstallments(p) >= MAX_INSTALLMENTS
         );
 
         if (fullPassengers.length > 0) {
@@ -1270,7 +1277,7 @@
         `🪑 ${totalSeats} poltronas`,
         `✅ ${totalStarted} com pagamento iniciado`,
         `💯 ${totalFull} totalmente quitado(s)`,
-        `🎟️ ${markedSeats} poltrona(s) marcadas`,
+        `🎟️ ${markedSeats} poltrona(s) marcadas (conforme CSV)`,
       ];
 
       pieces.forEach((text) => {
@@ -1309,17 +1316,22 @@
         statusTd.classList.add("status");
         const statusPill = document.createElement("span");
         statusPill.classList.add("status-pill");
-        statusPill.classList.add(installments > 0 ? "paid" : "pending");
         const dot = document.createElement("span");
         dot.classList.add("dot");
         statusPill.appendChild(dot);
 
         let statusText;
-        if (installments >= MAX_INSTALLMENTS) {
+        if (p.seatType === "Colo") {
+          statusPill.classList.add("paid"); // visual neutro/verde
+          statusText = "Sem cobrança (colo)";
+        } else if (installments >= MAX_INSTALLMENTS) {
+          statusPill.classList.add("paid");
           statusText = "Confirmado (quitado)";
         } else if (installments > 0) {
+          statusPill.classList.add("paid");
           statusText = "Confirmado (em parcelas)";
         } else {
+          statusPill.classList.add("pending");
           statusText = "Pendente";
         }
 
@@ -1327,7 +1339,11 @@
         statusTd.appendChild(statusPill);
 
         const installmentsTd = document.createElement("td");
-        installmentsTd.textContent = `${installments} / ${MAX_INSTALLMENTS}`;
+        if (p.seatType === "Colo") {
+          installmentsTd.textContent = "–";
+        } else {
+          installmentsTd.textContent = `${installments} / ${MAX_INSTALLMENTS}`;
+        }
 
         const seatTd = document.createElement("td");
         if (p.category === "childLap") {
