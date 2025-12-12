@@ -34,9 +34,7 @@
       --shadow-soft: 0 12px 24px rgba(15, 23, 42, 0.12);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -53,9 +51,7 @@
       font-weight: 600;
     }
 
-    a:hover {
-      text-decoration: underline;
-    }
+    a:hover { text-decoration: underline; }
 
     header {
       position: relative;
@@ -81,9 +77,7 @@
     }
 
     @media (max-width: 768px) {
-      .hero {
-        grid-template-columns: 1fr;
-      }
+      .hero { grid-template-columns: 1fr; }
     }
 
     .hero-title {
@@ -122,9 +116,7 @@
       justify-content: space-between;
     }
 
-    .hero-countdown-line strong {
-      font-size: 1.2rem;
-    }
+    .hero-countdown-line strong { font-size: 1.2rem; }
 
     .hero-countdown-sub {
       font-size: 0.78rem;
@@ -201,9 +193,7 @@
       border: 1px solid rgba(148, 163, 184, 0.5);
     }
 
-    .hero-bus-caption strong {
-      color: var(--accent);
-    }
+    .hero-bus-caption strong { color: var(--accent); }
 
     main {
       max-width: 900px;
@@ -211,9 +201,7 @@
       padding: 14px 10px 22px;
     }
 
-    section {
-      margin-bottom: 14px;
-    }
+    section { margin-bottom: 14px; }
 
     .card {
       background: var(--card);
@@ -294,9 +282,7 @@
       background: var(--accent-soft);
     }
 
-    .pill-dot.warn {
-      background: var(--danger);
-    }
+    .pill-dot.warn { background: var(--danger); }
 
     .stats-row {
       display: flex;
@@ -315,9 +301,7 @@
       margin-bottom: 1px;
     }
 
-    .stats-row div strong {
-      font-size: 0.86rem;
-    }
+    .stats-row div strong { font-size: 0.86rem; }
 
     .progress-container {
       margin-top: 4px;
@@ -469,26 +453,17 @@
       border-bottom: 1px solid #e5e7eb;
     }
 
-    tbody tr:nth-child(even) {
-      background: #f9fafb;
-    }
+    tbody tr:nth-child(even) { background: #f9fafb; }
+    tbody tr:nth-child(odd) { background: #ffffff; }
 
-    tbody tr:nth-child(odd) {
-      background: #ffffff;
-    }
-
-    tbody tr:hover {
-      background: #eef2ff;
-    }
+    tbody tr:hover { background: #eef2ff; }
 
     td {
       border-bottom: 1px solid #e5e7eb;
       color: var(--text);
     }
 
-    td.status {
-      font-size: 0.76rem;
-    }
+    td.status { font-size: 0.76rem; }
 
     .status-pill {
       display: inline-flex;
@@ -520,9 +495,7 @@
       background: var(--accent-soft);
     }
 
-    .status-pill.pending span.dot {
-      background: var(--danger);
-    }
+    .status-pill.pending span.dot { background: var(--danger); }
 
     #trip-map {
       width: 100%;
@@ -552,9 +525,7 @@
       z-index: 1;
     }
 
-    .seat-controls label {
-      font-weight: 600;
-    }
+    .seat-controls label { font-weight: 600; }
 
     .seat-select {
       padding: 3px 7px;
@@ -631,9 +602,7 @@
         background 0.12s ease-out, border-color 0.12s ease-out;
     }
 
-    .seat.free {
-      background: #f3f4f6;
-    }
+    .seat.free { background: #f3f4f6; }
 
     .seat.occupied {
       background: #22c55e;
@@ -642,9 +611,7 @@
       box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.4);
     }
 
-    .seat.mine {
-      box-shadow: 0 0 0 2px #0ea5e9;
-    }
+    .seat.mine { box-shadow: 0 0 0 2px #0ea5e9; }
 
     .seat:hover {
       transform: translateY(-1px);
@@ -736,9 +703,7 @@
         </div>
 
         <div class="hero-badges">
-          <div class="badge">
-            🚌 Marcopolo G8 Dirontur
-          </div>
+          <div class="badge">🚌 Marcopolo G8 Dirontur</div>
           <div class="badge">
             👨‍👩‍👧‍👦 <span id="hero-badge-people">– passageiros</span>
           </div>
@@ -1052,67 +1017,7 @@
 
     let passengers = [];
 
-    function getDefaultPassengers() {
-      // Lista padrão (caso não consiga ler o CSV)
-      return [
-        { name: "Janduy", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Adeilza", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Ana Carolina", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Robson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Davi", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Luíza", category: "childLap", seatType: "Colo", installmentsPaid: 0, seat: "" },
-        { name: "Wandem", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Liz", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Theo", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Joel", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Edina", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Ana Mercia", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Mida", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Francisca", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Francisco (1954)", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Walisson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Thais", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Luís", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Francisco (1972)", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Rosa Maria", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Rhalisson", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Zilda", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Dissér", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Janival", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Juracy", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Mª Aparecida", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "André", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Gisele", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "João Neto", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Cláudio", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Suely", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Juninho", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Jean Ismael", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Cynthia Rodrigues", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "João Bosco", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Gabriel Lima", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Jéssica", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Lindemberg", category: "adult", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Valentina", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        { name: "Angelina", category: "childSeat", seatType: "Poltrona", installmentsPaid: 0, seat: "" },
-        {
-          name: "Maria Ferreira de Andrade",
-          category: "adult",
-          seatType: "Poltrona",
-          installmentsPaid: 0,
-          seat: "",
-        },
-        {
-          name: "Israel Agripino Ferreira dos Santos",
-          category: "adult",
-          seatType: "Poltrona",
-          installmentsPaid: 0,
-          seat: "",
-        },
-      ];
-    }
-
-    // Lê passageiros do CSV
+    // carrega passageiros do arquivo passageiros.csv
     async function loadPassengersFromCSV() {
       const response = await fetch("passageiros.csv");
       if (!response.ok) {
@@ -1122,10 +1027,10 @@
       passengers = parsePassengersCSV(text);
     }
 
-    // Converte o CSV em objetos
+    // converte texto CSV em array de passageiros
     function parsePassengersCSV(text) {
       const lines = text.trim().split(/\r?\n/);
-      if (!lines.length) return getDefaultPassengers();
+      if (!lines.length) return [];
 
       const headerLine = lines.shift();
       const delimiter = headerLine.includes(";") ? ";" : ",";
@@ -1138,10 +1043,10 @@
       const idxParcelas = headers.indexOf("parcelas");
 
       if (idxNome === -1 || idxCategoria === -1 || idxParcelas === -1) {
-        alert(
+        console.error(
           "Cabeçalho do passageiros.csv deve ter: Nome;Categoria;Parcelas"
         );
-        return getDefaultPassengers();
+        return [];
       }
 
       return lines
@@ -1488,20 +1393,6 @@
 
     let selectedPassengerIndex = null;
 
-    // Layout do piso superior (conforme imagem):
-    // 01 02  04 03
-    // 05 06  08 07
-    // 09 10  12 11
-    // 13 14  [escada]
-    // 15 16  20 19
-    // 17 18  24 23
-    // 21 22  28 27
-    // 25 26  32 31
-    // 29 30  36 35
-    // 33 34  40 39
-    // 37 38  44 43
-    // 41 42  48 47
-    // 45 46  [frigobar]
     const upperLayout = [
       [1, 2, 4, 3],
       [5, 6, 8, 7],
@@ -1518,10 +1409,6 @@
       [45, 46, null, null],   // frigobar
     ];
 
-    // Piso inferior:
-    // 49 50  51
-    // 52 53  54
-    // 55 56  57
     const lowerLayout = [
       [49, 50, null, 51],
       [52, 53, null, 54],
@@ -1788,10 +1675,10 @@
         })
         .catch((err) => {
           console.warn(
-            "Erro ao carregar passageiros.csv, usando lista padrão:",
+            "Erro ao carregar passageiros.csv; verifique se o arquivo está na mesma pasta.",
             err
           );
-          passengers = getDefaultPassengers();
+          passengers = [];
           initAfterPassengersLoaded();
         });
     });
