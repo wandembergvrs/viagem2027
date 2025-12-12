@@ -392,6 +392,20 @@
       color: var(--text-muted);
     }
 
+    .paid-highlight {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #14532d;
+  background: #ecfdf3;
+  border-radius: 999px;
+  padding: 4px 8px;
+  border: 1px solid rgba(34, 197, 94, 0.6);
+  display: none; /* só aparece se houver quitados */
+  position: relative;
+  z-index: 1;
+}
+
+
     .passenger-summary {
       display: flex;
       flex-wrap: wrap;
@@ -815,6 +829,8 @@
           <span>Percentual das parcelas já pagas (sobre o total planejado)</span>
           <strong id="payment-percent-label">0%</strong>
         </div>
+        <div class="paid-highlight" id="paid-highlight"></div>
+
       </div>
     </section>
 
@@ -1207,27 +1223,45 @@
     // ===============================
 
     function updatePaymentPanel() {
-      const startedLabel = document.getElementById("stats-started-people");
-      const fullLabel = document.getElementById("stats-full-people");
-      const smallPercentLabel = document.getElementById("stats-percent-small");
-      const progressFill = document.getElementById("payment-progress-fill");
-      const percentLabel = document.getElementById("payment-percent-label");
+  const startedLabel = document.getElementById("stats-started-people");
+  const fullLabel = document.getElementById("stats-full-people");
+  const smallPercentLabel = document.getElementById("stats-percent-small");
+  const progressFill = document.getElementById("payment-progress-fill");
+  const percentLabel = document.getElementById("payment-percent-label");
+  const paidHighlight = document.getElementById("paid-highlight");
 
-      const payingCount = getPayingPassengersCount();
-      const started = getStartedPassengersCount();
-      const full = getFullPassengersCount();
+  const payingCount = getPayingPassengersCount();
+  const started = getStartedPassengersCount();
+  const full = getFullPassengersCount();
 
-      const paidValue = getTripPaidValue();
-      const rawPercent =
-        TRIP_TOTAL_VALUE > 0 ? (paidValue / TRIP_TOTAL_VALUE) * 100 : 0;
-      const percent = clamp(Math.round(rawPercent), 0, 100);
+  const paidValue = getTripPaidValue();
+  const rawPercent =
+    TRIP_TOTAL_VALUE > 0 ? (paidValue / TRIP_TOTAL_VALUE) * 100 : 0;
+  const percent = clamp(Math.round(rawPercent), 0, 100);
 
-      startedLabel.textContent = `${started} / ${payingCount}`;
-      fullLabel.textContent = `${full}`;
-      smallPercentLabel.textContent = percent + "%";
-      progressFill.style.width = percent + "%";
-      percentLabel.textContent = percent + "%";
+  startedLabel.textContent = `${started} / ${payingCount}`;
+  fullLabel.textContent = `${full}`;
+  smallPercentLabel.textContent = percent + "%";
+  progressFill.style.width = percent + "%";
+  percentLabel.textContent = percent + "%";
+
+  // Destaque separado para quitados (sem mostrar valores, só nomes)
+  if (paidHighlight) {
+    const fullPassengers = passengers.filter(
+      (p) => getInstallments(p) >= MAX_INSTALLMENTS && p.seatType !== "Colo"
+    );
+
+    if (fullPassengers.length > 0) {
+      paidHighlight.style.display = "block";
+      paidHighlight.textContent =
+        "Quitados: " + fullPassengers.map((p) => p.name).join(", ");
+    } else {
+      paidHighlight.style.display = "none";
+      paidHighlight.textContent = "";
     }
+  }
+}
+
 
     function updateTimePanel() {
       const tripDateLabel = document.getElementById("trip-date-label");
@@ -1393,20 +1427,22 @@
 
     let selectedPassengerIndex = null;
 
+    // Piso superior – 13/14 e 15/16 só do lado esquerdo;
+    // depois o alinhamento volta com 17 18   20 19
     const upperLayout = [
       [1, 2, 4, 3],
       [5, 6, 8, 7],
       [9, 10, 12, 11],
-      [13, 14, null, null],   // escada
-      [15, 16, 20, 19],
-      [17, 18, 24, 23],
-      [21, 22, 28, 27],
-      [25, 26, 32, 31],
-      [29, 30, 36, 35],
-      [33, 34, 40, 39],
-      [37, 38, 44, 43],
-      [41, 42, 48, 47],
-      [45, 46, null, null],   // frigobar
+      [13, 14, null, null],   // sem poltronas do lado direito (escada/corredor)
+      [15, 16, null, null],   // idem
+      [17, 18, 20, 19],
+      [21, 22, 24, 23],
+      [25, 26, 28, 27],
+      [29, 30, 32, 31],
+      [33, 34, 36, 35],
+      [37, 38, 40, 39],
+      [41, 42, 44, 43],
+      [45, 46, 48, 47],
     ];
 
     const lowerLayout = [
