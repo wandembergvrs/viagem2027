@@ -7,7 +7,7 @@ Davi;crianca_poltrona;0
 Luíza;crianca_colo;0
 Wandem;adulto;1
 Liz;crianca_poltrona;1
-Theo;crianca_poltrona;0
+Theo;crianca_poltrona;1
 Joel;adulto;2
 Edina;adulto;2
 Ana Mercia;adulto;1
@@ -42,4 +42,4 @@ Angelina;crianca_poltrona;0
 Maria Ferreira de Andrade;adulto;0
 Israel Agripino Ferreira dos Santos;adulto;0
 Jurandy;adulto;10
-Lêda;adulto;10
+Lêda;adulto;10;40
