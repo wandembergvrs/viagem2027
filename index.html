@@ -393,18 +393,17 @@
     }
 
     .paid-highlight {
-  margin-top: 6px;
-  font-size: 0.78rem;
-  color: #14532d;
-  background: #ecfdf3;
-  border-radius: 999px;
-  padding: 4px 8px;
-  border: 1px solid rgba(34, 197, 94, 0.6);
-  display: none; /* só aparece se houver quitados */
-  position: relative;
-  z-index: 1;
-}
-
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: #14532d;
+      background: #ecfdf3;
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      display: none;
+      position: relative;
+      z-index: 1;
+    }
 
     .passenger-summary {
       display: flex;
@@ -830,7 +829,6 @@
           <strong id="payment-percent-label">0%</strong>
         </div>
         <div class="paid-highlight" id="paid-highlight"></div>
-
       </div>
     </section>
 
@@ -912,7 +910,7 @@
             Lista de passageiros
           </div>
           <p class="card-subtitle">
-            Nomes e situação geral. Parcelas são ajustadas na planilha
+            Nomes e situação geral. Parcelas e poltronas são ajustadas na planilha
             <code>passageiros.csv</code>.
           </p>
         </div>
@@ -935,6 +933,14 @@
           <tbody id="passenger-table-body"></tbody>
         </table>
       </div>
+
+      <p style="margin-top:6px;font-size:0.74rem;color:#6b7280;">
+        Para atualizar a planilha, baixe o arquivo com os dados atuais (incluindo poltronas) e substitua o
+        <code>passageiros.csv</code> original:
+        <a id="download-csv-link" href="#" download="passageiros_atualizado.csv">
+          Baixar CSV atualizado
+        </a>
+      </p>
     </section>
 
     <!-- LAYOUT DE ASSENTOS -->
@@ -986,7 +992,7 @@
           Livre
         </div>
         <div class="legend-item">
-          <span class="legend-color occupied"></span>
+          <span class="legend-color.occupied legend-color occupied"></span>
           Ocupado
         </div>
         <div class="legend-item">
@@ -1057,10 +1063,13 @@
       const idxNome = headers.indexOf("nome");
       const idxCategoria = headers.indexOf("categoria");
       const idxParcelas = headers.indexOf("parcelas");
+      const idxSeat = headers.findIndex(
+        (h) => h === "poltrona" || h === "assento" || h === "seat"
+      );
 
       if (idxNome === -1 || idxCategoria === -1 || idxParcelas === -1) {
         console.error(
-          "Cabeçalho do passageiros.csv deve ter: Nome;Categoria;Parcelas"
+          "Cabeçalho do passageiros.csv deve ter: Nome;Categoria;Parcelas (e opcionalmente Poltrona/Assento)"
         );
         return [];
       }
@@ -1083,12 +1092,21 @@
             category = "adult";
           }
 
+          let seat = "";
+          if (idxSeat >= 0 && cols[idxSeat]) {
+            const rawSeat = cols[idxSeat];
+            const n = parseInt(rawSeat, 10);
+            if (Number.isFinite(n)) {
+              seat = String(n);
+            }
+          }
+
           return {
             name: nome,
             category,
             seatType: category === "childLap" ? "Colo" : "Poltrona",
             installmentsPaid: parcelas,
-            seat: "",
+            seat: seat,
           };
         });
     }
@@ -1125,6 +1143,55 @@
       } catch (e) {
         console.warn("Não foi possível salvar assentos:", e);
       }
+    }
+
+    // ===============================
+    // EXPORTAÇÃO CSV (com poltronas)
+    // ===============================
+
+    function categoryToCsv(category) {
+      if (category === "childLap") return "crianca_colo";
+      if (category === "childSeat") return "crianca_poltrona";
+      return "adulto";
+    }
+
+    function escapeCsvCell(value) {
+      const str = String(value ?? "");
+      if (/[;"\n\r]/.test(str)) {
+        return '"' + str.replace(/"/g, '""') + '"';
+      }
+      return str;
+    }
+
+    function buildCsvFromPassengers() {
+      const header = ["Nome", "Categoria", "Parcelas", "Poltrona"].join(";");
+      const lines = passengers.map((p) => {
+        const nome = escapeCsvCell(p.name);
+        const categoria = escapeCsvCell(categoryToCsv(p.category));
+        const parcelas = escapeCsvCell(getInstallments(p));
+        const poltrona = escapeCsvCell(p.seat || "");
+        return [nome, categoria, parcelas, poltrona].join(";");
+      });
+      return [header, ...lines].join("\n");
+    }
+
+    function updateCsvDownloadLink() {
+      const link = document.getElementById("download-csv-link");
+      if (!link || !passengers.length) return;
+
+      const csv = buildCsvFromPassengers();
+      const blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;",
+      });
+
+      if (link.dataset.objectUrl) {
+        URL.revokeObjectURL(link.dataset.objectUrl);
+      }
+
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      link.dataset.objectUrl = url;
+      link.download = "passageiros_atualizado.csv";
     }
 
     // ===============================
@@ -1223,45 +1290,44 @@
     // ===============================
 
     function updatePaymentPanel() {
-  const startedLabel = document.getElementById("stats-started-people");
-  const fullLabel = document.getElementById("stats-full-people");
-  const smallPercentLabel = document.getElementById("stats-percent-small");
-  const progressFill = document.getElementById("payment-progress-fill");
-  const percentLabel = document.getElementById("payment-percent-label");
-  const paidHighlight = document.getElementById("paid-highlight");
+      const startedLabel = document.getElementById("stats-started-people");
+      const fullLabel = document.getElementById("stats-full-people");
+      const smallPercentLabel = document.getElementById("stats-percent-small");
+      const progressFill = document.getElementById("payment-progress-fill");
+      const percentLabel = document.getElementById("payment-percent-label");
+      const paidHighlight = document.getElementById("paid-highlight");
 
-  const payingCount = getPayingPassengersCount();
-  const started = getStartedPassengersCount();
-  const full = getFullPassengersCount();
+      const payingCount = getPayingPassengersCount();
+      const started = getStartedPassengersCount();
+      const full = getFullPassengersCount();
 
-  const paidValue = getTripPaidValue();
-  const rawPercent =
-    TRIP_TOTAL_VALUE > 0 ? (paidValue / TRIP_TOTAL_VALUE) * 100 : 0;
-  const percent = clamp(Math.round(rawPercent), 0, 100);
+      const paidValue = getTripPaidValue();
+      const rawPercent =
+        TRIP_TOTAL_VALUE > 0 ? (paidValue / TRIP_TOTAL_VALUE) * 100 : 0;
+      const percent = clamp(Math.round(rawPercent), 0, 100);
 
-  startedLabel.textContent = `${started} / ${payingCount}`;
-  fullLabel.textContent = `${full}`;
-  smallPercentLabel.textContent = percent + "%";
-  progressFill.style.width = percent + "%";
-  percentLabel.textContent = percent + "%";
+      startedLabel.textContent = `${started} / ${payingCount}`;
+      fullLabel.textContent = `${full}`;
+      smallPercentLabel.textContent = percent + "%";
+      progressFill.style.width = percent + "%";
+      percentLabel.textContent = percent + "%";
 
-  // Destaque separado para quitados (sem mostrar valores, só nomes)
-  if (paidHighlight) {
-    const fullPassengers = passengers.filter(
-      (p) => getInstallments(p) >= MAX_INSTALLMENTS && p.seatType !== "Colo"
-    );
+      // Destaque separado para quitados (sem mostrar valores, só nomes)
+      if (paidHighlight) {
+        const fullPassengers = passengers.filter(
+          (p) => getInstallments(p) >= MAX_INSTALLMENTS && p.seatType !== "Colo"
+        );
 
-    if (fullPassengers.length > 0) {
-      paidHighlight.style.display = "block";
-      paidHighlight.textContent =
-        "Quitados: " + fullPassengers.map((p) => p.name).join(", ");
-    } else {
-      paidHighlight.style.display = "none";
-      paidHighlight.textContent = "";
+        if (fullPassengers.length > 0) {
+          paidHighlight.style.display = "block";
+          paidHighlight.textContent =
+            "Quitados: " + fullPassengers.map((p) => p.name).join(", ");
+        } else {
+          paidHighlight.style.display = "none";
+          paidHighlight.textContent = "";
+        }
+      }
     }
-  }
-}
-
 
     function updateTimePanel() {
       const tripDateLabel = document.getElementById("trip-date-label");
@@ -1433,7 +1499,7 @@
       [1, 2, 4, 3],
       [5, 6, 8, 7],
       [9, 10, 12, 11],
-      [13, 14, null, null],   // sem poltronas do lado direito (escada/corredor)
+      [13, 14, null, null],   // sem poltronas do lado direito
       [15, 16, null, null],   // idem
       [17, 18, 20, 19],
       [21, 22, 24, 23],
@@ -1619,6 +1685,7 @@
       savePassengersToStorage();
       buildPassengerTable();
       buildSeatLayout();
+      updateCsvDownloadLink();
     }
 
     // ===============================
@@ -1701,6 +1768,7 @@
       buildPassengerTable();
       updateSeatPassengerSelect();
       buildSeatLayout();
+      updateCsvDownloadLink();
       initMap();
     }
 
