@@ -1,27 +1,27 @@
 Nome;Categoria;Parcelas
-Janduy Rosendo;adulto;0
+Janduy;adulto;0
 Adeilza;adulto;0
 Ana Carolina;adulto;0
 Robson;adulto;0
 Davi;crianca_poltrona;0
 Luíza;crianca_colo;0
-Wandem;adulto;0
-Liz;crianca_poltrona;0
+Wandem;adulto;1
+Liz;crianca_poltrona;1
 Theo;crianca_poltrona;0
-Joel;adulto;0
-Edina;adulto;0
-Ana Mercia;adulto;0
+Joel;adulto;2
+Edina;adulto;2
+Ana Mercia;adulto;1
 Mida;adulto;0
 Francisca;adulto;0
-Francisco (1954);adulto;0
+Francisco Onofre;adulto;0
 Walisson;adulto;0
 Thais;adulto;0
 Luís;crianca_poltrona;0
-Francisco (1972);adulto;0
-Rosa Maria;adulto;0
-Rhalisson;adulto;0
-Zilda;adulto;0
-Dissér;adulto;0
+Francisco Rosendo;adulto;1
+Rosa Maria;adulto;1
+Rhalisson;adulto;1
+Zilda;adulto;1
+Dissér;adulto;1
 Janival;adulto;0
 Juracy;adulto;0
 Mª Aparecida;adulto;0
@@ -33,12 +33,13 @@ Suely;adulto;0
 Juninho;adulto;0
 Jean Ismael;adulto;0
 Cynthia Rodrigues;adulto;0
-João Bosco;adulto;0
-Gabriel Lima;crianca_poltrona;0
+João Bosco;adulto;1
+Gabriel Lima;crianca_poltrona;1
 Jéssica;adulto;0
 Lindemberg;adulto;0
 Valentina;crianca_poltrona;0
 Angelina;crianca_poltrona;0
 Maria Ferreira de Andrade;adulto;0
 Israel Agripino Ferreira dos Santos;adulto;0
-Jurandy;adulto;0
+Jurandy;adulto;10
+Lêda;adulto;10
