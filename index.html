@@ -910,8 +910,8 @@
             Lista de passageiros
           </div>
           <p class="card-subtitle">
-            Nomes e situação geral. Parcelas e poltronas são ajustadas na planilha
-            <code>passageiros.csv</code>.
+            Nomes, categorias e situação geral. Os dados vêm da planilha
+            <code>passageiros.csv</code> na mesma pasta deste arquivo.
           </p>
         </div>
       </div>
@@ -933,14 +933,6 @@
           <tbody id="passenger-table-body"></tbody>
         </table>
       </div>
-
-      <p style="margin-top:6px;font-size:0.74rem;color:#6b7280;">
-        Para atualizar a planilha, baixe o arquivo com os dados atuais (incluindo poltronas) e substitua o
-        <code>passageiros.csv</code> original:
-        <a id="download-csv-link" href="#" download="passageiros_atualizado.csv">
-          Baixar CSV atualizado
-        </a>
-      </p>
     </section>
 
     <!-- LAYOUT DE ASSENTOS -->
@@ -959,9 +951,14 @@
       </div>
 
       <div class="seat-controls">
-        <span id="seat-selected-label"><strong>Nenhum passageiro selecionado.</strong></span>
+        <span id="seat-selected-label">
+          <strong>Nenhum passageiro selecionado.</strong>
+        </span>
         <span class="seat-helper" id="seat-helper-text">
-          Para marcar poltronas, toque em um passageiro <strong>quitado</strong> na lista e depois toque em uma poltrona livre.
+          Toque em um passageiro <strong>quitado</strong> na lista para selecioná-lo
+          e depois toque em uma poltrona livre no mapa para registrar a escolha.
+          As poltronas também podem ser preenchidas diretamente na coluna
+          <strong>Poltrona</strong> do arquivo <code>passageiros.csv</code>.
         </span>
       </div>
 
@@ -1005,7 +1002,7 @@
       Site privado para organizar a viagem da família, mostrando apenas o andamento coletivo.
     </div>
     <div>
-      Parcelas são ajustadas na planilha; assentos são escolhidos aqui após quitação.
+      Parcelas são ajustadas na planilha; assentos são visualizados e ajustados aqui após quitação.
     </div>
   </footer>
 
@@ -1142,63 +1139,14 @@
     }
 
     // ===============================
-    // EXPORTAÇÃO CSV (com poltronas)
+    // AUXILIARES DE PAGAMENTO
     // ===============================
-
-    function categoryToCsv(category) {
-      if (category === "childLap") return "crianca_colo";
-      if (category === "childSeat") return "crianca_poltrona";
-      return "adulto";
-    }
-
-    function escapeCsvCell(value) {
-      const str = String(value ?? "");
-      if (/[;"\n\r]/.test(str)) {
-        return '"' + str.replace(/"/g, '""') + '"';
-      }
-      return str;
-    }
 
     function getInstallments(p) {
       const v = Number(p.installmentsPaid);
       if (!Number.isFinite(v) || v < 0) return 0;
       return clamp(v, 0, MAX_INSTALLMENTS);
     }
-
-    function buildCsvFromPassengers() {
-      const header = ["Nome", "Categoria", "Parcelas", "Poltrona"].join(";");
-      const lines = passengers.map((p) => {
-        const nome = escapeCsvCell(p.name);
-        const categoria = escapeCsvCell(categoryToCsv(p.category));
-        const parcelas = escapeCsvCell(getInstallments(p));
-        const poltrona = escapeCsvCell(p.seat || "");
-        return [nome, categoria, parcelas, poltrona].join(";");
-      });
-      return [header, ...lines].join("\n");
-    }
-
-    function updateCsvDownloadLink() {
-      const link = document.getElementById("download-csv-link");
-      if (!link || !passengers.length) return;
-
-      const csv = buildCsvFromPassengers();
-      const blob = new Blob([csv], {
-        type: "text/csv;charset=utf-8;",
-      });
-
-      if (link.dataset.objectUrl) {
-        URL.revokeObjectURL(link.dataset.objectUrl);
-      }
-
-      const url = URL.createObjectURL(blob);
-      link.href = url;
-      link.dataset.objectUrl = url;
-      link.download = "passageiros_atualizado.csv";
-    }
-
-    // ===============================
-    // AUXILIARES DE PAGAMENTO
-    // ===============================
 
     const getPayingPassengersCount = () =>
       passengers.filter((p) => p.seatType !== "Colo").length;
@@ -1382,7 +1330,8 @@
 
       if (!passengers.length) {
         label.innerHTML = "<strong>Nenhum passageiro carregado.</strong>";
-        helper.textContent = "Verifique o arquivo passageiros.csv.";
+        helper.innerHTML =
+          'Os dados vêm do arquivo <code>passageiros.csv</code> na mesma pasta do site.';
         return;
       }
 
@@ -1390,21 +1339,31 @@
 
       if (fullCount === 0) {
         label.innerHTML = "<strong>Nenhum passageiro quitado ainda.</strong>";
-        helper.textContent =
-          "Assim que alguém quitar as 10 parcelas, poderá escolher poltrona.";
+        helper.innerHTML =
+          "Assim que alguém quitar as 10 parcelas, você poderá tocar no nome dele na lista e depois em uma poltrona livre para registrar a escolha.";
         return;
       }
 
       if (selectedPassengerIndex === null) {
         label.innerHTML = "<strong>Nenhum passageiro selecionado.</strong>";
-        helper.textContent =
-          "Toque em um passageiro quitado na lista e, depois, toque em uma poltrona livre.";
+        helper.innerHTML =
+          "Toque em um passageiro <strong>quitado</strong> na lista para selecioná-lo e depois toque em uma poltrona livre no mapa para marcar.";
       } else {
         const p = passengers[selectedPassengerIndex];
+        const seatInfo = p.seat
+          ? `poltrona ${p.seat}`
+          : "sem poltrona definida";
+
         label.innerHTML =
-          "<strong>Selecionado:</strong> " + getPassengerIcon(p) + " " + p.name;
-        helper.textContent =
-          "Agora toque em uma poltrona livre no mapa para marcá-la.";
+          "<strong>Selecionado:</strong> " +
+          getPassengerIcon(p) +
+          " " +
+          p.name +
+          " — " +
+          seatInfo;
+
+        helper.innerHTML =
+          "Toque em uma poltrona livre para associá-la a este passageiro. As escolhas ficam salvas neste navegador (localStorage).";
       }
     }
 
@@ -1538,7 +1497,6 @@
             );
             return;
           }
-          // Seleciona/alternar
           if (selectedPassengerIndex === index) {
             selectedPassengerIndex = null;
           } else {
@@ -1696,7 +1654,7 @@
       savePassengersToStorage();
       buildPassengerTable();
       buildSeatLayout();
-      updateCsvDownloadLink();
+      updateSelectedPassengerLabel();
     }
 
     // ===============================
@@ -1778,7 +1736,6 @@
       updateTimePanel();
       buildPassengerTable();
       buildSeatLayout();
-      updateCsvDownloadLink();
       initMap();
     }
 
