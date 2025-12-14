@@ -1320,19 +1320,25 @@
         dot.classList.add("dot");
         statusPill.appendChild(dot);
 
+        // ===========================================
+        // NOVO CRITÉRIO:
+        // - Verde (paid): Confirmado COM pagamento iniciado + colo entra aqui
+        // - Laranja (pending): Confirmado SEM pagamento iniciado
+        // ===========================================
         let statusText;
+
         if (p.seatType === "Colo") {
-          statusPill.classList.add("paid"); // visual neutro/verde
-          statusText = "Sem cobrança (colo)";
-        } else if (installments >= MAX_INSTALLMENTS) {
           statusPill.classList.add("paid");
-          statusText = "Confirmado (quitado)";
+          statusText = "Confirmado (colo)";
         } else if (installments > 0) {
           statusPill.classList.add("paid");
-          statusText = "Confirmado (em parcelas)";
+          statusText =
+            installments >= MAX_INSTALLMENTS
+              ? "Confirmado (quitado)"
+              : "Confirmado (pagamento iniciado)";
         } else {
           statusPill.classList.add("pending");
-          statusText = "Pendente";
+          statusText = "Confirmado (pagamento não iniciado)";
         }
 
         statusPill.appendChild(document.createTextNode(statusText));
