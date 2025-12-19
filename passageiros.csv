@@ -8,8 +8,8 @@ Luíza;crianca_colo;0
 Wandem;adulto;1
 Liz;crianca_poltrona;1
 Theo;crianca_poltrona;1
-Joel;adulto;2
-Edina;adulto;2
+Joel;adulto;10
+Edina;adulto;0
 Ana Mercia;adulto;1
 Mida;adulto;0
 Francisca;adulto;0
@@ -35,10 +35,10 @@ Jean Ismael;adulto;0
 Cynthia Rodrigues;adulto;0
 João Bosco;adulto;1
 Gabriel Lima;crianca_poltrona;1
-Jéssica;adulto;0
-Lindemberg;adulto;0
-Valentina;crianca_poltrona;0
-Angelina;crianca_poltrona;0
+Jéssica;adulto;1
+Lindemberg;adulto;1
+Valentina;crianca_poltrona;1
+Angelina;crianca_poltrona;1
 Maria Ferreira de Andrade;adulto;0
 Israel Agripino Ferreira dos Santos;adulto;0
 Jurandy;adulto;10;55
@@ -48,3 +48,9 @@ Raíssa Santos;adulto;0
 Francisca das Chagas;adulto;0
 Leonice de Jesus;adulto:0
 Lourival de Lima;adulto:0
+Francisca Márcia;adulto;0
+Francisco Raimundo;adulto;0
+Rafael;adulto;0
+Eduardo;adulto;0
+David;crianca_poltrona;0
+Pedro;crianca_colo;0
