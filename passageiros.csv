@@ -1,5 +1,5 @@
 Nome;Categoria;Parcelas;Poltrona
-Janduy;adulto;2
+Janduy;adulto;10;3
 Adeilza;adulto;2
 Ana Carolina;adulto;0
 Robson;adulto;0
@@ -22,7 +22,7 @@ Rosa Maria;adulto;1
 Rhalisson;adulto;1
 Zilda;adulto;1
 Dissér;adulto;1
-Janival;adulto;0
+Janival;adulto;10;4
 Juracy;adulto;1
 Mª Aparecida;adulto;1
 André;adulto;0
