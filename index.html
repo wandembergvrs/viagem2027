@@ -32,6 +32,9 @@
       --danger: #ea580c;
       --radius-xl: 18px;
       --shadow-soft: 0 12px 24px rgba(15, 23, 42, 0.12);
+
+      /* >>> NOVO: tamanho do assento (para caber número + prenome) */
+      --seat-size: 46px;
     }
 
     * { box-sizing: border-box; }
@@ -570,33 +573,38 @@
       color: var(--text);
     }
 
+    /* >>> AJUSTE: agora o grid usa --seat-size (para caber nome) */
     .seat-grid {
       display: grid;
-      grid-auto-rows: 28px;
-      gap: 4px;
+      grid-auto-rows: var(--seat-size);
+      gap: 6px;
       justify-content: center;
       margin-top: 2px;
     }
 
-    #seat-grid-upper {
-      grid-template-columns: repeat(4, 28px);
+    #seat-grid-upper,
+    #seat-grid-lower {
+      grid-template-columns: repeat(4, var(--seat-size));
     }
 
-    #seat-grid-lower {
-      grid-template-columns: repeat(4, 28px);
+    .seat,
+    .seat-gap {
+      width: var(--seat-size);
+      height: var(--seat-size);
     }
 
     .seat {
-      width: 28px;
-      height: 28px;
-      border-radius: 7px;
+      border-radius: 10px;
       border: 1px solid #d1d5db;
-      font-size: 0.66rem;
       background: #e5e7eb;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       cursor: default;
+      padding: 3px 2px;
+      text-align: center;
+      line-height: 1.05;
     }
 
     .seat.free { background: #f3f4f6; }
@@ -608,9 +616,20 @@
       box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.4);
     }
 
-    .seat-gap {
-      width: 28px;
-      height: 28px;
+    /* >>> NOVO: duas linhas (número + prenome) */
+    .seat-number {
+      font-size: 0.62rem;
+      font-weight: 800;
+      opacity: 0.95;
+    }
+
+    .seat-name {
+      font-size: 0.62rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
     .seat-legend {
@@ -1399,29 +1418,47 @@
       [55, 56, null, 57],
     ];
 
+    /* >>> NOVO: pega o prenome */
+    function getFirstName(fullName) {
+      const s = String(fullName || "").trim();
+      if (!s) return "";
+      return s.split(/\s+/)[0];
+    }
+
+    /* >>> NOVO: retorna o passageiro (objeto), não o índice */
     function findPassengerBySeat(seatNumber) {
       const sn = String(seatNumber);
-      return passengers.findIndex(
+      return passengers.find(
         (p) => p.seat && String(p.seat) === sn && p.seatType !== "Colo"
       );
     }
 
+    /* >>> NOVO: assento mostra número + prenome quando ocupado */
     function createSeatElement(seatNumber) {
       const seatEl = document.createElement("div");
       seatEl.className = "seat";
       seatEl.dataset.number = seatNumber;
 
-      const occupantIdx = findPassengerBySeat(seatNumber);
-      if (occupantIdx >= 0) {
+      const passenger = findPassengerBySeat(seatNumber);
+
+      const numEl = document.createElement("div");
+      numEl.className = "seat-number";
+      numEl.textContent = seatNumber;
+      seatEl.appendChild(numEl);
+
+      if (passenger) {
         seatEl.classList.add("occupied");
-        const name = passengers[occupantIdx].name;
-        seatEl.title = "Ocupado por " + name;
+        seatEl.title = "Ocupado por " + passenger.name;
+
+        const nameEl = document.createElement("div");
+        nameEl.className = "seat-name";
+        nameEl.textContent = getFirstName(passenger.name);
+        seatEl.appendChild(nameEl);
       } else {
         seatEl.classList.add("free");
         seatEl.title = "Livre";
       }
 
-      seatEl.textContent = seatNumber;
       return seatEl;
     }
 
