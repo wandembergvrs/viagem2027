@@ -9,7 +9,7 @@
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRrB9BMY="
     crossorigin=""
   />
   <script
@@ -36,8 +36,6 @@
       --danger: #ea580c;
       --radius-xl: 18px;
       --shadow-soft: 0 12px 24px rgba(15, 23, 42, 0.12);
-
-      /* tamanho do assento (para caber número + prenome) */
       --seat-size: 46px;
     }
 
@@ -51,12 +49,7 @@
       min-height: 100vh;
     }
 
-    a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
+    a { color: #2563eb; text-decoration: none; font-weight: 600; }
     a:hover { text-decoration: underline; }
 
     header {
@@ -76,10 +69,7 @@
       gap: 16px;
       align-items: center;
     }
-
-    @media (max-width: 768px) {
-      .hero { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 768px) { .hero { grid-template-columns: 1fr; } }
 
     .hero-title {
       font-size: clamp(1.8rem, 4.2vw, 2.4rem);
@@ -89,10 +79,7 @@
       margin-bottom: 8px;
     }
 
-    .hero-subtitle {
-      font-size: 0.92rem;
-      max-width: 520px;
-    }
+    .hero-subtitle { font-size: 0.92rem; max-width: 520px; }
 
     .hero-countdown {
       margin-top: 12px;
@@ -118,11 +105,7 @@
     }
 
     .hero-countdown-line strong { font-size: 1.2rem; }
-
-    .hero-countdown-sub {
-      font-size: 0.78rem;
-      color: #334155;
-    }
+    .hero-countdown-sub { font-size: 0.78rem; color: #334155; }
 
     .hero-badges {
       display: flex;
@@ -183,7 +166,6 @@
       backdrop-filter: blur(8px);
       border: 1px solid rgba(148, 163, 184, 0.5);
     }
-
     .hero-bus-caption strong { color: var(--accent); }
 
     main {
@@ -268,7 +250,6 @@
       border-radius: 999px;
       background: var(--accent-soft);
     }
-
     .pill-dot.warn { background: var(--danger); }
 
     .stats-row {
@@ -290,11 +271,7 @@
 
     .stats-row div strong { font-size: 0.86rem; }
 
-    .progress-container {
-      margin-top: 4px;
-      position: relative;
-      z-index: 1;
-    }
+    .progress-container { margin-top: 4px; position: relative; z-index: 1; }
 
     .progress-track {
       width: 100%;
@@ -340,10 +317,7 @@
       gap: 6px;
     }
 
-    .progress-label strong {
-      color: var(--accent-dark);
-      font-size: 0.82rem;
-    }
+    .progress-label strong { color: var(--accent-dark); font-size: 0.82rem; }
 
     .info-list {
       list-style: none;
@@ -368,11 +342,7 @@
       font-size: 0.9rem;
     }
 
-    .info-highlight {
-      margin-top: 3px;
-      font-size: 0.76rem;
-      color: var(--text-muted);
-    }
+    .info-highlight { margin-top: 3px; font-size: 0.76rem; color: var(--text-muted); }
 
     .paid-highlight {
       margin-top: 6px;
@@ -451,11 +421,7 @@
     tbody tr:nth-child(odd) { background: #ffffff; }
     tbody tr:hover { background: #eef2ff; }
 
-    td {
-      border-bottom: 1px solid #e5e7eb;
-      color: var(--text);
-    }
-
+    td { border-bottom: 1px solid #e5e7eb; color: var(--text); }
     td.status { font-size: 0.76rem; }
 
     .status-pill {
@@ -487,7 +453,6 @@
       border-radius: 999px;
       background: var(--accent-soft);
     }
-
     .status-pill.pending span.dot { background: var(--danger); }
 
     #trip-map {
@@ -499,17 +464,180 @@
       margin-top: 4px;
     }
 
-    /* container do 3D */
+    /* ===== 3D EXPERIENCE ===== */
+    .sim3d-wrap { position: relative; }
+
     #trip-3d {
       width: 100%;
-      height: 320px;
+      height: 360px;
       border-radius: 14px;
       overflow: hidden;
       border: 1px solid #e5e7eb;
-      margin-top: 4px;
+      margin-top: 8px;
       background: #0b1220;
     }
 
+    .sim3d-hud {
+      position: relative;
+      z-index: 2;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.88);
+      color: #e5e7eb;
+      padding: 10px 10px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
+      gap: 10px;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.25);
+    }
+
+    @media (max-width: 680px) {
+      .sim3d-hud { grid-template-columns: 1fr; }
+    }
+
+    .sim3d-hud h3 {
+      margin: 0 0 4px;
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+    }
+
+    .sim3d-hud .line {
+      font-size: 0.78rem;
+      color: rgba(226, 232, 240, 0.9);
+      margin-bottom: 6px;
+    }
+
+    .sim3d-hud .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+      font-size: 0.72rem;
+    }
+
+    .sim3d-chip {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: rgba(2, 6, 23, 0.55);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sim3d-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+    }
+
+    .sim3d-dot.warn {
+      background: #f97316;
+      box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+    }
+
+    .sim3d-progress {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.22);
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .sim3d-progress > div {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22c55e, #facc15, #f97316);
+      transition: width 180ms linear;
+    }
+
+    .sim3d-photo {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(2, 6, 23, 0.55);
+      aspect-ratio: 16 / 10;
+      display: grid;
+      place-items: center;
+    }
+
+    .sim3d-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .sim3d-credit {
+      margin-top: 6px;
+      font-size: 0.66rem;
+      color: rgba(226, 232, 240, 0.75);
+      line-height: 1.25;
+    }
+
+    .sim3d-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .sim3d-btn {
+      appearance: none;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: rgba(248, 250, 252, 0.95);
+      color: #0f172a;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-weight: 750;
+      font-size: 0.78rem;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    .sim3d-btn:hover { filter: brightness(0.98); }
+    .sim3d-btn:active { transform: translateY(1px); }
+
+    .sim3d-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      background: rgba(248, 250, 252, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      padding: 6px 10px;
+      border-radius: 999px;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    .sim3d-toggle input { transform: translateY(1px); }
+
+    .sim3d-range {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      background: rgba(248, 250, 252, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      padding: 6px 10px;
+      border-radius: 999px;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    .sim3d-range input[type="range"] { width: 140px; }
+
+    /* ===== seats ===== */
     .map-note {
       font-size: 0.74rem;
       color: var(--text-muted);
@@ -525,10 +653,7 @@
       z-index: 1;
     }
 
-    .seat-helper {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
+    .seat-helper { font-size: 0.72rem; color: var(--text-muted); }
 
     .seat-layout {
       display: grid;
@@ -556,10 +681,7 @@
       align-items: center;
     }
 
-    .deck-header span {
-      font-weight: 600;
-      color: var(--text);
-    }
+    .deck-header span { font-weight: 600; color: var(--text); }
 
     .seat-grid {
       display: grid;
@@ -569,10 +691,7 @@
       margin-top: 2px;
     }
 
-    #seat-grid-upper,
-    #seat-grid-lower {
-      grid-template-columns: repeat(4, var(--seat-size));
-    }
+    #seat-grid-upper, #seat-grid-lower { grid-template-columns: repeat(4, var(--seat-size)); }
 
     .seat, .seat-gap {
       width: var(--seat-size);
@@ -602,11 +721,7 @@
       box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.4);
     }
 
-    .seat-number {
-      font-size: 0.62rem;
-      font-weight: 800;
-      opacity: 0.95;
-    }
+    .seat-number { font-size: 0.62rem; font-weight: 800; opacity: 0.95; }
 
     .seat-name {
       font-size: 0.62rem;
@@ -627,11 +742,7 @@
       align-items: center;
     }
 
-    .legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
+    .legend-item { display: inline-flex; align-items: center; gap: 4px; }
 
     .legend-color {
       width: 12px;
@@ -641,10 +752,7 @@
       background: #f3f4f6;
     }
 
-    .legend-color.occupied {
-      background: #22c55e;
-      border-color: #16a34a;
-    }
+    .legend-color.occupied { background: #22c55e; border-color: #16a34a; }
 
     footer {
       max-width: 900px;
@@ -872,16 +980,16 @@
       </div>
     </section>
 
-    <!-- SIMULAÇÃO 3D -->
+    <!-- SIMULAÇÃO 3D (COM IMAGENS) -->
     <section class="card" id="sim-3d-card">
       <div class="card-header">
         <div>
           <div class="card-title">
             <span class="icon">🧭</span>
-            Simulação 3D da rota
+            Simulação 3D da rota (com fotos)
           </div>
           <p class="card-subtitle">
-            Visualização 3D ilustrativa: o ônibus percorre Brasília → Fortaleza → Bom Sucesso → João Pessoa → Brasília.
+            O ônibus percorre a rota e o painel mostra imagens das cidades e o progresso do trecho.
           </p>
         </div>
         <div class="pill">
@@ -890,10 +998,56 @@
         </div>
       </div>
 
-      <div id="trip-3d"></div>
+      <div class="sim3d-controls">
+        <button class="sim3d-btn" id="sim3d-play-btn">⏸ Pausar</button>
+
+        <div class="sim3d-range">
+          <span>Velocidade</span>
+          <input id="sim3d-speed" type="range" min="0.3" max="3" step="0.1" value="1.0" />
+          <strong id="sim3d-speed-label">1.0x</strong>
+        </div>
+
+        <label class="sim3d-toggle">
+          <input id="sim3d-follow" type="checkbox" checked />
+          Câmera segue o ônibus
+        </label>
+      </div>
+
+      <div class="sim3d-wrap">
+        <div class="sim3d-hud" id="sim3d-hud">
+          <div>
+            <h3 id="sim3d-title">Trecho: –</h3>
+            <div class="line" id="sim3d-sub">–</div>
+
+            <div class="chips">
+              <div class="sim3d-chip">
+                <span class="sim3d-dot" id="sim3d-dot"></span>
+                <span id="sim3d-phase">Em rota</span>
+              </div>
+              <div class="sim3d-chip">
+                ⏱️ <span id="sim3d-progress-label">0%</span> do trecho
+              </div>
+            </div>
+
+            <div class="sim3d-progress">
+              <div id="sim3d-progress-fill"></div>
+            </div>
+
+            <div class="sim3d-credit" id="sim3d-credit">
+              Imagens: Wikimedia (créditos no rodapé).
+            </div>
+          </div>
+
+          <div class="sim3d-photo">
+            <img id="sim3d-photo" alt="Foto da cidade" src="" loading="lazy" referrerpolicy="no-referrer" />
+          </div>
+        </div>
+
+        <div id="trip-3d"></div>
+      </div>
 
       <div class="map-note">
-        Dica: arraste para girar a câmera e use pinça/scroll para zoom.
+        Dica: se a câmera estiver seguindo, você ainda pode dar zoom; se quiser girar livremente, desmarque “Câmera segue o ônibus”.
       </div>
     </section>
 
@@ -989,8 +1143,8 @@
     <div>
       Site privado para organizar a viagem da família, mostrando apenas o andamento coletivo.
     </div>
-    <div>
-      Parcelas e poltronas são ajustadas na planilha; aqui é só visualização.
+    <div id="footer-credits">
+      Créditos de imagens: Wikimedia Commons / Wikipedia (veja no código).
     </div>
   </footer>
 
@@ -998,14 +1152,13 @@
     // ===============================
     // CONFIGURAÇÕES
     // ===============================
-
     const TRIP_START_DATE = new Date("2027-01-08T00:00:00");
     const TRIP_END_DATE = new Date("2027-01-23T00:00:00");
     const PLANNING_START_DATE = new Date("2025-12-09T00:00:00");
 
     const FARE_PER_PERSON = 1100.0;
     const MAX_INSTALLMENTS = 10;
-    const TRIP_TOTAL_VALUE = 59400.0; // apenas para cálculo do % (mantido como você tinha)
+    const TRIP_TOTAL_VALUE = 59400.0; // apenas para cálculo do %
 
     const msPerDay = 1000 * 60 * 60 * 24;
     const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
@@ -1016,14 +1169,52 @@
     let passengers = [];
 
     // ===============================
+    // IMAGENS DAS CIDADES (troque aqui se quiser usar arquivos locais)
+    // ===============================
+    const CITY_MEDIA = {
+      bsb: {
+        name: "Brasília (DF)",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Catedral_de_Brasilia_01.jpg/1280px-Catedral_de_Brasilia_01.jpg",
+        credit: "Brasília: 'Catedral de Brasilia 01.jpg' (Agência Brasil) – CC BY 3.0 BR"
+      },
+      for: {
+        name: "Fortaleza (CE)",
+        img: "https://upload.wikimedia.org/wikipedia/commons/7/74/Fortaleza%2C_Brazil_%287%29.jpg",
+        credit: "Fortaleza: 'Fortaleza, Brazil (7).jpg' (Arthur Fonseca) – CC BY 3.0 BR"
+      },
+      bom: {
+        name: "Bom Sucesso (PB)",
+        img: "https://upload.wikimedia.org/wikipedia/commons/1/12/Serrinha-Bom_Sucesso.jpg",
+        credit: "Bom Sucesso: 'Serrinha-Bom Sucesso.jpg' (AndersonPv) – CC BY-SA 4.0"
+      },
+      jpa: {
+        name: "João Pessoa (PB)",
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Joao_Pessoa_Paraiba_Farol_do_Cabo_Branco2.jpg/1280px-Joao_Pessoa_Paraiba_Farol_do_Cabo_Branco2.jpg",
+        credit: "João Pessoa: 'Joao Pessoa Paraiba Farol do Cabo Branco2.jpg' – CC BY-SA 2.5"
+      }
+    };
+
+    // Paradas/rota
+    const STOPS = [
+      { id: "bsb", coords: [-15.79389, -47.88278] },
+      { id: "for", coords: [-3.73186, -38.52667] },
+      { id: "bom", coords: [-7.18333, -36.3667] },
+      { id: "jpa", coords: [-7.1195, -34.8450] },
+    ];
+
+    const SEGMENTS = [
+      { from: "bsb", to: "for", date: "08/01/2027 • 18h", label: "Brasília → Fortaleza" },
+      { from: "for", to: "bom", date: "13/01/2027", label: "Fortaleza → Bom Sucesso (PB)" },
+      { from: "bom", to: "jpa", date: "17/01/2027", label: "Bom Sucesso (PB) → João Pessoa (PB)" },
+      { from: "jpa", to: "bsb", date: "22/01/2027", label: "João Pessoa (PB) → Brasília" },
+    ];
+
+    // ===============================
     // PASSAGEIROS (carregados via CSV)
     // ===============================
-
     async function loadPassengersFromCSV() {
       const response = await fetch("passageiros.csv");
-      if (!response.ok) {
-        throw new Error("Não foi possível carregar passageiros.csv");
-      }
+      if (!response.ok) throw new Error("Não foi possível carregar passageiros.csv");
       const text = await response.text();
       passengers = parsePassengersCSV(text);
     }
@@ -1034,21 +1225,15 @@
 
       const headerLine = lines.shift();
       const delimiter = headerLine.includes(";") ? ";" : ",";
-      const headers = headerLine
-        .split(delimiter)
-        .map((h) => h.trim().toLowerCase());
+      const headers = headerLine.split(delimiter).map((h) => h.trim().toLowerCase());
 
       const idxNome = headers.indexOf("nome");
       const idxCategoria = headers.indexOf("categoria");
       const idxParcelas = headers.indexOf("parcelas");
-      const idxSeat = headers.findIndex(
-        (h) => h === "poltrona" || h === "assento" || h === "seat"
-      );
+      const idxSeat = headers.findIndex((h) => h === "poltrona" || h === "assento" || h === "seat");
 
       if (idxNome === -1 || idxCategoria === -1 || idxParcelas === -1) {
-        console.error(
-          "Cabeçalho do passageiros.csv deve ter: Nome;Categoria;Parcelas (e opcionalmente Poltrona/Assento)"
-        );
+        console.error("Cabeçalho do passageiros.csv deve ter: Nome;Categoria;Parcelas (e opcionalmente Poltrona/Assento)");
         return [];
       }
 
@@ -1056,27 +1241,18 @@
         .filter((l) => l.trim())
         .map((line) => {
           const cols = line.split(delimiter).map((c) => c.trim());
-
           const nome = cols[idxNome] || "Sem nome";
           const catCsv = (cols[idxCategoria] || "adulto").toLowerCase();
           const parcelas = Number(cols[idxParcelas] || 0) || 0;
 
           let category = "adult";
-          if (catCsv.startsWith("crianca_colo")) {
-            category = "childLap";
-          } else if (catCsv.startsWith("crianca_poltrona")) {
-            category = "childSeat";
-          } else {
-            category = "adult";
-          }
+          if (catCsv.startsWith("crianca_colo")) category = "childLap";
+          else if (catCsv.startsWith("crianca_poltrona")) category = "childSeat";
 
           let seat = "";
           if (idxSeat >= 0 && cols[idxSeat]) {
-            const rawSeat = cols[idxSeat];
-            const n = parseInt(rawSeat, 10);
-            if (Number.isFinite(n)) {
-              seat = String(n);
-            }
+            const n = parseInt(cols[idxSeat], 10);
+            if (Number.isFinite(n)) seat = String(n);
           }
 
           return {
@@ -1092,27 +1268,16 @@
     // ===============================
     // AUXILIARES DE PAGAMENTO
     // ===============================
-
     function getInstallments(p) {
       if (p.seatType === "Colo") return 0;
-
       const v = Number(p.installmentsPaid);
       if (!Number.isFinite(v) || v < 0) return 0;
       return clamp(v, 0, MAX_INSTALLMENTS);
     }
 
-    const getPayingPassengersCount = () =>
-      passengers.filter((p) => p.seatType !== "Colo").length;
-
-    const getStartedPassengersCount = () =>
-      passengers.filter(
-        (p) => p.seatType !== "Colo" && getInstallments(p) > 0
-      ).length;
-
-    const getFullPassengersCount = () =>
-      passengers.filter(
-        (p) => p.seatType !== "Colo" && getInstallments(p) >= MAX_INSTALLMENTS
-      ).length;
+    const getPayingPassengersCount = () => passengers.filter((p) => p.seatType !== "Colo").length;
+    const getStartedPassengersCount = () => passengers.filter((p) => p.seatType !== "Colo" && getInstallments(p) > 0).length;
+    const getFullPassengersCount = () => passengers.filter((p) => p.seatType !== "Colo" && getInstallments(p) >= MAX_INSTALLMENTS).length;
 
     function getTripPaidValue() {
       return passengers.reduce((sum, p) => {
@@ -1132,7 +1297,6 @@
     // ===============================
     // HERO & INFO
     // ===============================
-
     function updateHero() {
       const heroBadgePeople = document.getElementById("hero-badge-people");
       const heroDays = document.getElementById("hero-days-remaining");
@@ -1185,7 +1349,6 @@
     // ===============================
     // PAGAMENTO & TEMPO
     // ===============================
-
     function updatePaymentPanel() {
       const startedLabel = document.getElementById("stats-started-people");
       const fullLabel = document.getElementById("stats-full-people");
@@ -1209,10 +1372,7 @@
       percentLabel.textContent = percent + "%";
 
       if (paidHighlight) {
-        const fullPassengers = passengers.filter(
-          (p) => p.seatType !== "Colo" && getInstallments(p) >= MAX_INSTALLMENTS
-        );
-
+        const fullPassengers = passengers.filter((p) => p.seatType !== "Colo" && getInstallments(p) >= MAX_INSTALLMENTS);
         if (fullPassengers.length > 0) {
           paidHighlight.style.display = "block";
           paidHighlight.textContent = "Quitados: " + fullPassengers.map((p) => p.name).join(", ");
@@ -1264,7 +1424,6 @@
     // ===============================
     // TABELA DE PASSAGEIROS
     // ===============================
-
     function buildPassengerTable() {
       const tbody = document.getElementById("passenger-table-body");
       const summary = document.getElementById("passenger-summary");
@@ -1314,13 +1473,9 @@
 
         const typeTd = document.createElement("td");
         let perfilText;
-        if (p.category === "childLap") {
-          perfilText = "Criança / Colo";
-        } else if (p.category === "childSeat") {
-          perfilText = "Criança / Poltrona";
-        } else {
-          perfilText = "Adulto / Poltrona";
-        }
+        if (p.category === "childLap") perfilText = "Criança / Colo";
+        else if (p.category === "childSeat") perfilText = "Criança / Poltrona";
+        else perfilText = "Adulto / Poltrona";
         typeTd.textContent = perfilText;
 
         const statusTd = document.createElement("td");
@@ -1338,10 +1493,7 @@
           statusText = "Confirmado (colo)";
         } else if (installments > 0) {
           statusPill.classList.add("paid");
-          statusText =
-            installments >= MAX_INSTALLMENTS
-              ? "Confirmado (quitado)"
-              : "Confirmado (pagamento iniciado)";
+          statusText = installments >= MAX_INSTALLMENTS ? "Confirmado (quitado)" : "Confirmado (pagamento iniciado)";
         } else {
           statusPill.classList.add("pending");
           statusText = "Confirmado (pagamento não iniciado)";
@@ -1351,20 +1503,12 @@
         statusTd.appendChild(statusPill);
 
         const installmentsTd = document.createElement("td");
-        if (p.seatType === "Colo") {
-          installmentsTd.textContent = "–";
-        } else {
-          installmentsTd.textContent = `${installments} / ${MAX_INSTALLMENTS}`;
-        }
+        installmentsTd.textContent = (p.seatType === "Colo") ? "–" : `${installments} / ${MAX_INSTALLMENTS}`;
 
         const seatTd = document.createElement("td");
-        if (p.category === "childLap") {
-          seatTd.textContent = "No colo (sem poltrona)";
-        } else if (!p.seat) {
-          seatTd.textContent = "Não definido na planilha";
-        } else {
-          seatTd.textContent = "Poltrona " + p.seat;
-        }
+        if (p.category === "childLap") seatTd.textContent = "No colo (sem poltrona)";
+        else if (!p.seat) seatTd.textContent = "Não definido na planilha";
+        else seatTd.textContent = "Poltrona " + p.seat;
 
         tr.appendChild(positionTd);
         tr.appendChild(nameTd);
@@ -1380,7 +1524,6 @@
     // ===============================
     // ASSENTOS (APENAS VISUAL)
     // ===============================
-
     const upperLayout = [
       [1, 2, 4, 3],
       [5, 6, 8, 7],
@@ -1411,9 +1554,7 @@
 
     function findPassengerBySeat(seatNumber) {
       const sn = String(seatNumber);
-      return passengers.find(
-        (p) => p.seat && String(p.seat) === sn && p.seatType !== "Colo"
-      );
+      return passengers.find((p) => p.seat && String(p.seat) === sn && p.seatType !== "Colo");
     }
 
     function createSeatElement(seatNumber) {
@@ -1448,7 +1589,6 @@
       const container = document.getElementById("seat-grid-upper");
       if (!container) return;
       container.innerHTML = "";
-
       upperLayout.forEach((row) => {
         row.forEach((cell) => {
           if (cell == null) {
@@ -1466,7 +1606,6 @@
       const container = document.getElementById("seat-grid-lower");
       if (!container) return;
       container.innerHTML = "";
-
       lowerLayout.forEach((row) => {
         row.forEach((cell) => {
           if (cell == null) {
@@ -1480,32 +1619,14 @@
       });
     }
 
-    function buildSeatLayout() {
-      buildUpperDeck();
-      buildLowerDeck();
-    }
+    function buildSeatLayout() { buildUpperDeck(); buildLowerDeck(); }
 
     // ===============================
-    // MAPA DA ROTA (Leaflet)
+    // MAPA DA ROTA (Leaflet) + fotos no popup
     // ===============================
-
     function initMap() {
       const mapElement = document.getElementById("trip-map");
       if (!mapElement || typeof L === "undefined") return;
-
-      const stops = [
-        { id: "bsb", name: "Brasília (DF)", coords: [-15.79389, -47.88278] },
-        { id: "for", name: "Fortaleza (CE)", coords: [-3.73186, -38.52667] },
-        { id: "bom", name: "Bom Sucesso (PB)", coords: [-7.18333, -36.3667] },
-        { id: "jpa", name: "João Pessoa (PB)", coords: [-7.1195, -34.8450] },
-      ];
-
-      const segments = [
-        { from: "bsb", to: "for", date: "08/01/2027 • 18h", label: "Brasília → Fortaleza" },
-        { from: "for", to: "bom", date: "13/01/2027", label: "Fortaleza → Bom Sucesso (PB)" },
-        { from: "bom", to: "jpa", date: "17/01/2027", label: "Bom Sucesso (PB) → João Pessoa (PB)" },
-        { from: "jpa", to: "bsb", date: "22/01/2027", label: "João Pessoa (PB) → Brasília" },
-      ];
 
       const map = L.map("trip-map", { scrollWheelZoom: false }).setView([-10, -40], 4.5);
 
@@ -1517,8 +1638,10 @@
       const stopById = {};
       const latlngsAll = [];
 
-      stops.forEach((stop) => {
+      STOPS.forEach((stop) => {
         stopById[stop.id] = stop;
+        const media = CITY_MEDIA[stop.id];
+
         const marker = L.circleMarker(stop.coords, {
           radius: 6,
           weight: 2,
@@ -1526,11 +1649,17 @@
           fillColor: "#facc15",
           fillOpacity: 0.9,
         }).addTo(map);
-        marker.bindPopup(`<strong>${stop.name}</strong>`);
+
+        const imgHtml = media?.img
+          ? `<img src="${media.img}" alt="${media.name}" style="width:100%;max-width:220px;border-radius:10px;margin-top:6px;border:1px solid #e5e7eb" loading="lazy" referrerpolicy="no-referrer"/>`
+          : "";
+
+        marker.bindPopup(`<strong>${media?.name || stop.id}</strong><br/>${imgHtml}`);
+
         latlngsAll.push(stop.coords);
       });
 
-      segments.forEach((seg, idx) => {
+      SEGMENTS.forEach((seg, idx) => {
         const from = stopById[seg.from];
         const to = stopById[seg.to];
         if (!from || !to) return;
@@ -1548,31 +1677,111 @@
     }
 
     // ===============================
-    // SIMULAÇÃO 3D (Three.js) — CORRIGIDA (AUTO-FIT DA CÂMERA)
+    // SIMULAÇÃO 3D (Three.js) — com fotos
     // ===============================
+    const sim3d = {
+      playing: true,
+      speedMult: 1.0,
+      followCamera: true
+    };
+
+    function createTextTexture(text, w = 1024, h = 640) {
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext("2d");
+
+      ctx.fillStyle = "#0b1220";
+      ctx.fillRect(0, 0, w, h);
+
+      // moldura
+      ctx.strokeStyle = "rgba(250,204,21,0.9)";
+      ctx.lineWidth = 10;
+      ctx.strokeRect(18, 18, w - 36, h - 36);
+
+      ctx.fillStyle = "rgba(255,255,255,0.92)";
+      ctx.font = "bold 64px system-ui, -apple-system, Segoe UI, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, w / 2, h / 2);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      if (THREE.SRGBColorSpace) tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    function estimateTForPoint(curve, target, samples = 2000) {
+      let bestT = 0;
+      let bestD = Infinity;
+      for (let i = 0; i <= samples; i++) {
+        const t = i / samples;
+        const p = curve.getPointAt(t);
+        const d = p.distanceToSquared(target);
+        if (d < bestD) {
+          bestD = d;
+          bestT = t;
+        }
+      }
+      return bestT;
+    }
 
     function init3DSim() {
       const el = document.getElementById("trip-3d");
       if (!el) return;
 
-      // limpa execuções anteriores (se re-init)
+      // limpa execuções anteriores
       if (el._trip3dRAF) cancelAnimationFrame(el._trip3dRAF);
       if (el._trip3dRO) el._trip3dRO.disconnect();
       if (el._trip3dOnResize) window.removeEventListener("resize", el._trip3dOnResize);
 
+      // HUD refs
+      const hudTitle = document.getElementById("sim3d-title");
+      const hudSub = document.getElementById("sim3d-sub");
+      const hudPhoto = document.getElementById("sim3d-photo");
+      const hudCredit = document.getElementById("sim3d-credit");
+      const hudDot = document.getElementById("sim3d-dot");
+      const hudPhase = document.getElementById("sim3d-phase");
+      const hudProgressLabel = document.getElementById("sim3d-progress-label");
+      const hudProgressFill = document.getElementById("sim3d-progress-fill");
+
       try {
-        if (typeof THREE === "undefined") {
-          throw new Error("Three.js não carregou (THREE indefinido).");
+        if (typeof THREE === "undefined") throw new Error("Three.js não carregou (THREE indefinido).");
+
+        // Controles UI
+        const playBtn = document.getElementById("sim3d-play-btn");
+        const speedRange = document.getElementById("sim3d-speed");
+        const speedLabel = document.getElementById("sim3d-speed-label");
+        const followCheck = document.getElementById("sim3d-follow");
+
+        if (playBtn) {
+          playBtn.onclick = () => {
+            sim3d.playing = !sim3d.playing;
+            playBtn.textContent = sim3d.playing ? "⏸ Pausar" : "▶️ Continuar";
+          };
+        }
+        if (speedRange && speedLabel) {
+          const applySpeed = () => {
+            sim3d.speedMult = Number(speedRange.value) || 1.0;
+            speedLabel.textContent = sim3d.speedMult.toFixed(1) + "x";
+          };
+          speedRange.oninput = applySpeed;
+          applySpeed();
+        }
+        if (followCheck) {
+          followCheck.onchange = () => { sim3d.followCamera = !!followCheck.checked; };
+          sim3d.followCamera = !!followCheck.checked;
         }
 
+        // rota (fecha loop voltando a Brasília)
         const routeLatLon = [
-          [-15.79389, -47.88278], // Brasília
-          [-3.73186, -38.52667],  // Fortaleza
-          [-7.18333, -36.3667],   // Bom Sucesso
-          [-7.1195, -34.8450],    // João Pessoa
-          [-15.79389, -47.88278], // Brasília
+          STOPS[0].coords, // bsb
+          STOPS[1].coords, // for
+          STOPS[2].coords, // bom
+          STOPS[3].coords, // jpa
+          STOPS[0].coords  // bsb (volta)
         ];
 
+        // conversão lat/lon -> plano
         const lats = routeLatLon.map(p => p[0]);
         const lons = routeLatLon.map(p => p[1]);
         const lat0 = (Math.min(...lats) + Math.max(...lats)) / 2;
@@ -1580,9 +1789,7 @@
 
         const kmPerDegLat = 111.32;
         const kmPerDegLon = 111.32 * Math.cos((lat0 * Math.PI) / 180);
-
-        // escala menor + auto-fit = nunca fica “fora da câmera”
-        const scale = 0.06;
+        const scale = 0.06; // 1 km -> 0.06 unidades
 
         const toVec3 = ([lat, lon]) => {
           const xKm = (lon - lon0) * kmPerDegLon;
@@ -1596,46 +1803,100 @@
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0b1220);
 
-        // tamanho do container
+        // renderer
         const rect = el.getBoundingClientRect();
         const w = Math.max(1, Math.floor(rect.width));
         const h = Math.max(1, Math.floor(rect.height));
 
-        // câmera + renderer
         const camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 5000);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
         renderer.setSize(w, h);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        if (renderer.outputColorSpace && THREE.SRGBColorSpace) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
         el.innerHTML = "";
         el.appendChild(renderer.domElement);
         renderer.domElement.style.display = "block";
 
-        // controles
+        // orbit controls (opcional)
         const Orbit = THREE.OrbitControls || window.OrbitControls;
         const controls = Orbit ? new Orbit(camera, renderer.domElement) : null;
+        if (controls) {
+          controls.enableDamping = true;
+          controls.dampingFactor = 0.08;
+        }
 
-        // luzes
+        // luz
         scene.add(new THREE.AmbientLight(0xffffff, 0.75));
         const dir = new THREE.DirectionalLight(0xffffff, 0.9);
         dir.position.set(80, 120, 60);
         scene.add(dir);
 
-        // rota
+        // curva e linha
         const curve = new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.15);
-        const routeGeom = new THREE.BufferGeometry().setFromPoints(curve.getPoints(300));
+        const routeGeom = new THREE.BufferGeometry().setFromPoints(curve.getPoints(420));
         const routeMat = new THREE.LineBasicMaterial({ color: 0x22c55e, transparent: true, opacity: 0.95 });
         scene.add(new THREE.Line(routeGeom, routeMat));
 
-        // paradas
-        const stopGeom = new THREE.SphereGeometry(1.4, 18, 18);
+        // stops (esferas)
+        const stopGeom = new THREE.SphereGeometry(1.45, 18, 18);
         const stopMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.35, metalness: 0.1 });
-        points.slice(0, 4).forEach((p) => {
+
+        // sprites (painéis com fotos)
+        const loader = new THREE.TextureLoader();
+        if (loader.setCrossOrigin) loader.setCrossOrigin("anonymous");
+
+        function addPhotoSprite(stopId, pos) {
+          const media = CITY_MEDIA[stopId];
+          const fallbackTex = createTextTexture(media?.name || stopId);
+
+          const mat = new THREE.SpriteMaterial({ map: fallbackTex, transparent: true });
+          const sprite = new THREE.Sprite(mat);
+
+          // escala inicial 16:10
+          sprite.scale.set(18, 11.25, 1);
+          sprite.position.copy(pos);
+          sprite.position.y = 12;
+
+          scene.add(sprite);
+
+          if (media?.img) {
+            loader.load(
+              media.img,
+              (tex) => {
+                if (THREE.SRGBColorSpace) tex.colorSpace = THREE.SRGBColorSpace;
+                mat.map = tex;
+                mat.needsUpdate = true;
+
+                // ajusta escala pela proporção real
+                const iw = tex.image?.width || 16;
+                const ih = tex.image?.height || 10;
+                const aspect = iw / ih;
+                const baseH = 11.25;
+                sprite.scale.set(baseH * aspect, baseH, 1);
+              },
+              undefined,
+              () => {
+                // mantém fallback de texto
+              }
+            );
+          }
+
+          return sprite;
+        }
+
+        // coloca as esferas e sprites nas 4 paradas (sem repetir a última Brasília)
+        const stopIds = ["bsb", "for", "bom", "jpa"];
+        const stopPositions = points.slice(0, 4);
+
+        stopPositions.forEach((p, i) => {
           const m = new THREE.Mesh(stopGeom, stopMat);
           m.position.copy(p);
-          m.position.y = 1.4;
+          m.position.y = 1.45;
           scene.add(m);
+
+          addPhotoSprite(stopIds[i], p);
         });
 
         // ônibus
@@ -1647,7 +1908,7 @@
         bus.position.y = 1.2;
         scene.add(bus);
 
-        // AUTO-FIT da câmera na rota
+        // auto-fit camera na rota
         const box = new THREE.Box3().setFromPoints(points);
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
@@ -1660,43 +1921,109 @@
         camera.near = Math.max(0.1, dist / 200);
         camera.far = dist * 20;
         camera.updateProjectionMatrix();
-
         camera.position.set(center.x + dist, center.y + dist * 0.55, center.z + dist);
         camera.lookAt(center);
 
         if (controls) {
-          controls.enableDamping = true;
-          controls.dampingFactor = 0.08;
           controls.target.copy(center);
           controls.update();
         }
 
-        // grid proporcional
+        // grid
         const gridSize = Math.max(80, maxDim * 2.2);
-        const gridDiv = 22;
-        const grid = new THREE.GridHelper(gridSize, gridDiv, 0xffffff, 0xffffff);
+        const grid = new THREE.GridHelper(gridSize, 22, 0xffffff, 0xffffff);
         grid.material.opacity = 0.12;
         grid.material.transparent = true;
         scene.add(grid);
 
+        // t dos stops (para dividir trechos)
+        const tFor = estimateTForPoint(curve, points[1]);
+        const tBom = estimateTForPoint(curve, points[2]);
+        const tJpa = estimateTForPoint(curve, points[3]);
+        const stopTs = [0, tFor, tBom, tJpa, 1];
+
+        // HUD helper
+        function setHud(segmentIndex, segProgress) {
+          const seg = SEGMENTS[segmentIndex];
+          const from = CITY_MEDIA[seg.from];
+          const to = CITY_MEDIA[seg.to];
+
+          const pct = clamp(Math.round(segProgress * 100), 0, 100);
+          const phase = (segProgress >= 0.92) ? `Chegando em ${to?.name || seg.to}` :
+                        (segProgress <= 0.08) ? `Saindo de ${from?.name || seg.from}` :
+                        "Em rota";
+
+          if (hudTitle) hudTitle.textContent = `Trecho: ${seg.label}`;
+          if (hudSub) hudSub.textContent = `${seg.date} • Próximo destino: ${to?.name || seg.to}`;
+          if (hudPhase) hudPhase.textContent = phase;
+          if (hudProgressLabel) hudProgressLabel.textContent = `${pct}%`;
+          if (hudProgressFill) hudProgressFill.style.width = pct + "%";
+
+          if (hudDot) {
+            hudDot.classList.toggle("warn", segProgress >= 0.92);
+          }
+
+          if (hudPhoto && to?.img && hudPhoto.src !== to.img) {
+            hudPhoto.src = to.img;
+          }
+
+          if (hudCredit) {
+            // mostra crédito do destino (to)
+            hudCredit.textContent = to?.credit ? `Foto do destino: ${to.credit}` : "Foto do destino: –";
+          }
+        }
+
+        // inicializa HUD no primeiro trecho
+        setHud(0, 0);
+
         // animação
         let t = 0;
-        const speed = 0.016;
+        const baseSpeed = 0.006; // base (antes do multiplicador)
 
         function animate() {
-          t = (t + speed) % 1;
+          // avance do tempo
+          if (sim3d.playing) {
+            t = (t + baseSpeed * sim3d.speedMult) % 1;
+          }
 
+          // posição do ônibus
           const pos = curve.getPointAt(t);
           const tan = curve.getTangentAt(t);
 
           bus.position.set(pos.x, 1.2, pos.z);
 
+          // orienta o ônibus
           const yaw = Math.atan2(tan.x, tan.z);
           bus.rotation.set(0, yaw, 0);
 
-          if (controls) controls.update();
-          renderer.render(scene, camera);
+          // segmento atual
+          let segIdx = 0;
+          for (let i = 0; i < stopTs.length - 1; i++) {
+            if (t >= stopTs[i] && t <= stopTs[i + 1]) { segIdx = i; break; }
+          }
+          const segStart = stopTs[segIdx];
+          const segEnd = stopTs[segIdx + 1];
+          const segProgress = (segEnd > segStart) ? (t - segStart) / (segEnd - segStart) : 0;
 
+          setHud(segIdx, segProgress);
+
+          // câmera seguindo o ônibus
+          if (controls) {
+            if (sim3d.followCamera) {
+              controls.target.lerp(bus.position, 0.12);
+              // mantém a câmera mais “de cima e atrás”
+              const behind = tan.clone().multiplyScalar(-35);
+              const up = new THREE.Vector3(0, 18, 0);
+              const desired = bus.position.clone().add(behind).add(up);
+              camera.position.lerp(desired, 0.06);
+              camera.lookAt(controls.target);
+              controls.update();
+            } else {
+              controls.update();
+            }
+          }
+
+          renderer.render(scene, camera);
           el._trip3dRAF = requestAnimationFrame(animate);
         }
         animate();
@@ -1717,6 +2044,14 @@
         ro.observe(el);
         el._trip3dRO = ro;
 
+        // footer credits
+        const footerCredits = document.getElementById("footer-credits");
+        if (footerCredits) {
+          footerCredits.textContent =
+            "Créditos de imagens: " +
+            [CITY_MEDIA.bsb.credit, CITY_MEDIA.for.credit, CITY_MEDIA.bom.credit, CITY_MEDIA.jpa.credit].join(" • ");
+        }
+
       } catch (e) {
         console.error("Erro no 3D:", e);
         el.innerHTML = `
@@ -1732,7 +2067,6 @@
     // ===============================
     // INICIALIZAÇÃO
     // ===============================
-
     function initAfterPassengersLoaded() {
       updateHero();
       updateTripInfoCard();
@@ -1746,9 +2080,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       loadPassengersFromCSV()
-        .then(() => {
-          initAfterPassengersLoaded();
-        })
+        .then(() => initAfterPassengersLoaded())
         .catch((err) => {
           console.warn(
             "Erro ao carregar passageiros.csv; verifique se o arquivo está na mesma pasta (e sirva via HTTP).",
