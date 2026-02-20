@@ -499,7 +499,7 @@
       margin-top: 4px;
     }
 
-    /* >>> NOVO: container do 3D */
+    /* container do 3D */
     #trip-3d {
       width: 100%;
       height: 320px;
@@ -1005,7 +1005,7 @@
 
     const FARE_PER_PERSON = 1100.0;
     const MAX_INSTALLMENTS = 10;
-    const TRIP_TOTAL_VALUE = 59400.0; // apenas para cálculo do %
+    const TRIP_TOTAL_VALUE = 59400.0; // apenas para cálculo do % (mantido como você tinha)
 
     const msPerDay = 1000 * 60 * 60 * 24;
     const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
@@ -1094,7 +1094,6 @@
     // ===============================
 
     function getInstallments(p) {
-      // Criança de colo não paga parcelas
       if (p.seatType === "Colo") return 0;
 
       const v = Number(p.installmentsPaid);
@@ -1332,9 +1331,6 @@
         dot.classList.add("dot");
         statusPill.appendChild(dot);
 
-        // Critério:
-        // - Verde (paid): Confirmado COM pagamento iniciado + colo entra aqui
-        // - Laranja (pending): Confirmado SEM pagamento iniciado
         let statusText;
 
         if (p.seatType === "Colo") {
@@ -1385,8 +1381,6 @@
     // ASSENTOS (APENAS VISUAL)
     // ===============================
 
-    // Piso superior – 13/14 e 15/16 só do lado esquerdo;
-    // depois o alinhamento volta com 17 18   20 19
     const upperLayout = [
       [1, 2, 4, 3],
       [5, 6, 8, 7],
@@ -1554,135 +1548,185 @@
     }
 
     // ===============================
-    // SIMULAÇÃO 3D (Three.js)
+    // SIMULAÇÃO 3D (Three.js) — CORRIGIDA (AUTO-FIT DA CÂMERA)
     // ===============================
 
     function init3DSim() {
       const el = document.getElementById("trip-3d");
-      if (!el || typeof THREE === "undefined") return;
+      if (!el) return;
 
-      // Coordenadas na ordem da viagem (fecha o loop voltando a BSB)
-      const routeLatLon = [
-        [-15.79389, -47.88278], // Brasília
-        [-3.73186, -38.52667],  // Fortaleza
-        [-7.18333, -36.3667],   // Bom Sucesso
-        [-7.1195, -34.8450],    // João Pessoa
-        [-15.79389, -47.88278], // Brasília
-      ];
+      // limpa execuções anteriores (se re-init)
+      if (el._trip3dRAF) cancelAnimationFrame(el._trip3dRAF);
+      if (el._trip3dRO) el._trip3dRO.disconnect();
+      if (el._trip3dOnResize) window.removeEventListener("resize", el._trip3dOnResize);
 
-      // Conversão aproximada lat/lon -> plano (km) -> unidades 3D
-      const lats = routeLatLon.map((p) => p[0]);
-      const lons = routeLatLon.map((p) => p[1]);
-      const lat0 = (Math.min(...lats) + Math.max(...lats)) / 2;
-      const lon0 = (Math.min(...lons) + Math.max(...lons)) / 2;
+      try {
+        if (typeof THREE === "undefined") {
+          throw new Error("Three.js não carregou (THREE indefinido).");
+        }
 
-      const kmPerDegLat = 111.32;
-      const kmPerDegLon = 111.32 * Math.cos((lat0 * Math.PI) / 180);
-      const scale = 0.35; // 1 km -> 0.35 unidades
+        const routeLatLon = [
+          [-15.79389, -47.88278], // Brasília
+          [-3.73186, -38.52667],  // Fortaleza
+          [-7.18333, -36.3667],   // Bom Sucesso
+          [-7.1195, -34.8450],    // João Pessoa
+          [-15.79389, -47.88278], // Brasília
+        ];
 
-      const toVec3 = ([lat, lon]) => {
-        const xKm = (lon - lon0) * kmPerDegLon;
-        const zKm = (lat - lat0) * kmPerDegLat;
-        return new THREE.Vector3(xKm * scale, 0, -zKm * scale);
-      };
+        const lats = routeLatLon.map(p => p[0]);
+        const lons = routeLatLon.map(p => p[1]);
+        const lat0 = (Math.min(...lats) + Math.max(...lats)) / 2;
+        const lon0 = (Math.min(...lons) + Math.max(...lons)) / 2;
 
-      const points = routeLatLon.map(toVec3);
+        const kmPerDegLat = 111.32;
+        const kmPerDegLon = 111.32 * Math.cos((lat0 * Math.PI) / 180);
 
-      // Cena
-      const scene = new THREE.Scene();
-      scene.fog = new THREE.Fog(0x0b1220, 80, 260);
+        // escala menor + auto-fit = nunca fica “fora da câmera”
+        const scale = 0.06;
 
-      const w = el.clientWidth;
-      const h = el.clientHeight;
+        const toVec3 = ([lat, lon]) => {
+          const xKm = (lon - lon0) * kmPerDegLon;
+          const zKm = (lat - lat0) * kmPerDegLat;
+          return new THREE.Vector3(xKm * scale, 0, -zKm * scale);
+        };
 
-      const camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 1000);
-      camera.position.set(0, 65, 95);
+        const points = routeLatLon.map(toVec3);
 
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(w, h);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      el.innerHTML = "";
-      el.appendChild(renderer.domElement);
+        // cena
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0b1220);
 
-      // Controles (OrbitControls pode estar em THREE.OrbitControls)
-      const Orbit = THREE.OrbitControls || window.OrbitControls;
-      const controls = Orbit ? new Orbit(camera, renderer.domElement) : null;
-      if (controls) {
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.08;
-        controls.target.set(0, 0, 0);
-      }
+        // tamanho do container
+        const rect = el.getBoundingClientRect();
+        const w = Math.max(1, Math.floor(rect.width));
+        const h = Math.max(1, Math.floor(rect.height));
 
-      // Luzes
-      scene.add(new THREE.AmbientLight(0xffffff, 0.75));
-      const dir = new THREE.DirectionalLight(0xffffff, 0.85);
-      dir.position.set(60, 90, 40);
-      scene.add(dir);
+        // câmera + renderer
+        const camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 5000);
 
-      // Chão (grid)
-      const grid = new THREE.GridHelper(220, 22, 0xffffff, 0xffffff);
-      grid.material.opacity = 0.12;
-      grid.material.transparent = true;
-      scene.add(grid);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(w, h);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-      // Rota (linha)
-      const curve = new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.15);
-      const routeGeom = new THREE.BufferGeometry().setFromPoints(curve.getPoints(300));
-      const routeMat = new THREE.LineBasicMaterial({ color: 0x22c55e, transparent: true, opacity: 0.9 });
-      const routeLine = new THREE.Line(routeGeom, routeMat);
-      scene.add(routeLine);
+        el.innerHTML = "";
+        el.appendChild(renderer.domElement);
+        renderer.domElement.style.display = "block";
 
-      // Paradas (esferas) — 4 paradas principais (sem repetir Brasília final)
-      const stopGeom = new THREE.SphereGeometry(1.4, 18, 18);
-      const stopMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.35, metalness: 0.1 });
+        // controles
+        const Orbit = THREE.OrbitControls || window.OrbitControls;
+        const controls = Orbit ? new Orbit(camera, renderer.domElement) : null;
 
-      points.slice(0, 4).forEach((p) => {
-        const m = new THREE.Mesh(stopGeom, stopMat);
-        m.position.copy(p);
-        m.position.y = 1.4;
-        scene.add(m);
-      });
+        // luzes
+        scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+        const dir = new THREE.DirectionalLight(0xffffff, 0.9);
+        dir.position.set(80, 120, 60);
+        scene.add(dir);
 
-      // Ônibus (caixa)
-      const bus = new THREE.Mesh(
-        new THREE.BoxGeometry(3.2, 1.6, 6.0),
-        new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.35, metalness: 0.1 })
-      );
-      bus.position.copy(points[0]);
-      bus.position.y = 1.2;
-      scene.add(bus);
+        // rota
+        const curve = new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.15);
+        const routeGeom = new THREE.BufferGeometry().setFromPoints(curve.getPoints(300));
+        const routeMat = new THREE.LineBasicMaterial({ color: 0x22c55e, transparent: true, opacity: 0.95 });
+        scene.add(new THREE.Line(routeGeom, routeMat));
 
-      // Animação
-      let t = 0;
-      const speed = 0.018;
+        // paradas
+        const stopGeom = new THREE.SphereGeometry(1.4, 18, 18);
+        const stopMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.35, metalness: 0.1 });
+        points.slice(0, 4).forEach((p) => {
+          const m = new THREE.Mesh(stopGeom, stopMat);
+          m.position.copy(p);
+          m.position.y = 1.4;
+          scene.add(m);
+        });
 
-      function animate() {
-        t = (t + speed) % 1;
+        // ônibus
+        const bus = new THREE.Mesh(
+          new THREE.BoxGeometry(3.2, 1.6, 6.0),
+          new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.35, metalness: 0.1 })
+        );
+        bus.position.copy(points[0]);
+        bus.position.y = 1.2;
+        scene.add(bus);
 
-        const pos = curve.getPointAt(t);
-        const tan = curve.getTangentAt(t);
+        // AUTO-FIT da câmera na rota
+        const box = new THREE.Box3().setFromPoints(points);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
 
-        bus.position.set(pos.x, 1.2, pos.z);
+        const fov = (camera.fov * Math.PI) / 180;
+        const fitDist = (maxDim / 2) / Math.tan(fov / 2);
+        const dist = fitDist * 1.25;
 
-        // Orienta na direção do movimento
-        const yaw = Math.atan2(tan.x, tan.z);
-        bus.rotation.set(0, yaw, 0);
-
-        if (controls) controls.update();
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      }
-      animate();
-
-      // Resize
-      const onResize = () => {
-        const nw = el.clientWidth;
-        const nh = el.clientHeight;
-        camera.aspect = nw / nh;
+        camera.near = Math.max(0.1, dist / 200);
+        camera.far = dist * 20;
         camera.updateProjectionMatrix();
-        renderer.setSize(nw, nh);
-      };
-      window.addEventListener("resize", onResize);
+
+        camera.position.set(center.x + dist, center.y + dist * 0.55, center.z + dist);
+        camera.lookAt(center);
+
+        if (controls) {
+          controls.enableDamping = true;
+          controls.dampingFactor = 0.08;
+          controls.target.copy(center);
+          controls.update();
+        }
+
+        // grid proporcional
+        const gridSize = Math.max(80, maxDim * 2.2);
+        const gridDiv = 22;
+        const grid = new THREE.GridHelper(gridSize, gridDiv, 0xffffff, 0xffffff);
+        grid.material.opacity = 0.12;
+        grid.material.transparent = true;
+        scene.add(grid);
+
+        // animação
+        let t = 0;
+        const speed = 0.016;
+
+        function animate() {
+          t = (t + speed) % 1;
+
+          const pos = curve.getPointAt(t);
+          const tan = curve.getTangentAt(t);
+
+          bus.position.set(pos.x, 1.2, pos.z);
+
+          const yaw = Math.atan2(tan.x, tan.z);
+          bus.rotation.set(0, yaw, 0);
+
+          if (controls) controls.update();
+          renderer.render(scene, camera);
+
+          el._trip3dRAF = requestAnimationFrame(animate);
+        }
+        animate();
+
+        // resize robusto
+        const onResize = () => {
+          const r = el.getBoundingClientRect();
+          const nw = Math.max(1, Math.floor(r.width));
+          const nh = Math.max(1, Math.floor(r.height));
+          camera.aspect = nw / nh;
+          camera.updateProjectionMatrix();
+          renderer.setSize(nw, nh);
+        };
+        el._trip3dOnResize = onResize;
+        window.addEventListener("resize", onResize);
+
+        const ro = new ResizeObserver(onResize);
+        ro.observe(el);
+        el._trip3dRO = ro;
+
+      } catch (e) {
+        console.error("Erro no 3D:", e);
+        el.innerHTML = `
+          <div style="padding:12px;color:#e5e7eb;font-size:0.85rem;line-height:1.35">
+            <strong>Erro ao iniciar o 3D.</strong><br/>
+            ${String(e && e.message ? e.message : e)}<br/>
+            Abra o Console (F12) para ver detalhes.
+          </div>
+        `;
+      }
     }
 
     // ===============================
