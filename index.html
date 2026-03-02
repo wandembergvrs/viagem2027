@@ -1858,6 +1858,23 @@
     // ===============================
     // HOSPEDAGEM (AGRUPA FAMÍLIAS)
     // ===============================
+
+    function getCapacityForFamily(f) {
+  // f = objeto da família gerado em groupFamilies()
+  if (!f.roomTypeKey) return 0;
+
+  // base normal
+  let cap = ROOM_CAPACITY[f.roomTypeKey] || 0;
+
+  // REGRA NOVA: se for Triplo e houver criança, permite 4
+  if (f.roomTypeKey === "triplo") {
+    const hasChild = f.members.some(m => m.category === "childLap" || m.category === "childSeat");
+    if (hasChild) cap = 4;
+  }
+
+  return cap;
+}
+    
     function groupFamilies() {
       // agrupa por familyId (se vazio, vai para "—")
       const families = {};
@@ -1920,7 +1937,7 @@
         const f = fams[k];
         const people = f.members.length;
 
-        const cap = f.roomTypeKey ? (ROOM_CAPACITY[f.roomTypeKey] || 0) : 0;
+        const cap = const cap = getCapacityForFamily(f);
         const over = (cap > 0 && people > cap);
         if (f.roomTypeKey) defined++; else missing++;
         if (f.anyInvalid) invalid++;
