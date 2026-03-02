@@ -392,7 +392,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 0.8rem;
-      min-width: 360px;
+      min-width: 420px;
     }
 
     thead {
@@ -811,7 +811,6 @@
 
     /* ===============================
        LOCK: Hospedagem só com senha WVRS
-       (controle "leve" no front-end)
     =============================== */
     body:not(.lodging-unlocked) [data-tab="lodging"],
     body:not(.lodging-unlocked) [data-tab-content="lodging"],
@@ -823,7 +822,7 @@
       display: none !important;
     }
 
-    /* Hospedagem: avisos */
+    /* Hospedagem: selos */
     .warn-pill {
       display: inline-flex;
       align-items: center;
@@ -913,12 +912,12 @@
       <!-- Aba Hospedagem (fica oculta até desbloquear) -->
       <button class="tab-btn" data-tab="lodging" aria-selected="false" type="button">🏨 Hospedagem</button>
 
-      <!-- Botão sempre visível (até desbloquear) -->
+      <!-- Botão visível até desbloquear -->
       <button class="tab-btn" id="lodging-unlock-btn" type="button">🔒 Desbloquear hospedagem</button>
     </div>
 
     <!-- =========================================================
-         TAB: VIAGEM (conteúdo original)
+         TAB: VIAGEM
     ========================================================== -->
     <div data-tab-content="trip" class="active">
       <!-- INFORMAÇÕES DA VIAGEM -->
@@ -1163,7 +1162,7 @@
             <p class="card-subtitle">
               Nomes, perfil e situação geral. Parcelas e poltronas são mantidas na planilha
               <code>passageiros.csv</code>.
-              <span class="lodging-only">Família e tipo de quarto também vêm do CSV.</span>
+              <span class="lodging-only"> (Família/Quarto aparecem somente após senha)</span>
             </p>
           </div>
         </div>
@@ -1186,11 +1185,6 @@
             </thead>
             <tbody id="passenger-table-body"></tbody>
           </table>
-        </div>
-
-        <div class="info-highlight lodging-only" style="margin-top:10px">
-          <strong>Hospedagem (CSV):</strong> use as colunas <code>Familia</code> (numeração) e <code>Quarto</code>
-          com valores <code>Individual</code>, <code>Duplo</code> ou <code>Triplo</code> (limite atual).
         </div>
       </section>
 
@@ -1250,6 +1244,11 @@
 
     <!-- =========================================================
          TAB: HOSPEDAGEM (só aparece com senha WVRS)
+         Compatível com CSV:
+         Nome;Categoria;Parcelas;Poltrona;Familia;Quarto
+         Onde:
+           Familia = q1, q2, ...
+           Quarto  = Duplo/Triplo
     ========================================================== -->
     <div data-tab-content="lodging">
       <section class="card" id="lodging-card">
@@ -1260,8 +1259,8 @@
               Hospedagem (por família)
             </div>
             <p class="card-subtitle">
-              Controle por <strong>Família (numeração)</strong> e <strong>Tipo de Quarto</strong>.
-              Tipos aceitos: <code>Individual</code>, <code>Duplo</code>, <code>Triplo</code> (limite atual).
+              Agrupa por <strong>Familia</strong> (q1, q2, ...) e usa <strong>Quarto</strong> como tipo (Duplo/Triplo).
+              Regra: <strong>Triplo = 3</strong> (ou <strong>4 se houver criança</strong> no quarto).
             </p>
           </div>
           <div class="pill">
@@ -1289,9 +1288,7 @@
         </div>
 
         <div class="info-highlight" style="margin-top:10px">
-          <strong>Colunas esperadas no <code>passageiros.csv</code>:</strong>
-          <code>Nome</code>, <code>Categoria</code>, <code>Parcelas</code>, (opcional) <code>Poltrona</code>,
-          e para hospedagem: <code>Familia</code>, <code>Quarto</code>.
+          CSV esperado: <code>Nome;Categoria;Parcelas;Poltrona;Familia;Quarto</code> (separador <code>;</code>).
         </div>
       </section>
     </div>
@@ -1321,9 +1318,8 @@
     // Hospedagem: senha (controle leve no front-end)
     const LODGING_PASSWORD = "WVRS";
 
-    // Hospedagem: limite atual = triplo
+    // Capacidade base (regra extra do triplo com criança é aplicada em getCapacityForFamily)
     const ROOM_CAPACITY = {
-      individual: 1,
       duplo: 2,
       triplo: 3
     };
@@ -1337,7 +1333,7 @@
     let passengers = [];
 
     // ===============================
-    // IMAGENS DAS CIDADES (troque aqui se quiser usar arquivos locais)
+    // IMAGENS DAS CIDADES
     // ===============================
     const CITY_MEDIA = {
       bsb: {
@@ -1395,7 +1391,7 @@
           c.classList.toggle("active", c.dataset.tabContent === tabId);
         });
 
-        // Se voltar para "trip", Leaflet/3D podem precisar de resize
+        // Leaflet/3D podem precisar de resize ao voltar
         if (tabId === "trip") {
           setTimeout(() => {
             if (window._tripMap && typeof window._tripMap.invalidateSize === "function") {
@@ -1411,7 +1407,6 @@
         btn.addEventListener("click", () => showTab(btn.dataset.tab));
       });
 
-      // padrão
       showTab("trip");
     }
 
@@ -1448,7 +1443,7 @@
         if (String(typed).trim() === LODGING_PASSWORD) {
           setLodgingUnlocked(true);
 
-          // monta hospedagem
+          // monta hospedagem e badge
           buildLodgingTable();
           updateHeroRoomsBadge();
 
@@ -1462,7 +1457,9 @@
     }
 
     // ===============================
-    // PASSAGEIROS (carregados via CSV)
+    // PASSAGEIROS (CSV compatível)
+    // CSV:
+    // Nome;Categoria;Parcelas;Poltrona;Familia;Quarto
     // ===============================
     async function loadPassengersFromCSV() {
       const response = await fetch("passageiros.csv");
@@ -1487,18 +1484,14 @@
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         .replace(/\s+/g, "");
 
-      // aceita alguns sinônimos
-      if (["i", "ind", "individual", "single"].includes(compact)) {
-        return { key: "individual", label: "Individual", invalid: false };
-      }
-      if (["d", "duplo", "double"].includes(compact)) {
+      // compatível com Duplo/Triplo (e aceita alguns sinônimos)
+      if (["duplo", "double", "d"].includes(compact)) {
         return { key: "duplo", label: "Duplo", invalid: false };
       }
-      if (["t", "triplo", "triple"].includes(compact)) {
+      if (["triplo", "triple", "t"].includes(compact)) {
         return { key: "triplo", label: "Triplo", invalid: false };
       }
 
-      // Qualquer coisa acima de triplo é inválida no limite atual
       return { key: "", label: "Inválido", invalid: true };
     }
 
@@ -1513,20 +1506,22 @@
       const idxNome = headers.indexOf("nome");
       const idxCategoria = headers.indexOf("categoria");
       const idxParcelas = headers.indexOf("parcelas");
+      const idxPoltrona = headers.findIndex(h => ["poltrona", "assento", "seat"].includes(h));
 
-      const idxSeat = headers.findIndex((h) => ["poltrona", "assento", "seat"].includes(h));
-      const idxFamilia = headers.findIndex((h) => ["familia", "familia_id", "grupo", "grupo_familiar"].includes(h));
-      const idxQuarto = headers.findIndex((h) => ["quarto", "tipoquarto", "tipo_quarto", "room", "roomtype"].includes(h));
+      // compatível com "Familia" e "Quarto"
+      const idxFamilia = headers.indexOf("familia");
+      const idxQuarto = headers.indexOf("quarto");
 
       if (idxNome === -1 || idxCategoria === -1 || idxParcelas === -1) {
-        console.error("Cabeçalho do passageiros.csv deve ter: Nome;Categoria;Parcelas (e opcionalmente Poltrona/Assento;Familia;Quarto)");
+        console.error("CSV deve ter: Nome;Categoria;Parcelas;Poltrona;Familia;Quarto (Poltrona pode ser vazio).");
         return [];
       }
 
       return lines
         .filter((l) => l.trim())
         .map((line) => {
-          const cols = line.split(delimiter).map((c) => String(c || "").trim());
+          const cols = line.split(delimiter).map((c) => String(c ?? "").trim());
+
           const nome = cols[idxNome] || "Sem nome";
           const catCsv = (cols[idxCategoria] || "adulto").toLowerCase();
           const parcelas = Number(cols[idxParcelas] || 0) || 0;
@@ -1536,14 +1531,13 @@
           else if (catCsv.startsWith("crianca_poltrona")) category = "childSeat";
 
           let seat = "";
-          if (idxSeat >= 0 && cols[idxSeat]) {
-            const n = parseInt(cols[idxSeat], 10);
+          if (idxPoltrona >= 0 && cols[idxPoltrona]) {
+            const n = parseInt(cols[idxPoltrona], 10);
             if (Number.isFinite(n)) seat = String(n);
           }
 
-          const familyId = (idxFamilia >= 0 && cols[idxFamilia]) ? String(cols[idxFamilia]).trim() : "";
-          const roomRaw = (idxQuarto >= 0 && cols[idxQuarto]) ? cols[idxQuarto] : "";
-          const rt = normalizeRoomType(roomRaw);
+          const familyId = (idxFamilia >= 0 && cols[idxFamilia]) ? String(cols[idxFamilia]).trim() : "—";
+          const rt = (idxQuarto >= 0) ? normalizeRoomType(cols[idxQuarto]) : { key: "", label: "—", invalid: false };
 
           return {
             name: nome,
@@ -1554,8 +1548,8 @@
 
             // hospedagem
             familyId,
-            roomTypeKey: rt.key,     // "individual" | "duplo" | "triplo" | ""
-            roomTypeLabel: rt.label, // "Individual" | "Duplo" | "Triplo" | "—" | "Inválido"
+            roomTypeKey: rt.key,     // "duplo" | "triplo" | ""
+            roomTypeLabel: rt.label, // "Duplo" | "Triplo" | "—" | "Inválido"
             roomTypeInvalid: rt.invalid
           };
         });
@@ -1613,33 +1607,6 @@
         TRIP_START_DATE.toLocaleDateString("pt-BR") +
         " a " +
         TRIP_END_DATE.toLocaleDateString("pt-BR");
-    }
-
-    function updateHeroRoomsBadge() {
-      const el = document.getElementById("hero-badge-rooms-text");
-      if (!el) return;
-      if (!isLodgingUnlocked()) return;
-
-      const fams = groupFamilies();
-      const totalFamilies = Object.keys(fams).length;
-
-      let rooms = 0;
-      let missing = 0;
-      let invalid = 0;
-
-      Object.values(fams).forEach(f => {
-        if (!f.roomTypeKey) missing++;
-        if (f.anyInvalid) invalid++;
-        if (f.roomTypeKey) rooms += 1; // 1 quarto por família (modelo atual)
-      });
-
-      const parts = [];
-      parts.push(`${totalFamilies} famílias`);
-      parts.push(`${rooms} quartos definidos`);
-      if (missing) parts.push(`${missing} sem tipo`);
-      if (invalid) parts.push(`${invalid} inválidos`);
-
-      el.textContent = parts.join(" • ");
     }
 
     function updateTripInfoCard() {
@@ -1833,7 +1800,7 @@
         else if (!p.seat) seatTd.textContent = "Não definido na planilha";
         else seatTd.textContent = "Poltrona " + p.seat;
 
-        // Hospedagem (colunas ocultas sem senha)
+        // Hospedagem (oculto sem senha)
         const familyTd = document.createElement("td");
         familyTd.classList.add("lodging-only");
         familyTd.textContent = p.familyId ? String(p.familyId) : "—";
@@ -1856,27 +1823,10 @@
     }
 
     // ===============================
-    // HOSPEDAGEM (AGRUPA FAMÍLIAS)
+    // HOSPEDAGEM (AGRUPA POR Familia)
+    // Regra especial: Triplo pode ser 4 se houver criança
     // ===============================
-
-    function getCapacityForFamily(f) {
-      // f = objeto da família gerado em groupFamilies()
-      if (!f.roomTypeKey) return 0;
-    
-      // base normal
-      let cap = ROOM_CAPACITY[f.roomTypeKey] || 0;
-    
-      // REGRA NOVA: se for Triplo e houver criança, permite 4
-      if (f.roomTypeKey === "triplo") {
-        const hasChild = f.members.some(m => m.category === "childLap" || m.category === "childSeat");
-        if (hasChild) cap = 4;
-      }
-    
-      return cap;
-    }
-    
     function groupFamilies() {
-      // agrupa por familyId (se vazio, vai para "—")
       const families = {};
       passengers.forEach(p => {
         const fid = p.familyId ? String(p.familyId).trim() : "—";
@@ -1891,20 +1841,35 @@
         }
         families[fid].members.push(p);
 
-        // define tipo do quarto (se houver divergência, marca como inválido)
+        // invalidez de linha
         if (p.roomTypeInvalid) families[fid].anyInvalid = true;
 
+        // define tipo do quarto (se houver divergência -> conflito)
         if (p.roomTypeKey) {
           if (!families[fid].roomTypeKey) {
             families[fid].roomTypeKey = p.roomTypeKey;
             families[fid].roomTypeLabel = p.roomTypeLabel;
           } else if (families[fid].roomTypeKey !== p.roomTypeKey) {
-            families[fid].anyInvalid = true; // conflito
+            families[fid].anyInvalid = true;
           }
         }
       });
 
       return families;
+    }
+
+    function getCapacityForFamily(f) {
+      if (!f.roomTypeKey) return 0;
+
+      let cap = ROOM_CAPACITY[f.roomTypeKey] || 0;
+
+      // REGRA: Triplo pode ser 4 se houver criança (colo ou poltrona)
+      if (f.roomTypeKey === "triplo") {
+        const hasChild = f.members.some(m => m.category === "childLap" || m.category === "childSeat");
+        if (hasChild) cap = 4;
+      }
+
+      return cap;
     }
 
     function buildLodgingTable() {
@@ -1916,16 +1881,7 @@
       summary.innerHTML = "";
 
       const fams = groupFamilies();
-      const keys = Object.keys(fams).sort((a, b) => {
-        // ordena numéricos primeiro
-        const na = Number(a), nb = Number(b);
-        const fa = Number.isFinite(na) && String(na) === a;
-        const fb = Number.isFinite(nb) && String(nb) === b;
-        if (fa && fb) return na - nb;
-        if (fa && !fb) return -1;
-        if (!fa && fb) return 1;
-        return a.localeCompare(b);
-      });
+      const keys = Object.keys(fams).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true }));
 
       let totalFamilies = keys.length;
       let defined = 0;
@@ -1933,15 +1889,23 @@
       let invalid = 0;
       let overflow = 0;
 
+      // contagem de tipos
+      let duplos = 0;
+      let triplos = 0;
+
       keys.forEach(k => {
         const f = fams[k];
         const people = f.members.length;
 
-        const cap = const cap = getCapacityForFamily(f);
+        const cap = getCapacityForFamily(f);
         const over = (cap > 0 && people > cap);
+
         if (f.roomTypeKey) defined++; else missing++;
         if (f.anyInvalid) invalid++;
         if (over) overflow++;
+
+        if (f.roomTypeKey === "duplo") duplos++;
+        if (f.roomTypeKey === "triplo") triplos++;
 
         const tr = document.createElement("tr");
 
@@ -1994,10 +1958,9 @@
         tbody.appendChild(tr);
       });
 
-      // summary chips
       const chips = [
         `👨‍👩‍👧‍👦 ${totalFamilies} famílias`,
-        `🏨 ${defined} com quarto definido`,
+        `🏨 ${defined} quartos definidos (duplo:${duplos} • triplo:${triplos})`,
         `🟠 ${missing} sem tipo`,
       ];
       if (invalid) chips.push(`⚠️ ${invalid} inválido(s)/conflito(s)`);
@@ -2008,6 +1971,39 @@
         s.textContent = t;
         summary.appendChild(s);
       });
+    }
+
+    function updateHeroRoomsBadge() {
+      const el = document.getElementById("hero-badge-rooms-text");
+      if (!el) return;
+      if (!isLodgingUnlocked()) return;
+
+      const fams = groupFamilies();
+      const keys = Object.keys(fams);
+
+      let duplos = 0, triplos = 0, missing = 0, overflow = 0;
+
+      keys.forEach(k => {
+        const f = fams[k];
+        if (!f.roomTypeKey) { missing++; return; }
+
+        if (f.roomTypeKey === "duplo") duplos++;
+        if (f.roomTypeKey === "triplo") triplos++;
+
+        const cap = getCapacityForFamily(f);
+        const people = f.members.length;
+        if (cap > 0 && people > cap) overflow++;
+      });
+
+      const parts = [
+        `${keys.length} quartos`,
+        `duplo:${duplos}`,
+        `triplo:${triplos}`,
+      ];
+      if (missing) parts.push(`sem tipo:${missing}`);
+      if (overflow) parts.push(`🚫 excede:${overflow}`);
+
+      el.textContent = parts.join(" • ");
     }
 
     // ===============================
@@ -2111,13 +2107,12 @@
     function buildSeatLayout() { buildUpperDeck(); buildLowerDeck(); }
 
     // ===============================
-    // MAPA DA ROTA (Leaflet) + fotos no popup
+    // MAPA DA ROTA (Leaflet)
     // ===============================
     function initMap() {
       const mapElement = document.getElementById("trip-map");
       if (!mapElement || typeof L === "undefined") return;
 
-      // reusa mapa se já existe
       if (window._tripMap) {
         setTimeout(() => window._tripMap.invalidateSize(), 100);
         return;
@@ -2151,7 +2146,6 @@
           : "";
 
         marker.bindPopup(`<strong>${media?.name || stop.id}</strong><br/>${imgHtml}`);
-
         latlngsAll.push(stop.coords);
       });
 
@@ -2258,11 +2252,7 @@
         }
 
         const routeLatLon = [
-          STOPS[0].coords,
-          STOPS[1].coords,
-          STOPS[2].coords,
-          STOPS[3].coords,
-          STOPS[0].coords
+          STOPS[0].coords, STOPS[1].coords, STOPS[2].coords, STOPS[3].coords, STOPS[0].coords
         ];
 
         const lats = routeLatLon.map(p => p[0]);
