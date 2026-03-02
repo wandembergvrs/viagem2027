@@ -1860,20 +1860,20 @@
     // ===============================
 
     function getCapacityForFamily(f) {
-  // f = objeto da família gerado em groupFamilies()
-  if (!f.roomTypeKey) return 0;
-
-  // base normal
-  let cap = ROOM_CAPACITY[f.roomTypeKey] || 0;
-
-  // REGRA NOVA: se for Triplo e houver criança, permite 4
-  if (f.roomTypeKey === "triplo") {
-    const hasChild = f.members.some(m => m.category === "childLap" || m.category === "childSeat");
-    if (hasChild) cap = 4;
-  }
-
-  return cap;
-}
+      // f = objeto da família gerado em groupFamilies()
+      if (!f.roomTypeKey) return 0;
+    
+      // base normal
+      let cap = ROOM_CAPACITY[f.roomTypeKey] || 0;
+    
+      // REGRA NOVA: se for Triplo e houver criança, permite 4
+      if (f.roomTypeKey === "triplo") {
+        const hasChild = f.members.some(m => m.category === "childLap" || m.category === "childSeat");
+        if (hasChild) cap = 4;
+      }
+    
+      return cap;
+    }
     
     function groupFamilies() {
       // agrupa por familyId (se vazio, vai para "—")
