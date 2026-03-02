@@ -765,6 +765,87 @@
       flex-wrap: wrap;
       gap: 8px;
     }
+
+    /* ===============================
+       TABS
+    =============================== */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0 0 12px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 8px 0;
+      background: linear-gradient(180deg, rgba(249,250,251,0.92), rgba(249,250,251,0.62));
+      backdrop-filter: blur(8px);
+    }
+
+    .tab-btn {
+      appearance: none;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: rgba(248, 250, 252, 0.95);
+      color: #0f172a;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 800;
+      font-size: 0.78rem;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.10);
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover { filter: brightness(0.99); }
+    .tab-btn.active {
+      border-color: rgba(34, 197, 94, 0.6);
+      background: rgba(236, 253, 243, 0.92);
+      color: #14532d;
+    }
+
+    [data-tab-content] { display: none; }
+    [data-tab-content].active { display: block; }
+
+    /* ===============================
+       LOCK: Hospedagem só com senha WVRS
+       (controle "leve" no front-end)
+    =============================== */
+    body:not(.lodging-unlocked) [data-tab="lodging"],
+    body:not(.lodging-unlocked) [data-tab-content="lodging"],
+    body:not(.lodging-unlocked) .lodging-only,
+    body:not(.lodging-unlocked) #hero-badge-rooms {
+      display: none !important;
+    }
+    body.lodging-unlocked #lodging-unlock-btn {
+      display: none !important;
+    }
+
+    /* Hospedagem: avisos */
+    .warn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      border: 1px solid rgba(249,115,22,0.65);
+      background: rgba(255,247,237,0.9);
+      color: #7c2d12;
+    }
+    .ok-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      border: 1px solid rgba(34,197,94,0.65);
+      background: rgba(236,253,243,0.9);
+      color: #14532d;
+    }
   </style>
 </head>
 
@@ -802,6 +883,9 @@
           <div class="badge">
             🧑 Adultos &nbsp;|&nbsp; 🧒 Crianças &nbsp;|&nbsp; 👶 Colo
           </div>
+
+          <!-- Só aparece após desbloquear Hospedagem -->
+          <div class="badge" id="hero-badge-rooms">🏨 <span id="hero-badge-rooms-text">–</span></div>
         </div>
       </div>
 
@@ -820,323 +904,397 @@
   </header>
 
   <main>
-    <!-- INFORMAÇÕES DA VIAGEM -->
-    <section class="card" id="trip-info-card">
-      <div class="card-header">
-        <div>
-          <div class="card-title">
-            <span class="icon">📌</span>
-            Informações da viagem
-          </div>
-          <p class="card-subtitle">
-            Período, valor por poltrona, regra das crianças e visão geral.
-          </p>
-        </div>
-      </div>
+    <!-- ===============================
+         TABS
+    =============================== -->
+    <div class="tabs" role="tablist" aria-label="Navegação">
+      <button class="tab-btn active" data-tab="trip" aria-selected="true" type="button">🚌 Viagem</button>
 
-      <ul class="info-list">
-        <li>
-          <strong>Período:</strong>
-          <span id="info-period">08 a 23/01/2027</span>
-        </li>
-        <li>
-          <strong>Valor por pessoa (poltrona):</strong>
-          <span id="info-fare">R$ 1.100,00</span>
-        </li>
-        <li>
-          <strong>Parcelamento:</strong>
-          até <span id="info-installments">10x</span>, com parcelas a partir de
-          <span id="info-installment-value">R$ 110,00</span>, começando em dezembro.
-        </li>
-        <li>
-          <strong>Crianças até 5 anos:</strong>
-          não pagam e vão no colo do responsável (sem poltrona marcada).
-        </li>
-        <li>
-          <strong>Resumo:</strong>
-          <span id="info-paying-people">–</span> poltronas pagantes,
-          <span id="info-started-people">–</span> com pagamento iniciado e
-          <span id="info-full-people">–</span> totalmente quitado(s).
-        </li>
-      </ul>
+      <!-- Aba Hospedagem (fica oculta até desbloquear) -->
+      <button class="tab-btn" data-tab="lodging" aria-selected="false" type="button">🏨 Hospedagem</button>
 
-      <div class="info-highlight">
-        As poltronas são definidas na planilha (arquivo <code>passageiros.csv</code>) e apenas exibidas aqui.
-      </div>
-    </section>
+      <!-- Botão sempre visível (até desbloquear) -->
+      <button class="tab-btn" id="lodging-unlock-btn" type="button">🔒 Desbloquear hospedagem</button>
+    </div>
 
-    <!-- PAGAMENTO -->
-    <section class="card" id="payment-card">
-      <div class="card-header">
-        <div>
-          <div class="card-title">
-            <span class="icon">💳</span>
-            Pagamento da viagem
-          </div>
-          <p class="card-subtitle">
-            Acompanhamento geral das parcelas da família. Nenhum valor individual é exibido.
-          </p>
-        </div>
-        <div class="pill">
-          <span class="pill-dot"></span>
-          Visão consolidada da família
-        </div>
-      </div>
-
-      <div class="stats-row">
-        <div>
-          <small>Pagamentos iniciados</small>
-          <strong id="stats-started-people">0 / 0</strong>
-        </div>
-        <div>
-          <small>Passageiros quitados</small>
-          <strong id="stats-full-people">0</strong>
-        </div>
-        <div>
-          <small>Progresso geral pago</small>
-          <strong id="stats-percent-small">0%</strong>
-        </div>
-      </div>
-
-      <div class="progress-container">
-        <div class="progress-track">
-          <div id="payment-progress-fill" class="progress-fill"></div>
-          <div class="progress-marker"></div>
-        </div>
-        <div class="progress-label">
-          <span>Percentual das parcelas já pagas (sobre o total planejado)</span>
-          <strong id="payment-percent-label">0%</strong>
-        </div>
-        <div class="paid-highlight" id="paid-highlight"></div>
-      </div>
-    </section>
-
-    <!-- TEMPO -->
-    <section class="card" id="time-card">
-      <div class="card-header">
-        <div>
-          <div class="card-title">
-            <span class="icon">⏳</span>
-            Contagem para o embarque
-          </div>
-          <p class="card-subtitle">
-            Progresso do tempo entre o início do planejamento e o dia da viagem.
-          </p>
-        </div>
-        <div class="pill">
-          <span class="pill-dot warn"></span>
-          Planejamento em andamento
-        </div>
-      </div>
-
-      <div class="stats-row">
-        <div>
-          <small>Datas da viagem</small>
-          <strong id="trip-date-label">–</strong>
-        </div>
-        <div>
-          <small>Dias que faltam</small>
-          <strong id="days-remaining-label">–</strong>
-        </div>
-        <div>
-          <small>Planejamento</small>
-          <strong id="planning-window-label">–</strong>
-        </div>
-      </div>
-
-      <div class="progress-container">
-        <div class="progress-track">
-          <div id="time-progress-fill" class="progress-fill"></div>
-          <div class="progress-marker"></div>
-        </div>
-        <div class="progress-label">
-          <span>Tempo decorrido até a viagem</span>
-          <strong id="time-percent-label">0%</strong>
-        </div>
-      </div>
-    </section>
-
-    <!-- MAPA DA ROTA -->
-    <section class="card" id="map-card">
-      <div class="card-header">
-        <div>
-          <div class="card-title">
-            <span class="icon">🗺️</span>
-            Rota da viagem
-          </div>
-          <p class="card-subtitle">
-            Brasília → Fortaleza → Bom Sucesso (PB) → João Pessoa (PB) → Brasília.
-          </p>
-        </div>
-      </div>
-
-      <div id="trip-map"></div>
-
-      <div class="map-note">
-        • 08/01/2027 • 18h — saída de Brasília (DF) para Fortaleza (CE)<br />
-        • 13/01/2027 — Fortaleza (CE) → Bom Sucesso (PB)<br />
-        • 17/01/2027 — Bom Sucesso (PB) → João Pessoa (PB)<br />
-        • 22/01/2027 — saída de João Pessoa (PB) para Brasília (DF)
-      </div>
-    </section>
-
-    <!-- SIMULAÇÃO 3D (COM IMAGENS) -->
-    <section class="card" id="sim-3d-card">
-      <div class="card-header">
-        <div>
-          <div class="card-title">
-            <span class="icon">🧭</span>
-            Simulação 3D da rota (com fotos)
-          </div>
-          <p class="card-subtitle">
-            O ônibus percorre a rota e o painel mostra imagens das cidades e o progresso do trecho.
-          </p>
-        </div>
-        <div class="pill">
-          <span class="pill-dot"></span>
-          3D (Three.js)
-        </div>
-      </div>
-
-      <div class="sim3d-controls">
-        <button class="sim3d-btn" id="sim3d-play-btn">⏸ Pausar</button>
-
-        <div class="sim3d-range">
-          <span>Velocidade</span>
-          <input id="sim3d-speed" type="range" min="0.3" max="3" step="0.1" value="1.0" />
-          <strong id="sim3d-speed-label">1.0x</strong>
-        </div>
-
-        <label class="sim3d-toggle">
-          <input id="sim3d-follow" type="checkbox" checked />
-          Câmera segue o ônibus
-        </label>
-      </div>
-
-      <div class="sim3d-wrap">
-        <div class="sim3d-hud" id="sim3d-hud">
+    <!-- =========================================================
+         TAB: VIAGEM (conteúdo original)
+    ========================================================== -->
+    <div data-tab-content="trip" class="active">
+      <!-- INFORMAÇÕES DA VIAGEM -->
+      <section class="card" id="trip-info-card">
+        <div class="card-header">
           <div>
-            <h3 id="sim3d-title">Trecho: –</h3>
-            <div class="line" id="sim3d-sub">–</div>
+            <div class="card-title">
+              <span class="icon">📌</span>
+              Informações da viagem
+            </div>
+            <p class="card-subtitle">
+              Período, valor por poltrona, regra das crianças e visão geral.
+            </p>
+          </div>
+        </div>
 
-            <div class="chips">
-              <div class="sim3d-chip">
-                <span class="sim3d-dot" id="sim3d-dot"></span>
-                <span id="sim3d-phase">Em rota</span>
+        <ul class="info-list">
+          <li>
+            <strong>Período:</strong>
+            <span id="info-period">08 a 23/01/2027</span>
+          </li>
+          <li>
+            <strong>Valor por pessoa (poltrona):</strong>
+            <span id="info-fare">R$ 1.100,00</span>
+          </li>
+          <li>
+            <strong>Parcelamento:</strong>
+            até <span id="info-installments">10x</span>, com parcelas a partir de
+            <span id="info-installment-value">R$ 110,00</span>, começando em dezembro.
+          </li>
+          <li>
+            <strong>Crianças até 5 anos:</strong>
+            não pagam e vão no colo do responsável (sem poltrona marcada).
+          </li>
+          <li>
+            <strong>Resumo:</strong>
+            <span id="info-paying-people">–</span> poltronas pagantes,
+            <span id="info-started-people">–</span> com pagamento iniciado e
+            <span id="info-full-people">–</span> totalmente quitado(s).
+          </li>
+        </ul>
+
+        <div class="info-highlight">
+          As poltronas são definidas na planilha (arquivo <code>passageiros.csv</code>) e apenas exibidas aqui.
+        </div>
+      </section>
+
+      <!-- PAGAMENTO -->
+      <section class="card" id="payment-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">💳</span>
+              Pagamento da viagem
+            </div>
+            <p class="card-subtitle">
+              Acompanhamento geral das parcelas da família. Nenhum valor individual é exibido.
+            </p>
+          </div>
+          <div class="pill">
+            <span class="pill-dot"></span>
+            Visão consolidada da família
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div>
+            <small>Pagamentos iniciados</small>
+            <strong id="stats-started-people">0 / 0</strong>
+          </div>
+          <div>
+            <small>Passageiros quitados</small>
+            <strong id="stats-full-people">0</strong>
+          </div>
+          <div>
+            <small>Progresso geral pago</small>
+            <strong id="stats-percent-small">0%</strong>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-track">
+            <div id="payment-progress-fill" class="progress-fill"></div>
+            <div class="progress-marker"></div>
+          </div>
+          <div class="progress-label">
+            <span>Percentual das parcelas já pagas (sobre o total planejado)</span>
+            <strong id="payment-percent-label">0%</strong>
+          </div>
+          <div class="paid-highlight" id="paid-highlight"></div>
+        </div>
+      </section>
+
+      <!-- TEMPO -->
+      <section class="card" id="time-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">⏳</span>
+              Contagem para o embarque
+            </div>
+            <p class="card-subtitle">
+              Progresso do tempo entre o início do planejamento e o dia da viagem.
+            </p>
+          </div>
+          <div class="pill">
+            <span class="pill-dot warn"></span>
+            Planejamento em andamento
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div>
+            <small>Datas da viagem</small>
+            <strong id="trip-date-label">–</strong>
+          </div>
+          <div>
+            <small>Dias que faltam</small>
+            <strong id="days-remaining-label">–</strong>
+          </div>
+          <div>
+            <small>Planejamento</small>
+            <strong id="planning-window-label">–</strong>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-track">
+            <div id="time-progress-fill" class="progress-fill"></div>
+            <div class="progress-marker"></div>
+          </div>
+          <div class="progress-label">
+            <span>Tempo decorrido até a viagem</span>
+            <strong id="time-percent-label">0%</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAPA DA ROTA -->
+      <section class="card" id="map-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">🗺️</span>
+              Rota da viagem
+            </div>
+            <p class="card-subtitle">
+              Brasília → Fortaleza → Bom Sucesso (PB) → João Pessoa (PB) → Brasília.
+            </p>
+          </div>
+        </div>
+
+        <div id="trip-map"></div>
+
+        <div class="map-note">
+          • 08/01/2027 • 18h — saída de Brasília (DF) para Fortaleza (CE)<br />
+          • 13/01/2027 — Fortaleza (CE) → Bom Sucesso (PB)<br />
+          • 17/01/2027 — Bom Sucesso (PB) → João Pessoa (PB)<br />
+          • 22/01/2027 — saída de João Pessoa (PB) para Brasília (DF)
+        </div>
+      </section>
+
+      <!-- SIMULAÇÃO 3D (COM IMAGENS) -->
+      <section class="card" id="sim-3d-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">🧭</span>
+              Simulação 3D da rota (com fotos)
+            </div>
+            <p class="card-subtitle">
+              O ônibus percorre a rota e o painel mostra imagens das cidades e o progresso do trecho.
+            </p>
+          </div>
+          <div class="pill">
+            <span class="pill-dot"></span>
+            3D (Three.js)
+          </div>
+        </div>
+
+        <div class="sim3d-controls">
+          <button class="sim3d-btn" id="sim3d-play-btn" type="button">⏸ Pausar</button>
+
+          <div class="sim3d-range">
+            <span>Velocidade</span>
+            <input id="sim3d-speed" type="range" min="0.3" max="3" step="0.1" value="1.0" />
+            <strong id="sim3d-speed-label">1.0x</strong>
+          </div>
+
+          <label class="sim3d-toggle">
+            <input id="sim3d-follow" type="checkbox" checked />
+            Câmera segue o ônibus
+          </label>
+        </div>
+
+        <div class="sim3d-wrap">
+          <div class="sim3d-hud" id="sim3d-hud">
+            <div>
+              <h3 id="sim3d-title">Trecho: –</h3>
+              <div class="line" id="sim3d-sub">–</div>
+
+              <div class="chips">
+                <div class="sim3d-chip">
+                  <span class="sim3d-dot" id="sim3d-dot"></span>
+                  <span id="sim3d-phase">Em rota</span>
+                </div>
+                <div class="sim3d-chip">
+                  ⏱️ <span id="sim3d-progress-label">0%</span> do trecho
+                </div>
               </div>
-              <div class="sim3d-chip">
-                ⏱️ <span id="sim3d-progress-label">0%</span> do trecho
+
+              <div class="sim3d-progress">
+                <div id="sim3d-progress-fill"></div>
+              </div>
+
+              <div class="sim3d-credit" id="sim3d-credit">
+                Imagens: Wikimedia (créditos no rodapé).
               </div>
             </div>
 
-            <div class="sim3d-progress">
-              <div id="sim3d-progress-fill"></div>
-            </div>
-
-            <div class="sim3d-credit" id="sim3d-credit">
-              Imagens: Wikimedia (créditos no rodapé).
+            <div class="sim3d-photo">
+              <img id="sim3d-photo" alt="Foto da cidade" src="" loading="lazy" referrerpolicy="no-referrer" />
             </div>
           </div>
 
-          <div class="sim3d-photo">
-            <img id="sim3d-photo" alt="Foto da cidade" src="" loading="lazy" referrerpolicy="no-referrer" />
+          <div id="trip-3d"></div>
+        </div>
+
+        <div class="map-note">
+          Dica: se a câmera estiver seguindo, você ainda pode dar zoom; se quiser girar livremente, desmarque “Câmera segue o ônibus”.
+        </div>
+      </section>
+
+      <!-- PASSAGEIROS -->
+      <section class="card" id="passengers-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">🧾</span>
+              Lista de passageiros
+            </div>
+            <p class="card-subtitle">
+              Nomes, perfil e situação geral. Parcelas e poltronas são mantidas na planilha
+              <code>passageiros.csv</code>.
+              <span class="lodging-only">Família e tipo de quarto também vêm do CSV.</span>
+            </p>
           </div>
         </div>
 
-        <div id="trip-3d"></div>
-      </div>
+        <div class="passenger-summary" id="passenger-summary"></div>
 
-      <div class="map-note">
-        Dica: se a câmera estiver seguindo, você ainda pode dar zoom; se quiser girar livremente, desmarque “Câmera segue o ônibus”.
-      </div>
-    </section>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Passageiro(a)</th>
+                <th>Perfil</th>
+                <th>Situação</th>
+                <th>Parcelas</th>
+                <th>Poltrona</th>
+                <th class="lodging-only">Família</th>
+                <th class="lodging-only">Quarto</th>
+              </tr>
+            </thead>
+            <tbody id="passenger-table-body"></tbody>
+          </table>
+        </div>
 
-    <!-- PASSAGEIROS -->
-    <section class="card" id="passengers-card">
-      <div class="card-header">
-        <div>
-          <div class="card-title">
-            <span class="icon">🧾</span>
-            Lista de passageiros
+        <div class="info-highlight lodging-only" style="margin-top:10px">
+          <strong>Hospedagem (CSV):</strong> use as colunas <code>Familia</code> (numeração) e <code>Quarto</code>
+          com valores <code>Individual</code>, <code>Duplo</code> ou <code>Triplo</code> (limite atual).
+        </div>
+      </section>
+
+      <!-- LAYOUT DE ASSENTOS -->
+      <section class="card" id="seat-layout-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">🪑</span>
+              Mapa de assentos - Marcopolo G8
+            </div>
+            <p class="card-subtitle">
+              Piso superior: poltronas 1–48. Piso inferior: 49–57.
+              A ocupação é apenas informativa, vinda da planilha.
+            </p>
           </div>
-          <p class="card-subtitle">
-            Nomes, perfil e situação geral. Parcelas e poltronas são mantidas na planilha
-            <code>passageiros.csv</code>.
-          </p>
         </div>
-      </div>
 
-      <div class="passenger-summary" id="passenger-summary"></div>
+        <div class="seat-controls">
+          <span class="seat-helper">
+            Mapa ilustrativo das poltronas. Lugares marcados como
+            <strong>ocupados</strong> vêm da coluna de poltronas em
+            <code>passageiros.csv</code>. Não é possível escolher poltronas pelo site.
+          </span>
+        </div>
 
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Passageiro(a)</th>
-              <th>Perfil</th>
-              <th>Situação</th>
-              <th>Parcelas</th>
-              <th>Poltrona</th>
-            </tr>
-          </thead>
-          <tbody id="passenger-table-body"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- LAYOUT DE ASSENTOS -->
-    <section class="card" id="seat-layout-card">
-      <div class="card-header">
-        <div>
-          <div class="card-title">
-            <span class="icon">🪑</span>
-            Mapa de assentos - Marcopolo G8
+        <div class="seat-layout">
+          <div class="deck">
+            <div class="deck-header">
+              <span>Piso superior</span>
+              <span>Poltronas 1–48</span>
+            </div>
+            <div class="seat-grid" id="seat-grid-upper"></div>
           </div>
-          <p class="card-subtitle">
-            Piso superior: poltronas 1–48. Piso inferior: 49–57.
-            A ocupação é apenas informativa, vinda da planilha.
-          </p>
-        </div>
-      </div>
 
-      <div class="seat-controls">
-        <span class="seat-helper">
-          Mapa ilustrativo das poltronas. Lugares marcados como
-          <strong>ocupados</strong> vêm da coluna de poltronas em
-          <code>passageiros.csv</code>. Não é possível escolher poltronas pelo site.
-        </span>
-      </div>
-
-      <div class="seat-layout">
-        <div class="deck">
-          <div class="deck-header">
-            <span>Piso superior</span>
-            <span>Poltronas 1–48</span>
+          <div class="deck">
+            <div class="deck-header">
+              <span>Piso inferior</span>
+              <span>Poltronas 49–57</span>
+            </div>
+            <div class="seat-grid" id="seat-grid-lower"></div>
           </div>
-          <div class="seat-grid" id="seat-grid-upper"></div>
         </div>
 
-        <div class="deck">
-          <div class="deck-header">
-            <span>Piso inferior</span>
-            <span>Poltronas 49–57</span>
+        <div class="seat-legend">
+          <div class="legend-item">
+            <span class="legend-color"></span>
+            Livre
           </div>
-          <div class="seat-grid" id="seat-grid-lower"></div>
+          <div class="legend-item">
+            <span class="legend-color occupied"></span>
+            Ocupado (conforme CSV)
+          </div>
         </div>
-      </div>
+      </section>
+    </div>
 
-      <div class="seat-legend">
-        <div class="legend-item">
-          <span class="legend-color"></span>
-          Livre
+    <!-- =========================================================
+         TAB: HOSPEDAGEM (só aparece com senha WVRS)
+    ========================================================== -->
+    <div data-tab-content="lodging">
+      <section class="card" id="lodging-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">🏨</span>
+              Hospedagem (por família)
+            </div>
+            <p class="card-subtitle">
+              Controle por <strong>Família (numeração)</strong> e <strong>Tipo de Quarto</strong>.
+              Tipos aceitos: <code>Individual</code>, <code>Duplo</code>, <code>Triplo</code> (limite atual).
+            </p>
+          </div>
+          <div class="pill">
+            <span class="pill-dot"></span>
+            Conteúdo protegido por senha
+          </div>
         </div>
-        <div class="legend-item">
-          <span class="legend-color occupied"></span>
-          Ocupado (conforme CSV)
+
+        <div class="passenger-summary" id="lodging-summary"></div>
+
+        <div class="table-wrapper" style="max-height: 420px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Família</th>
+                <th>Tipo de quarto</th>
+                <th>Pessoas</th>
+                <th>Capacidade</th>
+                <th>Status</th>
+                <th>Membros</th>
+              </tr>
+            </thead>
+            <tbody id="lodging-table-body"></tbody>
+          </table>
         </div>
-      </div>
-    </section>
+
+        <div class="info-highlight" style="margin-top:10px">
+          <strong>Colunas esperadas no <code>passageiros.csv</code>:</strong>
+          <code>Nome</code>, <code>Categoria</code>, <code>Parcelas</code>, (opcional) <code>Poltrona</code>,
+          e para hospedagem: <code>Familia</code>, <code>Quarto</code>.
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>
@@ -1159,6 +1317,16 @@
     const FARE_PER_PERSON = 1100.0;
     const MAX_INSTALLMENTS = 10;
     const TRIP_TOTAL_VALUE = 59400.0; // apenas para cálculo do %
+
+    // Hospedagem: senha (controle leve no front-end)
+    const LODGING_PASSWORD = "WVRS";
+
+    // Hospedagem: limite atual = triplo
+    const ROOM_CAPACITY = {
+      individual: 1,
+      duplo: 2,
+      triplo: 3
+    };
 
     const msPerDay = 1000 * 60 * 60 * 24;
     const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
@@ -1210,6 +1378,90 @@
     ];
 
     // ===============================
+    // TABS
+    // ===============================
+    function initTabs() {
+      const tabButtons = Array.from(document.querySelectorAll(".tab-btn[data-tab]"));
+      const contents = Array.from(document.querySelectorAll("[data-tab-content]"));
+
+      function showTab(tabId) {
+        tabButtons.forEach(btn => {
+          const isActive = btn.dataset.tab === tabId;
+          btn.classList.toggle("active", isActive);
+          btn.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+
+        contents.forEach(c => {
+          c.classList.toggle("active", c.dataset.tabContent === tabId);
+        });
+
+        // Se voltar para "trip", Leaflet/3D podem precisar de resize
+        if (tabId === "trip") {
+          setTimeout(() => {
+            if (window._tripMap && typeof window._tripMap.invalidateSize === "function") {
+              window._tripMap.invalidateSize();
+            }
+            const el3d = document.getElementById("trip-3d");
+            if (el3d && el3d._trip3dOnResize) el3d._trip3dOnResize();
+          }, 120);
+        }
+      }
+
+      tabButtons.forEach(btn => {
+        btn.addEventListener("click", () => showTab(btn.dataset.tab));
+      });
+
+      // padrão
+      showTab("trip");
+    }
+
+    // ===============================
+    // LOCK HOSPEDAGEM (senha WVRS)
+    // ===============================
+    function isLodgingUnlocked() {
+      return document.body.classList.contains("lodging-unlocked");
+    }
+
+    function setLodgingUnlocked(value) {
+      if (value) {
+        document.body.classList.add("lodging-unlocked");
+        sessionStorage.setItem("lodgingUnlocked", "1");
+      } else {
+        document.body.classList.remove("lodging-unlocked");
+        sessionStorage.removeItem("lodgingUnlocked");
+      }
+    }
+
+    function initLodgingLock() {
+      // restaura unlock da sessão
+      if (sessionStorage.getItem("lodgingUnlocked") === "1") {
+        setLodgingUnlocked(true);
+      }
+
+      const btn = document.getElementById("lodging-unlock-btn");
+      if (!btn) return;
+
+      btn.addEventListener("click", () => {
+        const typed = prompt("Digite a senha para acessar a Hospedagem:");
+        if (typed === null) return;
+
+        if (String(typed).trim() === LODGING_PASSWORD) {
+          setLodgingUnlocked(true);
+
+          // monta hospedagem
+          buildLodgingTable();
+          updateHeroRoomsBadge();
+
+          // vai para aba hospedagem
+          const lodgingTabBtn = document.querySelector('.tab-btn[data-tab="lodging"]');
+          if (lodgingTabBtn) lodgingTabBtn.click();
+        } else {
+          alert("Senha incorreta.");
+        }
+      });
+    }
+
+    // ===============================
     // PASSAGEIROS (carregados via CSV)
     // ===============================
     async function loadPassengersFromCSV() {
@@ -1219,28 +1471,62 @@
       passengers = parsePassengersCSV(text);
     }
 
+    function normalizeHeader(h) {
+      return String(h || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, ""); // remove acentos
+    }
+
+    function normalizeRoomType(raw) {
+      const s = String(raw || "").trim().toLowerCase();
+      if (!s) return { key: "", label: "—", invalid: false };
+
+      const compact = s
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, "");
+
+      // aceita alguns sinônimos
+      if (["i", "ind", "individual", "single"].includes(compact)) {
+        return { key: "individual", label: "Individual", invalid: false };
+      }
+      if (["d", "duplo", "double"].includes(compact)) {
+        return { key: "duplo", label: "Duplo", invalid: false };
+      }
+      if (["t", "triplo", "triple"].includes(compact)) {
+        return { key: "triplo", label: "Triplo", invalid: false };
+      }
+
+      // Qualquer coisa acima de triplo é inválida no limite atual
+      return { key: "", label: "Inválido", invalid: true };
+    }
+
     function parsePassengersCSV(text) {
       const lines = text.trim().split(/\r?\n/);
       if (!lines.length) return [];
 
       const headerLine = lines.shift();
       const delimiter = headerLine.includes(";") ? ";" : ",";
-      const headers = headerLine.split(delimiter).map((h) => h.trim().toLowerCase());
+      const headers = headerLine.split(delimiter).map((h) => normalizeHeader(h));
 
       const idxNome = headers.indexOf("nome");
       const idxCategoria = headers.indexOf("categoria");
       const idxParcelas = headers.indexOf("parcelas");
-      const idxSeat = headers.findIndex((h) => h === "poltrona" || h === "assento" || h === "seat");
+
+      const idxSeat = headers.findIndex((h) => ["poltrona", "assento", "seat"].includes(h));
+      const idxFamilia = headers.findIndex((h) => ["familia", "familia_id", "grupo", "grupo_familiar"].includes(h));
+      const idxQuarto = headers.findIndex((h) => ["quarto", "tipoquarto", "tipo_quarto", "room", "roomtype"].includes(h));
 
       if (idxNome === -1 || idxCategoria === -1 || idxParcelas === -1) {
-        console.error("Cabeçalho do passageiros.csv deve ter: Nome;Categoria;Parcelas (e opcionalmente Poltrona/Assento)");
+        console.error("Cabeçalho do passageiros.csv deve ter: Nome;Categoria;Parcelas (e opcionalmente Poltrona/Assento;Familia;Quarto)");
         return [];
       }
 
       return lines
         .filter((l) => l.trim())
         .map((line) => {
-          const cols = line.split(delimiter).map((c) => c.trim());
+          const cols = line.split(delimiter).map((c) => String(c || "").trim());
           const nome = cols[idxNome] || "Sem nome";
           const catCsv = (cols[idxCategoria] || "adulto").toLowerCase();
           const parcelas = Number(cols[idxParcelas] || 0) || 0;
@@ -1255,12 +1541,22 @@
             if (Number.isFinite(n)) seat = String(n);
           }
 
+          const familyId = (idxFamilia >= 0 && cols[idxFamilia]) ? String(cols[idxFamilia]).trim() : "";
+          const roomRaw = (idxQuarto >= 0 && cols[idxQuarto]) ? cols[idxQuarto] : "";
+          const rt = normalizeRoomType(roomRaw);
+
           return {
             name: nome,
             category,
             seatType: category === "childLap" ? "Colo" : "Poltrona",
             installmentsPaid: parcelas,
             seat: seat,
+
+            // hospedagem
+            familyId,
+            roomTypeKey: rt.key,     // "individual" | "duplo" | "triplo" | ""
+            roomTypeLabel: rt.label, // "Individual" | "Duplo" | "Triplo" | "—" | "Inválido"
+            roomTypeInvalid: rt.invalid
           };
         });
     }
@@ -1317,6 +1613,33 @@
         TRIP_START_DATE.toLocaleDateString("pt-BR") +
         " a " +
         TRIP_END_DATE.toLocaleDateString("pt-BR");
+    }
+
+    function updateHeroRoomsBadge() {
+      const el = document.getElementById("hero-badge-rooms-text");
+      if (!el) return;
+      if (!isLodgingUnlocked()) return;
+
+      const fams = groupFamilies();
+      const totalFamilies = Object.keys(fams).length;
+
+      let rooms = 0;
+      let missing = 0;
+      let invalid = 0;
+
+      Object.values(fams).forEach(f => {
+        if (!f.roomTypeKey) missing++;
+        if (f.anyInvalid) invalid++;
+        if (f.roomTypeKey) rooms += 1; // 1 quarto por família (modelo atual)
+      });
+
+      const parts = [];
+      parts.push(`${totalFamilies} famílias`);
+      parts.push(`${rooms} quartos definidos`);
+      if (missing) parts.push(`${missing} sem tipo`);
+      if (invalid) parts.push(`${invalid} inválidos`);
+
+      el.textContent = parts.join(" • ");
     }
 
     function updateTripInfoCard() {
@@ -1510,14 +1833,163 @@
         else if (!p.seat) seatTd.textContent = "Não definido na planilha";
         else seatTd.textContent = "Poltrona " + p.seat;
 
+        // Hospedagem (colunas ocultas sem senha)
+        const familyTd = document.createElement("td");
+        familyTd.classList.add("lodging-only");
+        familyTd.textContent = p.familyId ? String(p.familyId) : "—";
+
+        const roomTd = document.createElement("td");
+        roomTd.classList.add("lodging-only");
+        roomTd.textContent = p.roomTypeLabel || "—";
+
         tr.appendChild(positionTd);
         tr.appendChild(nameTd);
         tr.appendChild(typeTd);
         tr.appendChild(statusTd);
         tr.appendChild(installmentsTd);
         tr.appendChild(seatTd);
+        tr.appendChild(familyTd);
+        tr.appendChild(roomTd);
 
         tbody.appendChild(tr);
+      });
+    }
+
+    // ===============================
+    // HOSPEDAGEM (AGRUPA FAMÍLIAS)
+    // ===============================
+    function groupFamilies() {
+      // agrupa por familyId (se vazio, vai para "—")
+      const families = {};
+      passengers.forEach(p => {
+        const fid = p.familyId ? String(p.familyId).trim() : "—";
+        if (!families[fid]) {
+          families[fid] = {
+            familyId: fid,
+            roomTypeKey: "",
+            roomTypeLabel: "—",
+            anyInvalid: false,
+            members: []
+          };
+        }
+        families[fid].members.push(p);
+
+        // define tipo do quarto (se houver divergência, marca como inválido)
+        if (p.roomTypeInvalid) families[fid].anyInvalid = true;
+
+        if (p.roomTypeKey) {
+          if (!families[fid].roomTypeKey) {
+            families[fid].roomTypeKey = p.roomTypeKey;
+            families[fid].roomTypeLabel = p.roomTypeLabel;
+          } else if (families[fid].roomTypeKey !== p.roomTypeKey) {
+            families[fid].anyInvalid = true; // conflito
+          }
+        }
+      });
+
+      return families;
+    }
+
+    function buildLodgingTable() {
+      const tbody = document.getElementById("lodging-table-body");
+      const summary = document.getElementById("lodging-summary");
+      if (!tbody || !summary) return;
+
+      tbody.innerHTML = "";
+      summary.innerHTML = "";
+
+      const fams = groupFamilies();
+      const keys = Object.keys(fams).sort((a, b) => {
+        // ordena numéricos primeiro
+        const na = Number(a), nb = Number(b);
+        const fa = Number.isFinite(na) && String(na) === a;
+        const fb = Number.isFinite(nb) && String(nb) === b;
+        if (fa && fb) return na - nb;
+        if (fa && !fb) return -1;
+        if (!fa && fb) return 1;
+        return a.localeCompare(b);
+      });
+
+      let totalFamilies = keys.length;
+      let defined = 0;
+      let missing = 0;
+      let invalid = 0;
+      let overflow = 0;
+
+      keys.forEach(k => {
+        const f = fams[k];
+        const people = f.members.length;
+
+        const cap = f.roomTypeKey ? (ROOM_CAPACITY[f.roomTypeKey] || 0) : 0;
+        const over = (cap > 0 && people > cap);
+        if (f.roomTypeKey) defined++; else missing++;
+        if (f.anyInvalid) invalid++;
+        if (over) overflow++;
+
+        const tr = document.createElement("tr");
+
+        const tdFam = document.createElement("td");
+        tdFam.textContent = f.familyId;
+
+        const tdType = document.createElement("td");
+        tdType.textContent = f.roomTypeLabel || "—";
+
+        const tdPeople = document.createElement("td");
+        tdPeople.textContent = String(people);
+
+        const tdCap = document.createElement("td");
+        tdCap.textContent = cap ? String(cap) : "—";
+
+        const tdStatus = document.createElement("td");
+
+        if (f.anyInvalid) {
+          const pill = document.createElement("span");
+          pill.className = "warn-pill";
+          pill.textContent = "⚠️ Tipo inválido / conflito";
+          tdStatus.appendChild(pill);
+        } else if (!f.roomTypeKey) {
+          const pill = document.createElement("span");
+          pill.className = "warn-pill";
+          pill.textContent = "⚠️ Sem tipo de quarto";
+          tdStatus.appendChild(pill);
+        } else if (over) {
+          const pill = document.createElement("span");
+          pill.className = "warn-pill";
+          pill.textContent = "⚠️ Excede capacidade";
+          tdStatus.appendChild(pill);
+        } else {
+          const pill = document.createElement("span");
+          pill.className = "ok-pill";
+          pill.textContent = "✅ OK";
+          tdStatus.appendChild(pill);
+        }
+
+        const tdMembers = document.createElement("td");
+        tdMembers.textContent = f.members.map(m => m.name).join(", ");
+
+        tr.appendChild(tdFam);
+        tr.appendChild(tdType);
+        tr.appendChild(tdPeople);
+        tr.appendChild(tdCap);
+        tr.appendChild(tdStatus);
+        tr.appendChild(tdMembers);
+
+        tbody.appendChild(tr);
+      });
+
+      // summary chips
+      const chips = [
+        `👨‍👩‍👧‍👦 ${totalFamilies} famílias`,
+        `🏨 ${defined} com quarto definido`,
+        `🟠 ${missing} sem tipo`,
+      ];
+      if (invalid) chips.push(`⚠️ ${invalid} inválido(s)/conflito(s)`);
+      if (overflow) chips.push(`🚫 ${overflow} excede(m) capacidade`);
+
+      chips.forEach(t => {
+        const s = document.createElement("span");
+        s.textContent = t;
+        summary.appendChild(s);
       });
     }
 
@@ -1628,7 +2100,14 @@
       const mapElement = document.getElementById("trip-map");
       if (!mapElement || typeof L === "undefined") return;
 
+      // reusa mapa se já existe
+      if (window._tripMap) {
+        setTimeout(() => window._tripMap.invalidateSize(), 100);
+        return;
+      }
+
       const map = L.map("trip-map", { scrollWheelZoom: false }).setView([-10, -40], 4.5);
+      window._tripMap = map;
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 18,
@@ -1679,11 +2158,7 @@
     // ===============================
     // SIMULAÇÃO 3D (Three.js) — com fotos
     // ===============================
-    const sim3d = {
-      playing: true,
-      speedMult: 1.0,
-      followCamera: true
-    };
+    const sim3d = { playing: true, speedMult: 1.0, followCamera: true };
 
     function createTextTexture(text, w = 1024, h = 640) {
       const canvas = document.createElement("canvas");
@@ -1694,7 +2169,6 @@
       ctx.fillStyle = "#0b1220";
       ctx.fillRect(0, 0, w, h);
 
-      // moldura
       ctx.strokeStyle = "rgba(250,204,21,0.9)";
       ctx.lineWidth = 10;
       ctx.strokeRect(18, 18, w - 36, h - 36);
@@ -1717,10 +2191,7 @@
         const t = i / samples;
         const p = curve.getPointAt(t);
         const d = p.distanceToSquared(target);
-        if (d < bestD) {
-          bestD = d;
-          bestT = t;
-        }
+        if (d < bestD) { bestD = d; bestT = t; }
       }
       return bestT;
     }
@@ -1729,12 +2200,10 @@
       const el = document.getElementById("trip-3d");
       if (!el) return;
 
-      // limpa execuções anteriores
       if (el._trip3dRAF) cancelAnimationFrame(el._trip3dRAF);
       if (el._trip3dRO) el._trip3dRO.disconnect();
       if (el._trip3dOnResize) window.removeEventListener("resize", el._trip3dOnResize);
 
-      // HUD refs
       const hudTitle = document.getElementById("sim3d-title");
       const hudSub = document.getElementById("sim3d-sub");
       const hudPhoto = document.getElementById("sim3d-photo");
@@ -1747,7 +2216,6 @@
       try {
         if (typeof THREE === "undefined") throw new Error("Three.js não carregou (THREE indefinido).");
 
-        // Controles UI
         const playBtn = document.getElementById("sim3d-play-btn");
         const speedRange = document.getElementById("sim3d-speed");
         const speedLabel = document.getElementById("sim3d-speed-label");
@@ -1772,16 +2240,14 @@
           sim3d.followCamera = !!followCheck.checked;
         }
 
-        // rota (fecha loop voltando a Brasília)
         const routeLatLon = [
-          STOPS[0].coords, // bsb
-          STOPS[1].coords, // for
-          STOPS[2].coords, // bom
-          STOPS[3].coords, // jpa
-          STOPS[0].coords  // bsb (volta)
+          STOPS[0].coords,
+          STOPS[1].coords,
+          STOPS[2].coords,
+          STOPS[3].coords,
+          STOPS[0].coords
         ];
 
-        // conversão lat/lon -> plano
         const lats = routeLatLon.map(p => p[0]);
         const lons = routeLatLon.map(p => p[1]);
         const lat0 = (Math.min(...lats) + Math.max(...lats)) / 2;
@@ -1789,7 +2255,7 @@
 
         const kmPerDegLat = 111.32;
         const kmPerDegLon = 111.32 * Math.cos((lat0 * Math.PI) / 180);
-        const scale = 0.06; // 1 km -> 0.06 unidades
+        const scale = 0.06;
 
         const toVec3 = ([lat, lon]) => {
           const xKm = (lon - lon0) * kmPerDegLon;
@@ -1799,11 +2265,9 @@
 
         const points = routeLatLon.map(toVec3);
 
-        // cena
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0b1220);
 
-        // renderer
         const rect = el.getBoundingClientRect();
         const w = Math.max(1, Math.floor(rect.width));
         const h = Math.max(1, Math.floor(rect.height));
@@ -1819,7 +2283,6 @@
         el.appendChild(renderer.domElement);
         renderer.domElement.style.display = "block";
 
-        // orbit controls (opcional)
         const Orbit = THREE.OrbitControls || window.OrbitControls;
         const controls = Orbit ? new Orbit(camera, renderer.domElement) : null;
         if (controls) {
@@ -1827,23 +2290,19 @@
           controls.dampingFactor = 0.08;
         }
 
-        // luz
         scene.add(new THREE.AmbientLight(0xffffff, 0.75));
         const dir = new THREE.DirectionalLight(0xffffff, 0.9);
         dir.position.set(80, 120, 60);
         scene.add(dir);
 
-        // curva e linha
         const curve = new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.15);
         const routeGeom = new THREE.BufferGeometry().setFromPoints(curve.getPoints(420));
         const routeMat = new THREE.LineBasicMaterial({ color: 0x22c55e, transparent: true, opacity: 0.95 });
         scene.add(new THREE.Line(routeGeom, routeMat));
 
-        // stops (esferas)
         const stopGeom = new THREE.SphereGeometry(1.45, 18, 18);
         const stopMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.35, metalness: 0.1 });
 
-        // sprites (painéis com fotos)
         const loader = new THREE.TextureLoader();
         if (loader.setCrossOrigin) loader.setCrossOrigin("anonymous");
 
@@ -1854,7 +2313,6 @@
           const mat = new THREE.SpriteMaterial({ map: fallbackTex, transparent: true });
           const sprite = new THREE.Sprite(mat);
 
-          // escala inicial 16:10
           sprite.scale.set(18, 11.25, 1);
           sprite.position.copy(pos);
           sprite.position.y = 12;
@@ -1869,7 +2327,6 @@
                 mat.map = tex;
                 mat.needsUpdate = true;
 
-                // ajusta escala pela proporção real
                 const iw = tex.image?.width || 16;
                 const ih = tex.image?.height || 10;
                 const aspect = iw / ih;
@@ -1877,16 +2334,13 @@
                 sprite.scale.set(baseH * aspect, baseH, 1);
               },
               undefined,
-              () => {
-                // mantém fallback de texto
-              }
+              () => {}
             );
           }
 
           return sprite;
         }
 
-        // coloca as esferas e sprites nas 4 paradas (sem repetir a última Brasília)
         const stopIds = ["bsb", "for", "bom", "jpa"];
         const stopPositions = points.slice(0, 4);
 
@@ -1899,7 +2353,6 @@
           addPhotoSprite(stopIds[i], p);
         });
 
-        // ônibus
         const bus = new THREE.Mesh(
           new THREE.BoxGeometry(3.2, 1.6, 6.0),
           new THREE.MeshStandardMaterial({ color: 0xf97316, roughness: 0.35, metalness: 0.1 })
@@ -1908,7 +2361,6 @@
         bus.position.y = 1.2;
         scene.add(bus);
 
-        // auto-fit camera na rota
         const box = new THREE.Box3().setFromPoints(points);
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
@@ -1929,20 +2381,17 @@
           controls.update();
         }
 
-        // grid
         const gridSize = Math.max(80, maxDim * 2.2);
         const grid = new THREE.GridHelper(gridSize, 22, 0xffffff, 0xffffff);
         grid.material.opacity = 0.12;
         grid.material.transparent = true;
         scene.add(grid);
 
-        // t dos stops (para dividir trechos)
         const tFor = estimateTForPoint(curve, points[1]);
         const tBom = estimateTForPoint(curve, points[2]);
         const tJpa = estimateTForPoint(curve, points[3]);
         const stopTs = [0, tFor, tBom, tJpa, 1];
 
-        // HUD helper
         function setHud(segmentIndex, segProgress) {
           const seg = SEGMENTS[segmentIndex];
           const from = CITY_MEDIA[seg.from];
@@ -1959,44 +2408,31 @@
           if (hudProgressLabel) hudProgressLabel.textContent = `${pct}%`;
           if (hudProgressFill) hudProgressFill.style.width = pct + "%";
 
-          if (hudDot) {
-            hudDot.classList.toggle("warn", segProgress >= 0.92);
-          }
+          if (hudDot) hudDot.classList.toggle("warn", segProgress >= 0.92);
 
-          if (hudPhoto && to?.img && hudPhoto.src !== to.img) {
-            hudPhoto.src = to.img;
-          }
+          if (hudPhoto && to?.img && hudPhoto.src !== to.img) hudPhoto.src = to.img;
 
           if (hudCredit) {
-            // mostra crédito do destino (to)
             hudCredit.textContent = to?.credit ? `Foto do destino: ${to.credit}` : "Foto do destino: –";
           }
         }
 
-        // inicializa HUD no primeiro trecho
         setHud(0, 0);
 
-        // animação
         let t = 0;
-        const baseSpeed = 0.001; // base (antes do multiplicador)
+        const baseSpeed = 0.001;
 
         function animate() {
-          // avance do tempo
-          if (sim3d.playing) {
-            t = (t + baseSpeed * sim3d.speedMult) % 1;
-          }
+          if (sim3d.playing) t = (t + baseSpeed * sim3d.speedMult) % 1;
 
-          // posição do ônibus
           const pos = curve.getPointAt(t);
           const tan = curve.getTangentAt(t);
 
           bus.position.set(pos.x, 1.2, pos.z);
 
-          // orienta o ônibus
           const yaw = Math.atan2(tan.x, tan.z);
           bus.rotation.set(0, yaw, 0);
 
-          // segmento atual
           let segIdx = 0;
           for (let i = 0; i < stopTs.length - 1; i++) {
             if (t >= stopTs[i] && t <= stopTs[i + 1]) { segIdx = i; break; }
@@ -2007,11 +2443,9 @@
 
           setHud(segIdx, segProgress);
 
-          // câmera seguindo o ônibus
           if (controls) {
             if (sim3d.followCamera) {
               controls.target.lerp(bus.position, 0.12);
-              // mantém a câmera mais “de cima e atrás”
               const behind = tan.clone().multiplyScalar(-35);
               const up = new THREE.Vector3(0, 18, 0);
               const desired = bus.position.clone().add(behind).add(up);
@@ -2028,7 +2462,6 @@
         }
         animate();
 
-        // resize robusto
         const onResize = () => {
           const r = el.getBoundingClientRect();
           const nw = Math.max(1, Math.floor(r.width));
@@ -2044,7 +2477,6 @@
         ro.observe(el);
         el._trip3dRO = ro;
 
-        // footer credits
         const footerCredits = document.getElementById("footer-credits");
         if (footerCredits) {
           footerCredits.textContent =
@@ -2076,9 +2508,17 @@
       buildSeatLayout();
       initMap();
       init3DSim();
+
+      if (isLodgingUnlocked()) {
+        buildLodgingTable();
+        updateHeroRoomsBadge();
+      }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      initTabs();
+      initLodgingLock();
+
       loadPassengersFromCSV()
         .then(() => initAfterPassengersLoaded())
         .catch((err) => {
