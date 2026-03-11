@@ -623,16 +623,7 @@
     [data-tab-content] { display: none; }
     [data-tab-content].active { display: block; }
 
-    body:not(.lodging-unlocked) [data-tab="lodging"],
-    body:not(.lodging-unlocked) [data-tab-content="lodging"],
-    body:not(.lodging-unlocked) .lodging-only,
-    body:not(.lodging-unlocked) #hero-badge-rooms {
-      display: none !important;
-    }
-
-    body.lodging-unlocked #lodging-unlock-btn {
-      display: none !important;
-    }
+   
 
     .warn-pill {
       display: inline-flex;
@@ -812,7 +803,7 @@
     <div class="tabs" role="tablist" aria-label="Navegação">
       <button class="tab-btn active" data-tab="trip" aria-selected="true" type="button">🚌 Viagem</button>
       <button class="tab-btn" data-tab="lodging" aria-selected="false" type="button">🏨 Hospedagem</button>
-      <button class="tab-btn" id="lodging-unlock-btn" type="button">🔒 Desbloquear hospedagem</button>
+    
     </div>
 
     <div data-tab-content="trip" class="active">
@@ -1116,7 +1107,7 @@
 
     const FARE_PER_PERSON = 1100.0;
     const MAX_INSTALLMENTS = 10;
-    const LODGING_PASSWORD = "WVRS";
+   
 
     const ROOM_CAPACITY = {
       duplo: 2,
@@ -1325,43 +1316,7 @@
       showTab("trip");
     }
 
-    function isLodgingUnlocked() {
-      return document.body.classList.contains("lodging-unlocked");
-    }
-
-    function setLodgingUnlocked(value) {
-      if (value) {
-        document.body.classList.add("lodging-unlocked");
-        sessionStorage.setItem("lodgingUnlocked", "1");
-      } else {
-        document.body.classList.remove("lodging-unlocked");
-        sessionStorage.removeItem("lodgingUnlocked");
-      }
-    }
-
-    function initLodgingLock() {
-      if (sessionStorage.getItem("lodgingUnlocked") === "1") {
-        setLodgingUnlocked(true);
-      }
-
-      const btn = document.getElementById("lodging-unlock-btn");
-      if (!btn) return;
-
-      btn.addEventListener("click", () => {
-        const typed = prompt("Digite a senha para acessar a Hospedagem:");
-        if (typed === null) return;
-
-        if (String(typed).trim() === LODGING_PASSWORD) {
-          setLodgingUnlocked(true);
-          buildLodgingTable();
-          updateHeroRoomsBadge();
-          const lodgingTabBtn = document.querySelector('.tab-btn[data-tab="lodging"]');
-          if (lodgingTabBtn) lodgingTabBtn.click();
-        } else {
-          alert("Senha incorreta.");
-        }
-      });
-    }
+   
 
     function getInstallments(p) {
       if (p.seatType === "Colo") return 0;
@@ -1927,7 +1882,7 @@
     function updateHeroRoomsBadge() {
       const el = document.getElementById("hero-badge-rooms-text");
       if (!el) return;
-      if (!isLodgingUnlocked()) return;
+      
 
       const fams = groupFamilies();
       const keys = Object.keys(fams);
@@ -2072,15 +2027,13 @@
       buildPassengerTable();
       buildSeatLayout();
 
-      if (isLodgingUnlocked()) {
-        buildLodgingTable();
-        updateHeroRoomsBadge();
-      }
+      buildLodgingTable();
+      updateHeroRoomsBadge();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
       initTabs();
-      initLodgingLock();
+     
 
       loadPassengersFromCSV()
         .then(() => initAfterPassengersLoaded())
