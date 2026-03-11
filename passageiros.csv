@@ -1,44 +1,44 @@
 Nome;Categoria;Parcelas;Poltrona;Familia;Quarto;Hotel;Diaria
-Janduy;adulto;10;3;q1;Duplo;rede_andrade;286
-Adeilza;adulto;6;;q1;Duplo;rede_andrade;286
-Ana Carolina;adulto;2;;q2;Triplo;fortmar;247
-Robson;adulto;2;;q2;Triplo;fortmar;247
-Davi;crianca_colo;0;;q2;Triplo;fortmar;247
-Luíza;crianca_colo;0;;q2;Triplo;fortmar;247
-Wandem;adulto;4;;q3;Triplo;hotel_americas;241
-Liz;crianca_poltrona;4;;q3;Triplo;hotel_americas;241
-Theo;crianca_poltrona;4;;q3;Triplo;hotel_americas;241
-Joel;adulto;10;7;q4;Triplo;rede_andrade;286
-Edina;adulto;10;8;q4;Triplo;rede_andrade;286
-Ana Mercia;adulto;2;;q5;Duplo;algarve;199
-Mida;adulto;4;;q5;Duplo;algarve;199
-Francisca das Chagas;adulto;3;;q6;Duplo;ara_mar;191
-Francisco Onofre;adulto;3;;q6;Duplo;ara_mar;191
-Walisson;adulto;3;;q7;Triplo;el_dorado;248
-Thais;adulto;3;;q7;Triplo;el_dorado;248
-Luís;crianca_poltrona;5;;q7;Triplo;el_dorado;248
-Francisco Rosendo;adulto;5;;q8;Triplo;joh_blue_ocean;263
-Rosa Maria;adulto;5;;q8;Triplo;joh_blue_ocean;263
-Rhalisson;adulto;5;;q8;Triplo;joh_blue_ocean;263
-Zilda;adulto;4;49;q9;Triplo;rede_andrade;286
-Dissér;adulto;4;50;q9;Triplo;rede_andrade;286
-Gabriel Lima;crianca_poltrona;4;;q9;Triplo;rede_andrade;286
-Janival;adulto;10;4;q10;Triplo;rede_andrade;286
-Maria Ferreira de Andrade;adulto;10;52;q10;Triplo;rede_andrade;286
-Israel Agripino Ferreira dos Santos;adulto;10;53;q10;Triplo;rede_andrade;286
-Juracy;adulto;4;;q11;Duplo;hotel_americas;241
-Mª Aparecida;adulto;4;;q11;Duplo;hotel_americas;241
-João Neto;adulto;10;1;q12;Duplo;rede_andrade;286
-Cláudio;adulto;4;;q13;Triplo;fortmar;247
-Suely;adulto;4;;q13;Triplo;fortmar;247
-Juninho;adulto;4;;q13;Triplo;fortmar;247
-Bosco;adulto;4;;q12;Duplo;rede_andrade;286
-Jurandy;adulto;10;55;q15;Duplo;rede_andrade;286
-Lêda;adulto;10;56;q15;Duplo;rede_andrade;286
-Raíssa Lima;adulto;3;;q16;Duplo;algarve;199
-Francisca das Chagas Lima;adulto;3;;q16;Duplo;algarve;199
-Leonice Rita de Jesus;adulto;3;;q17;Duplo;ara_mar;191
-Lourival Ferreira de Lima;adulto;3;;q17;Duplo;ara_mar;191
-Francisca Márcia Lima;adulto;4;;q18;Duplo;el_dorado;248
-Francisco Raimundo;adulto;4;;q18;Duplo;el_dorado;248
-Maria Eunice;adulto;3;;q19;Duplo;rede_andrade;286
+Janduy;adulto;10;3;q1;Duplo;;
+Adeilza;adulto;6;;q1;Duplo;;
+Ana Carolina;adulto;2;;q2;Triplo;;
+Robson;adulto;2;;q2;Triplo;;
+Davi;crianca_colo;0;;q2;Triplo;;
+Luíza;crianca_colo;0;;q2;Triplo;;
+Wandem;adulto;4;;q3;Triplo;;
+Liz;crianca_poltrona;4;;q3;Triplo;;
+Theo;crianca_poltrona;4;;q3;Triplo;;
+Joel;adulto;10;7;q4;Triplo;;
+Edina;adulto;10;8;q4;Triplo;;
+Ana Mercia;adulto;2;;q5;Duplo;;
+Mida;adulto;4;;q5;Duplo;;
+Francisca das Chagas;adulto;3;;q6;Duplo;;
+Francisco Onofre;adulto;3;;q6;Duplo;;
+Walisson;adulto;3;;q7;Triplo;;
+Thais;adulto;3;;q7;Triplo;;
+Luís;crianca_poltrona;5;;q7;Triplo;;
+Francisco Rosendo;adulto;5;;q8;Triplo;;
+Rosa Maria;adulto;5;;q8;Triplo;;
+Rhalisson;adulto;5;;q8;Triplo;;
+Zilda;adulto;4;49;q9;Triplo;;
+Dissér;adulto;4;50;q9;Triplo;;
+Gabriel Lima;crianca_poltrona;4;;q9;Triplo;;
+Janival;adulto;10;4;q10;Triplo;;
+Maria Ferreira de Andrade;adulto;10;52;q10;Triplo;;
+Israel Agripino Ferreira dos Santos;adulto;10;53;q10;Triplo;;
+Juracy;adulto;4;;q11;Duplo;;
+Mª Aparecida;adulto;4;;q11;Duplo;;
+João Neto;adulto;10;1;q12;Duplo;;
+Cláudio;adulto;4;;q13;Triplo;;
+Suely;adulto;4;;q13;Triplo;;
+Juninho;adulto;4;;q13;Triplo;;
+Bosco;adulto;4;;q12;Duplo;;
+Jurandy;adulto;10;55;q15;Duplo;;
+Lêda;adulto;10;56;q15;Duplo;;
+Raíssa Lima;adulto;3;;q16;Duplo;;
+Francisca das Chagas Lima;adulto;3;;q16;Duplo;;
+Leonice Rita de Jesus;adulto;3;;q17;Duplo;;
+Lourival Ferreira de Lima;adulto;3;;q17;Duplo;;
+Francisca Márcia Lima;adulto;4;;q18;Duplo;;
+Francisco Raimundo;adulto;4;;q18;Duplo;;
+Maria Eunice;adulto;3;;q19;Duplo;;
