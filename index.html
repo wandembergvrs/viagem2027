@@ -1034,7 +1034,7 @@
           Nos arquivos de hospedagem, use:
           <code>Nome;Familia;Quarto;Hotel;Diaria</code> ou
           <code>Nome;Grupo;Quarto;Hotel;Diaria</code>.
-          O campo <code>Hotel</code> deve conter apenas o nome do hotel informado no respectivo CSV.
+          O campo <code>Hotel</code> deve conter apenas o nome do hotel informado no respectivo CSV. O campo <code>Diaria</code> representa o valor diário do quarto, e o HTML calcula automaticamente o total para 5 noites.
         </div>
       </section>
 
@@ -1046,7 +1046,7 @@
               Hospedagem - Fortaleza
             </div>
             <p class="card-subtitle">
-              Quartos, hotel reservado e status das famílias vinculadas a Fortaleza.
+              Quartos, hotel reservado e despesas das famílias vinculadas a Fortaleza.
             </p>
           </div>
         </div>
@@ -1064,6 +1064,7 @@
                 <th>Capacidade</th>
                 <th>Hotel reservado</th>
                 <th>Diária</th>
+                <th>Total (5 noites)</th>
                 <th>Status</th>
                 <th>Membros</th>
               </tr>
@@ -1095,7 +1096,7 @@
               Hospedagem - João Pessoa
             </div>
             <p class="card-subtitle">
-              Quartos, hotel reservado e status das famílias vinculadas a João Pessoa.
+              Quartos, hotel reservado e despesas das famílias vinculadas a João Pessoa.
             </p>
           </div>
         </div>
@@ -1113,6 +1114,7 @@
                 <th>Capacidade</th>
                 <th>Hotel reservado</th>
                 <th>Diária</th>
+                <th>Total (5 noites)</th>
                 <th>Status</th>
                 <th>Membros</th>
               </tr>
@@ -1155,11 +1157,12 @@
 
     const FARE_PER_PERSON = 1100.0;
     const MAX_INSTALLMENTS = 10;
-   
+    const LODGING_NIGHTS = 5;
 
     const ROOM_CAPACITY = {
       duplo: 2,
-      triplo: 3
+      triplo: 3,
+      quadruplo: 4
     };
 
     const HOTEL_ALIASES = {
@@ -1215,6 +1218,15 @@
       if (["duplo", "double", "d"].includes(compact)) {
         return { key: "duplo", label: "Duplo", invalid: false };
       }
+      if (["triplo", "triple", "t"].includes(compact)) {
+        return { key: "triplo", label: "Triplo", invalid: false };
+      }
+      if (["quadruplo", "quádruplo", "quadruple", "q"].includes(compact)) {
+        return { key: "quadruplo", label: "Quádruplo", invalid: false };
+      }
+
+      return { key: "", label: "Inválido", invalid: true };
+    }
       if (["triplo", "triple", "t"].includes(compact)) {
         return { key: "triplo", label: "Triplo", invalid: false };
       }
@@ -1734,6 +1746,7 @@
       const list = Object.values(fams);
 
       const reservedFamilies = list.filter(f => f.hotelCode || f.hotelRaw);
+
       const uniqueHotels = [...new Set(
         reservedFamilies
           .map(f => f.hotelCode || slugifyHotelCode(f.hotelRaw) || "")
@@ -1741,16 +1754,18 @@
       )];
 
       const ratesWithValue = list.filter(f => Number(f.dailyRate) > 0);
-      const avg = ratesWithValue.length
-        ? ratesWithValue.reduce((acc, f) => acc + (Number(f.dailyRate) || 0), 0) / ratesWithValue.length
-        : 0;
+      const totalDaily = ratesWithValue.reduce((acc, f) => acc + (Number(f.dailyRate) || 0), 0);
+      const avg = ratesWithValue.length ? totalDaily / ratesWithValue.length : 0;
 
       return {
         totalFamilies: list.length,
         reservedFamilies: reservedFamilies.length,
         uniqueHotelsCount: uniqueHotels.length,
-        averageDailyRate: avg
+        averageDailyRate: avg,
+        totalDailyRate: totalDaily,
+        totalStayCost: totalDaily * LODGING_NIGHTS
       };
+    };
     }
 
     function buildHotelOptionsGrid(destinationKey, gridId) {
@@ -1772,6 +1787,37 @@
             families: 0,
             rates: []
           });
+        }
+
+        const item = grouped.get(key);
+        item.families += 1;
+        if (Number(f.dailyRate) > 0) item.rates.push(Number(f.dailyRate));
+      });
+
+      const hotels = Array.from(grouped.values()).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+
+      if (!hotels.length) {
+        grid.innerHTML = '<div class="muted-box">Nenhum hotel informado no CSV deste destino.</div>';
+        return;
+      }
+
+      hotels.forEach(hotel => {
+        const totalDaily = hotel.rates.reduce((acc, v) => acc + v, 0);
+        const avgRate = hotel.rates.length ? totalDaily / hotel.rates.length : 0;
+        const stayTotal = totalDaily * LODGING_NIGHTS;
+
+        const card = document.createElement("div");
+        card.className = "hotel-card";
+        card.innerHTML = `
+          <div class="hotel-badge">🏨 Informado no CSV</div>
+          <h4>${hotel.name}</h4>
+          <div class="hotel-meta">${hotel.families} família(s) / quarto(s)</div>
+          <div class="hotel-meta">Diária média: ${avgRate ? brCurrency(avgRate) : "—"}</div>
+          <div class="hotel-meta">Total estimado (${LODGING_NIGHTS} noites): ${stayTotal ? brCurrency(stayTotal) : "—"}</div>
+        `;
+        grid.appendChild(card);
+      });
+    });
         }
 
         const item = grouped.get(key);
@@ -1832,6 +1878,10 @@
           <small>Famílias com diária preenchida</small>
           <strong>${withDaily}</strong>
         </div>
+        <div class="kpi-card">
+          <small>Total (${LODGING_NIGHTS} noites)</small>
+          <strong>${s.totalStayCost ? brCurrency(s.totalStayCost) : "—"}</strong>
+        </div>
       `;
     }
 
@@ -1856,8 +1906,16 @@
           <strong>${fort.reservedFamilies + jpa.reservedFamilies}</strong>
         </div>
         <div class="kpi-card">
-          <small>Total de destinos ativos</small>
-          <strong>${["fortaleza", "joao_pessoa"].filter(key => getReservedHotelsSummary(key).totalFamilies > 0).length}</strong>
+          <small>Total Fortaleza</small>
+          <strong>${fort.totalStayCost ? brCurrency(fort.totalStayCost) : "—"}</strong>
+        </div>
+        <div class="kpi-card">
+          <small>Total João Pessoa</small>
+          <strong>${jpa.totalStayCost ? brCurrency(jpa.totalStayCost) : "—"}</strong>
+        </div>
+        <div class="kpi-card">
+          <small>Total geral</small>
+          <strong>${(fort.totalStayCost + jpa.totalStayCost) ? brCurrency(fort.totalStayCost + jpa.totalStayCost) : "—"}</strong>
         </div>
       `;
     }
@@ -1882,15 +1940,132 @@
       let hotelsDefined = 0;
       let noHotel = 0;
       let dailyRates = [];
+      let totalStayCost = 0;
       let duplos = 0;
       let triplos = 0;
+      let quadruplos = 0;
       let withDaily = 0;
 
       if (!keys.length) {
         const tr = document.createElement("tr");
-        tr.innerHTML = '<td colspan="8" style="text-align:center;color:var(--text-muted)">Sem registros para este destino.</td>';
+        tr.innerHTML = '<td colspan="9" style="text-align:center;color:var(--text-muted)">Sem registros para este destino.</td>';
         tbody.appendChild(tr);
       }
+
+      keys.forEach(k => {
+        const f = fams[k];
+        const people = f.members.length;
+        const cap = getCapacityForFamily(f);
+        const over = (cap > 0 && people > cap);
+        const hasMissingPassenger = f.members.some(m => !m.existsInPassengerList);
+
+        if (f.roomTypeKey) defined++; else missing++;
+        if (f.anyInvalid) invalid++;
+        if (over) overflow++;
+        if (hasMissingPassenger) missingInPassengers++;
+
+        if (f.roomTypeKey === "duplo") duplos++;
+        if (f.roomTypeKey === "triplo") triplos++;
+        if (f.roomTypeKey === "quadruplo") quadruplos++;
+
+        if (f.hotelCode || f.hotelRaw) {
+          hotelsDefined++;
+        } else {
+          noHotel++;
+        }
+
+        if (f.dailyRate > 0) {
+          dailyRates.push(Number(f.dailyRate));
+          totalStayCost += Number(f.dailyRate) * LODGING_NIGHTS;
+          withDaily++;
+        }
+
+        const tr = document.createElement("tr");
+
+        const tdFam = document.createElement("td");
+        tdFam.textContent = f.familyId;
+
+        const tdType = document.createElement("td");
+        tdType.textContent = f.roomTypeLabel || "—";
+
+        const tdPeople = document.createElement("td");
+        tdPeople.textContent = String(people);
+
+        const tdCap = document.createElement("td");
+        tdCap.textContent = cap ? String(cap) : "—";
+
+        const tdHotel = document.createElement("td");
+        tdHotel.innerHTML = `<span class="family-hotel-tag">🏨 ${f.hotelRaw || formatHotelCode(f.hotelCode) || "—"}</span>`;
+
+        const tdDaily = document.createElement("td");
+        tdDaily.textContent = f.dailyRate > 0 ? brCurrency(Number(f.dailyRate)) : "—";
+
+        const tdTotal = document.createElement("td");
+        tdTotal.textContent = f.dailyRate > 0 ? brCurrency(Number(f.dailyRate) * LODGING_NIGHTS) : "—";
+
+        const tdStatus = document.createElement("td");
+        if (f.anyInvalid) {
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Conflito de dados</span>';
+        } else if (hasMissingPassenger) {
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Nome fora de passageiros.csv</span>';
+        } else if (!f.roomTypeKey) {
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem tipo de quarto</span>';
+        } else if (!(f.hotelCode || f.hotelRaw)) {
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem hotel definido</span>';
+        } else if (!f.dailyRate) {
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem diária</span>';
+        } else if (over) {
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Excede capacidade</span>';
+        } else {
+          tdStatus.innerHTML = '<span class="ok-pill">✅ OK</span>';
+        }
+
+        const tdMembers = document.createElement("td");
+        tdMembers.textContent = f.members
+          .map(m => !m.existsInPassengerList ? `${m.name} (fora da lista)` : m.name)
+          .join(", ");
+
+        tr.appendChild(tdFam);
+        tr.appendChild(tdType);
+        tr.appendChild(tdPeople);
+        tr.appendChild(tdCap);
+        tr.appendChild(tdHotel);
+        tr.appendChild(tdDaily);
+        tr.appendChild(tdTotal);
+        tr.appendChild(tdStatus);
+        tr.appendChild(tdMembers);
+
+        tbody.appendChild(tr);
+      });
+
+      const avgRate = dailyRates.length
+        ? dailyRates.reduce((a, b) => a + b, 0) / dailyRates.length
+        : 0;
+
+      const chips = [
+        `👨‍👩‍👧‍👦 ${totalFamilies} famílias`,
+        `🏨 ${defined} quartos definidos (duplo:${duplos} • triplo:${triplos} • quádruplo:${quadruplos})`,
+        `📍 ${hotelsDefined} com hotel definido`,
+        `💵 ${withDaily} com diária preenchida`,
+        `💰 média do grupo: ${avgRate ? brCurrency(avgRate) : "—"}`,
+        `🧾 total ${LODGING_NIGHTS} noites: ${totalStayCost ? brCurrency(totalStayCost) : "—"}`
+      ];
+
+      if (missing) chips.push(`🟠 ${missing} sem tipo`);
+      if (noHotel) chips.push(`🟠 ${noHotel} sem hotel`);
+      if (invalid) chips.push(`⚠️ ${invalid} conflito(s)`);
+      if (overflow) chips.push(`🚫 ${overflow} excede(m) capacidade`);
+      if (missingInPassengers) chips.push(`🧾 ${missingInPassengers} família(s) com nome fora da lista de passageiros`);
+
+      chips.forEach(t => {
+        const s = document.createElement("span");
+        s.textContent = t;
+        summary.appendChild(s);
+      });
+
+      buildDestinationLodgingKpis(destinationKey, config.kpisId);
+      buildHotelOptionsGrid(destinationKey, config.gridId);
+    }
 
       keys.forEach(k => {
         const f = fams[k];
