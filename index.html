@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1031,7 +1032,9 @@
           <code>hospedagem_fortaleza.csv</code> e
           <code>hospedagem_joao_pessoa.csv</code>.
           Nos arquivos de hospedagem, use:
-          <code>Nome;Familia;Quarto;Hotel;Diaria</code>.
+          <code>Nome;Familia;Quarto;Hotel;Diaria</code> ou
+          <code>Nome;Grupo;Quarto;Hotel;Diaria</code>.
+          O campo <code>Hotel</code> deve conter apenas o nome do hotel informado no respectivo CSV.
         </div>
       </section>
 
@@ -1072,11 +1075,11 @@
         <div class="card-header" style="margin-top:12px">
           <div>
             <div class="card-title">
-              <span class="icon">⭐</span>
-              Opções de hospedagem - Fortaleza
+              <span class="icon">🏨</span>
+              Hotéis informados no CSV - Fortaleza
             </div>
             <p class="card-subtitle">
-              Comparativo opcional com hotéis de referência para Fortaleza.
+              Resumo apenas dos hotéis efetivamente preenchidos em <code>hospedagem_fortaleza.csv</code>.
             </p>
           </div>
         </div>
@@ -1121,11 +1124,11 @@
         <div class="card-header" style="margin-top:12px">
           <div>
             <div class="card-title">
-              <span class="icon">📍</span>
-              Opções de hospedagem - João Pessoa
+              <span class="icon">🏨</span>
+              Hotéis informados no CSV - João Pessoa
             </div>
             <p class="card-subtitle">
-              Espaço reservado para você preencher referências quando decidir os hotéis de João Pessoa.
+              Resumo apenas dos hotéis efetivamente preenchidos em <code>hospedagem_joao_pessoa.csv</code>.
             </p>
           </div>
         </div>
@@ -1159,79 +1162,8 @@
       triplo: 3
     };
 
-    const HOTEL_CATALOG = {
-      fortaleza: {
-        rede_andrade: {
-          code: "rede_andrade",
-          name: "Rede Andrade Casa Blanca",
-          preferred: true,
-          avgRange: "R$ 151–286",
-          referenceRate: 286,
-          address: "Rua Joaquim Alves, 194, Praia de Iracema, Fortaleza",
-          note: "Hotel-base preferencial do grupo.",
-          mapsQuery: "Rede Andrade Casa Blanca Fortaleza"
-        },
-        hotel_americas: {
-          code: "hotel_americas",
-          name: "Hotel Américas",
-          preferred: false,
-          avgRange: "R$ 241",
-          referenceRate: 241,
-          address: "Rua Joaquim Alves, 151, Fortaleza",
-          note: "Mesma rua do Casa Blanca.",
-          mapsQuery: "Hotel Américas Fortaleza"
-        },
-        fortmar: {
-          code: "fortmar",
-          name: "Fortmar Hotel",
-          preferred: false,
-          avgRange: "R$ 234–274",
-          referenceRate: 247,
-          address: "Praia de Iracema, Fortaleza",
-          note: "Muito próximo da região da Estátua de Iracema.",
-          mapsQuery: "Fortmar Hotel Fortaleza"
-        },
-        algarve: {
-          code: "algarve",
-          name: "Algarve Praia Hotel",
-          preferred: false,
-          avgRange: "R$ 180–199",
-          referenceRate: 199,
-          address: "Praia de Iracema, Fortaleza",
-          note: "Próximo do Pirata Bar/Centro Cultural Belchior.",
-          mapsQuery: "Algarve Praia Hotel Fortaleza"
-        },
-        ara_mar: {
-          code: "ara_mar",
-          name: "Ara Mar Praia Hotel",
-          preferred: false,
-          avgRange: "R$ 188–192",
-          referenceRate: 191,
-          address: "Praia de Iracema, Fortaleza",
-          note: "Também na Praia de Iracema, perto do Centro Cultural Belchior.",
-          mapsQuery: "Ara Mar Praia Hotel Fortaleza"
-        },
-        el_dorado: {
-          code: "el_dorado",
-          name: "El Dorado Hotel",
-          preferred: false,
-          avgRange: "R$ 239–248",
-          referenceRate: 248,
-          address: "Região do Centro Cultural Belchior, Fortaleza",
-          note: "Opção próxima e econômica.",
-          mapsQuery: "El Dorado Hotel Fortaleza"
-        },
-        joh_blue_ocean: {
-          code: "joh_blue_ocean",
-          name: "JOH Blue Ocean Hotel",
-          preferred: false,
-          avgRange: "R$ 263",
-          referenceRate: 263,
-          address: "Praia de Iracema, Fortaleza",
-          note: "Próximo da Estátua de Iracema/Praia de Iracema.",
-          mapsQuery: "JOH Blue Ocean Hotel Fortaleza"
-        }
-      },
+    const HOTEL_ALIASES = {
+      fortaleza: {},
       joao_pessoa: {}
     };
 
@@ -1313,20 +1245,31 @@
       return passengerNameIndex.get(normalizeName(name)) || null;
     }
 
-    function resolveHotelCode(rawValue, destinationKey) {
+    function getHotelLookupTokens(destinationKey, rawValue) {
       const raw = String(rawValue || "").trim();
-      if (!raw) return "";
+      const compact = slugifyHotelCode(raw);
+      const aliases = HOTEL_ALIASES[destinationKey] || {};
+      const aliasResolved = aliases[compact] || "";
+      return {
+        raw,
+        compact,
+        resolved: aliasResolved || compact
+      };
+    }
 
-      const catalog = HOTEL_CATALOG[destinationKey] || {};
-      const compactInput = slugifyHotelCode(raw);
+    function resolveHotelCode(rawValue, destinationKey) {
+      const tokens = getHotelLookupTokens(destinationKey, rawValue);
+      return tokens.resolved;
+    }
 
-      if (catalog[compactInput]) return compactInput;
-
-      const byName = Object.values(catalog).find((hotel) => {
-        return slugifyHotelCode(hotel.name) === compactInput;
-      });
-
-      return byName ? byName.code : compactInput;
+    function formatHotelCode(code) {
+      const s = String(code || "").trim();
+      if (!s) return "—";
+      return s
+        .split(/_+/)
+        .filter(Boolean)
+        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(" ");
     }
 
     async function loadAllData() {
@@ -1405,10 +1348,10 @@
       const headers = headerLine.split(delimiter).map((h) => normalizeHeader(h));
 
       const idxNome = headers.indexOf("nome");
-      const idxFamilia = headers.findIndex(h => ["familia", "grupo"].includes(h));
-      const idxQuarto = headers.indexOf("quarto");
-      const idxHotel = headers.indexOf("hotel");
-      const idxDiaria = headers.indexOf("diaria");
+      const idxFamilia = headers.findIndex(h => ["familia", "grupo", "grupo_hospedagem", "grupo hospedagem", "family"].includes(h));
+      const idxQuarto = headers.findIndex(h => ["quarto", "tipo_quarto", "tipo quarto", "room"].includes(h));
+      const idxHotel = headers.findIndex(h => ["hotel", "hotel_reservado", "hotel reservado"].includes(h));
+      const idxDiaria = headers.findIndex(h => ["diaria", "valor_diaria", "valor diaria", "daily_rate"].includes(h));
 
       if (idxNome === -1) {
         console.error(`Arquivo de hospedagem (${destinationKey}) deve ter pelo menos a coluna Nome`);
@@ -1714,8 +1657,8 @@
       });
     }
 
-    function getHotelMeta(hotelCode, destinationKey) {
-      return HOTEL_CATALOG[destinationKey]?.[hotelCode] || null;
+    function getHotelMeta() {
+      return null;
     }
 
     function groupFamiliesByDestination(destinationKey) {
@@ -1793,7 +1736,7 @@
       const reservedFamilies = list.filter(f => f.hotelCode || f.hotelRaw);
       const uniqueHotels = [...new Set(
         reservedFamilies
-          .map(f => f.hotelCode || f.hotelRaw || "")
+          .map(f => f.hotelCode || slugifyHotelCode(f.hotelRaw) || "")
           .filter(Boolean)
       )];
 
@@ -1806,8 +1749,7 @@
         totalFamilies: list.length,
         reservedFamilies: reservedFamilies.length,
         uniqueHotelsCount: uniqueHotels.length,
-        averageDailyRate: avg,
-        preferredFamilies: reservedFamilies.filter(f => f.hotelCode === "rede_andrade").length
+        averageDailyRate: avg
       };
     }
 
@@ -1817,34 +1759,46 @@
 
       grid.innerHTML = "";
 
-      const hotels = Object.values(HOTEL_CATALOG[destinationKey] || {}).sort((a, b) => {
-        if (a.preferred && !b.preferred) return -1;
-        if (!a.preferred && b.preferred) return 1;
-        return (a.referenceRate || 9999) - (b.referenceRate || 9999);
+      const fams = Object.values(groupFamiliesByDestination(destinationKey));
+      const grouped = new Map();
+
+      fams.forEach(f => {
+        const key = f.hotelCode || slugifyHotelCode(f.hotelRaw) || "";
+        if (!key) return;
+
+        if (!grouped.has(key)) {
+          grouped.set(key, {
+            name: f.hotelRaw || formatHotelCode(key),
+            families: 0,
+            rates: []
+          });
+        }
+
+        const item = grouped.get(key);
+        item.families += 1;
+        if (Number(f.dailyRate) > 0) item.rates.push(Number(f.dailyRate));
       });
 
+      const hotels = Array.from(grouped.values()).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+
       if (!hotels.length) {
-        grid.innerHTML = '<div class="muted-box">Nenhum catálogo de referência configurado para este destino. O preenchimento do CSV continua funcionando normalmente.</div>';
+        grid.innerHTML = '<div class="muted-box">Nenhum hotel informado no CSV deste destino.</div>';
         return;
       }
 
       hotels.forEach(hotel => {
+        const avgRate = hotel.rates.length
+          ? hotel.rates.reduce((acc, v) => acc + v, 0) / hotel.rates.length
+          : 0;
+
         const card = document.createElement("div");
-        card.className = "hotel-card" + (hotel.preferred ? " preferred" : "");
-
-        const mapsUrl =
-          "https://www.google.com/maps/search/?api=1&query=" +
-          encodeURIComponent(hotel.mapsQuery || hotel.name);
-
+        card.className = "hotel-card";
         card.innerHTML = `
-          <div class="hotel-badge">${hotel.preferred ? "⭐ Preferencial" : "🏨 Alternativa"}</div>
+          <div class="hotel-badge">🏨 Informado no CSV</div>
           <h4>${hotel.name}</h4>
-          <div class="hotel-price">Referência: ${hotel.avgRange}</div>
-          <div class="hotel-meta">${hotel.address}</div>
-          <div class="hotel-meta">${hotel.note}</div>
-          <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer">Ver no Google Maps</a>
+          <div class="hotel-meta">${hotel.families} família(s) / quarto(s)</div>
+          <div class="hotel-meta">Diária média informada: ${avgRate ? brCurrency(avgRate) : "—"}</div>
         `;
-
         grid.appendChild(card);
       });
     }
@@ -1854,6 +1808,8 @@
       if (!box) return;
 
       const s = getReservedHotelsSummary(destinationKey);
+      const fams = Object.values(groupFamiliesByDestination(destinationKey));
+      const withDaily = fams.filter(f => Number(f.dailyRate) > 0).length;
 
       box.innerHTML = `
         <div class="kpi-card">
@@ -1873,8 +1829,8 @@
           <strong>${s.averageDailyRate ? brCurrency(s.averageDailyRate) : "—"}</strong>
         </div>
         <div class="kpi-card">
-          <small>Famílias no Rede Andrade</small>
-          <strong>${s.preferredFamilies}</strong>
+          <small>Famílias com diária preenchida</small>
+          <strong>${withDaily}</strong>
         </div>
       `;
     }
@@ -1928,7 +1884,7 @@
       let dailyRates = [];
       let duplos = 0;
       let triplos = 0;
-      let preferredCount = 0;
+      let withDaily = 0;
 
       if (!keys.length) {
         const tr = document.createElement("tr");
@@ -1953,14 +1909,14 @@
 
         if (f.hotelCode || f.hotelRaw) {
           hotelsDefined++;
-          if (f.hotelCode === "rede_andrade") preferredCount++;
         } else {
           noHotel++;
         }
 
-        if (f.dailyRate > 0) dailyRates.push(Number(f.dailyRate));
-
-        const hotelMeta = getHotelMeta(f.hotelCode, destinationKey);
+        if (f.dailyRate > 0) {
+          dailyRates.push(Number(f.dailyRate));
+          withDaily++;
+        }
 
         const tr = document.createElement("tr");
 
@@ -1977,11 +1933,7 @@
         tdCap.textContent = cap ? String(cap) : "—";
 
         const tdHotel = document.createElement("td");
-        if (hotelMeta) {
-          tdHotel.innerHTML = `<span class="family-hotel-tag">${hotelMeta.preferred ? "⭐" : "🏨"} ${hotelMeta.name}</span>`;
-        } else {
-          tdHotel.textContent = f.hotelRaw || f.hotelCode || "—";
-        }
+        tdHotel.innerHTML = `<span class="family-hotel-tag">🏨 ${f.hotelRaw || formatHotelCode(f.hotelCode) || "—"}</span>`;
 
         const tdDaily = document.createElement("td");
         tdDaily.textContent = f.dailyRate > 0 ? brCurrency(Number(f.dailyRate)) : "—";
@@ -2028,7 +1980,7 @@
         `👨‍👩‍👧‍👦 ${totalFamilies} famílias`,
         `🏨 ${defined} quartos definidos (duplo:${duplos} • triplo:${triplos})`,
         `📍 ${hotelsDefined} com hotel definido`,
-        `⭐ ${preferredCount} no Rede Andrade`,
+        `💵 ${withDaily} com diária preenchida`,
         `💰 média do grupo: ${avgRate ? brCurrency(avgRate) : "—"}`
       ];
 
@@ -2204,6 +2156,6 @@
           initAfterPassengersLoaded();
         });
     });
-  </script>
+</script>
 </body>
 </html>
