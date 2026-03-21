@@ -930,7 +930,7 @@
               Lista de passageiros
             </div>
             <p class="card-subtitle">
-              Nomes, perfil e situação geral. Família e quarto aparecem após senha.
+              Nomes, perfil e situação geral dos passageiros. A hospedagem fica separada por destino.
             </p>
           </div>
         </div>
@@ -947,10 +947,6 @@
                 <th>Situação</th>
                 <th>Parcelas</th>
                 <th>Poltrona</th>
-                <th class="lodging-only">Família</th>
-                <th class="lodging-only">Quarto</th>
-                <th class="lodging-only">Hotel</th>
-                <th class="lodging-only">Diária</th>
               </tr>
             </thead>
             <tbody id="passenger-table-body"></tbody>
@@ -1008,16 +1004,17 @@
       </section>
     </div>
 
+    
     <div data-tab-content="lodging">
       <section class="card" id="lodging-card">
         <div class="card-header">
           <div>
             <div class="card-title">
               <span class="icon">🏨</span>
-              Hospedagem do grupo
+              Hospedagem por destino
             </div>
             <p class="card-subtitle">
-              Hotel reservado, tarifa média do grupo e comparação com hotéis próximos.
+              Fortaleza e João Pessoa usam arquivos separados, com agrupamentos independentes.
             </p>
           </div>
           <div class="pill">
@@ -1026,11 +1023,15 @@
           </div>
         </div>
 
-        <div class="kpi-grid" id="lodging-kpis"></div>
+        <div class="kpi-grid" id="lodging-kpis-overall"></div>
 
         <div class="info-highlight" style="margin-top:10px">
-          O hotel reservado e a diária média são lidos da planilha <code>passageiros.csv</code>, pelas colunas
-          <code>Hotel</code> e <code>Diaria</code>.
+          Arquivos esperados:
+          <code>passageiros.csv</code>,
+          <code>hospedagem_fortaleza.csv</code> e
+          <code>hospedagem_joao_pessoa.csv</code>.
+          Nos arquivos de hospedagem, use:
+          <code>Nome;Familia;Quarto;Hotel;Diaria</code>.
         </div>
       </section>
 
@@ -1038,36 +1039,17 @@
         <div class="card-header">
           <div>
             <div class="card-title">
-              <span class="icon">⭐</span>
-              Opções de hospedagem
+              <span class="icon">🌴</span>
+              Hospedagem - Fortaleza
             </div>
             <p class="card-subtitle">
-              Rede Andrade Casa Blanca aparece como preferencial, mas as demais opções ficam visíveis para comparação.
+              Quartos, hotel reservado e status das famílias vinculadas a Fortaleza.
             </p>
           </div>
         </div>
 
-        <div class="hotel-grid" id="hotel-options-grid"></div>
-
-        <div class="muted-box">
-          Os valores mostrados aqui são referências para comparação. O que vale para o grupo é o que estiver preenchido no CSV.
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">🧾</span>
-              Famílias, quartos e hotel reservado
-            </div>
-            <p class="card-subtitle">
-              Agrupamento por família, com tipo de quarto, hotel associado e diária informada na planilha.
-            </p>
-          </div>
-        </div>
-
-        <div class="passenger-summary" id="lodging-summary"></div>
+        <div class="kpi-grid" id="lodging-kpis-fortaleza"></div>
+        <div class="passenger-summary" id="lodging-summary-fortaleza"></div>
 
         <div class="table-wrapper" style="max-height: 420px;">
           <table>
@@ -1083,21 +1065,84 @@
                 <th>Membros</th>
               </tr>
             </thead>
-            <tbody id="lodging-table-body"></tbody>
+            <tbody id="lodging-table-body-fortaleza"></tbody>
           </table>
         </div>
 
+        <div class="card-header" style="margin-top:12px">
+          <div>
+            <div class="card-title">
+              <span class="icon">⭐</span>
+              Opções de hospedagem - Fortaleza
+            </div>
+            <p class="card-subtitle">
+              Comparativo opcional com hotéis de referência para Fortaleza.
+            </p>
+          </div>
+        </div>
+
+        <div class="hotel-grid" id="hotel-options-grid-fortaleza"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span class="icon">🏖️</span>
+              Hospedagem - João Pessoa
+            </div>
+            <p class="card-subtitle">
+              Quartos, hotel reservado e status das famílias vinculadas a João Pessoa.
+            </p>
+          </div>
+        </div>
+
+        <div class="kpi-grid" id="lodging-kpis-joao_pessoa"></div>
+        <div class="passenger-summary" id="lodging-summary-joao_pessoa"></div>
+
+        <div class="table-wrapper" style="max-height: 420px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Família</th>
+                <th>Tipo de quarto</th>
+                <th>Pessoas</th>
+                <th>Capacidade</th>
+                <th>Hotel reservado</th>
+                <th>Diária</th>
+                <th>Status</th>
+                <th>Membros</th>
+              </tr>
+            </thead>
+            <tbody id="lodging-table-body-joao_pessoa"></tbody>
+          </table>
+        </div>
+
+        <div class="card-header" style="margin-top:12px">
+          <div>
+            <div class="card-title">
+              <span class="icon">📍</span>
+              Opções de hospedagem - João Pessoa
+            </div>
+            <p class="card-subtitle">
+              Espaço reservado para você preencher referências quando decidir os hotéis de João Pessoa.
+            </p>
+          </div>
+        </div>
+
+        <div class="hotel-grid" id="hotel-options-grid-joao_pessoa"></div>
+
         <div class="info-highlight" style="margin-top:10px">
-          CSV esperado:
-          <code>Nome;Categoria;Parcelas;Poltrona;Familia;Quarto;Hotel;Diaria</code>
+          Cada destino pode ter uma configuração diferente de famílias, quartos, hotel e diária, sem conflito entre si.
         </div>
       </section>
     </div>
+
   </main>
 
   <footer>
     <div>Site privado para organizar a viagem da família, mostrando apenas o andamento coletivo.</div>
-    <div>Versão com aba de hospedagem integrada.</div>
+    <div>Versão com 3 CSVs: passageiros, hospedagem Fortaleza e hospedagem João Pessoa.</div>
   </footer>
 
   <script>
@@ -1115,76 +1160,79 @@
     };
 
     const HOTEL_CATALOG = {
-      rede_andrade: {
-        code: "rede_andrade",
-        name: "Rede Andrade Casa Blanca",
-        preferred: true,
-        avgRange: "R$ 151–286",
-        referenceRate: 286,
-        address: "Rua Joaquim Alves, 194, Praia de Iracema, Fortaleza",
-        note: "Hotel-base preferencial do grupo.",
-        mapsQuery: "Rede Andrade Casa Blanca Fortaleza"
+      fortaleza: {
+        rede_andrade: {
+          code: "rede_andrade",
+          name: "Rede Andrade Casa Blanca",
+          preferred: true,
+          avgRange: "R$ 151–286",
+          referenceRate: 286,
+          address: "Rua Joaquim Alves, 194, Praia de Iracema, Fortaleza",
+          note: "Hotel-base preferencial do grupo.",
+          mapsQuery: "Rede Andrade Casa Blanca Fortaleza"
+        },
+        hotel_americas: {
+          code: "hotel_americas",
+          name: "Hotel Américas",
+          preferred: false,
+          avgRange: "R$ 241",
+          referenceRate: 241,
+          address: "Rua Joaquim Alves, 151, Fortaleza",
+          note: "Mesma rua do Casa Blanca.",
+          mapsQuery: "Hotel Américas Fortaleza"
+        },
+        fortmar: {
+          code: "fortmar",
+          name: "Fortmar Hotel",
+          preferred: false,
+          avgRange: "R$ 234–274",
+          referenceRate: 247,
+          address: "Praia de Iracema, Fortaleza",
+          note: "Muito próximo da região da Estátua de Iracema.",
+          mapsQuery: "Fortmar Hotel Fortaleza"
+        },
+        algarve: {
+          code: "algarve",
+          name: "Algarve Praia Hotel",
+          preferred: false,
+          avgRange: "R$ 180–199",
+          referenceRate: 199,
+          address: "Praia de Iracema, Fortaleza",
+          note: "Próximo do Pirata Bar/Centro Cultural Belchior.",
+          mapsQuery: "Algarve Praia Hotel Fortaleza"
+        },
+        ara_mar: {
+          code: "ara_mar",
+          name: "Ara Mar Praia Hotel",
+          preferred: false,
+          avgRange: "R$ 188–192",
+          referenceRate: 191,
+          address: "Praia de Iracema, Fortaleza",
+          note: "Também na Praia de Iracema, perto do Centro Cultural Belchior.",
+          mapsQuery: "Ara Mar Praia Hotel Fortaleza"
+        },
+        el_dorado: {
+          code: "el_dorado",
+          name: "El Dorado Hotel",
+          preferred: false,
+          avgRange: "R$ 239–248",
+          referenceRate: 248,
+          address: "Região do Centro Cultural Belchior, Fortaleza",
+          note: "Opção próxima e econômica.",
+          mapsQuery: "El Dorado Hotel Fortaleza"
+        },
+        joh_blue_ocean: {
+          code: "joh_blue_ocean",
+          name: "JOH Blue Ocean Hotel",
+          preferred: false,
+          avgRange: "R$ 263",
+          referenceRate: 263,
+          address: "Praia de Iracema, Fortaleza",
+          note: "Próximo da Estátua de Iracema/Praia de Iracema.",
+          mapsQuery: "JOH Blue Ocean Hotel Fortaleza"
+        }
       },
-      hotel_americas: {
-        code: "hotel_americas",
-        name: "Hotel Américas",
-        preferred: false,
-        avgRange: "R$ 241",
-        referenceRate: 241,
-        address: "Rua Joaquim Alves, 151, Fortaleza",
-        note: "Mesma rua do Casa Blanca.",
-        mapsQuery: "Hotel Américas Fortaleza"
-      },
-      fortmar: {
-        code: "fortmar",
-        name: "Fortmar Hotel",
-        preferred: false,
-        avgRange: "R$ 234–274",
-        referenceRate: 247,
-        address: "Praia de Iracema, Fortaleza",
-        note: "Muito próximo da região da Estátua de Iracema.",
-        mapsQuery: "Fortmar Hotel Fortaleza"
-      },
-      algarve: {
-        code: "algarve",
-        name: "Algarve Praia Hotel",
-        preferred: false,
-        avgRange: "R$ 180–199",
-        referenceRate: 199,
-        address: "Praia de Iracema, Fortaleza",
-        note: "Próximo do Pirata Bar/Centro Cultural Belchior.",
-        mapsQuery: "Algarve Praia Hotel Fortaleza"
-      },
-      ara_mar: {
-        code: "ara_mar",
-        name: "Ara Mar Praia Hotel",
-        preferred: false,
-        avgRange: "R$ 188–192",
-        referenceRate: 191,
-        address: "Praia de Iracema, Fortaleza",
-        note: "Também na Praia de Iracema, perto do Centro Cultural Belchior.",
-        mapsQuery: "Ara Mar Praia Hotel Fortaleza"
-      },
-      el_dorado: {
-        code: "el_dorado",
-        name: "El Dorado Hotel",
-        preferred: false,
-        avgRange: "R$ 239–248",
-        referenceRate: 248,
-        address: "Região do Centro Cultural Belchior, Fortaleza",
-        note: "Opção próxima e econômica.",
-        mapsQuery: "El Dorado Hotel Fortaleza"
-      },
-      joh_blue_ocean: {
-        code: "joh_blue_ocean",
-        name: "JOH Blue Ocean Hotel",
-        preferred: false,
-        avgRange: "R$ 263",
-        referenceRate: 263,
-        address: "Praia de Iracema, Fortaleza",
-        note: "Próximo da Estátua de Iracema/Praia de Iracema.",
-        mapsQuery: "JOH Blue Ocean Hotel Fortaleza"
-      }
+      joao_pessoa: {}
     };
 
     const msPerDay = 1000 * 60 * 60 * 24;
@@ -1194,6 +1242,8 @@
       Number(value).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
     let passengers = [];
+    let lodgingByDestination = { fortaleza: [], joao_pessoa: [] };
+    let passengerNameIndex = new Map();
 
     function normalizeHeader(h) {
       return String(h || "")
@@ -1201,6 +1251,25 @@
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function normalizeName(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, " ");
+    }
+
+    function slugifyHotelCode(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "_")
+        .replace(/^_+|_+$/g, "");
     }
 
     function normalizeRoomType(raw) {
@@ -1221,15 +1290,64 @@
       return { key: "", label: "Inválido", invalid: true };
     }
 
-    async function loadPassengersFromCSV() {
-      const response = await fetch("passageiros.csv");
-      if (!response.ok) throw new Error("Não foi possível carregar passageiros.csv");
-      const text = await response.text();
-      passengers = parsePassengersCSV(text);
+    async function fetchTextOptional(path) {
+      const response = await fetch(path);
+      if (!response.ok) {
+        if (response.status === 404) return "";
+        throw new Error(`Não foi possível carregar ${path}`);
+      }
+      return response.text();
+    }
+
+    function buildPassengerNameIndex() {
+      passengerNameIndex = new Map();
+      passengers.forEach((p) => {
+        const key = normalizeName(p.name);
+        if (key && !passengerNameIndex.has(key)) {
+          passengerNameIndex.set(key, p);
+        }
+      });
+    }
+
+    function getPassengerByName(name) {
+      return passengerNameIndex.get(normalizeName(name)) || null;
+    }
+
+    function resolveHotelCode(rawValue, destinationKey) {
+      const raw = String(rawValue || "").trim();
+      if (!raw) return "";
+
+      const catalog = HOTEL_CATALOG[destinationKey] || {};
+      const compactInput = slugifyHotelCode(raw);
+
+      if (catalog[compactInput]) return compactInput;
+
+      const byName = Object.values(catalog).find((hotel) => {
+        return slugifyHotelCode(hotel.name) === compactInput;
+      });
+
+      return byName ? byName.code : compactInput;
+    }
+
+    async function loadAllData() {
+      const [passengersText, fortalezaText, joaoPessoaText] = await Promise.all([
+        fetchTextOptional("passageiros.csv"),
+        fetchTextOptional("hospedagem_fortaleza.csv"),
+        fetchTextOptional("hospedagem_joao_pessoa.csv")
+      ]);
+
+      passengers = parsePassengersCSV(passengersText);
+      buildPassengerNameIndex();
+
+      lodgingByDestination.fortaleza = parseLodgingCSV(fortalezaText, "fortaleza");
+      lodgingByDestination.joao_pessoa = parseLodgingCSV(joaoPessoaText, "joao_pessoa");
     }
 
     function parsePassengersCSV(text) {
-      const lines = text.trim().split(/\r?\n/);
+      const clean = String(text || "").trim();
+      if (!clean) return [];
+
+      const lines = clean.split(/\r?\n/);
       if (!lines.length) return [];
 
       const headerLine = lines.shift();
@@ -1240,13 +1358,9 @@
       const idxCategoria = headers.indexOf("categoria");
       const idxParcelas = headers.indexOf("parcelas");
       const idxPoltrona = headers.findIndex(h => ["poltrona", "assento", "seat"].includes(h));
-      const idxFamilia = headers.indexOf("familia");
-      const idxQuarto = headers.indexOf("quarto");
-      const idxHotel = headers.indexOf("hotel");
-      const idxDiaria = headers.indexOf("diaria");
 
       if (idxNome === -1 || idxCategoria === -1 || idxParcelas === -1) {
-        console.error("CSV deve ter pelo menos: Nome;Categoria;Parcelas");
+        console.error("passageiros.csv deve ter pelo menos: Nome;Categoria;Parcelas");
         return [];
       }
 
@@ -1269,26 +1383,65 @@
             if (Number.isFinite(n)) seat = String(n);
           }
 
-          const familyId = (idxFamilia >= 0 && cols[idxFamilia]) ? String(cols[idxFamilia]).trim() : "—";
-          const rt = (idxQuarto >= 0) ? normalizeRoomType(cols[idxQuarto]) : { key: "", label: "—", invalid: false };
+          return {
+            name: nome,
+            category,
+            seatType: category === "childLap" ? "Colo" : "Poltrona",
+            installmentsPaid: parcelas,
+            seat: seat
+          };
+        });
+    }
 
-          const hotelCode = (idxHotel >= 0 && cols[idxHotel]) ? String(cols[idxHotel]).trim().toLowerCase() : "";
+    function parseLodgingCSV(text, destinationKey) {
+      const clean = String(text || "").trim();
+      if (!clean) return [];
+
+      const lines = clean.split(/\r?\n/);
+      if (!lines.length) return [];
+
+      const headerLine = lines.shift();
+      const delimiter = headerLine.includes(";") ? ";" : ",";
+      const headers = headerLine.split(delimiter).map((h) => normalizeHeader(h));
+
+      const idxNome = headers.indexOf("nome");
+      const idxFamilia = headers.findIndex(h => ["familia", "grupo"].includes(h));
+      const idxQuarto = headers.indexOf("quarto");
+      const idxHotel = headers.indexOf("hotel");
+      const idxDiaria = headers.indexOf("diaria");
+
+      if (idxNome === -1) {
+        console.error(`Arquivo de hospedagem (${destinationKey}) deve ter pelo menos a coluna Nome`);
+        return [];
+      }
+
+      return lines
+        .filter((l) => l.trim())
+        .map((line) => {
+          const cols = line.split(delimiter).map((c) => String(c ?? "").trim());
+          const nome = cols[idxNome] || "Sem nome";
+          const passenger = getPassengerByName(nome);
+          const rt = (idxQuarto >= 0)
+            ? normalizeRoomType(cols[idxQuarto])
+            : { key: "", label: "—", invalid: false };
+
+          const rawHotel = (idxHotel >= 0 && cols[idxHotel]) ? String(cols[idxHotel]).trim() : "";
           const diaria = (idxDiaria >= 0 && cols[idxDiaria])
             ? Number(String(cols[idxDiaria]).replace(/\./g, "").replace(",", "."))
             : 0;
 
           return {
             name: nome,
-            category,
-            seatType: category === "childLap" ? "Colo" : "Poltrona",
-            installmentsPaid: parcelas,
-            seat: seat,
-            familyId,
+            familyId: (idxFamilia >= 0 && cols[idxFamilia]) ? String(cols[idxFamilia]).trim() : "—",
             roomTypeKey: rt.key,
             roomTypeLabel: rt.label,
             roomTypeInvalid: rt.invalid,
-            hotelCode,
-            dailyRate: Number.isFinite(diaria) ? diaria : 0
+            hotelCode: resolveHotelCode(rawHotel, destinationKey),
+            hotelRaw: rawHotel,
+            dailyRate: Number.isFinite(diaria) ? diaria : 0,
+            destinationKey,
+            passengerCategory: passenger?.category || "adult",
+            existsInPassengerList: Boolean(passenger)
           };
         });
     }
@@ -1550,42 +1703,27 @@
         else if (!p.seat) seatTd.textContent = "Não definido na planilha";
         else seatTd.textContent = "Poltrona " + p.seat;
 
-        const familyTd = document.createElement("td");
-        familyTd.classList.add("lodging-only");
-        familyTd.textContent = p.familyId || "—";
-
-        const roomTd = document.createElement("td");
-        roomTd.classList.add("lodging-only");
-        roomTd.textContent = p.roomTypeLabel || "—";
-
-        const hotelTd = document.createElement("td");
-        hotelTd.classList.add("lodging-only");
-        hotelTd.textContent = getHotelMeta(p.hotelCode)?.name || p.hotelCode || "—";
-
-        const dailyTd = document.createElement("td");
-        dailyTd.classList.add("lodging-only");
-        dailyTd.textContent = p.dailyRate > 0 ? brCurrency(p.dailyRate) : "—";
-
         tr.appendChild(positionTd);
         tr.appendChild(nameTd);
         tr.appendChild(typeTd);
         tr.appendChild(statusTd);
         tr.appendChild(installmentsTd);
         tr.appendChild(seatTd);
-        tr.appendChild(familyTd);
-        tr.appendChild(roomTd);
-        tr.appendChild(hotelTd);
-        tr.appendChild(dailyTd);
 
         tbody.appendChild(tr);
       });
     }
 
-    function groupFamilies() {
-      const families = {};
+    function getHotelMeta(hotelCode, destinationKey) {
+      return HOTEL_CATALOG[destinationKey]?.[hotelCode] || null;
+    }
 
-      passengers.forEach(p => {
-        const fid = p.familyId ? String(p.familyId).trim() : "—";
+    function groupFamiliesByDestination(destinationKey) {
+      const families = {};
+      const entries = lodgingByDestination[destinationKey] || [];
+
+      entries.forEach((entry) => {
+        const fid = entry.familyId ? String(entry.familyId).trim() : "—";
 
         if (!families[fid]) {
           families[fid] = {
@@ -1595,35 +1733,40 @@
             anyInvalid: false,
             members: [],
             hotelCode: "",
+            hotelRaw: "",
             dailyRate: 0
           };
         }
 
-        families[fid].members.push(p);
+        families[fid].members.push(entry);
 
-        if (p.roomTypeInvalid) families[fid].anyInvalid = true;
+        if (entry.roomTypeInvalid) families[fid].anyInvalid = true;
 
-        if (p.roomTypeKey) {
+        if (entry.roomTypeKey) {
           if (!families[fid].roomTypeKey) {
-            families[fid].roomTypeKey = p.roomTypeKey;
-            families[fid].roomTypeLabel = p.roomTypeLabel;
-          } else if (families[fid].roomTypeKey !== p.roomTypeKey) {
+            families[fid].roomTypeKey = entry.roomTypeKey;
+            families[fid].roomTypeLabel = entry.roomTypeLabel;
+          } else if (families[fid].roomTypeKey !== entry.roomTypeKey) {
             families[fid].anyInvalid = true;
           }
         }
 
-        if (p.hotelCode) {
-          if (!families[fid].hotelCode) {
-            families[fid].hotelCode = p.hotelCode;
-          } else if (families[fid].hotelCode !== p.hotelCode) {
+        if (entry.hotelCode || entry.hotelRaw) {
+          if (!families[fid].hotelCode && !families[fid].hotelRaw) {
+            families[fid].hotelCode = entry.hotelCode;
+            families[fid].hotelRaw = entry.hotelRaw;
+          } else if (
+            families[fid].hotelCode !== entry.hotelCode ||
+            (families[fid].hotelRaw || "") !== (entry.hotelRaw || "")
+          ) {
             families[fid].anyInvalid = true;
           }
         }
 
-        if (p.dailyRate > 0) {
+        if (entry.dailyRate > 0) {
           if (!families[fid].dailyRate) {
-            families[fid].dailyRate = p.dailyRate;
-          } else if (Number(families[fid].dailyRate) !== Number(p.dailyRate)) {
+            families[fid].dailyRate = entry.dailyRate;
+          } else if (Number(families[fid].dailyRate) !== Number(entry.dailyRate)) {
             families[fid].anyInvalid = true;
           }
         }
@@ -1634,29 +1777,29 @@
 
     function getCapacityForFamily(f) {
       if (!f.roomTypeKey) return 0;
-      let cap = ROOM_CAPACITY[f.roomTypeKey] || 0;
 
+      let cap = ROOM_CAPACITY[f.roomTypeKey] || 0;
       if (f.roomTypeKey === "triplo") {
-        const hasChild = f.members.some(m => m.category === "childLap" || m.category === "childSeat");
+        const hasChild = f.members.some(m => m.passengerCategory === "childLap" || m.passengerCategory === "childSeat");
         if (hasChild) cap = 4;
       }
-
       return cap;
     }
 
-    function getHotelMeta(hotelCode) {
-      return HOTEL_CATALOG[hotelCode] || null;
-    }
-
-    function getReservedHotelsSummary() {
-      const fams = groupFamilies();
+    function getReservedHotelsSummary(destinationKey) {
+      const fams = groupFamiliesByDestination(destinationKey);
       const list = Object.values(fams);
 
-      const reservedFamilies = list.filter(f => f.hotelCode);
-      const uniqueHotels = [...new Set(reservedFamilies.map(f => f.hotelCode).filter(Boolean))];
+      const reservedFamilies = list.filter(f => f.hotelCode || f.hotelRaw);
+      const uniqueHotels = [...new Set(
+        reservedFamilies
+          .map(f => f.hotelCode || f.hotelRaw || "")
+          .filter(Boolean)
+      )];
 
-      const avg = reservedFamilies.length
-        ? reservedFamilies.reduce((acc, f) => acc + (Number(f.dailyRate) || 0), 0) / reservedFamilies.length
+      const ratesWithValue = list.filter(f => Number(f.dailyRate) > 0);
+      const avg = ratesWithValue.length
+        ? ratesWithValue.reduce((acc, f) => acc + (Number(f.dailyRate) || 0), 0) / ratesWithValue.length
         : 0;
 
       return {
@@ -1668,17 +1811,22 @@
       };
     }
 
-    function buildHotelOptionsGrid() {
-      const grid = document.getElementById("hotel-options-grid");
+    function buildHotelOptionsGrid(destinationKey, gridId) {
+      const grid = document.getElementById(gridId);
       if (!grid) return;
 
       grid.innerHTML = "";
 
-      const hotels = Object.values(HOTEL_CATALOG).sort((a, b) => {
+      const hotels = Object.values(HOTEL_CATALOG[destinationKey] || {}).sort((a, b) => {
         if (a.preferred && !b.preferred) return -1;
         if (!a.preferred && b.preferred) return 1;
         return (a.referenceRate || 9999) - (b.referenceRate || 9999);
       });
+
+      if (!hotels.length) {
+        grid.innerHTML = '<div class="muted-box">Nenhum catálogo de referência configurado para este destino. O preenchimento do CSV continua funcionando normalmente.</div>';
+        return;
+      }
 
       hotels.forEach(hotel => {
         const card = document.createElement("div");
@@ -1701,11 +1849,11 @@
       });
     }
 
-    function buildLodgingKpis() {
-      const box = document.getElementById("lodging-kpis");
+    function buildDestinationLodgingKpis(destinationKey, boxId) {
+      const box = document.getElementById(boxId);
       if (!box) return;
 
-      const s = getReservedHotelsSummary();
+      const s = getReservedHotelsSummary(destinationKey);
 
       box.innerHTML = `
         <div class="kpi-card">
@@ -1717,11 +1865,11 @@
           <strong>${s.reservedFamilies}</strong>
         </div>
         <div class="kpi-card">
-          <small>Hotéis diferentes usados</small>
+          <small>Hotéis distintos</small>
           <strong>${s.uniqueHotelsCount}</strong>
         </div>
         <div class="kpi-card">
-          <small>Tarifa média do grupo</small>
+          <small>Diária média</small>
           <strong>${s.averageDailyRate ? brCurrency(s.averageDailyRate) : "—"}</strong>
         </div>
         <div class="kpi-card">
@@ -1731,15 +1879,42 @@
       `;
     }
 
-    function buildLodgingTable() {
-      const tbody = document.getElementById("lodging-table-body");
-      const summary = document.getElementById("lodging-summary");
+    function buildOverallLodgingKpis() {
+      const box = document.getElementById("lodging-kpis-overall");
+      if (!box) return;
+
+      const fort = getReservedHotelsSummary("fortaleza");
+      const jpa = getReservedHotelsSummary("joao_pessoa");
+
+      box.innerHTML = `
+        <div class="kpi-card">
+          <small>Fortaleza</small>
+          <strong>${fort.totalFamilies} grupo(s)</strong>
+        </div>
+        <div class="kpi-card">
+          <small>João Pessoa</small>
+          <strong>${jpa.totalFamilies} grupo(s)</strong>
+        </div>
+        <div class="kpi-card">
+          <small>Hotéis definidos</small>
+          <strong>${fort.reservedFamilies + jpa.reservedFamilies}</strong>
+        </div>
+        <div class="kpi-card">
+          <small>Total de destinos ativos</small>
+          <strong>${["fortaleza", "joao_pessoa"].filter(key => getReservedHotelsSummary(key).totalFamilies > 0).length}</strong>
+        </div>
+      `;
+    }
+
+    function buildDestinationLodgingTable(destinationKey, config) {
+      const tbody = document.getElementById(config.tbodyId);
+      const summary = document.getElementById(config.summaryId);
       if (!tbody || !summary) return;
 
       tbody.innerHTML = "";
       summary.innerHTML = "";
 
-      const fams = groupFamilies();
+      const fams = groupFamiliesByDestination(destinationKey);
       const keys = Object.keys(fams).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true }));
 
       let totalFamilies = keys.length;
@@ -1747,37 +1922,45 @@
       let missing = 0;
       let invalid = 0;
       let overflow = 0;
+      let missingInPassengers = 0;
       let hotelsDefined = 0;
       let noHotel = 0;
-      let redeAndradeCount = 0;
       let dailyRates = [];
-
       let duplos = 0;
       let triplos = 0;
+      let preferredCount = 0;
+
+      if (!keys.length) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = '<td colspan="8" style="text-align:center;color:var(--text-muted)">Sem registros para este destino.</td>';
+        tbody.appendChild(tr);
+      }
 
       keys.forEach(k => {
         const f = fams[k];
         const people = f.members.length;
         const cap = getCapacityForFamily(f);
         const over = (cap > 0 && people > cap);
+        const hasMissingPassenger = f.members.some(m => !m.existsInPassengerList);
 
         if (f.roomTypeKey) defined++; else missing++;
         if (f.anyInvalid) invalid++;
         if (over) overflow++;
+        if (hasMissingPassenger) missingInPassengers++;
 
         if (f.roomTypeKey === "duplo") duplos++;
         if (f.roomTypeKey === "triplo") triplos++;
 
-        if (f.hotelCode) {
+        if (f.hotelCode || f.hotelRaw) {
           hotelsDefined++;
-          if (f.hotelCode === "rede_andrade") redeAndradeCount++;
+          if (f.hotelCode === "rede_andrade") preferredCount++;
         } else {
           noHotel++;
         }
 
         if (f.dailyRate > 0) dailyRates.push(Number(f.dailyRate));
 
-        const hotelMeta = getHotelMeta(f.hotelCode);
+        const hotelMeta = getHotelMeta(f.hotelCode, destinationKey);
 
         const tr = document.createElement("tr");
 
@@ -1797,48 +1980,33 @@
         if (hotelMeta) {
           tdHotel.innerHTML = `<span class="family-hotel-tag">${hotelMeta.preferred ? "⭐" : "🏨"} ${hotelMeta.name}</span>`;
         } else {
-          tdHotel.textContent = f.hotelCode ? f.hotelCode : "—";
+          tdHotel.textContent = f.hotelRaw || f.hotelCode || "—";
         }
 
         const tdDaily = document.createElement("td");
         tdDaily.textContent = f.dailyRate > 0 ? brCurrency(Number(f.dailyRate)) : "—";
 
         const tdStatus = document.createElement("td");
-
         if (f.anyInvalid) {
-          const pill = document.createElement("span");
-          pill.className = "warn-pill";
-          pill.textContent = "⚠️ Conflito de dados";
-          tdStatus.appendChild(pill);
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Conflito de dados</span>';
+        } else if (hasMissingPassenger) {
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Nome fora de passageiros.csv</span>';
         } else if (!f.roomTypeKey) {
-          const pill = document.createElement("span");
-          pill.className = "warn-pill";
-          pill.textContent = "⚠️ Sem tipo de quarto";
-          tdStatus.appendChild(pill);
-        } else if (!f.hotelCode) {
-          const pill = document.createElement("span");
-          pill.className = "warn-pill";
-          pill.textContent = "⚠️ Sem hotel definido";
-          tdStatus.appendChild(pill);
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem tipo de quarto</span>';
+        } else if (!(f.hotelCode || f.hotelRaw)) {
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem hotel definido</span>';
         } else if (!f.dailyRate) {
-          const pill = document.createElement("span");
-          pill.className = "warn-pill";
-          pill.textContent = "⚠️ Sem diária";
-          tdStatus.appendChild(pill);
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem diária</span>';
         } else if (over) {
-          const pill = document.createElement("span");
-          pill.className = "warn-pill";
-          pill.textContent = "⚠️ Excede capacidade";
-          tdStatus.appendChild(pill);
+          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Excede capacidade</span>';
         } else {
-          const pill = document.createElement("span");
-          pill.className = "ok-pill";
-          pill.textContent = "✅ OK";
-          tdStatus.appendChild(pill);
+          tdStatus.innerHTML = '<span class="ok-pill">✅ OK</span>';
         }
 
         const tdMembers = document.createElement("td");
-        tdMembers.textContent = f.members.map(m => m.name).join(", ");
+        tdMembers.textContent = f.members
+          .map(m => !m.existsInPassengerList ? `${m.name} (fora da lista)` : m.name)
+          .join(", ");
 
         tr.appendChild(tdFam);
         tr.appendChild(tdType);
@@ -1860,7 +2028,7 @@
         `👨‍👩‍👧‍👦 ${totalFamilies} famílias`,
         `🏨 ${defined} quartos definidos (duplo:${duplos} • triplo:${triplos})`,
         `📍 ${hotelsDefined} com hotel definido`,
-        `⭐ ${redeAndradeCount} no Rede Andrade`,
+        `⭐ ${preferredCount} no Rede Andrade`,
         `💰 média do grupo: ${avgRate ? brCurrency(avgRate) : "—"}`
       ];
 
@@ -1868,6 +2036,7 @@
       if (noHotel) chips.push(`🟠 ${noHotel} sem hotel`);
       if (invalid) chips.push(`⚠️ ${invalid} conflito(s)`);
       if (overflow) chips.push(`🚫 ${overflow} excede(m) capacidade`);
+      if (missingInPassengers) chips.push(`🧾 ${missingInPassengers} família(s) com nome fora da lista de passageiros`);
 
       chips.forEach(t => {
         const s = document.createElement("span");
@@ -1875,46 +2044,39 @@
         summary.appendChild(s);
       });
 
-      buildLodgingKpis();
-      buildHotelOptionsGrid();
+      buildDestinationLodgingKpis(destinationKey, config.kpisId);
+      buildHotelOptionsGrid(destinationKey, config.gridId);
+    }
+
+    function buildAllLodgingSections() {
+      buildOverallLodgingKpis();
+      buildDestinationLodgingTable("fortaleza", {
+        tbodyId: "lodging-table-body-fortaleza",
+        summaryId: "lodging-summary-fortaleza",
+        kpisId: "lodging-kpis-fortaleza",
+        gridId: "hotel-options-grid-fortaleza"
+      });
+      buildDestinationLodgingTable("joao_pessoa", {
+        tbodyId: "lodging-table-body-joao_pessoa",
+        summaryId: "lodging-summary-joao_pessoa",
+        kpisId: "lodging-kpis-joao_pessoa",
+        gridId: "hotel-options-grid-joao_pessoa"
+      });
     }
 
     function updateHeroRoomsBadge() {
       const el = document.getElementById("hero-badge-rooms-text");
       if (!el) return;
-      
 
-      const fams = groupFamilies();
-      const keys = Object.keys(fams);
-
-      let duplos = 0, triplos = 0, missing = 0, overflow = 0, redeAndrade = 0;
-
-      keys.forEach(k => {
-        const f = fams[k];
-
-        if (!f.roomTypeKey) {
-          missing++;
-        } else {
-          if (f.roomTypeKey === "duplo") duplos++;
-          if (f.roomTypeKey === "triplo") triplos++;
-        }
-
-        if (f.hotelCode === "rede_andrade") redeAndrade++;
-
-        const cap = getCapacityForFamily(f);
-        const people = f.members.length;
-        if (cap > 0 && people > cap) overflow++;
-      });
+      const fort = Object.keys(groupFamiliesByDestination("fortaleza")).length;
+      const jpa = Object.keys(groupFamiliesByDestination("joao_pessoa")).length;
+      const total = fort + jpa;
 
       const parts = [
-        `${keys.length} quartos`,
-        `duplo:${duplos}`,
-        `triplo:${triplos}`,
-        `Rede Andrade:${redeAndrade}`
+        `${total} grupo(s)`,
+        `Fortaleza:${fort}`,
+        `João Pessoa:${jpa}`
       ];
-
-      if (missing) parts.push(`sem tipo:${missing}`);
-      if (overflow) parts.push(`🚫 excede:${overflow}`);
 
       el.textContent = parts.join(" • ");
     }
@@ -2026,20 +2188,19 @@
       updateTimePanel();
       buildPassengerTable();
       buildSeatLayout();
-
-      buildLodgingTable();
+      buildAllLodgingSections();
       updateHeroRoomsBadge();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
       initTabs();
-     
 
-      loadPassengersFromCSV()
+      loadAllData()
         .then(() => initAfterPassengersLoaded())
         .catch((err) => {
-          console.warn("Erro ao carregar passageiros.csv", err);
+          console.warn("Erro ao carregar arquivos CSV", err);
           passengers = [];
+          lodgingByDestination = { fortaleza: [], joao_pessoa: [] };
           initAfterPassengersLoaded();
         });
     });
