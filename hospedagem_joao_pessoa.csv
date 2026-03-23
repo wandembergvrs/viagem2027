@@ -1,49 +1,49 @@
 Nome;Familia;Quarto;Hotel;Diaria;TotalGrupo
-Juracy;J01;Duplo;Hotel João Pessoa;364;1820
-Mª Aparecida;J01;Duplo;Hotel João Pessoa;364;1820
-Jurandy;J02;Duplo;Hotel João Pessoa;364;1820
-Lêda;J02;Duplo;Hotel João Pessoa;364;1820
-Joel;J03;Duplo;Hotel João Pessoa;364;1820
-Edina;J03;Duplo;Hotel João Pessoa;364;1820
-Francisco Onofre;J04;Duplo;Hotel João Pessoa;364;1820
-Francisca das Chagas;J04;Duplo;Hotel João Pessoa;364;1820
-Francisco Raimundo;J05;Duplo;Hotel João Pessoa;364;1820
-Francisca Márcia Lima;J05;Duplo;Hotel João Pessoa;364;1820
-Reinaldo;J06;Duplo;Hotel João Pessoa;364;1820
-Esposa do Reinaldo;J06;Duplo;Hotel João Pessoa;364;1820
-Ana Mercia;J07;Duplo;Hotel João Pessoa;364;1820
-Vera Lúcia;J07;Duplo;Hotel João Pessoa;364;1820
-Tainá;J08;Duplo;Hotel João Pessoa;164;820
-Maicon;J08;Duplo;Hotel João Pessoa;164;820
-Walisson;J09;Duplo;Hotel João Pessoa;364;1820
-Thais;J09;Duplo;Hotel João Pessoa;364;1820
-Carmem;J10;Duplo;Hotel João Pessoa;364;1820
-Davi;J10;Duplo;Hotel João Pessoa;364;1820
-Janduy;J11;Duplo;Hotel João Pessoa;364;1820
-Adeilza;J11;Duplo;Hotel João Pessoa;364;1820
-Maria Eunice;J12;Duplo;Hotel João Pessoa;364;1820
-Francisco Rosendo;J13;Triplo;Hotel João Pessoa;600;3000
-Rosa Maria;J13;Triplo;Hotel João Pessoa;600;3000
-Rhalisson;J13;Triplo;Hotel João Pessoa;600;3000
-Zilda;J14;Triplo;Hotel João Pessoa;540;2700
-Dissér;J14;Triplo;Hotel João Pessoa;540;2700
-Gabriel Lima;J14;Triplo;Hotel João Pessoa;540;2700
-Cláudio;J15;Triplo;Hotel João Pessoa;540;2700
-Suely;J15;Triplo;Hotel João Pessoa;540;2700
-Juninho;J15;Triplo;Hotel João Pessoa;540;2700
-João Neto;J16;Triplo;Hotel João Pessoa;540;2700
-Bosco;J16;Triplo;Hotel João Pessoa;540;2700
-Mida;J16;Triplo;Hotel João Pessoa;540;2700
-Luzanira;J17;Triplo;Hotel João Pessoa;600;3000
-Hellen;J17;Triplo;Hotel João Pessoa;600;3000
-Antônia;J17;Triplo;Hotel João Pessoa;600;3000
-Wandem;J18;Triplo;Hotel João Pessoa;430;2150
-Liz;J18;Triplo;Hotel João Pessoa;430;2150
-Theo;J18;Triplo;Hotel João Pessoa;430;2150
-Maria Ferreira de Andrade;J19;Triplo;Hotel João Pessoa;600;3000
-Israel Agripino Ferreira dos Santos;J19;Triplo;Hotel João Pessoa;600;3000
-Janival;J19;Triplo;Hotel João Pessoa;600;3000
-Lourival Ferreira de Lima;J20;Quádruplo;Hotel João Pessoa;356;1780
-Leonice Rita de Jesus;J20;Quádruplo;Hotel João Pessoa;356;1780
-Francisca das Chagas Lima;J20;Quádruplo;Hotel João Pessoa;356;1780
-Raíssa Lima;J20;Quádruplo;Hotel João Pessoa;356;1780
+Francisca das Chagas;J01;Duplo;Hotel João Pessoa;;
+Francisco Onofre;J01;Duplo;Hotel João Pessoa;;
+Francisca Márcia Lima;J02;Duplo;Hotel João Pessoa;;
+Francisco Raimundo;J02;Duplo;Hotel João Pessoa;;
+Janduy;J03;Duplo;Hotel João Pessoa;;
+João Neto;J03;Duplo;Hotel João Pessoa;;
+Joel;J04;Duplo;Hotel João Pessoa;;
+Edina;J04;Duplo;Hotel João Pessoa;;
+Juracy;J05;Duplo;Hotel João Pessoa;;
+Mª Aparecida;J05;Duplo;Hotel João Pessoa;;
+Jurandy;J06;Duplo;Hotel João Pessoa;;
+Lêda;J06;Duplo;Hotel João Pessoa;;
+Reinaldo;J07;Duplo;Hotel João Pessoa;;
+Esposa do Reinaldo;J07;Duplo;Hotel João Pessoa;;
+Bosco;J08;Duplo;Hotel João Pessoa;;
+Maria Emidia;J08;Duplo;Hotel João Pessoa;;
+Maria Eunice;J09;Duplo;Hotel João Pessoa;;
+Adeilza;J09;Duplo;Hotel João Pessoa;;
+Ana Mercia;J10;Duplo;Hotel João Pessoa;;
+Vera Lúcia;J10;Duplo;Hotel João Pessoa;;
+Juninho;J11;Duplo;Hotel João Pessoa;;
+Gabriel Lima;J11;Duplo;Hotel João Pessoa;;
+Carmem;J12;Duplo;Hotel João Pessoa;;
+Pedro Lima;J12;Duplo;Hotel João Pessoa;;
+Davi;J12;Duplo;Hotel João Pessoa;;
+Zilda;J13;Duplo;Hotel João Pessoa;;
+José Joaquim;J13;Duplo;Hotel João Pessoa;;
+Raíssa Lima;J14;Duplo;Hotel João Pessoa;;
+Francisca das Chagas Lima;J14;Duplo;Hotel João Pessoa;;
+Leonice Rita de Jesus;J15;Duplo;Hotel João Pessoa;;
+Lourival Ferreira de Lima;J15;Duplo;Hotel João Pessoa;;
+Walisson;J16;Duplo;Hotel João Pessoa;;
+Thais;J16;Duplo;Hotel João Pessoa;;
+Luís;J16;Duplo;Hotel João Pessoa;;
+Wandem;J17;Duplo;Hotel João Pessoa;;
+Theo;J17;Duplo;Hotel João Pessoa;;
+Liz;J17;Duplo;Hotel João Pessoa;;
+Cláudio;J18;Duplo;Hotel João Pessoa;;
+Suely;J18;Duplo;Hotel João Pessoa;;
+Janival;J19;Triplo;Hotel João Pessoa;;
+Maria Ferreira de Andrade;J19;Triplo;Hotel João Pessoa;;
+Israel Agripino Ferreira dos Santos;J19;Triplo;Hotel João Pessoa;;
+Francisco Rosendo;J20;Triplo;Hotel João Pessoa;;
+Rosa Maria;J20;Triplo;Hotel João Pessoa;;
+Rhalisson;J20;Triplo;Hotel João Pessoa;;
+Luzanira;J21;Triplo;Hotel João Pessoa;;
+Hellen;J21;Triplo;Hotel João Pessoa;;
+Antônia;J21;Triplo;Hotel João Pessoa;;
