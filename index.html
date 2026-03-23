@@ -3,1193 +3,382 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Viagem de Família 2027 - Marcopolo G8 Dirontur</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viagem de Família 2027</title>
   <style>
     :root {
-      --bg: #f3f4f6;
-      --bg-soft: #e5e7eb;
+      --bg: #f6f7fb;
       --card: #ffffff;
-      --accent: #facc15;
-      --accent-soft: #22c55e;
-      --accent-dark: #15803d;
       --text: #0f172a;
-      --text-muted: #6b7280;
-      --border: #d1d5db;
-      --danger: #ea580c;
-      --radius-xl: 18px;
-      --shadow-soft: 0 12px 24px rgba(15, 23, 42, 0.12);
-      --seat-size: 46px;
+      --muted: #64748b;
+      --border: #dbe2ea;
+      --accent: #166534;
+      --accent-2: #eab308;
+      --danger: #b91c1c;
+      --warn: #b45309;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
     }
 
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(180deg, #e5e7eb 0, #f9fafb 45%, #e5e7eb 100%);
+      background: linear-gradient(180deg, #eef2f7 0%, var(--bg) 100%);
       color: var(--text);
-      min-height: 100vh;
     }
 
-    a { color: #2563eb; text-decoration: none; font-weight: 600; }
-    a:hover { text-decoration: underline; }
-
     header {
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.45);
-      background: linear-gradient(135deg, #facc15 0%, #22c55e 40%, #e5e7eb 85%);
-      color: #020617;
+      background: linear-gradient(135deg, #facc15 0%, #86efac 40%, #dbeafe 100%);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px 14px 28px;
     }
 
     .hero {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 18px 14px 22px;
       display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 16px;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 18px;
       align-items: center;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; }
     }
 
-    .hero-title {
-      font-size: clamp(1.8rem, 4.2vw, 2.4rem);
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      line-height: 1.05;
     }
 
-    .hero-subtitle {
-      font-size: 0.92rem;
-      max-width: 620px;
-    }
-
-    .hero-countdown {
-      margin-top: 12px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(248, 250, 252, 0.96);
-      border: 1px solid rgba(148, 163, 184, 0.65);
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      font-size: 0.86rem;
-      color: #020617;
-      max-width: 560px;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
-    }
-
-    .hero-countdown-line {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: baseline;
-      justify-content: space-between;
-    }
-
-    .hero-countdown-line strong { font-size: 1.2rem; }
-    .hero-countdown-sub { font-size: 0.78rem; color: #334155; }
-
-    .hero-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-      font-size: 0.75rem;
-    }
-
-    .badge {
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(15, 23, 42, 0.12);
-      background: rgba(248, 250, 252, 0.9);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+    .subtitle {
       color: #1f2937;
+      max-width: 720px;
+      font-size: 0.98rem;
     }
 
-    .hero-bus {
-      position: relative;
-      border-radius: 20px;
+    .hero-img {
+      border-radius: 22px;
       overflow: hidden;
-      box-shadow: var(--shadow-soft);
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-end;
-      background: radial-gradient(circle at 20% 0, #eab308 0, #0f172a 40%, #020617 100%);
       min-height: 180px;
+      background: #111827;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(15, 23, 42, 0.08);
     }
 
-    .hero-bus img {
-      width: 100%;
-      height: auto;
+    .hero-img img {
       display: block;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
     }
 
-    .hero-bus-overlay {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 20% 0, transparent 0%, rgba(15, 23, 42, 0.6) 40%, rgba(15, 23, 42, 0.8) 100%);
+    .grid {
+      display: grid;
+      gap: 14px;
     }
 
-    .hero-bus-caption {
-      position: absolute;
-      left: 12px;
-      bottom: 12px;
-      background: rgba(15, 23, 42, 0.85);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #e5e7eb;
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(148, 163, 184, 0.5);
+    .stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 16px;
     }
 
-    .hero-bus-caption strong { color: var(--accent); }
-
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 14px 10px 22px;
+    @media (max-width: 900px) {
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
-    section { margin-bottom: 14px; }
+    @media (max-width: 560px) {
+      .stats { grid-template-columns: 1fr; }
+    }
 
     .card {
       background: var(--card);
-      border-radius: var(--radius-xl);
       border: 1px solid var(--border);
-      padding: 12px 12px 10px;
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
     }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -120px;
-      background: radial-gradient(circle at 0 0, rgba(250, 204, 21, 0.08), transparent 55%);
-      pointer-events: none;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .card-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .card-title span.icon {
-      width: 20px;
-      height: 20px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      background: rgba(250, 204, 21, 0.18);
-      border: 1px solid rgba(250, 204, 21, 0.5);
-      font-size: 0.86rem;
-    }
-
-    .card-subtitle {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      position: relative;
-      z-index: 1;
-    }
-
-    .pill {
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: rgba(248, 250, 252, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      font-size: 0.7rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--text-muted);
-    }
-
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-    }
-
-    .pill-dot.warn { background: var(--danger); }
-
-    .stats-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin: 8px 0;
-      font-size: 0.8rem;
-      position: relative;
-      z-index: 1;
-      flex-wrap: wrap;
-    }
-
-    .stats-row div small {
-      display: block;
-      color: var(--text-muted);
-      font-size: 0.72rem;
-      margin-bottom: 1px;
-    }
-
-    .stats-row div strong { font-size: 0.86rem; }
-
-    .progress-container { margin-top: 4px; position: relative; z-index: 1; }
-
-    .progress-track {
-      width: 100%;
-      height: 12px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      border: 1px solid rgba(148, 163, 184, 0.75);
-      overflow: hidden;
-      box-shadow: inset 0 0 0 1px rgba(203, 213, 225, 0.5);
-      position: relative;
-    }
-
-    .progress-fill {
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent-soft), var(--accent), #f97316);
-      width: 0%;
-      transition: width 0.8s ease-out;
-      box-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
-      position: relative;
-    }
-
-    .progress-marker {
-      position: absolute;
-      top: -2px;
-      right: 0;
-      transform: translateX(50%);
-      width: 4px;
-      height: 16px;
-      border-radius: 999px;
-      background: #ffffff;
-      border: 1px solid rgba(148, 163, 184, 0.85);
-      box-shadow: 0 0 10px rgba(148, 163, 184, 0.8);
-    }
-
-    .progress-label {
-      margin-top: 4px;
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .progress-label strong { color: var(--accent-dark); font-size: 0.82rem; }
-
-    .info-list {
-      list-style: none;
-      padding-left: 0;
-      margin: 4px 0 2px;
+    .stat-label {
+      color: var(--muted);
       font-size: 0.82rem;
-      position: relative;
-      z-index: 1;
+      margin-bottom: 6px;
     }
 
-    .info-list li {
-      padding: 3px 0;
-      display: flex;
-      gap: 6px;
-      align-items: baseline;
-      flex-wrap: wrap;
+    .stat-value {
+      font-size: 1.55rem;
+      font-weight: 800;
+      line-height: 1;
     }
 
-    .info-list li::before {
-      content: "•";
-      color: var(--accent-soft);
-      margin-right: 4px;
-      font-size: 0.9rem;
-    }
-
-    .info-highlight {
-      margin-top: 3px;
-      font-size: 0.76rem;
-      color: var(--text-muted);
-    }
-
-    .paid-highlight {
+    .stat-note {
       margin-top: 6px;
+      color: var(--muted);
       font-size: 0.78rem;
-      color: #14532d;
-      background: #ecfdf3;
-      border-radius: 999px;
-      padding: 4px 8px;
-      border: 1px solid rgba(34, 197, 94, 0.6);
-      display: none;
-      position: relative;
-      z-index: 1;
     }
 
-    .passenger-summary {
+    section { margin-top: 16px; }
+
+    .section-head {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-size: 0.76rem;
-      margin-bottom: 8px;
-      position: relative;
-      z-index: 1;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
-    .passenger-summary span {
+    .section-head h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .destination-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .destination-grid { grid-template-columns: 1fr; }
+    }
+
+    .badge {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 3px 7px;
+      gap: 6px;
+      padding: 5px 9px;
       border-radius: 999px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      color: var(--text-muted);
+      font-size: 0.78rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      color: #334155;
+      margin-right: 6px;
+      margin-bottom: 6px;
     }
 
-    .table-wrapper {
-      max-height: 420px;
-      overflow: auto;
-      border-radius: 10px;
-      border: 1px solid #e5e7eb;
-      background: #ffffff;
-      position: relative;
-      z-index: 1;
+    .ok { color: var(--accent); }
+    .warn { color: var(--warn); }
+    .danger { color: var(--danger); }
+
+    .file-line {
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
     }
+
+    .totals {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 12px 0 14px;
+    }
+
+    @media (max-width: 900px) {
+      .totals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 560px) {
+      .totals { grid-template-columns: 1fr; }
+    }
+
+    .total-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+
+    .total-box .k { color: var(--muted); font-size: 0.78rem; }
+    .total-box .v { font-weight: 800; font-size: 1.1rem; margin-top: 2px; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
-      min-width: 700px;
-    }
-
-    thead {
-      position: sticky;
-      top: 0;
-      background: #f3f4f6;
-      z-index: 2;
-      box-shadow: 0 2px 0 rgba(209, 213, 219, 0.9);
-    }
-
-    th, td {
-      padding: 6px 8px;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    th {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    tbody tr:nth-child(even) { background: #f9fafb; }
-    tbody tr:nth-child(odd) { background: #ffffff; }
-    tbody tr:hover { background: #eef2ff; }
-
-    td { border-bottom: 1px solid #e5e7eb; color: var(--text); }
-    td.status { font-size: 0.76rem; }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-    }
-
-    .status-pill.paid {
-      border-color: rgba(34, 197, 94, 0.7);
-      color: #14532d;
-      background: #ecfdf3;
-    }
-
-    .status-pill.pending {
-      border-color: rgba(249, 115, 22, 0.7);
-      color: #7c2d12;
-      background: #fff7ed;
-    }
-
-    .status-pill span.dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-    }
-
-    .status-pill.pending span.dot { background: var(--danger); }
-
-    .map-note {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      margin-top: 5px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .seat-controls {
-      font-size: 0.76rem;
-      margin: 4px 0 8px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .seat-helper { font-size: 0.72rem; color: var(--text-muted); }
-
-    .seat-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .deck {
-      padding: 6px 8px 8px;
-      border-radius: 14px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-    }
-
-    .deck-header {
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .deck-header span { font-weight: 600; color: var(--text); }
-
-    .seat-grid {
-      display: grid;
-      grid-auto-rows: var(--seat-size);
-      gap: 6px;
-      justify-content: center;
-      margin-top: 2px;
-    }
-
-    #seat-grid-upper, #seat-grid-lower { grid-template-columns: repeat(4, var(--seat-size)); }
-
-    .seat, .seat-gap {
-      width: var(--seat-size);
-      height: var(--seat-size);
-    }
-
-    .seat {
-      border-radius: 10px;
-      border: 1px solid #d1d5db;
-      background: #e5e7eb;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: default;
-      padding: 3px 2px;
-      text-align: center;
-      line-height: 1.05;
-    }
-
-    .seat.free { background: #f3f4f6; }
-
-    .seat.occupied {
-      background: #22c55e;
-      color: #022c22;
-      border-color: #16a34a;
-      box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.4);
-    }
-
-    .seat-number { font-size: 0.62rem; font-weight: 800; opacity: 0.95; }
-
-    .seat-name {
-      font-size: 0.62rem;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-
-    .seat-legend {
-      margin-top: 6px;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .legend-item { display: inline-flex; align-items: center; gap: 4px; }
-
-    .legend-color {
-      width: 12px;
-      height: 12px;
-      border-radius: 4px;
-      border: 1px solid #d1d5db;
-      background: #f3f4f6;
-    }
-
-    .legend-color.occupied { background: #22c55e; border-color: #16a34a; }
-
-    footer {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 10px 14px;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin: 0 0 12px;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      padding: 8px 0;
-      background: linear-gradient(180deg, rgba(249,250,251,0.92), rgba(249,250,251,0.62));
-      backdrop-filter: blur(8px);
-    }
-
-    .tab-btn {
-      appearance: none;
-      border: 1px solid rgba(148, 163, 184, 0.55);
-      background: rgba(248, 250, 252, 0.95);
-      color: #0f172a;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-weight: 800;
-      font-size: 0.78rem;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.10);
-      letter-spacing: 0.02em;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .tab-btn:hover { filter: brightness(0.99); }
-
-    .tab-btn.active {
-      border-color: rgba(34, 197, 94, 0.6);
-      background: rgba(236, 253, 243, 0.92);
-      color: #14532d;
-    }
-
-    [data-tab-content] { display: none; }
-    [data-tab-content].active { display: block; }
-
-   
-
-    .warn-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      border: 1px solid rgba(249,115,22,0.65);
-      background: rgba(255,247,237,0.9);
-      color: #7c2d12;
-    }
-
-    .ok-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      border: 1px solid rgba(34,197,94,0.65);
-      background: rgba(236,253,243,0.9);
-      color: #14532d;
-    }
-
-    .hotel-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 12px;
-      margin-top: 10px;
-    }
-
-    .hotel-card {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 12px;
-      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
-      position: relative;
-      z-index: 1;
-    }
-
-    .hotel-card.preferred {
-      border: 2px solid rgba(34, 197, 94, 0.65);
-      background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
-    }
-
-    .hotel-card h4 {
-      margin: 0 0 6px;
       font-size: 0.92rem;
     }
 
-    .hotel-card .hotel-meta {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-      line-height: 1.35;
+    th, td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
     }
 
-    .hotel-card .hotel-price {
-      font-size: 0.88rem;
-      font-weight: 800;
-      color: #14532d;
-      margin-bottom: 6px;
+    th {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--muted);
     }
 
-    .hotel-card .hotel-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      margin-bottom: 8px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: #f8fafc;
+    .room-names {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .hotel-card.preferred .hotel-badge {
-      background: #dcfce7;
-      border-color: rgba(34, 197, 94, 0.5);
-      color: #14532d;
+    .mini {
+      color: var(--muted);
+      font-size: 0.78rem;
     }
 
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-      position: relative;
-      z-index: 1;
+    .mono {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
     }
 
-    .kpi-card {
-      border: 1px solid #e5e7eb;
+    .empty, .alert {
+      padding: 12px;
       border-radius: 14px;
-      padding: 10px 12px;
-      background: #fff;
+      font-size: 0.92rem;
     }
 
-    .kpi-card small {
-      display: block;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .kpi-card strong { font-size: 1rem; }
-
-    .family-hotel-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.72rem;
-      padding: 2px 8px;
-      border-radius: 999px;
+    .empty {
       background: #f8fafc;
-      border: 1px solid #e5e7eb;
+      border: 1px dashed var(--border);
+      color: var(--muted);
     }
 
-    .muted-box {
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px dashed #cbd5e1;
-      background: #f8fafc;
-      font-size: 0.76rem;
-      color: #475569;
+    .alert {
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+      color: #9a3412;
+      margin-bottom: 14px;
+    }
+
+    details {
+      margin-top: 12px;
+    }
+
+    summary {
+      cursor: pointer;
+      color: #0f172a;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 18px;
+      color: #334155;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.82rem;
     }
   </style>
 </head>
-
 <body>
   <header>
-    <div class="hero">
-      <div>
-        <div class="hero-title">Viagem de Família 2027</div>
-        <p class="hero-subtitle">
-          Uma viagem tranquila e divertida em família a bordo de um
-          <strong>Marcopolo G8 da empresa Dirontur</strong>.
-        </p>
-
-        <div class="hero-countdown">
-          <div class="hero-countdown-line">
-            <span>Família! 🎉🚍</span>
-            <span>Faltam <strong id="hero-days-remaining">394</strong> dias para a nossa viagem!</span>
-          </div>
-          <div class="hero-countdown-sub">
-            Período: <span id="hero-trip-period">02 a 17/01/2027</span>
+    <div class="wrap">
+      <div class="hero">
+        <div>
+          <h1>Viagem de Família 2027</h1>
+          <div class="subtitle">
+            Painel com leitura automática de <strong>passageiros.csv</strong>,
+            <strong>hospedagem_fortaleza.csv</strong> e <strong>hospedagem_joao_pessoa.csv</strong>.
+            Fortaleza e João Pessoa são tratados de forma independente.
           </div>
         </div>
-
-        <div class="hero-badges">
-          <div class="badge">🚌 Marcopolo G8 Dirontur</div>
-          <div class="badge">👨‍👩‍👧‍👦 <span id="hero-badge-people">– passageiros</span></div>
-          <div class="badge">🧑 Adultos | 🧒 Crianças | 👶 Colo</div>
-          <div class="badge" id="hero-badge-rooms">🏨 <span id="hero-badge-rooms-text">–</span></div>
-        </div>
-      </div>
-
-      <div class="hero-bus">
-        <img
-          src="dirontur-marcopolo-g8.jpg"
-          alt="Ônibus Marcopolo G8 da empresa Dirontur"
-          onerror="this.style.display='none'; this.parentNode.style.minHeight='220px';"
-        />
-        <div class="hero-bus-overlay"></div>
-        <div class="hero-bus-caption">
-          <span>🛣️</span>
-          <span><strong>Marcopolo G8 Dirontur</strong> — estrada, histórias e boas companhias</span>
+        <div class="hero-img">
+          <img src="dirontur-marcopolo-g8.jpg" alt="Ônibus da viagem" onerror="this.style.display='none'; this.parentElement.style.minHeight='120px'; this.parentElement.innerHTML='<div style=\"padding:18px;color:#e5e7eb\">Imagem opcional não encontrada.</div>'">
         </div>
       </div>
     </div>
   </header>
 
-  <main>
-    <div class="tabs" role="tablist" aria-label="Navegação">
-      <button class="tab-btn active" data-tab="trip" aria-selected="true" type="button">🚌 Viagem</button>
-      <button class="tab-btn" data-tab="lodging" aria-selected="false" type="button">🏨 Hospedagem</button>
-    
+  <main class="wrap">
+    <div id="alertBox"></div>
+
+    <div class="grid stats">
+      <div class="card">
+        <div class="stat-label">Passageiros no CSV</div>
+        <div class="stat-value" id="statPassengers">0</div>
+        <div class="stat-note" id="statPassengersNote">Leitura pendente</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Hospedados em Fortaleza</div>
+        <div class="stat-value" id="statFortGuests">0</div>
+        <div class="stat-note" id="statFortGuestsNote">Leitura pendente</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Hospedados em João Pessoa</div>
+        <div class="stat-value" id="statJpGuests">0</div>
+        <div class="stat-note" id="statJpGuestsNote">Leitura pendente</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Total geral de hospedagem</div>
+        <div class="stat-value mono" id="statGrandTotal">R$ 0,00</div>
+        <div class="stat-note">Soma dos quartos com diária informada</div>
+      </div>
     </div>
 
-    <div data-tab-content="trip" class="active">
-      <section class="card" id="trip-info-card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">📌</span>
-              Informações da viagem
-            </div>
-            <p class="card-subtitle">
-              Período, valor por poltrona, regra das crianças e visão geral.
-            </p>
-          </div>
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>Hospedagem por destino</h2>
+          <p>Cada destino lê seu próprio CSV e pode ter quartos diferentes para as mesmas pessoas.</p>
         </div>
+      </div>
+      <div class="destination-grid">
+        <div class="card" id="fortalezaCard"></div>
+        <div class="card" id="joaoPessoaCard"></div>
+      </div>
+    </section>
 
-        <ul class="info-list">
-          <li><strong>Período:</strong> <span id="info-period">02 a 17/01/2027</span></li>
-          <li><strong>Valor por pessoa (poltrona):</strong> <span id="info-fare">R$ 1.100,00</span></li>
-          <li><strong>Parcelamento:</strong> até <span id="info-installments">10x</span>, com parcelas a partir de <span id="info-installment-value">R$ 110,00</span>.</li>
-          <li><strong>Crianças até 5 anos:</strong> não pagam e vão no colo do responsável.</li>
-          <li><strong>Resumo:</strong> <span id="info-paying-people">–</span> poltronas pagantes, <span id="info-started-people">–</span> com pagamento iniciado e <span id="info-full-people">–</span> quitado(s).</li>
-        </ul>
-
-        <div class="info-highlight">
-          As poltronas são definidas na planilha (<code>passageiros.csv</code>) e apenas exibidas aqui.
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <h2>Passageiros</h2>
+          <p>Base lida de passageiros.csv</p>
         </div>
-      </section>
+      </div>
+      <div id="passengerTable"></div>
+    </section>
 
-      <section class="card" id="payment-card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">💳</span>
-              Pagamento da viagem
-            </div>
-            <p class="card-subtitle">
-              Acompanhamento geral das parcelas da família.
-            </p>
-          </div>
-          <div class="pill">
-            <span class="pill-dot"></span>
-            Visão consolidada da família
-          </div>
-        </div>
-
-        <div class="stats-row">
-          <div>
-            <small>Pagamentos iniciados</small>
-            <strong id="stats-started-people">0 / 0</strong>
-          </div>
-          <div>
-            <small>Passageiros quitados</small>
-            <strong id="stats-full-people">0</strong>
-          </div>
-          <div>
-            <small>Progresso geral pago</small>
-            <strong id="stats-percent-small">0%</strong>
-          </div>
-        </div>
-
-        <div class="progress-container">
-          <div class="progress-track">
-            <div id="payment-progress-fill" class="progress-fill"></div>
-            <div class="progress-marker"></div>
-          </div>
-          <div class="progress-label">
-            <span>Percentual das parcelas já pagas (sobre o total planejado)</span>
-            <strong id="payment-percent-label">0%</strong>
-          </div>
-          <div class="paid-highlight" id="paid-highlight"></div>
-        </div>
-      </section>
-
-      <section class="card" id="time-card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">⏳</span>
-              Contagem para o embarque
-            </div>
-            <p class="card-subtitle">
-              Progresso do tempo entre o início do planejamento e o dia da viagem.
-            </p>
-          </div>
-          <div class="pill">
-            <span class="pill-dot warn"></span>
-            Planejamento em andamento
-          </div>
-        </div>
-
-        <div class="stats-row">
-          <div>
-            <small>Datas da viagem</small>
-            <strong id="trip-date-label">–</strong>
-          </div>
-          <div>
-            <small>Dias que faltam</small>
-            <strong id="days-remaining-label">–</strong>
-          </div>
-          <div>
-            <small>Planejamento</small>
-            <strong id="planning-window-label">–</strong>
-          </div>
-        </div>
-
-        <div class="progress-container">
-          <div class="progress-track">
-            <div id="time-progress-fill" class="progress-fill"></div>
-            <div class="progress-marker"></div>
-          </div>
-          <div class="progress-label">
-            <span>Tempo decorrido até a viagem</span>
-            <strong id="time-percent-label">0%</strong>
-          </div>
-        </div>
-      </section>
-
-      <section class="card" id="passengers-card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">🧾</span>
-              Lista de passageiros
-            </div>
-            <p class="card-subtitle">
-              Nomes, perfil e situação geral dos passageiros. A hospedagem fica separada por destino.
-            </p>
-          </div>
-        </div>
-
-        <div class="passenger-summary" id="passenger-summary"></div>
-
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Passageiro(a)</th>
-                <th>Perfil</th>
-                <th>Situação</th>
-                <th>Parcelas</th>
-                <th>Poltrona</th>
-              </tr>
-            </thead>
-            <tbody id="passenger-table-body"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="card" id="seat-layout-card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">🪑</span>
-              Mapa de assentos - Marcopolo G8
-            </div>
-            <p class="card-subtitle">
-              Piso superior: poltronas 1–48. Piso inferior: 49–57.
-            </p>
-          </div>
-        </div>
-
-        <div class="seat-controls">
-          <span class="seat-helper">
-            Mapa ilustrativo das poltronas. Lugares marcados como ocupados vêm da coluna de poltronas do CSV.
-          </span>
-        </div>
-
-        <div class="seat-layout">
-          <div class="deck">
-            <div class="deck-header">
-              <span>Piso superior</span>
-              <span>Poltronas 1–48</span>
-            </div>
-            <div class="seat-grid" id="seat-grid-upper"></div>
-          </div>
-
-          <div class="deck">
-            <div class="deck-header">
-              <span>Piso inferior</span>
-              <span>Poltronas 49–57</span>
-            </div>
-            <div class="seat-grid" id="seat-grid-lower"></div>
-          </div>
-        </div>
-
-        <div class="seat-legend">
-          <div class="legend-item">
-            <span class="legend-color"></span>
-            Livre
-          </div>
-          <div class="legend-item">
-            <span class="legend-color occupied"></span>
-            Ocupado (conforme CSV)
-          </div>
-        </div>
-      </section>
+    <div class="footer-note">
+      Para funcionar corretamente, publique esta pasta no GitHub Pages ou abra em um servidor local. Abrir o HTML como <code>file://</code> pode bloquear o <code>fetch()</code> dos CSVs.
     </div>
-
-    
-    <div data-tab-content="lodging">
-      <section class="card" id="lodging-card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">🏨</span>
-              Hospedagem por destino
-            </div>
-            <p class="card-subtitle">
-              Fortaleza e João Pessoa usam arquivos separados, com agrupamentos independentes.
-            </p>
-          </div>
-          <div class="pill">
-            <span class="pill-dot"></span>
-            Conteúdo protegido por senha
-          </div>
-        </div>
-
-        <div class="kpi-grid" id="lodging-kpis-overall"></div>
-
-        <div class="info-highlight" style="margin-top:10px">
-          Arquivos esperados:
-          <code>passageiros.csv</code>,
-          <code>hospedagem_fortaleza.csv</code> e
-          <code>hospedagem_joao_pessoa.csv</code>.
-          Nos arquivos de hospedagem, use:
-          <code>Nome;Familia;Quarto;Hotel;Diaria</code> ou
-          <code>Nome;Grupo;Quarto;Hotel;Diaria</code>.
-          O campo <code>Hotel</code> deve conter apenas o nome do hotel informado no respectivo CSV. O campo <code>Diaria</code> representa o valor diário do quarto, e o HTML calcula automaticamente o total para 5 noites.
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">🌴</span>
-              Hospedagem - Fortaleza
-            </div>
-            <p class="card-subtitle">
-              Quartos, hotel reservado e despesas das famílias vinculadas a Fortaleza.
-            </p>
-          </div>
-        </div>
-
-        <div class="kpi-grid" id="lodging-kpis-fortaleza"></div>
-        <div class="passenger-summary" id="lodging-summary-fortaleza"></div>
-
-        <div class="table-wrapper" style="max-height: 420px;">
-          <table>
-            <thead>
-              <tr>
-                <th>Família</th>
-                <th>Tipo de quarto</th>
-                <th>Pessoas</th>
-                <th>Capacidade</th>
-                <th>Hotel reservado</th>
-                <th>Diária</th>
-                <th>Total (5 noites)</th>
-                <th>Status</th>
-                <th>Membros</th>
-              </tr>
-            </thead>
-            <tbody id="lodging-table-body-fortaleza"></tbody>
-          </table>
-        </div>
-
-        <div class="card-header" style="margin-top:12px">
-          <div>
-            <div class="card-title">
-              <span class="icon">🏨</span>
-              Hotéis informados no CSV - Fortaleza
-            </div>
-            <p class="card-subtitle">
-              Resumo apenas dos hotéis efetivamente preenchidos em <code>hospedagem_fortaleza.csv</code>.
-            </p>
-          </div>
-        </div>
-
-        <div class="hotel-grid" id="hotel-options-grid-fortaleza"></div>
-      </section>
-
-      <section class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">
-              <span class="icon">🏖️</span>
-              Hospedagem - João Pessoa
-            </div>
-            <p class="card-subtitle">
-              Quartos, hotel reservado e despesas das famílias vinculadas a João Pessoa.
-            </p>
-          </div>
-        </div>
-
-        <div class="kpi-grid" id="lodging-kpis-joao_pessoa"></div>
-        <div class="passenger-summary" id="lodging-summary-joao_pessoa"></div>
-
-        <div class="table-wrapper" style="max-height: 420px;">
-          <table>
-            <thead>
-              <tr>
-                <th>Família</th>
-                <th>Tipo de quarto</th>
-                <th>Pessoas</th>
-                <th>Capacidade</th>
-                <th>Hotel reservado</th>
-                <th>Diária</th>
-                <th>Total (5 noites)</th>
-                <th>Status</th>
-                <th>Membros</th>
-              </tr>
-            </thead>
-            <tbody id="lodging-table-body-joao_pessoa"></tbody>
-          </table>
-        </div>
-
-        <div class="card-header" style="margin-top:12px">
-          <div>
-            <div class="card-title">
-              <span class="icon">🏨</span>
-              Hotéis informados no CSV - João Pessoa
-            </div>
-            <p class="card-subtitle">
-              Resumo apenas dos hotéis efetivamente preenchidos em <code>hospedagem_joao_pessoa.csv</code>.
-            </p>
-          </div>
-        </div>
-
-        <div class="hotel-grid" id="hotel-options-grid-joao_pessoa"></div>
-
-        <div class="info-highlight" style="margin-top:10px">
-          Cada destino pode ter uma configuração diferente de famílias, quartos, hotel e diária, sem conflito entre si.
-        </div>
-      </section>
-    </div>
-
   </main>
 
-  <footer>
-    <div>Site privado para organizar a viagem da família, mostrando apenas o andamento coletivo.</div>
-    <div>Versão com 3 CSVs: passageiros, hospedagem Fortaleza e hospedagem João Pessoa.</div>
-  </footer>
-
   <script>
-    const TRIP_START_DATE = new Date("2027-01-02T00:00:00");
-    const TRIP_END_DATE = new Date("2027-01-17T00:00:00");
-    const PLANNING_START_DATE = new Date("2025-12-09T00:00:00");
-
-    const FARE_PER_PERSON = 1100.0;
-    const MAX_INSTALLMENTS = 10;
-    const LODGING_NIGHTS = 5;
-
-    const ROOM_CAPACITY = {
-      duplo: 2,
-      triplo: 3,
-      quadruplo: 4
+    const state = {
+      passengers: [],
+      lodgings: {
+        fortaleza: [],
+        joao_pessoa: []
+      },
+      files: {
+        passageiros: null,
+        fortaleza: null,
+        joao_pessoa: null
+      },
+      issues: []
     };
 
-    const HOTEL_ALIASES = {
-      fortaleza: {},
-      joao_pessoa: {}
-    };
-
-    const msPerDay = 1000 * 60 * 60 * 24;
-    const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
-
-    const brCurrency = (value) =>
-      Number(value).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-
-    let passengers = [];
-    let lodgingByDestination = { fortaleza: [], joao_pessoa: [] };
-    let passengerNameIndex = new Map();
-
-    function normalizeHeader(h) {
-      return String(h || "")
+    function normalizeHeader(v) {
+      return String(v || "")
         .trim()
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
     }
 
-    function normalizeName(value) {
-      return String(value || "")
+    function normalizeName(v) {
+      return String(v || "")
         .trim()
         .toLowerCase()
         .normalize("NFD")
@@ -1197,1140 +386,315 @@
         .replace(/\s+/g, " ");
     }
 
-    function slugifyHotelCode(value) {
-      return String(value || "")
+    function parseBRL(value) {
+      if (value == null) return 0;
+      let s = String(value).trim();
+      if (!s) return 0;
+      s = s.replace(/\s+/g, "");
+      s = s.replace(/R\$/gi, "");
+      if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+      const n = Number(s);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function formatMoney(v) {
+      return (Number(v) || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function escapeHtml(v) {
+      return String(v ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    async function fetchFirstAvailable(candidates) {
+      let lastError = null;
+      for (const path of candidates) {
+        try {
+          const res = await fetch(path, { cache: "no-store" });
+          if (res.ok) {
+            const text = await res.text();
+            return { path, text };
+          }
+          if (res.status !== 404) {
+            lastError = new Error(`Erro ao carregar ${path} (${res.status})`);
+          }
+        } catch (err) {
+          lastError = err;
+        }
+      }
+      return { path: null, text: "", error: lastError };
+    }
+
+    function parseDelimitedText(text) {
+      const clean = String(text || "").trim();
+      if (!clean) return [];
+      const lines = clean.split(/\r?\n/).filter(Boolean);
+      if (!lines.length) return [];
+      const delimiter = lines[0].includes(";") ? ";" : ",";
+      const headers = lines[0].split(delimiter).map(h => normalizeHeader(h));
+      return lines.slice(1).map((line) => {
+        const cols = line.split(delimiter).map(c => String(c ?? "").trim());
+        const row = {};
+        headers.forEach((h, i) => { row[h] = cols[i] ?? ""; });
+        return row;
+      });
+    }
+
+    function parsePassengers(text) {
+      const rows = parseDelimitedText(text);
+      return rows
+        .map((row) => {
+          const name = row.nome || row.nome_completo || "";
+          if (!name) return null;
+          const category = (row.categoria || "adulto").toLowerCase();
+          return {
+            name,
+            nameKey: normalizeName(name),
+            category,
+            installments: Number(row.parcelas || 0) || 0,
+            seat: row.poltrona || row.assento || ""
+          };
+        })
+        .filter(Boolean);
+    }
+
+    function normalizeRoomType(raw) {
+      const compact = String(raw || "")
         .trim()
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9]+/g, "_")
-        .replace(/^_+|_+$/g, "");
-    }
-
-    function normalizeRoomType(raw) {
-      const s = String(raw || "").trim().toLowerCase();
-      if (!s) return { key: "", label: "—", invalid: false };
-
-      const compact = s
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         .replace(/\s+/g, "");
-
-      if (["duplo", "double", "d"].includes(compact)) {
-        return { key: "duplo", label: "Duplo", invalid: false };
-      }
-      if (["triplo", "triple", "t"].includes(compact)) {
-        return { key: "triplo", label: "Triplo", invalid: false };
-      }
-      if (["quadruplo", "quádruplo", "quadruple", "q"].includes(compact)) {
-        return { key: "quadruplo", label: "Quádruplo", invalid: false };
-      }
-
-      return { key: "", label: "Inválido", invalid: true };
-    }
-      if (["triplo", "triple", "t"].includes(compact)) {
-        return { key: "triplo", label: "Triplo", invalid: false };
-      }
-
-      return { key: "", label: "Inválido", invalid: true };
+      if (!compact) return "—";
+      if (["duplo", "double", "d"].includes(compact)) return "Duplo";
+      if (["triplo", "triple", "t"].includes(compact)) return "Triplo";
+      if (["quadruplo", "quadruple", "quadruplo/quarto", "q"].includes(compact)) return "Quádruplo";
+      return String(raw || "—").trim() || "—";
     }
 
-    async function fetchTextOptional(path) {
-      const response = await fetch(path);
-      if (!response.ok) {
-        if (response.status === 404) return "";
-        throw new Error(`Não foi possível carregar ${path}`);
-      }
-      return response.text();
-    }
-
-    function buildPassengerNameIndex() {
-      passengerNameIndex = new Map();
-      passengers.forEach((p) => {
-        const key = normalizeName(p.name);
-        if (key && !passengerNameIndex.has(key)) {
-          passengerNameIndex.set(key, p);
-        }
-      });
-    }
-
-    function getPassengerByName(name) {
-      return passengerNameIndex.get(normalizeName(name)) || null;
-    }
-
-    function getHotelLookupTokens(destinationKey, rawValue) {
-      const raw = String(rawValue || "").trim();
-      const compact = slugifyHotelCode(raw);
-      const aliases = HOTEL_ALIASES[destinationKey] || {};
-      const aliasResolved = aliases[compact] || "";
-      return {
-        raw,
-        compact,
-        resolved: aliasResolved || compact
-      };
-    }
-
-    function resolveHotelCode(rawValue, destinationKey) {
-      const tokens = getHotelLookupTokens(destinationKey, rawValue);
-      return tokens.resolved;
-    }
-
-    function formatHotelCode(code) {
-      const s = String(code || "").trim();
-      if (!s) return "—";
-      return s
-        .split(/_+/)
-        .filter(Boolean)
-        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-        .join(" ");
-    }
-
-    async function loadAllData() {
-      const [passengersText, fortalezaText, joaoPessoaText] = await Promise.all([
-        fetchTextOptional("passageiros.csv"),
-        fetchTextOptional("hospedagem_fortaleza.csv"),
-        fetchTextOptional("hospedagem_joao_pessoa.csv")
-      ]);
-
-      passengers = parsePassengersCSV(passengersText);
-      buildPassengerNameIndex();
-
-      lodgingByDestination.fortaleza = parseLodgingCSV(fortalezaText, "fortaleza");
-      lodgingByDestination.joao_pessoa = parseLodgingCSV(joaoPessoaText, "joao_pessoa");
-    }
-
-    function parsePassengersCSV(text) {
-      const clean = String(text || "").trim();
-      if (!clean) return [];
-
-      const lines = clean.split(/\r?\n/);
-      if (!lines.length) return [];
-
-      const headerLine = lines.shift();
-      const delimiter = headerLine.includes(";") ? ";" : ",";
-      const headers = headerLine.split(delimiter).map((h) => normalizeHeader(h));
-
-      const idxNome = headers.indexOf("nome");
-      const idxCategoria = headers.indexOf("categoria");
-      const idxParcelas = headers.indexOf("parcelas");
-      const idxPoltrona = headers.findIndex(h => ["poltrona", "assento", "seat"].includes(h));
-
-      if (idxNome === -1 || idxCategoria === -1 || idxParcelas === -1) {
-        console.error("passageiros.csv deve ter pelo menos: Nome;Categoria;Parcelas");
-        return [];
-      }
-
-      return lines
-        .filter((l) => l.trim())
-        .map((line) => {
-          const cols = line.split(delimiter).map((c) => String(c ?? "").trim());
-
-          const nome = cols[idxNome] || "Sem nome";
-          const catCsv = (cols[idxCategoria] || "adulto").toLowerCase();
-          const parcelas = Number(cols[idxParcelas] || 0) || 0;
-
-          let category = "adult";
-          if (catCsv.startsWith("crianca_colo")) category = "childLap";
-          else if (catCsv.startsWith("crianca_poltrona")) category = "childSeat";
-
-          let seat = "";
-          if (idxPoltrona >= 0 && cols[idxPoltrona]) {
-            const n = parseInt(cols[idxPoltrona], 10);
-            if (Number.isFinite(n)) seat = String(n);
-          }
-
+    function parseLodging(text) {
+      const rows = parseDelimitedText(text);
+      return rows
+        .map((row) => {
+          const name = row.nome || "";
+          if (!name) return null;
           return {
-            name: nome,
-            category,
-            seatType: category === "childLap" ? "Colo" : "Poltrona",
-            installmentsPaid: parcelas,
-            seat: seat
+            name,
+            nameKey: normalizeName(name),
+            group: row.familia || row.grupo || row.grupo_hospedagem || "",
+            roomType: normalizeRoomType(row.quarto || row.tipo_quarto || ""),
+            hotel: row.hotel || "",
+            daily: parseBRL(row.diaria || row.valor_diaria || "")
           };
-        });
+        })
+        .filter(Boolean);
     }
 
-    function parseLodgingCSV(text, destinationKey) {
-      const clean = String(text || "").trim();
-      if (!clean) return [];
+    function renderAlerts() {
+      const box = document.getElementById("alertBox");
+      const items = [];
+      if (!state.files.passageiros) items.push("passageiros.csv não foi encontrado.");
+      if (!state.files.fortaleza) items.push("hospedagem_fortaleza.csv não foi encontrado.");
+      if (!state.files.joao_pessoa) items.push("hospedagem_joao_pessoa.csv não foi encontrado. Tente também com esse nome exato e extensão .csv.");
+      state.issues.forEach((issue) => items.push(issue));
 
-      const lines = clean.split(/\r?\n/);
-      if (!lines.length) return [];
-
-      const headerLine = lines.shift();
-      const delimiter = headerLine.includes(";") ? ";" : ",";
-      const headers = headerLine.split(delimiter).map((h) => normalizeHeader(h));
-
-      const idxNome = headers.indexOf("nome");
-      const idxFamilia = headers.findIndex(h => ["familia", "grupo", "grupo_hospedagem", "grupo hospedagem", "family"].includes(h));
-      const idxQuarto = headers.findIndex(h => ["quarto", "tipo_quarto", "tipo quarto", "room"].includes(h));
-      const idxHotel = headers.findIndex(h => ["hotel", "hotel_reservado", "hotel reservado"].includes(h));
-      const idxDiaria = headers.findIndex(h => ["diaria", "valor_diaria", "valor diaria", "daily_rate"].includes(h));
-
-      if (idxNome === -1) {
-        console.error(`Arquivo de hospedagem (${destinationKey}) deve ter pelo menos a coluna Nome`);
-        return [];
+      if (!items.length) {
+        box.innerHTML = "";
+        return;
       }
 
-      return lines
-        .filter((l) => l.trim())
-        .map((line) => {
-          const cols = line.split(delimiter).map((c) => String(c ?? "").trim());
-          const nome = cols[idxNome] || "Sem nome";
-          const passenger = getPassengerByName(nome);
-          const rt = (idxQuarto >= 0)
-            ? normalizeRoomType(cols[idxQuarto])
-            : { key: "", label: "—", invalid: false };
-
-          const rawHotel = (idxHotel >= 0 && cols[idxHotel]) ? String(cols[idxHotel]).trim() : "";
-          const diaria = (idxDiaria >= 0 && cols[idxDiaria])
-            ? Number(String(cols[idxDiaria]).replace(/\./g, "").replace(",", "."))
-            : 0;
-
-          return {
-            name: nome,
-            familyId: (idxFamilia >= 0 && cols[idxFamilia]) ? String(cols[idxFamilia]).trim() : "—",
-            roomTypeKey: rt.key,
-            roomTypeLabel: rt.label,
-            roomTypeInvalid: rt.invalid,
-            hotelCode: resolveHotelCode(rawHotel, destinationKey),
-            hotelRaw: rawHotel,
-            dailyRate: Number.isFinite(diaria) ? diaria : 0,
-            destinationKey,
-            passengerCategory: passenger?.category || "adult",
-            existsInPassengerList: Boolean(passenger)
-          };
-        });
+      box.innerHTML = `<div class="alert"><strong>Atenção:</strong><ul class="list">${items.map(i => `<li>${escapeHtml(i)}</li>`).join("")}</ul></div>`;
     }
 
-    function initTabs() {
-      const tabButtons = Array.from(document.querySelectorAll(".tab-btn[data-tab]"));
-      const contents = Array.from(document.querySelectorAll("[data-tab-content]"));
-
-      function showTab(tabId) {
-        tabButtons.forEach(btn => {
-          const isActive = btn.dataset.tab === tabId;
-          btn.classList.toggle("active", isActive);
-          btn.setAttribute("aria-selected", isActive ? "true" : "false");
-        });
-
-        contents.forEach(c => {
-          c.classList.toggle("active", c.dataset.tabContent === tabId);
-        });
-      }
-
-      tabButtons.forEach(btn => {
-        btn.addEventListener("click", () => showTab(btn.dataset.tab));
-      });
-
-      showTab("trip");
-    }
-
-   
-
-    function getInstallments(p) {
-      if (p.seatType === "Colo") return 0;
-      const v = Number(p.installmentsPaid);
-      if (!Number.isFinite(v) || v < 0) return 0;
-      return clamp(v, 0, MAX_INSTALLMENTS);
-    }
-
-    const getPayingPassengersCount = () => passengers.filter((p) => p.seatType !== "Colo").length;
-    const getStartedPassengersCount = () => passengers.filter((p) => p.seatType !== "Colo" && getInstallments(p) > 0).length;
-    const getFullPassengersCount = () => passengers.filter((p) => p.seatType !== "Colo" && getInstallments(p) >= MAX_INSTALLMENTS).length;
-
-    function getTripPaidValue() {
-      return passengers.reduce((sum, p) => {
-        if (p.seatType === "Colo") return sum;
-        const inst = getInstallments(p);
-        const share = (inst / MAX_INSTALLMENTS) * FARE_PER_PERSON;
-        return sum + share;
-      }, 0);
-    }
-
-    function getPassengerIcon(p) {
-      if (p.category === "childLap") return "👶";
-      if (p.category === "childSeat") return "🧒";
-      return "🧑";
-    }
-
-    function updateHero() {
-      const heroBadgePeople = document.getElementById("hero-badge-people");
-      const heroDays = document.getElementById("hero-days-remaining");
-      const heroPeriod = document.getElementById("hero-trip-period");
-
-      const totalPassengers = passengers.length;
-      const lapCount = passengers.filter((p) => p.category === "childLap").length;
-      const seatCount = totalPassengers - lapCount;
-
-      heroBadgePeople.textContent = `${totalPassengers} passageiros • ${seatCount} poltronas + ${lapCount} no colo`;
-
-      const today = new Date();
-      const rawRemaining = (TRIP_START_DATE - today) / msPerDay;
-      const remainingDays = Math.max(Math.ceil(rawRemaining), 0);
-      heroDays.textContent = remainingDays;
-
-      heroPeriod.textContent =
-        TRIP_START_DATE.toLocaleDateString("pt-BR") +
-        " a " +
-        TRIP_END_DATE.toLocaleDateString("pt-BR");
-    }
-
-    function updateTripInfoCard() {
-      const infoPeriod = document.getElementById("info-period");
-      const infoFare = document.getElementById("info-fare");
-      const infoInstallments = document.getElementById("info-installments");
-      const infoInstallmentValue = document.getElementById("info-installment-value");
-      const infoPayingPeople = document.getElementById("info-paying-people");
-      const infoStartedPeople = document.getElementById("info-started-people");
-      const infoFullPeople = document.getElementById("info-full-people");
-
-      const payingCount = getPayingPassengersCount();
-      const startedCount = getStartedPassengersCount();
-      const fullCount = getFullPassengersCount();
-
-      infoPeriod.textContent =
-        TRIP_START_DATE.toLocaleDateString("pt-BR") +
-        " a " +
-        TRIP_END_DATE.toLocaleDateString("pt-BR");
-
-      infoFare.textContent = brCurrency(FARE_PER_PERSON);
-      infoInstallments.textContent = `${MAX_INSTALLMENTS}x`;
-      infoInstallmentValue.textContent = brCurrency(FARE_PER_PERSON / MAX_INSTALLMENTS);
-
-      infoPayingPeople.textContent = `${payingCount}`;
-      infoStartedPeople.textContent = `${startedCount}`;
-      infoFullPeople.textContent = `${fullCount}`;
-    }
-
-    function updatePaymentPanel() {
-      const startedLabel = document.getElementById("stats-started-people");
-      const fullLabel = document.getElementById("stats-full-people");
-      const smallPercentLabel = document.getElementById("stats-percent-small");
-      const progressFill = document.getElementById("payment-progress-fill");
-      const percentLabel = document.getElementById("payment-percent-label");
-      const paidHighlight = document.getElementById("paid-highlight");
-
-      const payingCount = getPayingPassengersCount();
-      const started = getStartedPassengersCount();
-      const full = getFullPassengersCount();
-
-      const totalPlannedValue = getPayingPassengersCount() * FARE_PER_PERSON;
-      const paidValue = getTripPaidValue();
-      const rawPercent = totalPlannedValue > 0 ? (paidValue / totalPlannedValue) * 100 : 0;
-      const percent = clamp(Math.round(rawPercent), 0, 100);
-
-      startedLabel.textContent = `${started} / ${payingCount}`;
-      fullLabel.textContent = `${full}`;
-      smallPercentLabel.textContent = percent + "%";
-      progressFill.style.width = percent + "%";
-      percentLabel.textContent = percent + "%";
-
-      if (paidHighlight) {
-        const fullPassengers = passengers.filter((p) => p.seatType !== "Colo" && getInstallments(p) >= MAX_INSTALLMENTS);
-        if (fullPassengers.length > 0) {
-          paidHighlight.style.display = "block";
-          paidHighlight.textContent = "Quitados: " + fullPassengers.map((p) => p.name).join(", ");
-        } else {
-          paidHighlight.style.display = "none";
-          paidHighlight.textContent = "";
-        }
-      }
-    }
-
-    function updateTimePanel() {
-      const tripDateLabel = document.getElementById("trip-date-label");
-      const daysRemainingLabel = document.getElementById("days-remaining-label");
-      const planningWindowLabel = document.getElementById("planning-window-label");
-      const timeFill = document.getElementById("time-progress-fill");
-      const timePercentLabel = document.getElementById("time-percent-label");
-
-      const today = new Date();
-
-      const totalMs = TRIP_START_DATE - PLANNING_START_DATE;
-      const elapsedMs = today - PLANNING_START_DATE;
-
-      const totalDays = totalMs / msPerDay;
-      const elapsedDays = clamp(elapsedMs / msPerDay, 0, totalDays);
-      const remainingDays = Math.max(Math.ceil((TRIP_START_DATE - today) / msPerDay), 0);
-
-      const percent = totalDays > 0
-        ? clamp(Math.round((elapsedDays / totalDays) * 100), 0, 100)
-        : 0;
-
-      tripDateLabel.textContent =
-        TRIP_START_DATE.toLocaleDateString("pt-BR") +
-        " a " +
-        TRIP_END_DATE.toLocaleDateString("pt-BR");
-
-      daysRemainingLabel.textContent =
-        remainingDays === 0 ? "Chegou o grande dia!" : `${remainingDays} ${remainingDays === 1 ? "dia" : "dias"}`;
-
-      planningWindowLabel.textContent =
-        PLANNING_START_DATE.toLocaleDateString("pt-BR") +
-        " → " +
-        TRIP_START_DATE.toLocaleDateString("pt-BR");
-
-      timeFill.style.width = percent + "%";
-      timePercentLabel.textContent = percent + "%";
-    }
-
-    function buildPassengerTable() {
-      const tbody = document.getElementById("passenger-table-body");
-      const summary = document.getElementById("passenger-summary");
-
-      tbody.innerHTML = "";
-      summary.innerHTML = "";
-
-      const totalPassengers = passengers.length;
-      const totalLap = passengers.filter((p) => p.category === "childLap").length;
-      const totalSeatChildren = passengers.filter((p) => p.category === "childSeat").length;
-      const totalAdults = passengers.filter((p) => p.category === "adult").length;
-      const totalSeats = totalPassengers - totalLap;
-      const totalStarted = getStartedPassengersCount();
-      const totalFull = getFullPassengersCount();
-      const markedSeats = passengers.filter((p) => p.seat && p.seatType !== "Colo").length;
-
-      const pieces = [
-        `👨‍👩‍👧‍👦 ${totalPassengers} passageiros`,
-        `🧑 ${totalAdults} adulto(s)`,
-        `🧒 ${totalSeatChildren} criança(s) em poltrona`,
-        `👶 ${totalLap} criança(s) no colo`,
-        `🪑 ${totalSeats} poltronas`,
-        `✅ ${totalStarted} com pagamento iniciado`,
-        `💯 ${totalFull} totalmente quitado(s)`,
-        `🎟️ ${markedSeats} poltrona(s) marcadas`
-      ];
-
-      pieces.forEach((text) => {
-        const span = document.createElement("span");
-        span.textContent = text;
-        summary.appendChild(span);
-      });
-
-      passengers.forEach((p, index) => {
-        const tr = document.createElement("tr");
-        const installments = getInstallments(p);
-
-        const positionTd = document.createElement("td");
-        positionTd.textContent = index + 1;
-
-        const nameTd = document.createElement("td");
-        const iconSpan = document.createElement("span");
-        iconSpan.textContent = getPassengerIcon(p);
-        iconSpan.style.marginRight = "4px";
-        nameTd.appendChild(iconSpan);
-        nameTd.appendChild(document.createTextNode(p.name));
-
-        const typeTd = document.createElement("td");
-        let perfilText;
-        if (p.category === "childLap") perfilText = "Criança / Colo";
-        else if (p.category === "childSeat") perfilText = "Criança / Poltrona";
-        else perfilText = "Adulto / Poltrona";
-        typeTd.textContent = perfilText;
-
-        const statusTd = document.createElement("td");
-        statusTd.classList.add("status");
-        const statusPill = document.createElement("span");
-        statusPill.classList.add("status-pill");
-        const dot = document.createElement("span");
-        dot.classList.add("dot");
-        statusPill.appendChild(dot);
-
-        let statusText;
-        if (p.seatType === "Colo") {
-          statusPill.classList.add("paid");
-          statusText = "Confirmado (colo)";
-        } else if (installments > 0) {
-          statusPill.classList.add("paid");
-          statusText = installments >= MAX_INSTALLMENTS ? "Confirmado (quitado)" : "Confirmado (pagamento iniciado)";
-        } else {
-          statusPill.classList.add("pending");
-          statusText = "Confirmado (pagamento não iniciado)";
-        }
-
-        statusPill.appendChild(document.createTextNode(statusText));
-        statusTd.appendChild(statusPill);
-
-        const installmentsTd = document.createElement("td");
-        installmentsTd.textContent = (p.seatType === "Colo") ? "–" : `${installments} / ${MAX_INSTALLMENTS}`;
-
-        const seatTd = document.createElement("td");
-        if (p.category === "childLap") seatTd.textContent = "No colo (sem poltrona)";
-        else if (!p.seat) seatTd.textContent = "Não definido na planilha";
-        else seatTd.textContent = "Poltrona " + p.seat;
-
-        tr.appendChild(positionTd);
-        tr.appendChild(nameTd);
-        tr.appendChild(typeTd);
-        tr.appendChild(statusTd);
-        tr.appendChild(installmentsTd);
-        tr.appendChild(seatTd);
-
-        tbody.appendChild(tr);
-      });
-    }
-
-    function getHotelMeta() {
-      return null;
-    }
-
-    function groupFamiliesByDestination(destinationKey) {
-      const families = {};
-      const entries = lodgingByDestination[destinationKey] || [];
-
-      entries.forEach((entry) => {
-        const fid = entry.familyId ? String(entry.familyId).trim() : "—";
-
-        if (!families[fid]) {
-          families[fid] = {
-            familyId: fid,
-            roomTypeKey: "",
-            roomTypeLabel: "—",
-            anyInvalid: false,
-            members: [],
-            hotelCode: "",
-            hotelRaw: "",
-            dailyRate: 0
-          };
-        }
-
-        families[fid].members.push(entry);
-
-        if (entry.roomTypeInvalid) families[fid].anyInvalid = true;
-
-        if (entry.roomTypeKey) {
-          if (!families[fid].roomTypeKey) {
-            families[fid].roomTypeKey = entry.roomTypeKey;
-            families[fid].roomTypeLabel = entry.roomTypeLabel;
-          } else if (families[fid].roomTypeKey !== entry.roomTypeKey) {
-            families[fid].anyInvalid = true;
-          }
-        }
-
-        if (entry.hotelCode || entry.hotelRaw) {
-          if (!families[fid].hotelCode && !families[fid].hotelRaw) {
-            families[fid].hotelCode = entry.hotelCode;
-            families[fid].hotelRaw = entry.hotelRaw;
-          } else if (
-            families[fid].hotelCode !== entry.hotelCode ||
-            (families[fid].hotelRaw || "") !== (entry.hotelRaw || "")
-          ) {
-            families[fid].anyInvalid = true;
-          }
-        }
-
-        if (entry.dailyRate > 0) {
-          if (!families[fid].dailyRate) {
-            families[fid].dailyRate = entry.dailyRate;
-          } else if (Number(families[fid].dailyRate) !== Number(entry.dailyRate)) {
-            families[fid].anyInvalid = true;
-          }
-        }
-      });
-
-      return families;
-    }
-
-    function getCapacityForFamily(f) {
-      if (!f.roomTypeKey) return 0;
-
-      let cap = ROOM_CAPACITY[f.roomTypeKey] || 0;
-      if (f.roomTypeKey === "triplo") {
-        const hasChild = f.members.some(m => m.passengerCategory === "childLap" || m.passengerCategory === "childSeat");
-        if (hasChild) cap = 4;
-      }
-      return cap;
-    }
-
-    function getReservedHotelsSummary(destinationKey) {
-      const fams = groupFamiliesByDestination(destinationKey);
-      const list = Object.values(fams);
-
-      const reservedFamilies = list.filter(f => f.hotelCode || f.hotelRaw);
-
-      const uniqueHotels = [...new Set(
-        reservedFamilies
-          .map(f => f.hotelCode || slugifyHotelCode(f.hotelRaw) || "")
-          .filter(Boolean)
-      )];
-
-      const ratesWithValue = list.filter(f => Number(f.dailyRate) > 0);
-      const totalDaily = ratesWithValue.reduce((acc, f) => acc + (Number(f.dailyRate) || 0), 0);
-      const avg = ratesWithValue.length ? totalDaily / ratesWithValue.length : 0;
-
-      return {
-        totalFamilies: list.length,
-        reservedFamilies: reservedFamilies.length,
-        uniqueHotelsCount: uniqueHotels.length,
-        averageDailyRate: avg,
-        totalDailyRate: totalDaily,
-        totalStayCost: totalDaily * LODGING_NIGHTS
-      };
-    };
-    }
-
-    function buildHotelOptionsGrid(destinationKey, gridId) {
-      const grid = document.getElementById(gridId);
-      if (!grid) return;
-
-      grid.innerHTML = "";
-
-      const fams = Object.values(groupFamiliesByDestination(destinationKey));
-      const grouped = new Map();
-
-      fams.forEach(f => {
-        const key = f.hotelCode || slugifyHotelCode(f.hotelRaw) || "";
-        if (!key) return;
-
-        if (!grouped.has(key)) {
-          grouped.set(key, {
-            name: f.hotelRaw || formatHotelCode(key),
-            families: 0,
-            rates: []
+    function summarizeLodging(rows) {
+      const groups = new Map();
+      rows.forEach((row) => {
+        const key = row.group || `__sem_grupo__${row.nameKey}`;
+        if (!groups.has(key)) {
+          groups.set(key, {
+            key,
+            group: row.group || "—",
+            roomType: row.roomType || "—",
+            hotel: row.hotel || "",
+            daily: row.daily || 0,
+            guests: []
           });
         }
-
-        const item = grouped.get(key);
-        item.families += 1;
-        if (Number(f.dailyRate) > 0) item.rates.push(Number(f.dailyRate));
+        const g = groups.get(key);
+        g.guests.push(row.name);
+        if (!g.roomType || g.roomType === "—") g.roomType = row.roomType || "—";
+        if (!g.hotel && row.hotel) g.hotel = row.hotel;
+        if (!g.daily && row.daily) g.daily = row.daily;
       });
 
-      const hotels = Array.from(grouped.values()).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+      const rooms = Array.from(groups.values()).sort((a, b) => a.group.localeCompare(b.group, "pt-BR", { numeric: true }));
+      const guestCount = rows.length;
+      const roomCount = rooms.length;
+      const nightlyTotal = rooms.reduce((sum, room) => sum + (room.daily || 0), 0);
+      const stayTotal = nightlyTotal * 5;
+      return { rooms, guestCount, roomCount, nightlyTotal, stayTotal };
+    }
 
-      if (!hotels.length) {
-        grid.innerHTML = '<div class="muted-box">Nenhum hotel informado no CSV deste destino.</div>';
+    function renderDestination(targetId, title, rows, fileUsed) {
+      const el = document.getElementById(targetId);
+      const { rooms, guestCount, roomCount, nightlyTotal, stayTotal } = summarizeLodging(rows);
+
+      const hotels = Array.from(new Set(rows.map(r => (r.hotel || "").trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+      let html = `
+        <div class="section-head">
+          <div>
+            <h2>${escapeHtml(title)}</h2>
+            <p>Resumo lido do arquivo de hospedagem deste destino</p>
+          </div>
+        </div>
+        <div>
+          <span class="badge ${fileUsed ? "ok" : "warn"}">${fileUsed ? "✓ Arquivo carregado" : "⚠ Arquivo ausente"}</span>
+          <span class="badge">${guestCount} hóspedes</span>
+          <span class="badge">${roomCount} quartos/grupos</span>
+          <span class="badge">${hotels.length} hotel(is)</span>
+        </div>
+        <div class="file-line">Arquivo utilizado: <strong>${escapeHtml(fileUsed || "não encontrado")}</strong></div>
+        <div class="totals">
+          <div class="total-box"><div class="k">Hóspedes</div><div class="v">${guestCount}</div></div>
+          <div class="total-box"><div class="k">Quartos</div><div class="v">${roomCount}</div></div>
+          <div class="total-box"><div class="k">Diárias somadas</div><div class="v mono">${formatMoney(nightlyTotal)}</div></div>
+          <div class="total-box"><div class="k">Total 5 noites</div><div class="v mono">${formatMoney(stayTotal)}</div></div>
+        </div>
+      `;
+
+      if (!rows.length) {
+        html += `<div class="empty">Nenhum dado de hospedagem encontrado para ${escapeHtml(title)}.</div>`;
+        el.innerHTML = html;
         return;
       }
 
-      hotels.forEach(hotel => {
-        const totalDaily = hotel.rates.reduce((acc, v) => acc + v, 0);
-        const avgRate = hotel.rates.length ? totalDaily / hotel.rates.length : 0;
-        const stayTotal = totalDaily * LODGING_NIGHTS;
+      html += `
+        <table>
+          <thead>
+            <tr>
+              <th>Grupo</th>
+              <th>Hóspedes</th>
+              <th>Quarto</th>
+              <th>Hotel</th>
+              <th>Diária</th>
+              <th>Total 5 noites</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rooms.map(room => `
+              <tr>
+                <td>${escapeHtml(room.group)}</td>
+                <td>
+                  <div class="room-names">${room.guests.map(name => `<div>${escapeHtml(name)}</div>`).join("")}</div>
+                </td>
+                <td>${escapeHtml(room.roomType || "—")}</td>
+                <td>${escapeHtml(room.hotel || "—")}</td>
+                <td class="mono">${room.daily ? formatMoney(room.daily) : "—"}</td>
+                <td class="mono">${room.daily ? formatMoney(room.daily * 5) : "—"}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
 
-        const card = document.createElement("div");
-        card.className = "hotel-card";
-        card.innerHTML = `
-          <div class="hotel-badge">🏨 Informado no CSV</div>
-          <h4>${hotel.name}</h4>
-          <div class="hotel-meta">${hotel.families} família(s) / quarto(s)</div>
-          <div class="hotel-meta">Diária média: ${avgRate ? brCurrency(avgRate) : "—"}</div>
-          <div class="hotel-meta">Total estimado (${LODGING_NIGHTS} noites): ${stayTotal ? brCurrency(stayTotal) : "—"}</div>
-        `;
-        grid.appendChild(card);
-      });
-    });
-        }
+      if (hotels.length) {
+        html += `<details><summary>Hotéis informados</summary><div>${hotels.map(h => `<span class="badge">${escapeHtml(h)}</span>`).join("")}</div></details>`;
+      }
 
-        const item = grouped.get(key);
-        item.families += 1;
-        if (Number(f.dailyRate) > 0) item.rates.push(Number(f.dailyRate));
-      });
+      el.innerHTML = html;
+    }
 
-      const hotels = Array.from(grouped.values()).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
-
-      if (!hotels.length) {
-        grid.innerHTML = '<div class="muted-box">Nenhum hotel informado no CSV deste destino.</div>';
+    function renderPassengerTable() {
+      const el = document.getElementById("passengerTable");
+      if (!state.passengers.length) {
+        el.innerHTML = '<div class="empty">Nenhum passageiro encontrado.</div>';
         return;
       }
 
-      hotels.forEach(hotel => {
-        const avgRate = hotel.rates.length
-          ? hotel.rates.reduce((acc, v) => acc + v, 0) / hotel.rates.length
-          : 0;
-
-        const card = document.createElement("div");
-        card.className = "hotel-card";
-        card.innerHTML = `
-          <div class="hotel-badge">🏨 Informado no CSV</div>
-          <h4>${hotel.name}</h4>
-          <div class="hotel-meta">${hotel.families} família(s) / quarto(s)</div>
-          <div class="hotel-meta">Diária média informada: ${avgRate ? brCurrency(avgRate) : "—"}</div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    function buildDestinationLodgingKpis(destinationKey, boxId) {
-      const box = document.getElementById(boxId);
-      if (!box) return;
-
-      const s = getReservedHotelsSummary(destinationKey);
-      const fams = Object.values(groupFamiliesByDestination(destinationKey));
-      const withDaily = fams.filter(f => Number(f.dailyRate) > 0).length;
-
-      box.innerHTML = `
-        <div class="kpi-card">
-          <small>Famílias / quartos</small>
-          <strong>${s.totalFamilies}</strong>
-        </div>
-        <div class="kpi-card">
-          <small>Famílias com hotel definido</small>
-          <strong>${s.reservedFamilies}</strong>
-        </div>
-        <div class="kpi-card">
-          <small>Hotéis distintos</small>
-          <strong>${s.uniqueHotelsCount}</strong>
-        </div>
-        <div class="kpi-card">
-          <small>Diária média</small>
-          <strong>${s.averageDailyRate ? brCurrency(s.averageDailyRate) : "—"}</strong>
-        </div>
-        <div class="kpi-card">
-          <small>Famílias com diária preenchida</small>
-          <strong>${withDaily}</strong>
-        </div>
-        <div class="kpi-card">
-          <small>Total (${LODGING_NIGHTS} noites)</small>
-          <strong>${s.totalStayCost ? brCurrency(s.totalStayCost) : "—"}</strong>
-        </div>
+      const rows = [...state.passengers].sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
+      el.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Categoria</th>
+              <th>Parcelas</th>
+              <th>Poltrona</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(p => `
+              <tr>
+                <td>${escapeHtml(p.name)}</td>
+                <td>${escapeHtml(p.category)}</td>
+                <td class="mono">${p.installments}</td>
+                <td class="mono">${escapeHtml(p.seat || "—")}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
       `;
     }
 
-    function buildOverallLodgingKpis() {
-      const box = document.getElementById("lodging-kpis-overall");
-      if (!box) return;
+    function updateStats() {
+      const fort = summarizeLodging(state.lodgings.fortaleza);
+      const jp = summarizeLodging(state.lodgings.joao_pessoa);
+      const grand = fort.stayTotal + jp.stayTotal;
 
-      const fort = getReservedHotelsSummary("fortaleza");
-      const jpa = getReservedHotelsSummary("joao_pessoa");
-
-      box.innerHTML = `
-        <div class="kpi-card">
-          <small>Fortaleza</small>
-          <strong>${fort.totalFamilies} grupo(s)</strong>
-        </div>
-        <div class="kpi-card">
-          <small>João Pessoa</small>
-          <strong>${jpa.totalFamilies} grupo(s)</strong>
-        </div>
-        <div class="kpi-card">
-          <small>Hotéis definidos</small>
-          <strong>${fort.reservedFamilies + jpa.reservedFamilies}</strong>
-        </div>
-        <div class="kpi-card">
-          <small>Total Fortaleza</small>
-          <strong>${fort.totalStayCost ? brCurrency(fort.totalStayCost) : "—"}</strong>
-        </div>
-        <div class="kpi-card">
-          <small>Total João Pessoa</small>
-          <strong>${jpa.totalStayCost ? brCurrency(jpa.totalStayCost) : "—"}</strong>
-        </div>
-        <div class="kpi-card">
-          <small>Total geral</small>
-          <strong>${(fort.totalStayCost + jpa.totalStayCost) ? brCurrency(fort.totalStayCost + jpa.totalStayCost) : "—"}</strong>
-        </div>
-      `;
+      document.getElementById("statPassengers").textContent = state.passengers.length;
+      document.getElementById("statPassengersNote").textContent = state.files.passageiros || "arquivo não encontrado";
+      document.getElementById("statFortGuests").textContent = fort.guestCount;
+      document.getElementById("statFortGuestsNote").textContent = state.files.fortaleza || "arquivo não encontrado";
+      document.getElementById("statJpGuests").textContent = jp.guestCount;
+      document.getElementById("statJpGuestsNote").textContent = state.files.joao_pessoa || "arquivo não encontrado";
+      document.getElementById("statGrandTotal").textContent = formatMoney(grand);
     }
 
-    function buildDestinationLodgingTable(destinationKey, config) {
-      const tbody = document.getElementById(config.tbodyId);
-      const summary = document.getElementById(config.summaryId);
-      if (!tbody || !summary) return;
-
-      tbody.innerHTML = "";
-      summary.innerHTML = "";
-
-      const fams = groupFamiliesByDestination(destinationKey);
-      const keys = Object.keys(fams).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true }));
-
-      let totalFamilies = keys.length;
-      let defined = 0;
-      let missing = 0;
-      let invalid = 0;
-      let overflow = 0;
-      let missingInPassengers = 0;
-      let hotelsDefined = 0;
-      let noHotel = 0;
-      let dailyRates = [];
-      let totalStayCost = 0;
-      let duplos = 0;
-      let triplos = 0;
-      let quadruplos = 0;
-      let withDaily = 0;
-
-      if (!keys.length) {
-        const tr = document.createElement("tr");
-        tr.innerHTML = '<td colspan="9" style="text-align:center;color:var(--text-muted)">Sem registros para este destino.</td>';
-        tbody.appendChild(tr);
-      }
-
-      keys.forEach(k => {
-        const f = fams[k];
-        const people = f.members.length;
-        const cap = getCapacityForFamily(f);
-        const over = (cap > 0 && people > cap);
-        const hasMissingPassenger = f.members.some(m => !m.existsInPassengerList);
-
-        if (f.roomTypeKey) defined++; else missing++;
-        if (f.anyInvalid) invalid++;
-        if (over) overflow++;
-        if (hasMissingPassenger) missingInPassengers++;
-
-        if (f.roomTypeKey === "duplo") duplos++;
-        if (f.roomTypeKey === "triplo") triplos++;
-        if (f.roomTypeKey === "quadruplo") quadruplos++;
-
-        if (f.hotelCode || f.hotelRaw) {
-          hotelsDefined++;
-        } else {
-          noHotel++;
+    function validateCrossReferences() {
+      const passengerKeys = new Set(state.passengers.map(p => p.nameKey));
+      [
+        ["Fortaleza", state.lodgings.fortaleza],
+        ["João Pessoa", state.lodgings.joao_pessoa]
+      ].forEach(([label, rows]) => {
+        const missing = rows.filter(r => !passengerKeys.has(r.nameKey)).map(r => r.name);
+        if (missing.length) {
+          state.issues.push(`${label}: ${missing.length} nome(s) da hospedagem não estão em passageiros.csv (${missing.join(", ")}).`);
         }
-
-        if (f.dailyRate > 0) {
-          dailyRates.push(Number(f.dailyRate));
-          totalStayCost += Number(f.dailyRate) * LODGING_NIGHTS;
-          withDaily++;
-        }
-
-        const tr = document.createElement("tr");
-
-        const tdFam = document.createElement("td");
-        tdFam.textContent = f.familyId;
-
-        const tdType = document.createElement("td");
-        tdType.textContent = f.roomTypeLabel || "—";
-
-        const tdPeople = document.createElement("td");
-        tdPeople.textContent = String(people);
-
-        const tdCap = document.createElement("td");
-        tdCap.textContent = cap ? String(cap) : "—";
-
-        const tdHotel = document.createElement("td");
-        tdHotel.innerHTML = `<span class="family-hotel-tag">🏨 ${f.hotelRaw || formatHotelCode(f.hotelCode) || "—"}</span>`;
-
-        const tdDaily = document.createElement("td");
-        tdDaily.textContent = f.dailyRate > 0 ? brCurrency(Number(f.dailyRate)) : "—";
-
-        const tdTotal = document.createElement("td");
-        tdTotal.textContent = f.dailyRate > 0 ? brCurrency(Number(f.dailyRate) * LODGING_NIGHTS) : "—";
-
-        const tdStatus = document.createElement("td");
-        if (f.anyInvalid) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Conflito de dados</span>';
-        } else if (hasMissingPassenger) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Nome fora de passageiros.csv</span>';
-        } else if (!f.roomTypeKey) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem tipo de quarto</span>';
-        } else if (!(f.hotelCode || f.hotelRaw)) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem hotel definido</span>';
-        } else if (!f.dailyRate) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem diária</span>';
-        } else if (over) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Excede capacidade</span>';
-        } else {
-          tdStatus.innerHTML = '<span class="ok-pill">✅ OK</span>';
-        }
-
-        const tdMembers = document.createElement("td");
-        tdMembers.textContent = f.members
-          .map(m => !m.existsInPassengerList ? `${m.name} (fora da lista)` : m.name)
-          .join(", ");
-
-        tr.appendChild(tdFam);
-        tr.appendChild(tdType);
-        tr.appendChild(tdPeople);
-        tr.appendChild(tdCap);
-        tr.appendChild(tdHotel);
-        tr.appendChild(tdDaily);
-        tr.appendChild(tdTotal);
-        tr.appendChild(tdStatus);
-        tr.appendChild(tdMembers);
-
-        tbody.appendChild(tr);
-      });
-
-      const avgRate = dailyRates.length
-        ? dailyRates.reduce((a, b) => a + b, 0) / dailyRates.length
-        : 0;
-
-      const chips = [
-        `👨‍👩‍👧‍👦 ${totalFamilies} famílias`,
-        `🏨 ${defined} quartos definidos (duplo:${duplos} • triplo:${triplos} • quádruplo:${quadruplos})`,
-        `📍 ${hotelsDefined} com hotel definido`,
-        `💵 ${withDaily} com diária preenchida`,
-        `💰 média do grupo: ${avgRate ? brCurrency(avgRate) : "—"}`,
-        `🧾 total ${LODGING_NIGHTS} noites: ${totalStayCost ? brCurrency(totalStayCost) : "—"}`
-      ];
-
-      if (missing) chips.push(`🟠 ${missing} sem tipo`);
-      if (noHotel) chips.push(`🟠 ${noHotel} sem hotel`);
-      if (invalid) chips.push(`⚠️ ${invalid} conflito(s)`);
-      if (overflow) chips.push(`🚫 ${overflow} excede(m) capacidade`);
-      if (missingInPassengers) chips.push(`🧾 ${missingInPassengers} família(s) com nome fora da lista de passageiros`);
-
-      chips.forEach(t => {
-        const s = document.createElement("span");
-        s.textContent = t;
-        summary.appendChild(s);
-      });
-
-      buildDestinationLodgingKpis(destinationKey, config.kpisId);
-      buildHotelOptionsGrid(destinationKey, config.gridId);
-    }
-
-      keys.forEach(k => {
-        const f = fams[k];
-        const people = f.members.length;
-        const cap = getCapacityForFamily(f);
-        const over = (cap > 0 && people > cap);
-        const hasMissingPassenger = f.members.some(m => !m.existsInPassengerList);
-
-        if (f.roomTypeKey) defined++; else missing++;
-        if (f.anyInvalid) invalid++;
-        if (over) overflow++;
-        if (hasMissingPassenger) missingInPassengers++;
-
-        if (f.roomTypeKey === "duplo") duplos++;
-        if (f.roomTypeKey === "triplo") triplos++;
-
-        if (f.hotelCode || f.hotelRaw) {
-          hotelsDefined++;
-        } else {
-          noHotel++;
-        }
-
-        if (f.dailyRate > 0) {
-          dailyRates.push(Number(f.dailyRate));
-          withDaily++;
-        }
-
-        const tr = document.createElement("tr");
-
-        const tdFam = document.createElement("td");
-        tdFam.textContent = f.familyId;
-
-        const tdType = document.createElement("td");
-        tdType.textContent = f.roomTypeLabel || "—";
-
-        const tdPeople = document.createElement("td");
-        tdPeople.textContent = String(people);
-
-        const tdCap = document.createElement("td");
-        tdCap.textContent = cap ? String(cap) : "—";
-
-        const tdHotel = document.createElement("td");
-        tdHotel.innerHTML = `<span class="family-hotel-tag">🏨 ${f.hotelRaw || formatHotelCode(f.hotelCode) || "—"}</span>`;
-
-        const tdDaily = document.createElement("td");
-        tdDaily.textContent = f.dailyRate > 0 ? brCurrency(Number(f.dailyRate)) : "—";
-
-        const tdStatus = document.createElement("td");
-        if (f.anyInvalid) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Conflito de dados</span>';
-        } else if (hasMissingPassenger) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Nome fora de passageiros.csv</span>';
-        } else if (!f.roomTypeKey) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem tipo de quarto</span>';
-        } else if (!(f.hotelCode || f.hotelRaw)) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem hotel definido</span>';
-        } else if (!f.dailyRate) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Sem diária</span>';
-        } else if (over) {
-          tdStatus.innerHTML = '<span class="warn-pill">⚠️ Excede capacidade</span>';
-        } else {
-          tdStatus.innerHTML = '<span class="ok-pill">✅ OK</span>';
-        }
-
-        const tdMembers = document.createElement("td");
-        tdMembers.textContent = f.members
-          .map(m => !m.existsInPassengerList ? `${m.name} (fora da lista)` : m.name)
-          .join(", ");
-
-        tr.appendChild(tdFam);
-        tr.appendChild(tdType);
-        tr.appendChild(tdPeople);
-        tr.appendChild(tdCap);
-        tr.appendChild(tdHotel);
-        tr.appendChild(tdDaily);
-        tr.appendChild(tdStatus);
-        tr.appendChild(tdMembers);
-
-        tbody.appendChild(tr);
-      });
-
-      const avgRate = dailyRates.length
-        ? dailyRates.reduce((a, b) => a + b, 0) / dailyRates.length
-        : 0;
-
-      const chips = [
-        `👨‍👩‍👧‍👦 ${totalFamilies} famílias`,
-        `🏨 ${defined} quartos definidos (duplo:${duplos} • triplo:${triplos})`,
-        `📍 ${hotelsDefined} com hotel definido`,
-        `💵 ${withDaily} com diária preenchida`,
-        `💰 média do grupo: ${avgRate ? brCurrency(avgRate) : "—"}`
-      ];
-
-      if (missing) chips.push(`🟠 ${missing} sem tipo`);
-      if (noHotel) chips.push(`🟠 ${noHotel} sem hotel`);
-      if (invalid) chips.push(`⚠️ ${invalid} conflito(s)`);
-      if (overflow) chips.push(`🚫 ${overflow} excede(m) capacidade`);
-      if (missingInPassengers) chips.push(`🧾 ${missingInPassengers} família(s) com nome fora da lista de passageiros`);
-
-      chips.forEach(t => {
-        const s = document.createElement("span");
-        s.textContent = t;
-        summary.appendChild(s);
-      });
-
-      buildDestinationLodgingKpis(destinationKey, config.kpisId);
-      buildHotelOptionsGrid(destinationKey, config.gridId);
-    }
-
-    function buildAllLodgingSections() {
-      buildOverallLodgingKpis();
-      buildDestinationLodgingTable("fortaleza", {
-        tbodyId: "lodging-table-body-fortaleza",
-        summaryId: "lodging-summary-fortaleza",
-        kpisId: "lodging-kpis-fortaleza",
-        gridId: "hotel-options-grid-fortaleza"
-      });
-      buildDestinationLodgingTable("joao_pessoa", {
-        tbodyId: "lodging-table-body-joao_pessoa",
-        summaryId: "lodging-summary-joao_pessoa",
-        kpisId: "lodging-kpis-joao_pessoa",
-        gridId: "hotel-options-grid-joao_pessoa"
       });
     }
 
-    function updateHeroRoomsBadge() {
-      const el = document.getElementById("hero-badge-rooms-text");
-      if (!el) return;
+    async function init() {
+      const passengersResult = await fetchFirstAvailable(["passageiros.csv", "passageiros"]);
+      const fortalezaResult = await fetchFirstAvailable(["hospedagem_fortaleza.csv", "hospedagem_fortaleza"]);
+      const joaoPessoaResult = await fetchFirstAvailable(["hospedagem_joao_pessoa.csv", "hospedagem_joao_pessoa"]);
 
-      const fort = Object.keys(groupFamiliesByDestination("fortaleza")).length;
-      const jpa = Object.keys(groupFamiliesByDestination("joao_pessoa")).length;
-      const total = fort + jpa;
+      state.files.passageiros = passengersResult.path;
+      state.files.fortaleza = fortalezaResult.path;
+      state.files.joao_pessoa = joaoPessoaResult.path;
 
-      const parts = [
-        `${total} grupo(s)`,
-        `Fortaleza:${fort}`,
-        `João Pessoa:${jpa}`
-      ];
+      state.passengers = parsePassengers(passengersResult.text);
+      state.lodgings.fortaleza = parseLodging(fortalezaResult.text);
+      state.lodgings.joao_pessoa = parseLodging(joaoPessoaResult.text);
 
-      el.textContent = parts.join(" • ");
-    }
-
-    const upperLayout = [
-      [1, 2, 4, 3],
-      [5, 6, 8, 7],
-      [9, 10, 12, 11],
-      [13, 14, null, null],
-      [15, 16, null, null],
-      [17, 18, 20, 19],
-      [21, 22, 24, 23],
-      [25, 26, 28, 27],
-      [29, 30, 32, 31],
-      [33, 34, 36, 35],
-      [37, 38, 40, 39],
-      [41, 42, 44, 43],
-      [45, 46, 48, 47],
-    ];
-
-    const lowerLayout = [
-      [49, 50, null, 51],
-      [52, 53, null, 54],
-      [55, 56, null, 57],
-    ];
-
-    function getFirstName(fullName) {
-      const s = String(fullName || "").trim();
-      if (!s) return "";
-      return s.split(/\s+/)[0];
-    }
-
-    function findPassengerBySeat(seatNumber) {
-      const sn = String(seatNumber);
-      return passengers.find((p) => p.seat && String(p.seat) === sn && p.seatType !== "Colo");
-    }
-
-    function createSeatElement(seatNumber) {
-      const seatEl = document.createElement("div");
-      seatEl.className = "seat";
-      seatEl.dataset.number = seatNumber;
-
-      const passenger = findPassengerBySeat(seatNumber);
-
-      const numEl = document.createElement("div");
-      numEl.className = "seat-number";
-      numEl.textContent = seatNumber;
-      seatEl.appendChild(numEl);
-
-      if (passenger) {
-        seatEl.classList.add("occupied");
-        seatEl.title = "Ocupado por " + passenger.name;
-
-        const nameEl = document.createElement("div");
-        nameEl.className = "seat-name";
-        nameEl.textContent = getFirstName(passenger.name);
-        seatEl.appendChild(nameEl);
-      } else {
-        seatEl.classList.add("free");
-        seatEl.title = "Livre";
-      }
-
-      return seatEl;
-    }
-
-    function buildUpperDeck() {
-      const container = document.getElementById("seat-grid-upper");
-      if (!container) return;
-      container.innerHTML = "";
-      upperLayout.forEach((row) => {
-        row.forEach((cell) => {
-          if (cell == null) {
-            const gap = document.createElement("div");
-            gap.className = "seat-gap";
-            container.appendChild(gap);
-          } else {
-            container.appendChild(createSeatElement(cell));
-          }
-        });
-      });
-    }
-
-    function buildLowerDeck() {
-      const container = document.getElementById("seat-grid-lower");
-      if (!container) return;
-      container.innerHTML = "";
-      lowerLayout.forEach((row) => {
-        row.forEach((cell) => {
-          if (cell == null) {
-            const gap = document.createElement("div");
-            gap.className = "seat-gap";
-            container.appendChild(gap);
-          } else {
-            container.appendChild(createSeatElement(cell));
-          }
-        });
-      });
-    }
-
-    function buildSeatLayout() {
-      buildUpperDeck();
-      buildLowerDeck();
-    }
-
-    function initAfterPassengersLoaded() {
-      updateHero();
-      updateTripInfoCard();
-      updatePaymentPanel();
-      updateTimePanel();
-      buildPassengerTable();
-      buildSeatLayout();
-      buildAllLodgingSections();
-      updateHeroRoomsBadge();
+      validateCrossReferences();
+      renderAlerts();
+      updateStats();
+      renderDestination("fortalezaCard", "Fortaleza", state.lodgings.fortaleza, state.files.fortaleza);
+      renderDestination("joaoPessoaCard", "João Pessoa", state.lodgings.joao_pessoa, state.files.joao_pessoa);
+      renderPassengerTable();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      initTabs();
-
-      loadAllData()
-        .then(() => initAfterPassengersLoaded())
-        .catch((err) => {
-          console.warn("Erro ao carregar arquivos CSV", err);
-          passengers = [];
-          lodgingByDestination = { fortaleza: [], joao_pessoa: [] };
-          initAfterPassengersLoaded();
-        });
+      init().catch((err) => {
+        console.error(err);
+        document.getElementById("alertBox").innerHTML = `<div class="alert"><strong>Erro ao carregar os arquivos.</strong><br>${escapeHtml(err.message || String(err))}</div>`;
+      });
     });
-</script>
+  </script>
 </body>
 </html>
