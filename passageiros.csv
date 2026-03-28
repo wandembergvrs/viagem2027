@@ -1,56 +1,108 @@
 Nome;Categoria;Parcelas;Poltrona
-Adeilza;adulto;6;
+
+Adeilza;adulto;9;
+
 Ana Carolina;adulto;2;
+
 Ana Mercia;adulto;2;
-Antônia;adulto;0;
+
+Antônia;adulto;1;
+
 Bosco;adulto;4;
-Carmem;adulto;0;
+
+Carmem;adulto;1;
+
 Cláudio;adulto;4;
+
 Davi;crianca_colo;0;
-Dissér;adulto;4;50
+
+Davi Lima; 1;
+
+Dissér;adulto;5;
+
 Edina;adulto;10;8
-Aninha Esposa do Reinaldo;adulto;10;6
-Francisca das Chagas;adulto;3;
-Francisca das Chagas Lima;adulto;3;
+
+Aninha Esposa do Reinaldo; 10,5
+ Reinaldo;adult;10;6
+
+Francisca das Chagas;adulto;4;
+
+Francisca das Chagas Lima;adulto;4;
+
 Francisca Márcia Lima;adulto;4;
-Francisco Onofre;adulto;3;
+
+Francisco Onofre;adulto;4;
+
 Francisco Raimundo;adulto;4;
-Francisco Rosendo;adulto;5;
-Gabriel Lima;crianca_poltrona;4;
-Hellen;adulto;0;
+
+Francisco Rosendo;adulto;5
+
+Gabriel Lima;crianca; 5;
+
+Hellen;adulto;2;
+
 Israel Agripino Ferreira dos Santos;adulto;10;53
+
 Janduy;adulto;10;3
+
 Janival;adulto;10;4
+
 Joel;adulto;10;7
-José Joaquim;adulto;0;
-João Neto;adulto;10;1
+João
+
+ Neto;adulto;10;1
+
 Juninho;adulto;4;
+
 Juracy;adulto;4;
+
 Jurandy;adulto;10;55
+
 Leonice Rita de Jesus;adulto;3;
-Liz;crianca_poltrona;4;
+
+Liz;crianca; 4;
+
 Lourival Ferreira de Lima;adulto;3;
-Luzanira;adulto;0;
-Luís;crianca_poltrona;5;
+
+Luzanira;adulto;1;
+
+Luís;crianca; 5;
+
 Luíza;crianca_colo;0;
-Lêda;adulto;10;56
+
+Lêda;adult;10;56
+
 Maicon;adulto;0;
-Maria Emidia;adulto;0;
-Maria Eunice;adulto;3;
-Maria Ferreira de Andrade;adulto;10;52
+Maria
+
+ Eunice;adulto;3;
+
+Maria Ferreira  Andr;adulto;10;52
+
 Mida;adulto;4;
+
 Mª Aparecida;adulto;4;
+
 Pedro Lima;adulto;0;
-Raíssa Lima;adulto;3;
-Reinaldo;adulto;10;5
+
+Raíssa Lima;adulto;4;
+
 Rhalisson;adulto;5;
+
 Robson;adulto;2;
+
 Rosa Maria;adulto;5;
+
 Suely;adulto;4;
-Tainá;adulto;0;
+
+4Tainá;adulto;0;
+
 Thais;adulto;3;
-Theo;crianca_poltrona;4;
-Vera Lúcia;adulto;0;
+
+Theo;crianca; 4;
+
+Vera Lúcia;adulto;4;
+
 Walisson;adulto;3;
 Wandem;adulto;4;
-Zilda;adulto;4;49
+Zilda;adulto;5;
