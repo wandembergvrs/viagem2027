@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -95,7 +96,7 @@
           Painel com leitura automática de <strong>passageiros.csv</strong>,
           <strong>hospedagem_fortaleza.csv</strong> e <strong>hospedagem_joao_pessoa.csv</strong>.
           O painel mantém o <strong>mapa de poltronas</strong>, mostra a <strong>evolução do pagamento do ônibus</strong>
-          e passa a mostrar também a <strong>evolução do pagamento da hospedagem</strong> por grupo.
+          e calcula a <strong>evolução da hospedagem por família</strong>, mesmo quando o pagamento estiver apenas no arquivo de Fortaleza.
         </div>
         <div class="hero-badges">
           <span class="badge" id="badge-passengers">👨‍👩‍👧‍👦 0 passageiros</span>
@@ -168,7 +169,7 @@
       <div class="section-head">
         <div>
           <h2>Hospedagem</h2>
-          <p>Evolução do pagamento por grupo, com base em <code>TotalGrupo</code> e <code>PagoGrupo</code>.</p>
+          <p>Evolução do pagamento por família, com consolidação entre Fortaleza e João Pessoa e uso de <code>PagoGrupo</code> informado em Fortaleza.</p>
         </div>
       </div>
       <div class="totals">
@@ -185,7 +186,7 @@
         </div>
       </div>
       <div class="footer-note">
-        Se <code>PagoGrupo</code> estiver vazio, o grupo continua aparecendo, mas entra como pagamento não informado.
+        Se <code>PagoGrupo</code> estiver vazio em João Pessoa, o painel tenta reaproveitar o valor informado para a mesma família em Fortaleza.
       </div>
     </div>
   </section>
@@ -248,7 +249,7 @@
     <div class="section-head">
       <div>
         <h2>Hospedagem por destino</h2>
-        <p>O total continua sendo por grupo. Os hotéis aparecem normalmente e o pagamento evolui por grupo/quarto.</p>
+        <p>Os hotéis aparecem normalmente, mas o pagamento da hospedagem é consolidado por família para evitar duplicidade.</p>
       </div>
     </div>
     <div class="destination-grid">
@@ -262,7 +263,7 @@
     <code>passageiros.csv → Nome;Categoria;Parcelas;Poltrona</code> e, opcionalmente,
     <code>ValorOnibus;ParcelasTotalOnibus</code>.<br>
     <code>hospedagem_*.csv → Nome;Familia;Quarto;Hotel;Diaria;TotalGrupo</code> e, opcionalmente,
-    <code>PagoGrupo</code>.
+    <code>PagoGrupo</code>. O valor de <code>PagoGrupo</code> pode existir apenas em <code>hospedagem_fortaleza.csv</code>.
   </div>
 </main>
 
@@ -320,10 +321,33 @@ function parseDelimitedText(text){
   });
 }
 
-function normalizeCategory(raw){
-  const v = String(raw || "").toLowerCase();
-  if(v.startsWith("crianca_colo")) return "childLap";
-  if(v.startsWith("crianca_poltrona")) return "childSeat";
+function normalizeLooseValue(raw){
+  return String(raw || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[_\-\/]+/g, " ")
+    .replace(/\s+/g, " ");
+}
+
+function normalizeCategory(raw, seat){
+  const v = normalizeLooseValue(raw);
+  const hasSeat = String(seat || "").trim() !== "";
+  if(!v) return hasSeat ? "adult" : "adult";
+  if(v.includes("colo") || v.includes("bebê de colo") || v.includes("bebe de colo")) return "childLap";
+  if(
+    v.includes("crianca") ||
+    v.includes("criança") ||
+    v.includes("infantil") ||
+    v.includes("menor") ||
+    v.includes("kid")
+  ){
+    return hasSeat ? "childSeat" : "childLap";
+  }
+  if(v.includes("poltrona") || v.includes("assento")){
+    return hasSeat ? "childSeat" : "adult";
+  }
   return "adult";
 }
 
@@ -331,8 +355,8 @@ function parsePassengers(text){
   return parseDelimitedText(text).map(row => {
     const name = row.nome || row.nome_completo || "";
     if(!name) return null;
-    const category = normalizeCategory(row.categoria || "adulto");
     const seat = row.poltrona || row.assento || "";
+    const category = normalizeCategory(row.categoria || row.tipo || row.perfil || "", seat);
     const installmentsPaid = Number(row.parcelas || row.parcelaspagasonibus || row.parcelas_pagas_onibus || 0) || 0;
     const installmentsTotal = Number(row.parcelastotalonibus || row.parcelas_total_onibus || row.parcelastotal || DEFAULT_BUS_INSTALLMENTS) || DEFAULT_BUS_INSTALLMENTS;
     const busValue = parseBRL(row.valoronibus || row.valor_onibus || row.valorpassagem || row.valor_passagem || DEFAULT_BUS_VALUE);
@@ -415,10 +439,96 @@ function summarizeBus(){
   return { payersCount: payers.length, planned, paid, pending: Math.max(planned - paid, 0), started, full, percent, distributionList };
 }
 
-function summarizeLodging(rows){
+function getLodgingGroupKey(row){
+  return row.group ? `group:${String(row.group).trim()}` : `person:${row.nameKey}`;
+}
+
+function getFallbackTotalGroup(row){
+  return row.totalGroup || (row.daily ? row.daily * LODGING_NIGHTS : 0);
+}
+
+function buildLodgingPaymentLookup(){
+  const lookup = new Map();
+  const register = (row) => {
+    const amount = row.paidGroup || 0;
+    if(amount <= 0) return;
+    const keys = [getLodgingGroupKey(row)];
+    if(row.group) keys.push(`person:${row.nameKey}`);
+    keys.forEach(key => {
+      const prev = lookup.get(key) || 0;
+      if(amount > prev) lookup.set(key, amount);
+    });
+  };
+  state.lodgings.fortaleza.forEach(register);
+  state.lodgings.joao_pessoa.forEach(register);
+  return lookup;
+}
+
+function summarizeConsolidatedLodging(){
+  const paymentLookup = buildLodgingPaymentLookup();
+  const groups = new Map();
+
+  const ingest = (rows, destination) => {
+    rows.forEach(row => {
+      const key = getLodgingGroupKey(row);
+      if(!groups.has(key)){
+        groups.set(key, {
+          key,
+          group: row.group || "—",
+          guests: new Set(),
+          fortalezaTotal: 0,
+          joaoPessoaTotal: 0
+        });
+      }
+      const g = groups.get(key);
+      g.guests.add(row.name);
+      const amount = getFallbackTotalGroup(row);
+      if(destination === "fortaleza") g.fortalezaTotal = Math.max(g.fortalezaTotal, amount);
+      if(destination === "joao_pessoa") g.joaoPessoaTotal = Math.max(g.joaoPessoaTotal, amount);
+    });
+  };
+
+  ingest(state.lodgings.fortaleza, "fortaleza");
+  ingest(state.lodgings.joao_pessoa, "joao_pessoa");
+
+  const rooms = Array.from(groups.values()).map(group => {
+    const totalCombined = (group.fortalezaTotal || 0) + (group.joaoPessoaTotal || 0);
+    const rawPaid = paymentLookup.get(group.key) || 0;
+    const paidGroup = totalCombined > 0 ? Math.min(rawPaid, totalCombined) : rawPaid;
+    const pendingGroup = Math.max(totalCombined - paidGroup, 0);
+    const paymentPercent = totalCombined > 0 ? (paidGroup / totalCombined) * 100 : 0;
+    return {
+      ...group,
+      guests: Array.from(group.guests).sort((a,b) => a.localeCompare(b, "pt-BR")),
+      totalCombined,
+      paidGroup,
+      pendingGroup,
+      paymentPercent
+    };
+  }).sort((a,b) => a.group.localeCompare(b.group, "pt-BR", { numeric:true }));
+
+  const roomLookup = new Map(rooms.map(room => [room.key, room]));
+  const totalPlanned = rooms.reduce((sum, room) => sum + (room.totalCombined || 0), 0);
+  const totalPaid = rooms.reduce((sum, room) => sum + (room.paidGroup || 0), 0);
+
+  return {
+    rooms,
+    roomLookup,
+    guestCount: rooms.reduce((sum, room) => sum + room.guests.length, 0),
+    roomCount: rooms.length,
+    stayTotal: totalPlanned,
+    paidTotal: totalPaid,
+    pendingTotal: Math.max(totalPlanned - totalPaid, 0),
+    percent: totalPlanned > 0 ? (totalPaid / totalPlanned) * 100 : 0,
+    groupsWithTotal: rooms.filter(r => (r.totalCombined || 0) > 0).length,
+    groupsWithPaid: rooms.filter(r => (r.paidGroup || 0) > 0).length
+  };
+}
+
+function summarizeDestinationRows(rows, consolidatedLookup){
   const groups = new Map();
   rows.forEach(row => {
-    const key = row.group || `__sem_grupo__${row.nameKey}`;
+    const key = getLodgingGroupKey(row);
     if(!groups.has(key)){
       groups.set(key, {
         key,
@@ -426,8 +536,7 @@ function summarizeLodging(rows){
         roomType: row.roomType || "—",
         hotel: row.hotel || "",
         daily: row.daily || 0,
-        totalGroup: row.totalGroup || 0,
-        paidGroup: row.paidGroup || 0,
+        destinationTotal: 0,
         guests: []
       });
     }
@@ -436,29 +545,25 @@ function summarizeLodging(rows){
     if((!g.roomType || g.roomType === "—") && row.roomType) g.roomType = row.roomType;
     if(!g.hotel && row.hotel) g.hotel = row.hotel;
     if(!g.daily && row.daily) g.daily = row.daily;
-    if(!g.totalGroup && row.totalGroup) g.totalGroup = row.totalGroup;
-    if(!g.paidGroup && row.paidGroup) g.paidGroup = row.paidGroup;
+    g.destinationTotal = Math.max(g.destinationTotal, getFallbackTotalGroup(row));
   });
+
   const rooms = Array.from(groups.values()).sort((a,b) => a.group.localeCompare(b.group, "pt-BR", { numeric:true }));
   rooms.forEach(room => {
-    if(!room.totalGroup && room.daily) room.totalGroup = room.daily * LODGING_NIGHTS;
-    room.paidGroup = Math.min(room.paidGroup || 0, room.totalGroup || room.paidGroup || 0);
-    room.pendingGroup = Math.max((room.totalGroup || 0) - (room.paidGroup || 0), 0);
-    room.paymentPercent = room.totalGroup > 0 ? (room.paidGroup / room.totalGroup) * 100 : 0;
+    const consolidated = consolidatedLookup.get(room.key);
+    room.familyTotal = consolidated?.totalCombined || room.destinationTotal || 0;
+    room.familyPaid = consolidated?.paidGroup || 0;
+    room.familyPending = consolidated ? consolidated.pendingGroup : Math.max((room.destinationTotal || 0) - (room.familyPaid || 0), 0);
+    room.familyPercent = consolidated?.paymentPercent || 0;
   });
-  const totalPlanned = rooms.reduce((sum, room) => sum + (room.totalGroup || 0), 0);
-  const totalPaid = rooms.reduce((sum, room) => sum + (room.paidGroup || 0), 0);
+
   return {
     rooms,
     guestCount: rows.length,
     roomCount: rooms.length,
     nightlyTotal: rooms.reduce((sum, room) => sum + (room.daily || 0), 0),
-    stayTotal: totalPlanned,
-    paidTotal: totalPaid,
-    pendingTotal: Math.max(totalPlanned - totalPaid, 0),
-    percent: totalPlanned > 0 ? (totalPaid / totalPlanned) * 100 : 0,
-    groupsWithTotal: rooms.filter(r => (r.totalGroup || 0) > 0).length,
-    groupsWithPaid: rooms.filter(r => (r.paidGroup || 0) > 0).length
+    destinationTotal: rooms.reduce((sum, room) => sum + (room.destinationTotal || 0), 0),
+    groupsWithPayment: rooms.filter(room => (room.familyPaid || 0) > 0).length
   };
 }
 
@@ -601,53 +706,51 @@ function renderPassengerTable(){
 }
 
 function renderLodgingSummaryPanels(){
-  const fort = summarizeLodging(state.lodgings.fortaleza);
-  const jp = summarizeLodging(state.lodgings.joao_pessoa);
-  const planned = fort.stayTotal + jp.stayTotal;
-  const paid = fort.paidTotal + jp.paidTotal;
-  const pending = Math.max(planned - paid, 0);
-  const groupsWithTotal = fort.groupsWithTotal + jp.groupsWithTotal;
-  const groupsWithPaid = fort.groupsWithPaid + jp.groupsWithPaid;
-  const percent = planned > 0 ? (paid / planned) * 100 : 0;
+  const summary = summarizeConsolidatedLodging();
+  const planned = summary.stayTotal;
+  const paid = summary.paidTotal;
+  const pending = summary.pendingTotal;
+  const groupsWithTotal = summary.groupsWithTotal;
+  const groupsWithPaid = summary.groupsWithPaid;
+  const percent = summary.percent;
   document.getElementById("lodgingGroupsWithTotal").textContent = groupsWithTotal;
   document.getElementById("lodgingGroupsWithPaid").textContent = groupsWithPaid;
   document.getElementById("lodgingPlanned").textContent = formatMoney(planned);
   document.getElementById("lodgingPending").textContent = formatMoney(pending);
   document.getElementById("lodgingProgress").style.width = `${Math.round(percent)}%`;
-  document.getElementById("lodgingProgressLabel").textContent = `${Math.round(percent)}% pago`;
+  document.getElementById("lodgingProgressLabel").textContent = `${Math.round(percent)}% pago (famílias consolidadas)`;
   document.getElementById("lodgingPaidLabel").textContent = `${formatMoney(paid)} pago`;
   document.getElementById("statLodgingPaid").textContent = formatMoney(paid);
   document.getElementById("statLodgingPercent").textContent = `${Math.round(percent)}% pago`;
   document.getElementById("badge-lodging").textContent = `🏨 Hospedagem: ${Math.round(percent)}%`;
 }
 
-function renderDestination(targetId, title, rows, fileUsed){
+function renderDestination(targetId, title, rows, fileUsed, consolidatedSummary){
   const el = document.getElementById(targetId);
-  const s = summarizeLodging(rows);
+  const s = summarizeDestinationRows(rows, consolidatedSummary.roomLookup);
   const hotels = Array.from(new Set(rows.map(r => (r.hotel || "").trim()).filter(Boolean))).sort((a,b) => a.localeCompare(b, "pt-BR"));
   let html = `
     <div class="section-head">
       <div>
         <h2>${escapeHtml(title)}</h2>
-        <p>Hotéis visíveis, soma por grupo e pagamento por grupo.</p>
+        <p>Configuração de quartos do destino; pagamento consolidado por família.</p>
       </div>
     </div>
     <div class="summary-row">
       <span class="summary-pill">${s.guestCount} hóspedes</span>
       <span class="summary-pill">${s.roomCount} grupos/quartos</span>
       <span class="summary-pill">${hotels.length} hotel(is)</span>
-      <span class="summary-pill">${Math.round(s.percent)}% pago</span>
+      <span class="summary-pill">${s.groupsWithPayment} grupo(s) com pagamento</span>
     </div>
     <div class="file-line">Arquivo utilizado: <strong>${escapeHtml(fileUsed || "não encontrado")}</strong></div>
     <div class="totals">
-      <div class="total-box"><div class="k">Planejado</div><div class="v mono">${formatMoney(s.stayTotal)}</div></div>
-      <div class="total-box"><div class="k">Pago</div><div class="v mono">${formatMoney(s.paidTotal)}</div></div>
-      <div class="total-box"><div class="k">Saldo</div><div class="v mono">${formatMoney(s.pendingTotal)}</div></div>
+      <div class="total-box"><div class="k">Planejado no destino</div><div class="v mono">${formatMoney(s.destinationTotal)}</div></div>
       <div class="total-box"><div class="k">Diárias dos grupos</div><div class="v mono">${formatMoney(s.nightlyTotal)}</div></div>
+      <div class="total-box"><div class="k">Grupos com pagamento</div><div class="v">${s.groupsWithPayment}</div></div>
+      <div class="total-box"><div class="k">Hotéis</div><div class="v">${hotels.length}</div></div>
     </div>
-    <div class="progress-wrap">
-      <div class="progress-track"><div class="progress-fill" style="width:${Math.round(s.percent)}%"></div></div>
-      <div class="progress-meta"><span>${Math.round(s.percent)}% do total pago</span><strong class="mono">${formatMoney(s.paidTotal)}</strong></div>
+    <div class="footer-note">
+      O campo <code>PagoGrupo</code> pode existir apenas em Fortaleza. Nesse caso, o valor é reaproveitado aqui por <strong>família</strong>, sem duplicar a soma geral.
     </div>
   `;
   if(!rows.length){
@@ -663,9 +766,10 @@ function renderDestination(targetId, title, rows, fileUsed){
             <th>Hóspedes</th>
             <th>Quarto</th>
             <th>Hotel</th>
-            <th>Total</th>
-            <th>Pago</th>
-            <th>Saldo</th>
+            <th>Total no destino</th>
+            <th>Pago da família</th>
+            <th>Total geral família</th>
+            <th>Saldo geral</th>
           </tr>
         </thead>
         <tbody>
@@ -675,9 +779,10 @@ function renderDestination(targetId, title, rows, fileUsed){
               <td><div class="room-names">${room.guests.map(name => `<div>${escapeHtml(name)}</div>`).join("")}</div></td>
               <td>${escapeHtml(room.roomType || "—")}</td>
               <td>${escapeHtml(room.hotel || "—")}</td>
-              <td class="mono">${room.totalGroup ? formatMoney(room.totalGroup) : "—"}</td>
-              <td class="mono">${room.paidGroup ? formatMoney(room.paidGroup) : "—"}</td>
-              <td class="mono">${room.totalGroup ? formatMoney(room.pendingGroup) : "—"}</td>
+              <td class="mono">${room.destinationTotal ? formatMoney(room.destinationTotal) : "—"}</td>
+              <td class="mono">${room.familyPaid ? formatMoney(room.familyPaid) : "—"}</td>
+              <td class="mono">${room.familyTotal ? formatMoney(room.familyTotal) : "—"}</td>
+              <td class="mono">${room.familyTotal ? formatMoney(room.familyPending) : "—"}</td>
             </tr>`).join("")}
         </tbody>
       </table>
@@ -711,11 +816,12 @@ async function init(){
   renderAlerts();
   renderSeatSummary();
   renderBusPanel();
+  const consolidatedLodging = summarizeConsolidatedLodging();
   renderLodgingSummaryPanels();
   renderPassengerTable();
   buildSeatLayout();
-  renderDestination("fortalezaCard", "Fortaleza", state.lodgings.fortaleza, state.files.fortaleza);
-  renderDestination("joaoPessoaCard", "João Pessoa", state.lodgings.joao_pessoa, state.files.joao_pessoa);
+  renderDestination("fortalezaCard", "Fortaleza", state.lodgings.fortaleza, state.files.fortaleza, consolidatedLodging);
+  renderDestination("joaoPessoaCard", "João Pessoa", state.lodgings.joao_pessoa, state.files.joao_pessoa, consolidatedLodging);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
