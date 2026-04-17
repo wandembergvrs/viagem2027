@@ -3,14 +3,14 @@ Juracy;F01;Duplo;Hotel Fortaleza;364;1820;364
 Mª Aparecida;F01;Duplo;Hotel Fortaleza;364;1820;364
 Jurandy;F02;Duplo;Hotel Fortaleza;364;1820;364
 Lêda;F02;Duplo;Hotel Fortaleza;364;1820;364
-Joel;F03;Duplo;Hotel Fortaleza;364;1820;500
-Edina;F03;Duplo;Hotel Fortaleza;364;1820;500
+Joel;F03;Duplo;Hotel Fortaleza;364;1820;1000
+Edina;F03;Duplo;Hotel Fortaleza;364;1820;1000
 Francisco Onofre;F04;Duplo;Hotel Fortaleza;364;1820;364
 Chaguinha;F04;Duplo;Hotel Fortaleza;364;1820;364
-Francisco Raimundo;F05;Duplo;Hotel Fortaleza;364;1820;
-Francisca Márcia Lima;F05;Duplo;Hotel Fortaleza;364;1820;
-Reinaldo;F06;Duplo;Hotel Fortaleza;364;1820;364
-Aninha Esposa do Reinaldo;F06;Duplo;Hotel Fortaleza;364;1820;364
+Francisco Raimundo;F05;Duplo;Hotel Fortaleza;364;1820;910
+Francisca Márcia Lima;F05;Duplo;Hotel Fortaleza;364;1820;910
+Reinaldo;F06;Duplo;Hotel Fortaleza;364;1820;728
+Aninha Esposa do Reinaldo;F06;Duplo;Hotel Fortaleza;364;1820;728
 Ana Mercia;F07;Duplo;Hotel Fortaleza;364;1820;
 Vera Lúcia;F07;Duplo;Hotel Fortaleza;364;1820;
 Tainá;F08;Duplo;Hotel Fortaleza;164;820;
@@ -19,8 +19,8 @@ Walisson;F09;Duplo;Hotel Fortaleza;364;1820;
 Thais;F09;Duplo;Hotel Fortaleza;364;1820;
 Carmem;F10;Duplo;Hotel Fortaleza;364;1820;
 Davi;F10;Duplo;Hotel Fortaleza;364;1820;
-Janduy;F11;Duplo;Hotel Fortaleza;364;1820;
-Adeilza;F11;Duplo;Hotel Fortaleza;364;1820;
+Janduy;F11;Duplo;Hotel Fortaleza;364;1820;1000
+Adeilza;F11;Duplo;Hotel Fortaleza;364;1820;1000
 Maria Eunice;F12;Duplo;Hotel Fortaleza;364;1320;274
 Francisco Rosendo;F13;Triplo;Hotel Fortaleza;600;3000;1000
 Rosa Maria;F13;Triplo;Hotel Fortaleza;600;3000;1000
@@ -31,9 +31,9 @@ Gabriel Lima;F14;Triplo;Hotel Fortaleza;540;2700;
 Cláudio;F15;Triplo;Hotel Fortaleza;540;2700;670
 Suely;F15;Triplo;Hotel Fortaleza;540;2700;670
 Juninho;F15;Triplo;Hotel Fortaleza;540;2700;670
-João Neto;F16;Triplo;Hotel Fortaleza;540;2700;360
-Bosco;F16;Triplo;Hotel Fortaleza;540;2700;360
-Mida;F16;Triplo;Hotel Fortaleza;540;2700;360
+João Neto;F16;Triplo;Hotel Fortaleza;540;2700;180
+Bosco;F16;Triplo;Hotel Fortaleza;540;2700;180
+Mida;F16;Triplo;Hotel Fortaleza;540;2700;180
 Luzanira;F17;Triplo;Hotel Fortaleza;600;3000;200
 Hellen;F17;Triplo;Hotel Fortaleza;600;3000;200
 Antônia;F17;Triplo;Hotel Fortaleza;600;3000;200
@@ -43,7 +43,7 @@ Theo;F18;Triplo;Hotel Fortaleza;430;2150;430
 Maria Ferreira de Andrade;F19;Triplo;Hotel Fortaleza;600;3000;3000
 Israel Agripino Ferreira dos Santos;F19;Triplo;Hotel Fortaleza;600;3000;3000
 Janival;F19;Triplo;Hotel Fortaleza;600;3000;3000
-Lourival Ferreira de Lima;F20;Quádruplo;Hotel Fortaleza;712;3560;
-Leonice Rita de Jesus;F20;Quádruplo;Hotel Fortaleza;712;3560;
-Francisca das Chagas Lima;F20;Quádruplo;Hotel Fortaleza;712;3560;500
-Raíssa Lima;F20;Quádruplo;Hotel Fortaleza;712;3560;356;500
+Lourival Ferreira de Lima;F20;Quádruplo;Hotel Fortaleza;712;3560;856
+Leonice Rita de Jesus;F20;Quádruplo;Hotel Fortaleza;712;3560;856
+Francisca das Chagas Lima;F20;Quádruplo;Hotel Fortaleza;712;3560;856
+Raíssa Lima;F20;Quádruplo;Hotel Fortaleza;712;3560;856
