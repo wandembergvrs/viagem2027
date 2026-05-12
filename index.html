@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,106 +6,632 @@
   <title>Viagem de Família 2027</title>
   <style>
     :root{
-      --bg:#f5f7fb; --card:#fff; --text:#0f172a; --muted:#64748b; --border:#dbe2ea;
-      --accent:#166534; --accent-2:#0ea5e9; --warn:#b45309; --danger:#b91c1c;
-      --free:#f3f4f6; --occupied:#dcfce7; --occupied-border:#22c55e;
-      --shadow:0 10px 28px rgba(15,23,42,.08); --radius:18px; --seat-size:48px;
+      --bg:#f5f7fb;
+      --card:#fff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#dbe2ea;
+      --accent:#166534;
+      --accent-2:#0ea5e9;
+      --warn:#b45309;
+      --danger:#b91c1c;
+      --free:#f3f4f6;
+      --occupied:#dcfce7;
+      --occupied-border:#22c55e;
+      --shadow:0 10px 28px rgba(15,23,42,.08);
+      --radius:18px;
+      --seat-size:46px;
+      --aisle-size:26px;
+      --bus-shell:#e2e8f0;
+      --bus-shell-dark:#cbd5e1;
+      --glass:#dbeafe;
+      --driver:#1e293b;
     }
+
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#eef2f7 0%,var(--bg) 100%);color:var(--text)}
-    .wrap{max-width:1200px;margin:0 auto;padding:18px 14px 28px}
-    header{background:linear-gradient(135deg,#facc15 0%,#86efac 40%,#dbeafe 100%);border-bottom:1px solid rgba(15,23,42,.08)}
-    .hero{display:grid;grid-template-columns:1.15fr .95fr;gap:18px;align-items:center}
-    .hero h1{margin:0 0 8px;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.05}
-    .subtitle{color:#1f2937;max-width:740px}
-    .hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-    .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:.8rem;background:#f8fafc;border:1px solid var(--border);color:#334155}
-    .hero-img{border-radius:22px;overflow:hidden;min-height:180px;background:#111827;box-shadow:var(--shadow);border:1px solid rgba(15,23,42,.08)}
-    .hero-img img{display:block;width:100%;height:100%;object-fit:cover}
+
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#eef2f7 0%,var(--bg) 100%);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:18px 14px 28px;
+    }
+
+    header{
+      background:linear-gradient(135deg,#facc15 0%,#86efac 40%,#dbeafe 100%);
+      border-bottom:1px solid rgba(15,23,42,.08);
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1.15fr .95fr;
+      gap:18px;
+      align-items:center;
+    }
+
+    .hero h1{
+      margin:0 0 8px;
+      font-size:clamp(1.8rem,3vw,2.6rem);
+      line-height:1.05;
+    }
+
+    .subtitle{
+      color:#1f2937;
+      max-width:740px;
+    }
+
+    .hero-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.8rem;
+      background:#f8fafc;
+      border:1px solid var(--border);
+      color:#334155;
+    }
+
+    .hero-img{
+      border-radius:22px;
+      overflow:hidden;
+      min-height:180px;
+      background:#111827;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(15,23,42,.08);
+    }
+
+    .hero-img img{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
     section{margin-top:16px}
+
     .grid{display:grid;gap:14px}
     .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
     .twocol{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}
-    .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:10px}
-    .section-head h2{margin:0;font-size:1.15rem}
-    .section-head p{margin:0;color:var(--muted);font-size:.86rem}
-    .stat-label,.k,.helper,.footer-note,.file-line,.card-subtle{color:var(--muted)}
-    .stat-label{font-size:.82rem;margin-bottom:6px}
-    .stat-value{font-size:1.55rem;font-weight:800;line-height:1}
-    .stat-note{margin-top:6px;color:var(--muted);font-size:.78rem}
-    .totals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0 14px}
-    .total-box{background:#f8fafc;border:1px solid var(--border);border-radius:14px;padding:10px 12px}
-    .total-box .k{font-size:.78rem}
-    .total-box .v{font-weight:800;font-size:1.1rem;margin-top:2px}
-    .progress-wrap{display:grid;gap:8px;margin-top:10px}
-    .progress-track{height:13px;background:#e5e7eb;border-radius:999px;overflow:hidden}
-    .progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);width:0%}
-    .progress-fill.bus{background:linear-gradient(90deg,#0ea5e9,#0284c7)}
-    .progress-meta{display:flex;justify-content:space-between;gap:10px;font-size:.88rem}
-    .summary-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-    .summary-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#f8fafc;border:1px solid var(--border);font-size:.82rem}
-    table{width:100%;border-collapse:collapse;font-size:.92rem}
-    th,td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
-    th{font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
-    .mono{font-variant-numeric:tabular-nums;white-space:nowrap}
-    .room-names{display:flex;flex-direction:column;gap:4px}
-    .empty,.alert{padding:12px;border-radius:14px;font-size:.92rem}
-    .empty{background:#f8fafc;border:1px dashed var(--border);color:var(--muted)}
-    .alert{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;margin-bottom:14px}
-    .list{margin:0;padding-left:18px;color:#334155}
-    .destination-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .seat-layout{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start}
-    .seat-board{display:grid;gap:14px}
-    .deck{background:#f8fafc;border:1px solid var(--border);border-radius:16px;padding:12px}
-    .deck-header{display:flex;justify-content:space-between;gap:8px;margin-bottom:10px;font-size:.85rem;color:#334155;font-weight:700}
-    .seat-grid{
-  display:grid;
-  gap:8px;
-  grid-auto-rows:var(--seat-size);
-}
 
-#seat-grid-upper,#seat-grid-lower{
-  grid-template-columns: repeat(5, var(--seat-size));
-}
-.seat-gap{
-  width:var(--seat-size);
-  height:var(--seat-size);
-}
-    
-#seat-grid-lower{
-  grid-template-columns: repeat(7, var(--seat-size));
-}
-    #seat-grid-upper{
-  grid-template-columns: repeat(4, var(--seat-size));
-}
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
 
-#seat-grid-lower{
-  grid-template-columns:
-    var(--seat-size) var(--seat-size) var(--seat-size)
-    calc(var(--seat-size) * 1.2)
-    var(--seat-size) var(--seat-size) var(--seat-size);
-}
-    .seat,.seat-gap{width:var(--seat-size);height:var(--seat-size)}
-    .seat-gap{visibility:hidden}
-    .seat{border-radius:14px;border:1px solid #d1d5db;background:var(--free);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
-    .seat.occupied{background:var(--occupied);border-color:var(--occupied-border)}
-    .seat-number{font-size:.65rem;font-weight:800;line-height:1}
-    .seat-name{font-size:.58rem;line-height:1.05;margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis}
-    .seat-legend{display:flex;flex-wrap:wrap;gap:8px}
-    .legend-item{display:inline-flex;align-items:center;gap:6px;font-size:.84rem}
-    .legend-color{width:14px;height:14px;border-radius:4px;border:1px solid #d1d5db;background:var(--free)}
-    .legend-color.occupied{background:var(--occupied);border-color:var(--occupied-border)}
-    .mini-list{display:grid;gap:8px}
-    .mini-item{display:grid;grid-template-columns:120px 1fr 54px;gap:8px;align-items:center;font-size:.84rem}
-    .mini-bar{height:10px;border-radius:999px;background:#e5e7eb;overflow:hidden}
-    .mini-bar > span{display:block;height:100%;background:linear-gradient(90deg,#0ea5e9,#0284c7)}
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:1.15rem;
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      font-size:.86rem;
+    }
+
+    .stat-label,.helper,.footer-note,.file-line,.card-subtle{
+      color:var(--muted);
+    }
+
+    .stat-label{
+      font-size:.82rem;
+      margin-bottom:6px;
+    }
+
+    .stat-value{
+      font-size:1.55rem;
+      font-weight:800;
+      line-height:1;
+    }
+
+    .stat-note{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:.78rem;
+    }
+
+    .totals{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin:12px 0 14px;
+    }
+
+    .total-box{
+      background:#f8fafc;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px 12px;
+    }
+
+    .total-box .k{
+      font-size:.78rem;
+      color:var(--muted);
+    }
+
+    .total-box .v{
+      font-weight:800;
+      font-size:1.1rem;
+      margin-top:2px;
+    }
+
+    .progress-wrap{
+      display:grid;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .progress-track{
+      height:13px;
+      background:#e5e7eb;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .progress-fill{
+      height:100%;
+      background:linear-gradient(90deg,#22c55e,#16a34a);
+      width:0%;
+    }
+
+    .progress-fill.bus{
+      background:linear-gradient(90deg,#0ea5e9,#0284c7);
+    }
+
+    .progress-meta{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size:.88rem;
+    }
+
+    .summary-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:8px;
+    }
+
+    .summary-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:#f8fafc;
+      border:1px solid var(--border);
+      font-size:.82rem;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.92rem;
+    }
+
+    th,td{
+      padding:10px 8px;
+      border-bottom:1px solid var(--border);
+      text-align:left;
+      vertical-align:top;
+    }
+
+    th{
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.03em;
+      color:var(--muted);
+    }
+
+    .mono{
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+
+    .room-names{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .empty,.alert{
+      padding:12px;
+      border-radius:14px;
+      font-size:.92rem;
+    }
+
+    .empty{
+      background:#f8fafc;
+      border:1px dashed var(--border);
+      color:var(--muted);
+    }
+
+    .alert{
+      background:#fff7ed;
+      border:1px solid #fdba74;
+      color:#9a3412;
+      margin-bottom:14px;
+    }
+
+    .list{
+      margin:0;
+      padding-left:18px;
+      color:#334155;
+    }
+
+    .destination-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    /* BUS */
+    .seat-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 320px;
+      gap:16px;
+      align-items:start;
+    }
+
+    .seat-board{
+      display:grid;
+      gap:16px;
+    }
+
+    .bus-deck{
+      background:linear-gradient(180deg,#f8fafc 0%,#eef2f7 100%);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+    }
+
+    .bus-deck::before{
+      content:"";
+      position:absolute;
+      inset:8px;
+      border-radius:20px;
+      border:2px solid var(--bus-shell-dark);
+      pointer-events:none;
+      opacity:.8;
+    }
+
+    .bus-deck-header{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:12px;
+      font-size:.85rem;
+      color:#334155;
+      font-weight:700;
+      position:relative;
+      z-index:2;
+    }
+
+    .bus-shell{
+      position:relative;
+      background:linear-gradient(180deg,var(--bus-shell) 0%,#f8fafc 50%,var(--bus-shell) 100%);
+      border:2px solid #94a3b8;
+      border-radius:38px 38px 26px 26px;
+      padding:18px 16px 16px;
+      min-height:220px;
+      overflow:hidden;
+    }
+
+    .bus-shell.lower{
+      border-radius:24px;
+      padding-top:16px;
+    }
+
+    .bus-front{
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      gap:18px;
+      margin:0 auto 14px;
+      width:100%;
+      min-height:58px;
+    }
+
+    .windshield{
+      width:180px;
+      height:44px;
+      border-radius:22px 22px 10px 10px;
+      background:linear-gradient(180deg,#eff6ff 0%,var(--glass) 100%);
+      border:2px solid #93c5fd;
+      box-shadow:inset 0 -8px 0 rgba(59,130,246,.08);
+    }
+
+    .driver-cabin{
+      width:46px;
+      height:34px;
+      border-radius:12px;
+      background:linear-gradient(180deg,#334155 0%,var(--driver) 100%);
+      border:2px solid #0f172a;
+      position:absolute;
+      right:18px;
+      bottom:0;
+    }
+
+    .door-mark{
+      position:absolute;
+      left:16px;
+      bottom:4px;
+      width:34px;
+      height:48px;
+      border:2px dashed #94a3b8;
+      border-radius:10px;
+      background:rgba(255,255,255,.4);
+    }
+
+    .stair-core{
+      position:absolute;
+      right:18px;
+      top:68px;
+      width:52px;
+      padding:8px 6px;
+      border-radius:14px;
+      background:#e2e8f0;
+      border:2px solid #94a3b8;
+      text-align:center;
+      font-size:.66rem;
+      font-weight:700;
+      color:#475569;
+      z-index:2;
+    }
+
+    .stair-core::before{
+      content:"⇅";
+      display:block;
+      font-size:1rem;
+      line-height:1;
+      margin-bottom:2px;
+    }
+
+    .seat-zone{
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      gap:12px;
+      position:relative;
+      z-index:1;
+      padding-right:64px;
+    }
+
+    .seat-block{
+      display:grid;
+      gap:8px;
+      grid-auto-rows:var(--seat-size);
+    }
+
+    .seat-block.double{
+      grid-template-columns:repeat(2,var(--seat-size));
+    }
+
+    .seat-block.single{
+      grid-template-columns:repeat(1,var(--seat-size));
+    }
+
+    .aisle{
+      width:var(--aisle-size);
+      min-height:100%;
+      align-self:stretch;
+      border-radius:999px;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          transparent 0 10px,
+          rgba(148,163,184,.45) 10px 18px
+        ),
+        linear-gradient(180deg,#ffffff 0%,#f1f5f9 100%);
+      border:1px dashed #94a3b8;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);
+    }
+
+    .lower-zone{
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      gap:12px;
+      padding-left:12px;
+      padding-right:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .bus-tail{
+      margin-top:14px;
+      height:14px;
+      border-radius:999px;
+      background:linear-gradient(90deg,#cbd5e1 0%,#94a3b8 50%,#cbd5e1 100%);
+      opacity:.7;
+    }
+
+    .seat,.seat-gap{
+      width:var(--seat-size);
+      height:var(--seat-size);
+    }
+
+    .seat-gap{
+      visibility:hidden;
+    }
+
+    .seat{
+      border-radius:14px 14px 10px 10px;
+      border:1px solid #cbd5e1;
+      background:linear-gradient(180deg,#ffffff 0%,var(--free) 100%);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:4px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.9),
+        0 3px 6px rgba(15,23,42,.05);
+      position:relative;
+    }
+
+    .seat::before{
+      content:"";
+      position:absolute;
+      inset:4px 8px auto 8px;
+      height:8px;
+      border-radius:999px;
+      background:rgba(148,163,184,.18);
+    }
+
+    .seat.occupied{
+      background:linear-gradient(180deg,#f0fdf4 0%,var(--occupied) 100%);
+      border-color:var(--occupied-border);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.9),
+        0 3px 8px rgba(34,197,94,.14);
+    }
+
+    .seat-number{
+      font-size:.65rem;
+      font-weight:800;
+      line-height:1;
+      margin-top:4px;
+    }
+
+    .seat-name{
+      font-size:.58rem;
+      line-height:1.05;
+      margin-top:2px;
+      max-width:100%;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .seat-legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .legend-item{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:.84rem;
+    }
+
+    .legend-color{
+      width:14px;
+      height:14px;
+      border-radius:4px;
+      border:1px solid #d1d5db;
+      background:var(--free);
+    }
+
+    .legend-color.occupied{
+      background:var(--occupied);
+      border-color:var(--occupied-border);
+    }
+
+    .mini-list{
+      display:grid;
+      gap:8px;
+    }
+
+    .mini-item{
+      display:grid;
+      grid-template-columns:120px 1fr 54px;
+      gap:8px;
+      align-items:center;
+      font-size:.84rem;
+    }
+
+    .mini-bar{
+      height:10px;
+      border-radius:999px;
+      background:#e5e7eb;
+      overflow:hidden;
+    }
+
+    .mini-bar > span{
+      display:block;
+      height:100%;
+      background:linear-gradient(90deg,#0ea5e9,#0284c7);
+    }
+
     .table-wrap{overflow:auto}
-    code{background:#f8fafc;border:1px solid var(--border);padding:2px 5px;border-radius:8px}
-    .footer-note{margin-top:14px;font-size:.88rem}
+
+    code{
+      background:#f8fafc;
+      border:1px solid var(--border);
+      padding:2px 5px;
+      border-radius:8px;
+    }
+
+    .footer-note{
+      margin-top:14px;
+      font-size:.88rem;
+    }
+
     @media (max-width:960px){
-      .hero,.stats,.twocol,.destination-grid,.seat-layout,.totals{grid-template-columns:1fr!important}
-      .seat-layout{grid-template-columns:1fr!important}
+      .hero,.stats,.twocol,.destination-grid,.seat-layout,.totals{
+        grid-template-columns:1fr !important;
+      }
+      .seat-layout{
+        grid-template-columns:1fr !important;
+      }
+    }
+
+    @media (max-width:640px){
+      :root{
+        --seat-size:40px;
+        --aisle-size:18px;
+      }
+
+      .seat-zone{
+        gap:8px;
+        padding-right:48px;
+      }
+
+      .lower-zone{
+        gap:8px;
+      }
+
+      .stair-core{
+        width:42px;
+        right:12px;
+        font-size:.58rem;
+      }
+
+      .windshield{
+        width:140px;
+      }
     }
   </style>
 </head>
@@ -220,26 +744,68 @@
     <div class="section-head">
       <div>
         <h2>Mapa de assentos — Marcopolo G8</h2>
-        <p>Layout ilustrativo: piso superior 1–43 e piso inferior 45–56.</p>
+        <p>Agora com visual mais parecido com a planta de um ônibus: frente, cabine, corredor central e piso inferior destacado.</p>
       </div>
     </div>
+
     <div class="seat-layout">
       <div class="seat-board">
-        <div class="deck">
-          <div class="deck-header"><span>Piso superior</span><span>Poltronas 1–48</span></div>
-          <div class="seat-grid" id="seat-grid-upper"></div>
+        <div class="bus-deck">
+          <div class="bus-deck-header">
+            <span>Piso superior</span>
+            <span>Poltronas 1–44</span>
+          </div>
+
+          <div class="bus-shell">
+            <div class="bus-front">
+              <div class="door-mark" title="Porta / acesso"></div>
+              <div class="windshield" title="Frente do ônibus"></div>
+              <div class="driver-cabin" title="Cabine do motorista"></div>
+            </div>
+
+            <div class="stair-core" title="Escada entre os pisos">Escada</div>
+
+            <div class="seat-zone">
+              <div class="seat-block double" id="seat-grid-upper-left"></div>
+              <div class="aisle" aria-hidden="true"></div>
+              <div class="seat-block double" id="seat-grid-upper-right"></div>
+            </div>
+
+            <div class="bus-tail"></div>
+          </div>
         </div>
-        <div class="deck">
-          <div class="deck-header"><span>Piso inferior</span><span>Poltronas 49–57</span></div>
-          <div class="seat-grid" id="seat-grid-lower"></div>
+
+        <div class="bus-deck">
+          <div class="bus-deck-header">
+            <span>Piso inferior</span>
+            <span>Poltronas 45–56</span>
+          </div>
+
+          <div class="bus-shell lower">
+            <div class="lower-zone">
+              <div class="seat-block double" id="seat-grid-lower-left"></div>
+              <div class="aisle" aria-hidden="true"></div>
+              <div class="seat-block double" id="seat-grid-lower-right"></div>
+            </div>
+
+            <div class="bus-tail"></div>
+          </div>
         </div>
       </div>
-      <div class="deck">
-        <div class="deck-header"><span>Legenda</span><span>Leitura do CSV</span></div>
+
+      <div class="card" style="padding:12px">
+        <div class="section-head" style="margin-bottom:8px">
+          <div>
+            <h2 style="font-size:1rem">Legenda</h2>
+            <p>Leitura automática da planilha</p>
+          </div>
+        </div>
+
         <div class="seat-legend" style="margin-bottom:12px">
           <div class="legend-item"><span class="legend-color"></span>Livre</div>
           <div class="legend-item"><span class="legend-color occupied"></span>Ocupada</div>
         </div>
+
         <div class="helper" id="seatSummaryText">Nenhuma poltrona processada.</div>
       </div>
     </div>
@@ -305,10 +871,23 @@ const state = {
   issues: []
 };
 
-function normalizeHeader(v){ return String(v || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
-function normalizeName(v){ return String(v || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " "); }
-function escapeHtml(v){ return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
-function clamp(v, min, max){ return Math.min(Math.max(v, min), max); }
+function normalizeHeader(v){
+  return String(v || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+function normalizeName(v){
+  return String(v || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ");
+}
+function escapeHtml(v){
+  return String(v ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+function clamp(v, min, max){
+  return Math.min(Math.max(v, min), max);
+}
 function parseBRL(value){
   if(value == null) return 0;
   let s = String(value).trim();
@@ -318,7 +897,9 @@ function parseBRL(value){
   const n = Number(s);
   return Number.isFinite(n) ? n : 0;
 }
-function formatMoney(v){ return (Number(v) || 0).toLocaleString("pt-BR", { style:"currency", currency:"BRL" }); }
+function formatMoney(v){
+  return (Number(v) || 0).toLocaleString("pt-BR", { style:"currency", currency:"BRL" });
+}
 
 async function fetchFirstAvailable(candidates){
   let lastError = null;
@@ -327,7 +908,9 @@ async function fetchFirstAvailable(candidates){
       const res = await fetch(path, { cache:"no-store" });
       if(res.ok) return { path, text: await res.text() };
       if(res.status !== 404) lastError = new Error(`Erro ao carregar ${path} (${res.status})`);
-    }catch(err){ lastError = err; }
+    }catch(err){
+      lastError = err;
+    }
   }
   return { path:null, text:"", error:lastError };
 }
@@ -353,7 +936,7 @@ function normalizeLooseValue(raw){
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[_\-\/]+/g, " ")
+    .replace(/[_\\-\\/]+/g, " ")
     .replace(/\s+/g, " ");
 }
 
@@ -362,7 +945,7 @@ function normalizeCategory(raw, seat){
     .trim()
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
+    .replace(/[\u0300-\u036f]/g, "");
   const slug = rawBase.replace(/[\s\-\/]+/g, "_");
   const v = normalizeLooseValue(raw);
   const hasSeat = String(seat || "").trim() !== "";
@@ -382,6 +965,7 @@ function parsePassengers(text){
     const installmentsPaid = Number(row.parcelas || row.parcelaspagasonibus || row.parcelas_pagas_onibus || 0) || 0;
     const installmentsTotal = Number(row.parcelastotalonibus || row.parcelas_total_onibus || row.parcelastotal || DEFAULT_BUS_INSTALLMENTS) || DEFAULT_BUS_INSTALLMENTS;
     const busValue = parseBRL(row.valoronibus || row.valor_onibus || row.valorpassagem || row.valor_passagem || DEFAULT_BUS_VALUE);
+
     return {
       name,
       nameKey: normalizeName(name),
@@ -434,6 +1018,7 @@ function renderAlerts(){
   if(!state.files.fortaleza) items.push("hospedagem_fortaleza.csv não foi encontrado.");
   if(!state.files.joao_pessoa) items.push("hospedagem_joao_pessoa.csv não foi encontrado.");
   state.issues.forEach(issue => items.push(issue));
+
   document.getElementById("alertBox").innerHTML = items.length
     ? `<div class="alert"><strong>Atenção:</strong><ul class="list">${items.map(i => `<li>${escapeHtml(i)}</li>`).join("")}</ul></div>`
     : "";
@@ -446,19 +1031,33 @@ function summarizeBus(){
     const frac = clamp((p.installmentsPaid || 0) / (p.installmentsTotal || DEFAULT_BUS_INSTALLMENTS), 0, 1);
     return sum + ((p.busValue || 0) * frac);
   }, 0);
+
   const started = payers.filter(p => (p.installmentsPaid || 0) > 0).length;
   const full = payers.filter(p => (p.installmentsPaid || 0) >= (p.installmentsTotal || DEFAULT_BUS_INSTALLMENTS)).length;
   const percent = planned > 0 ? (paid / planned) * 100 : 0;
+
   const distribution = {};
   payers.forEach(p => {
     const key = `${clamp(Number(p.installmentsPaid) || 0, 0, p.installmentsTotal || DEFAULT_BUS_INSTALLMENTS)}/${p.installmentsTotal || DEFAULT_BUS_INSTALLMENTS}`;
     distribution[key] = (distribution[key] || 0) + 1;
   });
+
   const distributionList = Object.entries(distribution).sort((a,b) => {
-    const [aa] = a[0].split("/"), [bb] = b[0].split("/");
+    const [aa] = a[0].split("/");
+    const [bb] = b[0].split("/");
     return Number(aa) - Number(bb);
   });
-  return { payersCount: payers.length, planned, paid, pending: Math.max(planned - paid, 0), started, full, percent, distributionList };
+
+  return {
+    payersCount: payers.length,
+    planned,
+    paid,
+    pending: Math.max(planned - paid, 0),
+    started,
+    full,
+    percent,
+    distributionList
+  };
 }
 
 function getLodgingGroupKey(row){
@@ -471,11 +1070,13 @@ function getFallbackTotalGroup(row){
 
 function buildLodgingPaymentLookup(){
   const lookup = new Map();
+
   const register = (row, overwriteMissingOnly = false) => {
     const amount = row.paidGroup || 0;
     if(amount <= 0) return;
     const keys = [getLodgingGroupKey(row)];
     if(row.group) keys.push(`person:${row.nameKey}`);
+
     keys.forEach(key => {
       const prev = lookup.get(key) || 0;
       if((!overwriteMissingOnly && amount > prev) || (overwriteMissingOnly && !prev)){
@@ -483,8 +1084,10 @@ function buildLodgingPaymentLookup(){
       }
     });
   };
+
   state.lodgings.fortaleza.forEach(row => register(row, false));
   state.lodgings.joao_pessoa.forEach(row => register(row, true));
+
   return lookup;
 }
 
@@ -538,6 +1141,7 @@ function summarizeConsolidatedLodging(){
     const paidGroup = totalCombined > 0 ? Math.min(rawPaid, totalCombined) : rawPaid;
     const pendingGroup = Math.max(totalCombined - paidGroup, 0);
     const paymentPercent = totalCombined > 0 ? (paidGroup / totalCombined) * 100 : 0;
+
     return {
       ...group,
       guests: Array.from(group.guests).sort((a,b) => a.localeCompare(b, "pt-BR")),
@@ -568,6 +1172,7 @@ function summarizeConsolidatedLodging(){
 
 function summarizeDestinationRows(rows, consolidatedLookup){
   const groups = new Map();
+
   rows.forEach(row => {
     const key = getLodgingGroupKey(row);
     if(!groups.has(key)){
@@ -618,6 +1223,7 @@ function renderBusPanel(){
   document.getElementById("statBusPaid").textContent = formatMoney(s.paid);
   document.getElementById("statBusPercent").textContent = `${Math.round(s.percent)}% pago`;
   document.getElementById("badge-bus").textContent = `💳 Ônibus: ${Math.round(s.percent)}%`;
+
   const el = document.getElementById("busInstallmentsList");
   el.innerHTML = s.distributionList.length ? s.distributionList.map(([label, count]) => {
     const pct = s.payersCount ? (count / s.payersCount) * 100 : 0;
@@ -631,6 +1237,7 @@ function renderSeatSummary(){
   const marked = state.passengers.filter(p => p.seat && p.seatType !== "Colo").length;
   const adults = state.passengers.filter(p => p.category === "adult").length;
   const childSeat = state.passengers.filter(p => p.category === "childSeat").length;
+
   document.getElementById("statPassengers").textContent = totalPassengers;
   document.getElementById("statPassengersNote").textContent = state.files.passageiros || "arquivo não encontrado";
   document.getElementById("statMarkedSeats").textContent = marked;
@@ -638,6 +1245,7 @@ function renderSeatSummary(){
   document.getElementById("badge-passengers").textContent = `👨‍👩‍👧‍👦 ${totalPassengers} passageiros`;
   document.getElementById("badge-seats").textContent = `🪑 ${marked} poltronas marcadas`;
   document.getElementById("seatSummaryText").textContent = `${adults} adulto(s), ${childSeat} criança(s) em poltrona, ${lap} no colo e ${marked} poltrona(s) marcadas na planilha.`;
+
   const summary = [
     `👨‍👩‍👧‍👦 ${totalPassengers} passageiros`,
     `🧑 ${adults} adulto(s)`,
@@ -645,6 +1253,7 @@ function renderSeatSummary(){
     `👶 ${lap} criança(s) no colo`,
     `🎟️ ${marked} poltrona(s) marcadas`
   ];
+
   const box = document.getElementById("passengerSummary");
   box.innerHTML = summary.map(t => `<span class="summary-pill">${escapeHtml(t)}</span>`).join("");
 }
@@ -659,34 +1268,38 @@ function findPassengerBySeat(seatNumber){
   return state.passengers.find(p => p.seat && String(p.seat) === sn && p.seatType !== "Colo");
 }
 
+/* Mantive a numeração próxima da que você já vinha usando, mas reorganizada em duas colunas por lado. */
 const upperLayout = [
-  [1, 2, 4, 3],
-  [5, 6, 8, 7],
-  [9, 10, 12, 11],
-  [13, 14, null, null],
-  [15, 16, null, null],
-  [17, 18, 20, 19],
-  [21, 22, 24, 23],
-  [25, 26, 28, 27],
-  [29, 30, 32, 31],
-  [33, 34, 36, 35],
-  [37, 38, 40, 39],
-  [41, 42, 44, 43],
-  ];
+  [1, 2, null, 4, 3],
+  [5, 6, null, 8, 7],
+  [9, 10, null, 12, 11],
+  [13, 14, null, null, null],
+  [15, 16, null, null, null],
+  [17, 18, null, 20, 19],
+  [21, 22, null, 24, 23],
+  [25, 26, null, 28, 27],
+  [29, 30, null, 32, 31],
+  [33, 34, null, 36, 35],
+  [37, 38, null, 40, 39],
+  [41, 42, null, 44, 43]
+];
+
 const lowerLayout = [
-  [45, 46, null, 47, 48],
-  [49, 50, null, 51, 52],
-  [53, 54, null, 55, 56],
+  [45, 46, null, 48, 47],
+  [49, 50, null, 52, 51],
+  [53, 54, null, 56, 55]
 ];
 
 function createSeatElement(seatNumber){
   const seatEl = document.createElement("div");
   seatEl.className = "seat";
   const passenger = findPassengerBySeat(seatNumber);
+
   const numEl = document.createElement("div");
   numEl.className = "seat-number";
   numEl.textContent = seatNumber;
   seatEl.appendChild(numEl);
+
   if(passenger){
     seatEl.classList.add("occupied");
     seatEl.title = "Ocupado por " + passenger.name;
@@ -697,26 +1310,77 @@ function createSeatElement(seatNumber){
   }else{
     seatEl.title = "Livre";
   }
+
   return seatEl;
 }
 
-function buildDeck(containerId, layout){
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-  layout.forEach(row => row.forEach(cell => {
-    if(cell == null){
-      const gap = document.createElement("div");
-      gap.className = "seat-gap";
-      container.appendChild(gap);
-    }else{
-      container.appendChild(createSeatElement(cell));
-    }
-  }));
+function buildUpperDeck(layout){
+  const left = document.getElementById("seat-grid-upper-left");
+  const right = document.getElementById("seat-grid-upper-right");
+  left.innerHTML = "";
+  right.innerHTML = "";
+
+  layout.forEach(row => {
+    const leftSeats = [row[0], row[1]];
+    const rightSeats = [row[3], row[4]];
+
+    leftSeats.forEach(cell => {
+      if(cell == null){
+        const gap = document.createElement("div");
+        gap.className = "seat-gap";
+        left.appendChild(gap);
+      }else{
+        left.appendChild(createSeatElement(cell));
+      }
+    });
+
+    rightSeats.forEach(cell => {
+      if(cell == null){
+        const gap = document.createElement("div");
+        gap.className = "seat-gap";
+        right.appendChild(gap);
+      }else{
+        right.appendChild(createSeatElement(cell));
+      }
+    });
+  });
+}
+
+function buildLowerDeck(layout){
+  const left = document.getElementById("seat-grid-lower-left");
+  const right = document.getElementById("seat-grid-lower-right");
+  left.innerHTML = "";
+  right.innerHTML = "";
+
+  layout.forEach(row => {
+    const leftSeats = [row[0], row[1]];
+    const rightSeats = [row[3], row[4]];
+
+    leftSeats.forEach(cell => {
+      if(cell == null){
+        const gap = document.createElement("div");
+        gap.className = "seat-gap";
+        left.appendChild(gap);
+      }else{
+        left.appendChild(createSeatElement(cell));
+      }
+    });
+
+    rightSeats.forEach(cell => {
+      if(cell == null){
+        const gap = document.createElement("div");
+        gap.className = "seat-gap";
+        right.appendChild(gap);
+      }else{
+        right.appendChild(createSeatElement(cell));
+      }
+    });
+  });
 }
 
 function buildSeatLayout(){
-  buildDeck("seat-grid-upper", upperLayout);
-  buildDeck("seat-grid-lower", lowerLayout);
+  buildUpperDeck(upperLayout);
+  buildLowerDeck(lowerLayout);
 }
 
 function renderPassengerTable(){
@@ -725,6 +1389,7 @@ function renderPassengerTable(){
     tbody.innerHTML = `<tr><td colspan="6"><div class="empty">Nenhum passageiro encontrado.</div></td></tr>`;
     return;
   }
+
   const rows = [...state.passengers].sort((a,b) => a.name.localeCompare(b.name, "pt-BR"));
   tbody.innerHTML = rows.map(p => {
     const frac = clamp((p.installmentsPaid || 0) / (p.installmentsTotal || DEFAULT_BUS_INSTALLMENTS), 0, 1);
@@ -732,6 +1397,7 @@ function renderPassengerTable(){
     let profile = "Adulto / Poltrona";
     if(p.category === "childLap") profile = "Criança / Colo";
     else if(p.category === "childSeat") profile = "Criança / Poltrona";
+
     return `<tr>
       <td>${escapeHtml(p.name)}</td>
       <td>${escapeHtml(profile)}</td>
@@ -751,6 +1417,7 @@ function renderLodgingSummaryPanels(){
   const groupsWithTotal = summary.groupsWithTotal;
   const groupsWithPaid = summary.groupsWithPaid;
   const percent = summary.percent;
+
   document.getElementById("lodgingGroupsWithTotal").textContent = groupsWithTotal;
   document.getElementById("lodgingGroupsWithPaid").textContent = groupsWithPaid;
   document.getElementById("lodgingPlanned").textContent = formatMoney(planned);
@@ -767,6 +1434,7 @@ function renderDestination(targetId, title, rows, fileUsed, consolidatedSummary)
   const el = document.getElementById(targetId);
   const s = summarizeDestinationRows(rows, consolidatedSummary.roomLookup);
   const hotels = Array.from(new Set(rows.map(r => (r.hotel || "").trim()).filter(Boolean))).sort((a,b) => a.localeCompare(b, "pt-BR"));
+
   let html = `
     <div class="section-head">
       <div>
@@ -791,10 +1459,12 @@ function renderDestination(targetId, title, rows, fileUsed, consolidatedSummary)
       O arquivo de João Pessoa organiza os quartos, mas <code>TotalGrupo</code> e <code>PagoGrupo</code> usados no cálculo geral vêm do arquivo de Fortaleza, salvo falta total dessa base para a família.
     </div>
   `;
+
   if(!rows.length){
     el.innerHTML = html + `<div class="empty">Nenhum dado de hospedagem encontrado para ${escapeHtml(title)}.</div>`;
     return;
   }
+
   html += `
     <div class="table-wrap" style="margin-top:12px">
       <table>
@@ -826,17 +1496,22 @@ function renderDestination(targetId, title, rows, fileUsed, consolidatedSummary)
       </table>
     </div>
   `;
+
   if(hotels.length){
     html += `<details style="margin-top:12px"><summary style="cursor:pointer;font-weight:700">Hotéis informados</summary><div class="summary-row" style="margin-top:10px">${hotels.map(h => `<span class="summary-pill">${escapeHtml(h)}</span>`).join("")}</div></details>`;
   }
+
   el.innerHTML = html;
 }
 
 function validateCrossReferences(){
   const passengerKeys = new Set(state.passengers.map(p => p.nameKey));
+
   [["Fortaleza", state.lodgings.fortaleza], ["João Pessoa", state.lodgings.joao_pessoa]].forEach(([label, rows]) => {
     const missing = rows.filter(r => !passengerKeys.has(r.nameKey)).map(r => r.name);
-    if(missing.length) state.issues.push(`${label}: ${missing.length} nome(s) da hospedagem não estão em passageiros.csv (${missing.join(", ")}).`);
+    if(missing.length){
+      state.issues.push(`${label}: ${missing.length} nome(s) da hospedagem não estão em passageiros.csv (${missing.join(", ")}).`);
+    }
   });
 }
 
@@ -844,20 +1519,25 @@ async function init(){
   const passengersResult = await fetchFirstAvailable(["passageiros.csv", "passageiros", "passageiros_total_grupo.csv"]);
   const fortalezaResult = await fetchFirstAvailable(["hospedagem_fortaleza.csv", "hospedagem_fortaleza", "hospedagem_fortaleza_total_grupo.csv"]);
   const joaoPessoaResult = await fetchFirstAvailable(["hospedagem_joao_pessoa.csv", "hospedagem_joao_pessoa", "hospedagem_joao_pessoa_total_grupo.csv"]);
+
   state.files.passageiros = passengersResult.path;
   state.files.fortaleza = fortalezaResult.path;
   state.files.joao_pessoa = joaoPessoaResult.path;
+
   state.passengers = parsePassengers(passengersResult.text);
   state.lodgings.fortaleza = parseLodging(fortalezaResult.text);
   state.lodgings.joao_pessoa = parseLodging(joaoPessoaResult.text);
+
   validateCrossReferences();
   renderAlerts();
   renderSeatSummary();
   renderBusPanel();
+
   const consolidatedLodging = summarizeConsolidatedLodging();
   renderLodgingSummaryPanels();
   renderPassengerTable();
   buildSeatLayout();
+
   renderDestination("fortalezaCard", "Fortaleza", state.lodgings.fortaleza, state.files.fortaleza, consolidatedLodging);
   renderDestination("joaoPessoaCard", "João Pessoa", state.lodgings.joao_pessoa, state.files.joao_pessoa, consolidatedLodging);
 }
@@ -865,7 +1545,8 @@ async function init(){
 document.addEventListener("DOMContentLoaded", () => {
   init().catch(err => {
     console.error(err);
-    document.getElementById("alertBox").innerHTML = `<div class="alert"><strong>Erro ao carregar os arquivos.</strong><br>${escapeHtml(err.message || String(err))}</div>`;
+    document.getElementById("alertBox").innerHTML =
+      `<div class="alert"><strong>Erro ao carregar os arquivos.</strong><br>${escapeHtml(err.message || String(err))}</div>`;
   });
 });
 </script>
