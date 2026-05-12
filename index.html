@@ -61,7 +61,24 @@
     .seat-board{display:grid;gap:14px}
     .deck{background:#f8fafc;border:1px solid var(--border);border-radius:16px;padding:12px}
     .deck-header{display:flex;justify-content:space-between;gap:8px;margin-bottom:10px;font-size:.85rem;color:#334155;font-weight:700}
-    .seat-grid{display:grid;gap:8px;grid-auto-rows:var(--seat-size)}
+    .seat-grid{
+  display:grid;
+  gap:8px;
+  grid-auto-rows:var(--seat-size);
+}
+
+#seat-grid-upper{
+  grid-template-columns: repeat(4, var(--seat-size));
+}
+
+.seat-gap{
+  width:var(--seat-size);
+  height:var(--seat-size);
+}
+    
+#seat-grid-lower{
+  grid-template-columns: repeat(7, var(--seat-size));
+}
     #seat-grid-upper,#seat-grid-lower{grid-template-columns:repeat(4,var(--seat-size))}
     .seat,.seat-gap{width:var(--seat-size);height:var(--seat-size)}
     .seat-gap{visibility:hidden}
@@ -649,9 +666,9 @@ const upperLayout = [
   [41, 42, 44, 43],
   ];
 const lowerLayout = [
-  [45, 46, 47, 48, 49, 50],
-  [51, 52, 53, 54, 55, 56],
-  ];
+  [45, 46, 47, null, 48, 49, 50],
+  [51, 52, 53, null, 54, 55, 56],
+];
 
 function createSeatElement(seatNumber){
   const seatEl = document.createElement("div");
