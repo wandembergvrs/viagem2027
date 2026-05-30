@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viagem de Família 2027</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#fff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#dbe2ea;
+      --accent:#166534;
+      --accent-2:#0ea5e9;
+      --warn:#b45309;
+      --danger:#b91c1c;
+      --free:#f3f4f6;
+      --occupied:#dcfce7;
+      --occupied-border:#22c55e;
+      --shadow:0 10px 28px rgba(15,23,42,.08);
+      --radius:18px;
+      --seat-size:46px;
+      --aisle-size:26px;
+      --bus-shell:#e2e8f0;
+      --bus-shell-dark:#cbd5e1;
+      --glass:#dbeafe;
+      --driver:#1e293b;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#eef2f7 0%,var(--bg) 100%);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:18px 14px 28px;
+    }
+
+    header{
+      background:linear-gradient(135deg,#facc15 0%,#86efac 40%,#dbeafe 100%);
+      border-bottom:1px solid rgba(15,23,42,.08);
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1.15fr .95fr;
+      gap:18px;
+      align-items:center;
+    }
+
+    .hero h1{
+      margin:0 0 8px;
+      font-size:clamp(1.8rem,3vw,2.6rem);
+      line-height:1.05;
+    }
+
+    .subtitle{
+      color:#1f2937;
+      max-width:740px;
+    }
+
+    .hero-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.8rem;
+      background:#f8fafc;
+      border:1px solid var(--border);
+      color:#334155;
+    }
+
+    .hero-img{
+      border-radius:22px;
+      overflow:hidden;
+      min-height:180px;
+      background:#111827;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(15,23,42,.08);
+    }
+
+    .hero-img img{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    section{margin-top:16px}
+
+    .grid{display:grid;gap:14px}
+    .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .twocol{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:1.15rem;
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      font-size:.86rem;
+    }
+
+    .stat-label,.helper,.footer-note,.file-line,.card-subtle{
+      color:var(--muted);
+    }
+
+    .stat-label{
+      font-size:.82rem;
+      margin-bottom:6px;
+    }
+
+    .stat-value{
+      font-size:1.55rem;
+      font-weight:800;
+      line-height:1;
+    }
+
+    .stat-note{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:.78rem;
+    }
+
+    .totals{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin:12px 0 14px;
+    }
+
+    .total-box{
+      background:#f8fafc;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px 12px;
+    }
+
+    .total-box .k{
+      font-size:.78rem;
+      color:var(--muted);
+    }
+
+    .total-box .v{
+      font-weight:800;
+      font-size:1.1rem;
+      margin-top:2px;
+    }
+
+    .progress-wrap{
+      display:grid;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .progress-track{
+      height:13px;
+      background:#e5e7eb;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .progress-fill{
+      height:100%;
+      background:linear-gradient(90deg,#22c55e,#16a34a);
+      width:0%;
+    }
+
+    .progress-fill.bus{
+      background:linear-gradient(90deg,#0ea5e9,#0284c7);
+    }
+
+    .progress-meta{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size:.88rem;
+    }
+
+    .summary-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:8px;
+    }
+
+    .summary-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:#f8fafc;
+      border:1px solid var(--border);
+      font-size:.82rem;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.92rem;
+    }
+
+    th,td{
+      padding:10px 8px;
+      border-bottom:1px solid var(--border);
+      text-align:left;
+      vertical-align:top;
+    }
+
+    th{
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.03em;
+      color:var(--muted);
+    }
+
+    .mono{
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+
+    .room-names{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .empty,.alert{
+      padding:12px;
+      border-radius:14px;
+      font-size:.92rem;
+    }
+
+    .empty{
+      background:#f8fafc;
+      border:1px dashed var(--border);
+      color:var(--muted);
+    }
+
+    .alert{
+      background:#fff7ed;
+      border:1px solid #fdba74;
+      color:#9a3412;
+      margin-bottom:14px;
+    }
+
+    .list{
+      margin:0;
+      padding-left:18px;
+      color:#334155;
+    }
+
+    .destination-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    /* BUS */
+    .seat-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 320px;
+      gap:16px;
+      align-items:start;
+    }
+
+    .seat-board{
+      display:grid;
+      gap:16px;
+    }
+
+    .bus-deck{
+      background:linear-gradient(180deg,#f8fafc 0%,#eef2f7 100%);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+    }
+
+    .bus-deck::before{
+      content:"";
+      position:absolute;
+      inset:8px;
+      border-radius:20px;
+      border:2px solid var(--bus-shell-dark);
+      pointer-events:none;
+      opacity:.8;
+    }
+
+    .bus-deck-header{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:12px;
+      font-size:.85rem;
+      color:#334155;
+      font-weight:700;
+      position:relative;
+      z-index:2;
+    }
+
+    .bus-shell{
+      position:relative;
+      background:linear-gradient(180deg,var(--bus-shell) 0%,#f8fafc 50%,var(--bus-shell) 100%);
+      border:2px solid #94a3b8;
+      border-radius:38px 38px 26px 26px;
+      padding:18px 16px 16px;
+      min-height:220px;
+      overflow:hidden;
+    }
+
+    .bus-shell.lower{
+      border-radius:24px;
+      padding-top:16px;
+    }
+
+    .bus-front{
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      gap:18px;
+      margin:0 auto 14px;
+      width:100%;
+      min-height:58px;
+    }
+
+    .windshield{
+      width:180px;
+      height:44px;
+      border-radius:22px 22px 10px 10px;
+      background:linear-gradient(180deg,#eff6ff 0%,var(--glass) 100%);
+      border:2px solid #93c5fd;
+      box-shadow:inset 0 -8px 0 rgba(59,130,246,.08);
+    }
+
+    .driver-cabin{
+      width:46px;
+      height:34px;
+      border-radius:12px;
+      background:linear-gradient(180deg,#334155 0%,var(--driver) 100%);
+      border:2px solid #0f172a;
+      position:absolute;
+      right:18px;
+      bottom:0;
+    }
+
+    .door-mark{
+      position:absolute;
+      left:16px;
+      bottom:4px;
+      width:34px;
+      height:48px;
+      border:2px dashed #94a3b8;
+      border-radius:10px;
+      background:rgba(255,255,255,.4);
+    }
+
+    .stair-core{
+      position:absolute;
+      right:18px;
+      top:68px;
+      width:52px;
+      padding:8px 6px;
+      border-radius:14px;
+      background:#e2e8f0;
+      border:2px solid #94a3b8;
+      text-align:center;
+      font-size:.66rem;
+      font-weight:700;
+      color:#475569;
+      z-index:2;
+    }
+
+    .stair-core::before{
+      content:"⇅";
+      display:block;
+      font-size:1rem;
+      line-height:1;
+      margin-bottom:2px;
+    }
+
+    .seat-zone{
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      gap:12px;
+      position:relative;
+      z-index:1;
+      padding-right:64px;
+    }
+
+    .seat-block{
+      display:grid;
+      gap:8px;
+      grid-auto-rows:var(--seat-size);
+    }
+
+    .seat-block.double{
+      grid-template-columns:repeat(2,var(--seat-size));
+    }
+
+    .seat-block.single{
+      grid-template-columns:repeat(1,var(--seat-size));
+    }
+
+    .aisle{
+      width:var(--aisle-size);
+      min-height:100%;
+      align-self:stretch;
+      border-radius:999px;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          transparent 0 10px,
+          rgba(148,163,184,.45) 10px 18px
+        ),
+        linear-gradient(180deg,#ffffff 0%,#f1f5f9 100%);
+      border:1px dashed #94a3b8;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);
+    }
+
+    .lower-zone{
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      gap:12px;
+      padding-left:12px;
+      padding-right:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .bus-tail{
+      margin-top:14px;
+      height:14px;
+      border-radius:999px;
+      background:linear-gradient(90deg,#cbd5e1 0%,#94a3b8 50%,#cbd5e1 100%);
+      opacity:.7;
+    }
+
+    .seat,.seat-gap{
+      width:var(--seat-size);
+      height:var(--seat-size);
+    }
+
+    .seat-gap{
+      visibility:hidden;
+    }
+
+    .seat{
+      border-radius:14px 14px 10px 10px;
+      border:1px solid #cbd5e1;
+      background:linear-gradient(180deg,#ffffff 0%,var(--free) 100%);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:4px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.9),
+        0 3px 6px rgba(15,23,42,.05);
+      position:relative;
+    }
+
+    .seat::before{
+      content:"";
+      position:absolute;
+      inset:4px 8px auto 8px;
+      height:8px;
+      border-radius:999px;
+      background:rgba(148,163,184,.18);
+    }
+
+    .seat.occupied{
+      background:linear-gradient(180deg,#f0fdf4 0%,var(--occupied) 100%);
+      border-color:var(--occupied-border);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.9),
+        0 3px 8px rgba(34,197,94,.14);
+    }
+
+    .seat-number{
+      font-size:.65rem;
+      font-weight:800;
+      line-height:1;
+      margin-top:4px;
+    }
+
+    .seat-name{
+      font-size:.58rem;
+      line-height:1.05;
+      margin-top:2px;
+      max-width:100%;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .seat-legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .legend-item{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:.84rem;
+    }
+
+    .legend-color{
+      width:14px;
+      height:14px;
+      border-radius:4px;
+      border:1px solid #d1d5db;
+      background:var(--free);
+    }
+
+    .legend-color.occupied{
+      background:var(--occupied);
+      border-color:var(--occupied-border);
+    }
+
+    .mini-list{
+      display:grid;
+      gap:8px;
+    }
+
+    .mini-item{
+      display:grid;
+      grid-template-columns:120px 1fr 54px;
+      gap:8px;
+      align-items:center;
+      font-size:.84rem;
+    }
+
+    .mini-bar{
+      height:10px;
+      border-radius:999px;
+      background:#e5e7eb;
+      overflow:hidden;
+    }
+
+    .mini-bar > span{
+      display:block;
+      height:100%;
+      background:linear-gradient(90deg,#0ea5e9,#0284c7);
+    }
+
+    .table-wrap{overflow:auto}
+
+    code{
+      background:#f8fafc;
+      border:1px solid var(--border);
+      padding:2px 5px;
+      border-radius:8px;
+    }
+
+    .footer-note{
+      margin-top:14px;
+      font-size:.88rem;
+    }
+
+    @media (max-width:960px){
+      .hero,.stats,.twocol,.destination-grid,.seat-layout,.totals{
+        grid-template-columns:1fr !important;
+      }
+      .seat-layout{
+        grid-template-columns:1fr !important;
+      }
+    }
+
+    @media (max-width:640px){
+      :root{
+        --seat-size:40px;
+        --aisle-size:18px;
+      }
+
+      .seat-zone{
+        gap:8px;
+        padding-right:48px;
+      }
+
+      .lower-zone{
+        gap:8px;
+      }
+
+      .stair-core{
+        width:42px;
+        right:12px;
+        font-size:.58rem;
+      }
+
+      .windshield{
+        width:140px;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <h1>Viagem de Família 2027</h1>
+        <div class="subtitle">
+          Painel com leitura automática de <strong>passageiros.csv</strong>,
+          <strong>hospedagem_fortaleza.csv</strong> e <strong>hospedagem_joao_pessoa.csv</strong>.
+          O painel mantém o <strong>mapa de poltronas</strong>, mostra a <strong>evolução do pagamento do ônibus</strong>
+          e calcula a <strong>evolução da hospedagem por família</strong> usando o arquivo de Fortaleza como <strong>base financeira</strong>, enquanto João Pessoa mantém apenas a <strong>configuração de quartos</strong>.
+        </div>
+        <div class="hero-badges">
+          <span class="badge" id="badge-passengers">👨‍👩‍👧‍👦 0 passageiros</span>
+          <span class="badge" id="badge-seats">🪑 0 poltronas marcadas</span>
+          <span class="badge" id="badge-bus">💳 Ônibus: 0%</span>
+          <span class="badge" id="badge-lodging">🏨 Hospedagem: 0%</span>
+        </div>
+      </div>
+      <div class="hero-img">
+        <img src="dirontur-marcopolo-g8.jpg" alt="Ônibus da viagem" onerror="this.style.display='none'; this.parentElement.style.minHeight='120px'; this.parentElement.innerHTML='<div style=&quot;padding:18px;color:#e5e7eb&quot;>Imagem opcional não encontrada.</div>'">
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="alertBox"></div>
+
+  <div class="grid stats">
+    <div class="card">
+      <div class="stat-label">Passageiros no CSV</div>
+      <div class="stat-value" id="statPassengers">0</div>
+      <div class="stat-note" id="statPassengersNote">Leitura pendente</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Poltronas marcadas</div>
+      <div class="stat-value" id="statMarkedSeats">0</div>
+      <div class="stat-note" id="statSeatsNote">Leitura pendente</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Pagamento do ônibus</div>
+      <div class="stat-value mono" id="statBusPaid">R$ 0,00</div>
+      <div class="stat-note" id="statBusPercent">0% pago</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Pagamento da hospedagem</div>
+      <div class="stat-value mono" id="statLodgingPaid">R$ 0,00</div>
+      <div class="stat-note" id="statLodgingPercent">0% pago</div>
+    </div>
+  </div>
+
+  <section class="grid twocol">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Ônibus</h2>
+          <p>Evolução do pagamento a partir de <code>Parcelas</code> no CSV de passageiros.</p>
+        </div>
+      </div>
+      <div class="totals">
+        <div class="total-box"><div class="k">Pagantes</div><div class="v" id="busPayers">0</div></div>
+        <div class="total-box"><div class="k">Pagamento iniciado</div><div class="v" id="busStarted">0</div></div>
+        <div class="total-box"><div class="k">Quitados</div><div class="v" id="busFull">0</div></div>
+        <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="busPending">R$ 0,00</div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill bus" id="busProgress"></div></div>
+        <div class="progress-meta">
+          <span id="busProgressLabel">0% do valor planejado pago</span>
+          <strong class="mono" id="busPlannedLabel">R$ 0,00 planejado</strong>
+        </div>
+      </div>
+      <details style="margin-top:12px">
+        <summary style="cursor:pointer;font-weight:700">Distribuição por parcelas pagas</summary>
+        <div class="mini-list" id="busInstallmentsList"></div>
+      </details>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Hospedagem</h2>
+          <p>Evolução do pagamento por família usando Fortaleza como base financeira. João Pessoa entra apenas com a configuração de quartos.</p>
+        </div>
+      </div>
+      <div class="totals">
+        <div class="total-box"><div class="k">Grupos com total</div><div class="v" id="lodgingGroupsWithTotal">0</div></div>
+        <div class="total-box"><div class="k">Grupos com pagamento informado</div><div class="v" id="lodgingGroupsWithPaid">0</div></div>
+        <div class="total-box"><div class="k">Total planejado</div><div class="v mono" id="lodgingPlanned">R$ 0,00</div></div>
+        <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="lodgingPending">R$ 0,00</div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill" id="lodgingProgress"></div></div>
+        <div class="progress-meta">
+          <span id="lodgingProgressLabel">0% pago</span>
+          <strong class="mono" id="lodgingPaidLabel">R$ 0,00 pago</strong>
+        </div>
+      </div>
+      <details style="margin-top:12px" open>
+        <summary style="cursor:pointer;font-weight:700">Controle individual de pagamento da hospedagem</summary>
+        <div id="lodgingPayersList" style="margin-top:10px"></div>
+      </details>
+      <div class="footer-note">
+        O painel usa <code>TotalGrupo</code> do arquivo de Fortaleza como base financeira da família. O valor pago pode vir de <code>PagoGrupo</code> ou da soma dos pagamentos individuais em <code>PagoPessoa</code>/<code>PagoIndividual</code>. João Pessoa é usado principalmente para mostrar a distribuição de quartos nesse destino.
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-head">
+      <div>
+        <h2>Mapa de assentos — Marcopolo G8</h2>
+        <p>Agora com visual mais parecido com a planta de um ônibus: frente, cabine, corredor central e piso inferior destacado.</p>
+      </div>
+    </div>
+
+    <div class="seat-layout">
+      <div class="seat-board">
+        <div class="bus-deck">
+          <div class="bus-deck-header">
+            <span>Piso superior</span>
+            <span>Poltronas 1–44</span>
+          </div>
+
+          <div class="bus-shell">
+            <div class="bus-front">
+              <div class="door-mark" title="Porta / acesso"></div>
+              <div class="windshield" title="Frente do ônibus"></div>
+              <div class="driver-cabin" title="Cabine do motorista"></div>
+            </div>
+
+            <div class="stair-core" title="Escada entre os pisos">Escada</div>
+
+            <div class="seat-zone">
+              <div class="seat-block double" id="seat-grid-upper-left"></div>
+              <div class="aisle" aria-hidden="true"></div>
+              <div class="seat-block double" id="seat-grid-upper-right"></div>
+            </div>
+
+            <div class="bus-tail"></div>
+          </div>
+        </div>
+
+        <div class="bus-deck">
+          <div class="bus-deck-header">
+            <span>Piso inferior</span>
+            <span>Poltronas 45–56</span>
+          </div>
+
+          <div class="bus-shell lower">
+            <div class="lower-zone">
+              <div class="seat-block double" id="seat-grid-lower-left"></div>
+              <div class="aisle" aria-hidden="true"></div>
+              <div class="seat-block double" id="seat-grid-lower-right"></div>
+            </div>
+
+            <div class="bus-tail"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:12px">
+        <div class="section-head" style="margin-bottom:8px">
+          <div>
+            <h2 style="font-size:1rem">Legenda</h2>
+            <p>Leitura automática da planilha</p>
+          </div>
+        </div>
+
+        <div class="seat-legend" style="margin-bottom:12px">
+          <div class="legend-item"><span class="legend-color"></span>Livre</div>
+          <div class="legend-item"><span class="legend-color occupied"></span>Ocupada</div>
+        </div>
+
+        <div class="helper" id="seatSummaryText">Nenhuma poltrona processada.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-head">
+      <div>
+        <h2>Passageiros</h2>
+        <p>Poltrona e evolução do pagamento do ônibus por pessoa.</p>
+      </div>
+    </div>
+    <div class="summary-row" id="passengerSummary"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Perfil</th>
+            <th>Parcelas</th>
+            <th>Valor ônibus</th>
+            <th>Pago</th>
+            <th>Poltrona</th>
+          </tr>
+        </thead>
+        <tbody id="passengerTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div>
+        <h2>Hospedagem por destino</h2>
+        <p>Os dois destinos mantêm suas configurações próprias de quartos. Os valores financeiros da hospedagem vêm do arquivo de Fortaleza.</p>
+      </div>
+    </div>
+    <div class="destination-grid">
+      <div class="card" id="fortalezaCard"></div>
+      <div class="card" id="joaoPessoaCard"></div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    Colunas aceitas:<br>
+    <code>passageiros.csv → Nome;Categoria;Parcelas;Poltrona</code> e, opcionalmente,
+    <code>ValorOnibus;ParcelasTotalOnibus</code>.<br>
+    <code>hospedagem_*.csv → Nome;Familia;Quarto;Hotel;Diaria;TotalGrupo</code> e, opcionalmente,
+    <code>PagoGrupo;PagoPessoa;PagoIndividual;PagouHospedagem</code>. Neste painel, <code>TotalGrupo</code> do arquivo de <code>hospedagem_fortaleza.csv</code>
+    é tratado como a base financeira da família; o pagamento pode ser controlado no nível do grupo ou individualmente por hóspede.
+  </div>
+</main>
+
+<script>
+const DEFAULT_BUS_VALUE = 1100;
+const DEFAULT_BUS_INSTALLMENTS = 10;
+const LODGING_NIGHTS = 5;
+
+const state = {
+  passengers: [],
+  lodgings: { fortaleza: [], joao_pessoa: [] },
+  files: { passageiros: null, fortaleza: null, joao_pessoa: null },
+  issues: []
+};
+
+function normalizeHeader(v){
+  return String(v || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+function normalizeName(v){
+  return String(v || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ");
+}
+function escapeHtml(v){
+  return String(v ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+function clamp(v, min, max){
+  return Math.min(Math.max(v, min), max);
+}
+function parseBRL(value){
+  if(value == null) return 0;
+  let s = String(value).trim();
+  if(!s) return 0;
+  s = s.replace(/\s+/g, "").replace(/R\$/gi, "");
+  if(s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+  const n = Number(s);
+  return Number.isFinite(n) ? n : 0;
+}
+function formatMoney(v){
+  return (Number(v) || 0).toLocaleString("pt-BR", { style:"currency", currency:"BRL" });
+}
+function firstNonEmpty(...values){
+  for(const value of values){
+    if(String(value ?? "").trim() !== "") return value;
+  }
+  return "";
+}
+function parseYesNo(value){
+  const v = normalizeLooseValue(value);
+  if(!v) return false;
+  return ["sim", "s", "yes", "y", "true", "1", "pago", "quitado", "ok"].includes(v);
+}
+
+async function fetchFirstAvailable(candidates){
+  let lastError = null;
+  for(const path of candidates){
+    try{
+      const res = await fetch(path, { cache:"no-store" });
+      if(res.ok) return { path, text: await res.text() };
+      if(res.status !== 404) lastError = new Error(`Erro ao carregar ${path} (${res.status})`);
+    }catch(err){
+      lastError = err;
+    }
+  }
+  return { path:null, text:"", error:lastError };
+}
+
+function parseDelimitedText(text){
+  const clean = String(text || "").trim();
+  if(!clean) return [];
+  const lines = clean.split(/\r?\n/).filter(Boolean);
+  if(!lines.length) return [];
+  const delimiter = lines[0].includes(";") ? ";" : ",";
+  const headers = lines[0].split(delimiter).map(h => normalizeHeader(h));
+  return lines.slice(1).map(line => {
+    const cols = line.split(delimiter).map(c => String(c ?? "").trim());
+    const row = {};
+    headers.forEach((h, i) => row[h] = cols[i] ?? "");
+    return row;
+  });
+}
+
+function normalizeLooseValue(raw){
+  return String(raw || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[_\\-\\/]+/g, " ")
+    .replace(/\s+/g, " ");
+}
+
+function normalizeCategory(raw, seat){
+  const rawBase = String(raw || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+  const slug = rawBase.replace(/[\s\-\/]+/g, "_");
+  const v = normalizeLooseValue(raw);
+  const hasSeat = String(seat || "").trim() !== "";
+  if(!v) return "adult";
+  if(slug === "crianca_colo") return "childLap";
+  if(slug.includes("crianca")) return "childSeat";
+  if(v.includes("poltrona") || v.includes("assento")) return hasSeat ? "childSeat" : "adult";
+  return "adult";
+}
+
+function parsePassengers(text){
+  return parseDelimitedText(text).map(row => {
+    const name = row.nome || row.nome_completo || "";
+    if(!name) return null;
+    const seat = row.poltrona || row.assento || "";
+    const category = normalizeCategory(row.categoria || row.tipo || row.perfil || "", seat);
+    const installmentsPaid = Number(row.parcelas || row.parcelaspagasonibus || row.parcelas_pagas_onibus || 0) || 0;
+    const installmentsTotal = Number(row.parcelastotalonibus || row.parcelas_total_onibus || row.parcelastotal || DEFAULT_BUS_INSTALLMENTS) || DEFAULT_BUS_INSTALLMENTS;
+    const busValue = parseBRL(row.valoronibus || row.valor_onibus || row.valorpassagem || row.valor_passagem || DEFAULT_BUS_VALUE);
+
+    return {
+      name,
+      nameKey: normalizeName(name),
+      category,
+      seat: seat ? String(parseInt(seat, 10) || seat).trim() : "",
+      installmentsPaid,
+      installmentsTotal: Math.max(1, installmentsTotal),
+      busValue: category === "childLap" ? 0 : busValue,
+      seatType: category === "childLap" ? "Colo" : "Poltrona"
+    };
+  }).filter(Boolean);
+}
+
+function normalizeRoomType(raw){
+  const compact = String(raw || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "");
+  if(!compact) return "—";
+  if(["duplo","double","d"].includes(compact)) return "Duplo";
+  if(["triplo","triple","t"].includes(compact)) return "Triplo";
+  if(["quadruplo","quadruple","q","quadrupolo"].includes(compact)) return "Quádruplo";
+  return String(raw || "—").trim() || "—";
+}
+
+function parseLodging(text){
+  return parseDelimitedText(text).map(row => {
+    const name = row.nome || "";
+    if(!name) return null;
+
+    const totalGroup = parseBRL(firstNonEmpty(row.totalgrupo, row.total_grupo, row.total, ""));
+
+    const explicitPaidGroupRaw = firstNonEmpty(
+      row.pagogrupo,
+      row.pago_grupo,
+      row.pagototalgrupo,
+      row.pago_total_grupo,
+      row.pagamentogrupo,
+      row.pagamento_grupo,
+      ""
+    );
+
+    const explicitIndividualRaw = firstNonEmpty(
+      row.pagopessoa,
+      row.pago_pessoa,
+      row.pagoindividual,
+      row.pago_individual,
+      row.pagohospedagempessoa,
+      row.pago_hospedagem_pessoa,
+      row.pagohospedagemindividual,
+      row.pago_hospedagem_individual,
+      row.valorpagopessoa,
+      row.valor_pago_pessoa,
+      row.valorindividualpago,
+      row.valor_individual_pago,
+      ""
+    );
+
+    const legacyPaidRaw = firstNonEmpty(row.pagohospedagem, row.pago, row.valor_pago, "");
+
+    let paidGroup = parseBRL(explicitPaidGroupRaw);
+    let paidIndividual = parseBRL(explicitIndividualRaw);
+
+    // Compatibilidade: se o arquivo antigo usar só "Pago" ou "Valor_Pago", tratamos como pagamento do grupo.
+    if(!paidGroup && !paidIndividual && legacyPaidRaw){
+      paidGroup = parseBRL(legacyPaidRaw);
+    }
+
+    const installmentsPaid = Number(firstNonEmpty(
+      row.parcelaspagas,
+      row.parcelas_pagas,
+      row.parcelashospedagempagas,
+      row.parcelas_hospedagem_pagas,
+      0
+    )) || 0;
+
+    const installmentsTotal = Number(firstNonEmpty(
+      row.parcelastotal,
+      row.parcelas_total,
+      row.parcelashospedagemtotal,
+      row.parcelas_hospedagem_total,
+      0
+    )) || 0;
+
+    if(!paidGroup && !paidIndividual && totalGroup > 0 && installmentsPaid > 0 && installmentsTotal > 0){
+      paidGroup = totalGroup * clamp(installmentsPaid / installmentsTotal, 0, 1);
+    }
+
+    const totalIndividual = parseBRL(firstNonEmpty(
+      row.totalpessoa,
+      row.total_pessoa,
+      row.totalindividual,
+      row.total_individual,
+      ""
+    ));
+
+    const installmentsPaidIndividual = Number(firstNonEmpty(
+      row.parcelaspagaspessoa,
+      row.parcelas_pagas_pessoa,
+      row.parcelasindividuaispagas,
+      row.parcelas_individuais_pagas,
+      0
+    )) || 0;
+
+    const installmentsTotalIndividual = Number(firstNonEmpty(
+      row.parcelastotalpessoa,
+      row.parcelas_total_pessoa,
+      row.parcelasindividuaistotal,
+      row.parcelas_individuais_total,
+      0
+    )) || 0;
+
+    if(!paidIndividual && totalIndividual > 0 && installmentsPaidIndividual > 0 && installmentsTotalIndividual > 0){
+      paidIndividual = totalIndividual * clamp(installmentsPaidIndividual / installmentsTotalIndividual, 0, 1);
+    }
+
+    const paidFlag = parseYesNo(firstNonEmpty(
+      row.pagouhospedagem,
+      row.pagou_hospedagem,
+      row.pagou,
+      row.pago_sn,
+      row.statuspagamento,
+      row.status_pagamento,
+      ""
+    ));
+
+    return {
+      name,
+      nameKey: normalizeName(name),
+      group: row.familia || row.grupo || row.grupo_hospedagem || "",
+      roomType: normalizeRoomType(row.quarto || row.tipo_quarto || ""),
+      hotel: row.hotel || "",
+      daily: parseBRL(row.diaria || row.valor_diaria || ""),
+      totalGroup,
+      totalIndividual,
+      paidGroup,
+      paidIndividual,
+      paidFlag,
+      paymentNote: firstNonEmpty(row.observacaopagamento, row.observacao_pagamento, row.obs_pagamento, row.obs, "")
+    };
+  }).filter(Boolean);
+}
+
+function renderAlerts(){
+  const items = [];
+  if(!state.files.passageiros) items.push("passageiros.csv não foi encontrado.");
+  if(!state.files.fortaleza) items.push("hospedagem_fortaleza.csv não foi encontrado.");
+  if(!state.files.joao_pessoa) items.push("hospedagem_joao_pessoa.csv não foi encontrado.");
+  state.issues.forEach(issue => items.push(issue));
+
+  document.getElementById("alertBox").innerHTML = items.length
+    ? `<div class="alert"><strong>Atenção:</strong><ul class="list">${items.map(i => `<li>${escapeHtml(i)}</li>`).join("")}</ul></div>`
+    : "";
+}
+
+function summarizeBus(){
+  const payers = state.passengers.filter(p => p.seatType !== "Colo");
+  const planned = payers.reduce((sum, p) => sum + (p.busValue || 0), 0);
+  const paid = payers.reduce((sum, p) => {
+    const frac = clamp((p.installmentsPaid || 0) / (p.installmentsTotal || DEFAULT_BUS_INSTALLMENTS), 0, 1);
+    return sum + ((p.busValue || 0) * frac);
+  }, 0);
+
+  const started = payers.filter(p => (p.installmentsPaid || 0) > 0).length;
+  const full = payers.filter(p => (p.installmentsPaid || 0) >= (p.installmentsTotal || DEFAULT_BUS_INSTALLMENTS)).length;
+  const percent = planned > 0 ? (paid / planned) * 100 : 0;
+
+  const distribution = {};
+  payers.forEach(p => {
+    const key = `${clamp(Number(p.installmentsPaid) || 0, 0, p.installmentsTotal || DEFAULT_BUS_INSTALLMENTS)}/${p.installmentsTotal || DEFAULT_BUS_INSTALLMENTS}`;
+    distribution[key] = (distribution[key] || 0) + 1;
+  });
+
+  const distributionList = Object.entries(distribution).sort((a,b) => {
+    const [aa] = a[0].split("/");
+    const [bb] = b[0].split("/");
+    return Number(aa) - Number(bb);
+  });
+
+  return {
+    payersCount: payers.length,
+    planned,
+    paid,
+    pending: Math.max(planned - paid, 0),
+    started,
+    full,
+    percent,
+    distributionList
+  };
+}
+
+function getLodgingGroupKey(row){
+  return row.group ? `group:${String(row.group).trim()}` : `person:${row.nameKey}`;
+}
+
+function getFallbackTotalGroup(row){
+  return row.totalGroup || (row.daily ? row.daily * LODGING_NIGHTS : 0);
+}
+
+function buildLodgingPaymentLookup(){
+  const groupPaid = new Map();
+  const individualPaid = new Map();
+  const payerLookup = new Map();
+
+  const registerPayer = (key, row, source) => {
+    const amount = row.paidIndividual || 0;
+    const isPaid = amount > 0 || row.paidFlag;
+    if(!isPaid) return;
+
+    if(!payerLookup.has(key)) payerLookup.set(key, []);
+    const list = payerLookup.get(key);
+    const duplicate = list.some(item => item.nameKey === row.nameKey && item.source === source);
+    if(!duplicate){
+      list.push({
+        name: row.name,
+        nameKey: row.nameKey,
+        amount,
+        paidFlag: row.paidFlag,
+        source,
+        note: row.paymentNote || ""
+      });
+    }
+  };
+
+  const register = (row, source, fallbackOnly = false) => {
+    const key = getLodgingGroupKey(row);
+    const alreadyHasPayment = (groupPaid.get(key) || 0) > 0 || (individualPaid.get(key) || 0) > 0 || (payerLookup.get(key) || []).length > 0;
+    if(fallbackOnly && alreadyHasPayment) return;
+
+    const groupAmount = row.paidGroup || 0;
+    if(groupAmount > 0){
+      const prev = groupPaid.get(key) || 0;
+      if(groupAmount > prev) groupPaid.set(key, groupAmount);
+    }
+
+    const individualAmount = row.paidIndividual || 0;
+    if(individualAmount > 0){
+      individualPaid.set(key, (individualPaid.get(key) || 0) + individualAmount);
+    }
+
+    registerPayer(key, row, source);
+  };
+
+  // Fortaleza continua como base financeira principal.
+  state.lodgings.fortaleza.forEach(row => register(row, "Fortaleza", false));
+
+  // João Pessoa só complementa pagamento quando não há informação financeira para aquele grupo.
+  state.lodgings.joao_pessoa.forEach(row => register(row, "João Pessoa", true));
+
+  const amountLookup = new Map();
+  const keys = new Set([...groupPaid.keys(), ...individualPaid.keys(), ...payerLookup.keys()]);
+  keys.forEach(key => {
+    const byGroup = groupPaid.get(key) || 0;
+    const byIndividual = individualPaid.get(key) || 0;
+    amountLookup.set(key, Math.max(byGroup, byIndividual));
+  });
+
+  payerLookup.forEach(list => {
+    list.sort((a,b) => a.name.localeCompare(b.name, "pt-BR"));
+  });
+
+  return { amountLookup, payerLookup, groupPaid, individualPaid };
+}
+
+function summarizeConsolidatedLodging(){
+  const paymentData = buildLodgingPaymentLookup();
+  const groups = new Map();
+
+  const ensureGroup = (row) => {
+    const key = getLodgingGroupKey(row);
+    if(!groups.has(key)){
+      groups.set(key, {
+        key,
+        group: row.group || "—",
+        guests: new Set(),
+        financialTotal: 0,
+        financialSource: "",
+        hasFortalezaBase: false,
+        hasJoaoPessoaConfig: false
+      });
+    }
+    return groups.get(key);
+  };
+
+  state.lodgings.fortaleza.forEach(row => {
+    const g = ensureGroup(row);
+    g.guests.add(row.name);
+    g.hasFortalezaBase = true;
+    const amount = getFallbackTotalGroup(row);
+    if(amount > 0){
+      g.financialTotal = Math.max(g.financialTotal, amount);
+      g.financialSource = "Fortaleza";
+    }
+  });
+
+  state.lodgings.joao_pessoa.forEach(row => {
+    const g = ensureGroup(row);
+    g.guests.add(row.name);
+    g.hasJoaoPessoaConfig = true;
+    if(!(g.financialTotal > 0)){
+      const amount = getFallbackTotalGroup(row);
+      if(amount > 0){
+        g.financialTotal = Math.max(g.financialTotal, amount);
+        g.financialSource = "João Pessoa";
+      }
+    }
+  });
+
+  const rooms = Array.from(groups.values()).map(group => {
+    const totalCombined = group.financialTotal || 0;
+    const rawPaid = paymentData.amountLookup.get(group.key) || 0;
+    const paidGroup = totalCombined > 0 ? Math.min(rawPaid, totalCombined) : rawPaid;
+    const pendingGroup = Math.max(totalCombined - paidGroup, 0);
+    const paymentPercent = totalCombined > 0 ? (paidGroup / totalCombined) * 100 : 0;
+    const payers = paymentData.payerLookup.get(group.key) || [];
+    const individualPaid = paymentData.individualPaid.get(group.key) || 0;
+    const groupPaidBase = paymentData.groupPaid.get(group.key) || 0;
+
+    return {
+      ...group,
+      guests: Array.from(group.guests).sort((a,b) => a.localeCompare(b, "pt-BR")),
+      totalCombined,
+      paidGroup,
+      individualPaid,
+      groupPaidBase,
+      payers,
+      pendingGroup,
+      paymentPercent
+    };
+  }).sort((a,b) => a.group.localeCompare(b.group, "pt-BR", { numeric:true }));
+
+  const roomLookup = new Map(rooms.map(room => [room.key, room]));
+  const totalPlanned = rooms.reduce((sum, room) => sum + (room.totalCombined || 0), 0);
+  const totalPaid = rooms.reduce((sum, room) => sum + (room.paidGroup || 0), 0);
+  const individualPayersCount = rooms.reduce((sum, room) => sum + (room.payers || []).length, 0);
+
+  return {
+    rooms,
+    roomLookup,
+    guestCount: rooms.reduce((sum, room) => sum + room.guests.length, 0),
+    roomCount: rooms.length,
+    stayTotal: totalPlanned,
+    paidTotal: totalPaid,
+    pendingTotal: Math.max(totalPlanned - totalPaid, 0),
+    percent: totalPlanned > 0 ? (totalPaid / totalPlanned) * 100 : 0,
+    groupsWithTotal: rooms.filter(r => (r.totalCombined || 0) > 0).length,
+    groupsWithPaid: rooms.filter(r => (r.paidGroup || 0) > 0).length,
+    groupsWithIndividualPayment: rooms.filter(r => (r.payers || []).length > 0).length,
+    individualPayersCount
+  };
+}
+
+function summarizeDestinationRows(rows, consolidatedLookup){
+  const groups = new Map();
+
+  rows.forEach(row => {
+    const key = getLodgingGroupKey(row);
+    if(!groups.has(key)){
+      groups.set(key, {
+        key,
+        group: row.group || "—",
+        roomType: row.roomType || "—",
+        hotel: row.hotel || "",
+        daily: row.daily || 0,
+        guests: []
+      });
+    }
+    const g = groups.get(key);
+    g.guests.push(row.name);
+    if((!g.roomType || g.roomType === "—") && row.roomType) g.roomType = row.roomType;
+    if(!g.hotel && row.hotel) g.hotel = row.hotel;
+    if(!g.daily && row.daily) g.daily = row.daily;
+  });
+
+  const rooms = Array.from(groups.values()).sort((a,b) => a.group.localeCompare(b.group, "pt-BR", { numeric:true }));
+  rooms.forEach(room => {
+    const consolidated = consolidatedLookup.get(room.key);
+    room.familyTotal = consolidated?.totalCombined || 0;
+    room.familyPaid = consolidated?.paidGroup || 0;
+    room.familyIndividualPaid = consolidated?.individualPaid || 0;
+    room.familyPending = consolidated?.pendingGroup || 0;
+    room.familyPercent = consolidated?.paymentPercent || 0;
+    room.financialSource = consolidated?.financialSource || "";
+    room.payers = consolidated?.payers || [];
+  });
+
+  return {
+    rooms,
+    guestCount: rows.length,
+    roomCount: rooms.length,
+    nightlyTotal: rooms.reduce((sum, room) => sum + (room.daily || 0), 0),
+    groupsWithPayment: rooms.filter(room => (room.familyPaid || 0) > 0).length,
+    individualPayersCount: rooms.reduce((sum, room) => sum + (room.payers || []).length, 0)
+  };
+}
+
+function renderBusPanel(){
+  const s = summarizeBus();
+  document.getElementById("busPayers").textContent = s.payersCount;
+  document.getElementById("busStarted").textContent = s.started;
+  document.getElementById("busFull").textContent = s.full;
+  document.getElementById("busPending").textContent = formatMoney(s.pending);
+  document.getElementById("busProgress").style.width = `${Math.round(s.percent)}%`;
+  document.getElementById("busProgressLabel").textContent = `${Math.round(s.percent)}% do valor planejado pago`;
+  document.getElementById("busPlannedLabel").textContent = `${formatMoney(s.planned)} planejado`;
+  document.getElementById("statBusPaid").textContent = formatMoney(s.paid);
+  document.getElementById("statBusPercent").textContent = `${Math.round(s.percent)}% pago`;
+  document.getElementById("badge-bus").textContent = `💳 Ônibus: ${Math.round(s.percent)}%`;
+
+  const el = document.getElementById("busInstallmentsList");
+  el.innerHTML = s.distributionList.length ? s.distributionList.map(([label, count]) => {
+    const pct = s.payersCount ? (count / s.payersCount) * 100 : 0;
+    return `<div class="mini-item"><div>${escapeHtml(label)}</div><div class="mini-bar"><span style="width:${pct}%"></span></div><strong>${count}</strong></div>`;
+  }).join("") : `<div class="empty">Sem dados suficientes para distribuição.</div>`;
+}
+
+function renderSeatSummary(){
+  const totalPassengers = state.passengers.length;
+  const lap = state.passengers.filter(p => p.category === "childLap").length;
+  const marked = state.passengers.filter(p => p.seat && p.seatType !== "Colo").length;
+  const adults = state.passengers.filter(p => p.category === "adult").length;
+  const childSeat = state.passengers.filter(p => p.category === "childSeat").length;
+
+  document.getElementById("statPassengers").textContent = totalPassengers;
+  document.getElementById("statPassengersNote").textContent = state.files.passageiros || "arquivo não encontrado";
+  document.getElementById("statMarkedSeats").textContent = marked;
+  document.getElementById("statSeatsNote").textContent = `${marked} marcadas • ${lap} no colo`;
+  document.getElementById("badge-passengers").textContent = `👨‍👩‍👧‍👦 ${totalPassengers} passageiros`;
+  document.getElementById("badge-seats").textContent = `🪑 ${marked} poltronas marcadas`;
+  document.getElementById("seatSummaryText").textContent = `${adults} adulto(s), ${childSeat} criança(s) em poltrona, ${lap} no colo e ${marked} poltrona(s) marcadas na planilha.`;
+
+  const summary = [
+    `👨‍👩‍👧‍👦 ${totalPassengers} passageiros`,
+    `🧑 ${adults} adulto(s)`,
+    `🧒 ${childSeat} criança(s) em poltrona`,
+    `👶 ${lap} criança(s) no colo`,
+    `🎟️ ${marked} poltrona(s) marcadas`
+  ];
+
+  const box = document.getElementById("passengerSummary");
+  box.innerHTML = summary.map(t => `<span class="summary-pill">${escapeHtml(t)}</span>`).join("");
+}
+
+function getFirstName(fullName){
+  const s = String(fullName || "").trim();
+  return s ? s.split(/\s+/)[0] : "";
+}
+
+function findPassengerBySeat(seatNumber){
+  const sn = String(seatNumber);
+  return state.passengers.find(p => p.seat && String(p.seat) === sn && p.seatType !== "Colo");
+}
+
+/* Mantive a numeração próxima da que você já vinha usando, mas reorganizada em duas colunas por lado. */
+const upperLayout = [
+  [1, 2, null, 4, 3],
+  [5, 6, null, 8, 7],
+  [9, 10, null, 12, 11],
+  [13, 14, null, null, null],
+  [15, 16, null, null, null],
+  [17, 18, null, 20, 19],
+  [21, 22, null, 24, 23],
+  [25, 26, null, 28, 27],
+  [29, 30, null, 32, 31],
+  [33, 34, null, 36, 35],
+  [37, 38, null, 40, 39],
+  [41, 42, null, 44, 43]
+];
+
+const lowerLayout = [
+  [45, 46, null, 48, 47],
+  [49, 50, null, 52, 51],
+  [53, 54, null, 56, 55]
+];
+
+function createSeatElement(seatNumber){
+  const seatEl = document.createElement("div");
+  seatEl.className = "seat";
+  const passenger = findPassengerBySeat(seatNumber);
+
+  const numEl = document.createElement("div");
+  numEl.className = "seat-number";
+  numEl.textContent = seatNumber;
+  seatEl.appendChild(numEl);
+
+  if(passenger){
+    seatEl.classList.add("occupied");
+    seatEl.title = "Ocupado por " + passenger.name;
+    const nameEl = document.createElement("div");
+    nameEl.className = "seat-name";
+    nameEl.textContent = getFirstName(passenger.name);
+    seatEl.appendChild(nameEl);
+  }else{
+    seatEl.title = "Livre";
+  }
+
+  return seatEl;
+}
+
+function buildUpperDeck(layout){
+  const left = document.getElementById("seat-grid-upper-left");
+  const right = document.getElementById("seat-grid-upper-right");
+  left.innerHTML = "";
+  right.innerHTML = "";
+
+  layout.forEach(row => {
+    const leftSeats = [row[0], row[1]];
+    const rightSeats = [row[3], row[4]];
+
+    leftSeats.forEach(cell => {
+      if(cell == null){
+        const gap = document.createElement("div");
+        gap.className = "seat-gap";
+        left.appendChild(gap);
+      }else{
+        left.appendChild(createSeatElement(cell));
+      }
+    });
+
+    rightSeats.forEach(cell => {
+      if(cell == null){
+        const gap = document.createElement("div");
+        gap.className = "seat-gap";
+        right.appendChild(gap);
+      }else{
+        right.appendChild(createSeatElement(cell));
+      }
+    });
+  });
+}
+
+function buildLowerDeck(layout){
+  const left = document.getElementById("seat-grid-lower-left");
+  const right = document.getElementById("seat-grid-lower-right");
+  left.innerHTML = "";
+  right.innerHTML = "";
+
+  layout.forEach(row => {
+    const leftSeats = [row[0], row[1]];
+    const rightSeats = [row[3], row[4]];
+
+    leftSeats.forEach(cell => {
+      if(cell == null){
+        const gap = document.createElement("div");
+        gap.className = "seat-gap";
+        left.appendChild(gap);
+      }else{
+        left.appendChild(createSeatElement(cell));
+      }
+    });
+
+    rightSeats.forEach(cell => {
+      if(cell == null){
+        const gap = document.createElement("div");
+        gap.className = "seat-gap";
+        right.appendChild(gap);
+      }else{
+        right.appendChild(createSeatElement(cell));
+      }
+    });
+  });
+}
+
+function buildSeatLayout(){
+  buildUpperDeck(upperLayout);
+  buildLowerDeck(lowerLayout);
+}
+
+function renderPassengerTable(){
+  const tbody = document.getElementById("passengerTableBody");
+  if(!state.passengers.length){
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty">Nenhum passageiro encontrado.</div></td></tr>`;
+    return;
+  }
+
+  const rows = [...state.passengers].sort((a,b) => a.name.localeCompare(b.name, "pt-BR"));
+  tbody.innerHTML = rows.map(p => {
+    const frac = clamp((p.installmentsPaid || 0) / (p.installmentsTotal || DEFAULT_BUS_INSTALLMENTS), 0, 1);
+    const paid = (p.busValue || 0) * frac;
+    let profile = "Adulto / Poltrona";
+    if(p.category === "childLap") profile = "Criança / Colo";
+    else if(p.category === "childSeat") profile = "Criança / Poltrona";
+
+    return `<tr>
+      <td>${escapeHtml(p.name)}</td>
+      <td>${escapeHtml(profile)}</td>
+      <td class="mono">${p.seatType === "Colo" ? "—" : `${p.installmentsPaid}/${p.installmentsTotal}`}</td>
+      <td class="mono">${p.seatType === "Colo" ? "—" : formatMoney(p.busValue)}</td>
+      <td class="mono">${p.seatType === "Colo" ? "—" : formatMoney(paid)}</td>
+      <td>${p.category === "childLap" ? "No colo" : (p.seat ? `Poltrona ${escapeHtml(p.seat)}` : "Não definida")}</td>
+    </tr>`;
+  }).join("");
+}
+
+function renderLodgingPayersList(summary){
+  const el = document.getElementById("lodgingPayersList");
+  if(!el) return;
+
+  const rows = summary.rooms.flatMap(room => (room.payers || []).map(payer => ({ room, payer })));
+
+  if(!rows.length){
+    el.innerHTML = `<div class="empty">Nenhum pagamento individual informado. Para controlar por pessoa, use <code>PagoPessoa</code> ou <code>PagoIndividual</code> no CSV de hospedagem.</div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="summary-row">
+      <span class="summary-pill">${summary.individualPayersCount} pagante(s) individual(is)</span>
+      <span class="summary-pill">${summary.groupsWithIndividualPayment} grupo(s) com pagante identificado</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Grupo</th>
+            <th>Quem pagou</th>
+            <th>Valor individual</th>
+            <th>Total da família</th>
+            <th>% da família</th>
+            <th>Origem</th>
+            <th>Obs.</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(({room, payer}) => `
+            <tr>
+              <td>${escapeHtml(room.group)}</td>
+              <td>${escapeHtml(payer.name)}</td>
+              <td class="mono">${payer.amount ? formatMoney(payer.amount) : "Pago informado"}</td>
+              <td class="mono">${room.totalCombined ? formatMoney(room.totalCombined) : "—"}</td>
+              <td class="mono">${room.totalCombined ? `${Math.round(room.paymentPercent)}%` : "—"}</td>
+              <td>${escapeHtml(payer.source || "—")}</td>
+              <td>${escapeHtml(payer.note || "")}</td>
+            </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function renderLodgingSummaryPanels(){
+  const summary = summarizeConsolidatedLodging();
+  const planned = summary.stayTotal;
+  const paid = summary.paidTotal;
+  const pending = summary.pendingTotal;
+  const groupsWithTotal = summary.groupsWithTotal;
+  const groupsWithPaid = summary.groupsWithPaid;
+  const percent = summary.percent;
+
+  document.getElementById("lodgingGroupsWithTotal").textContent = groupsWithTotal;
+  document.getElementById("lodgingGroupsWithPaid").textContent = groupsWithPaid;
+  document.getElementById("lodgingPlanned").textContent = formatMoney(planned);
+  document.getElementById("lodgingPending").textContent = formatMoney(pending);
+  document.getElementById("lodgingProgress").style.width = `${Math.round(percent)}%`;
+  document.getElementById("lodgingProgressLabel").textContent = `${Math.round(percent)}% pago (base financeira de Fortaleza)`;
+  document.getElementById("lodgingPaidLabel").textContent = `${formatMoney(paid)} pago`;
+  renderLodgingPayersList(summary);
+  document.getElementById("statLodgingPaid").textContent = formatMoney(paid);
+  document.getElementById("statLodgingPercent").textContent = `${Math.round(percent)}% pago`;
+  document.getElementById("badge-lodging").textContent = `🏨 Hospedagem: ${Math.round(percent)}%`;
+}
+
+function renderDestination(targetId, title, rows, fileUsed, consolidatedSummary){
+  const el = document.getElementById(targetId);
+  const s = summarizeDestinationRows(rows, consolidatedSummary.roomLookup);
+  const hotels = Array.from(new Set(rows.map(r => (r.hotel || "").trim()).filter(Boolean))).sort((a,b) => a.localeCompare(b, "pt-BR"));
+
+  let html = `
+    <div class="section-head">
+      <div>
+        <h2>${escapeHtml(title)}</h2>
+        <p>Configuração de quartos do destino. Os valores financeiros da família vêm da base de Fortaleza.</p>
+      </div>
+    </div>
+    <div class="summary-row">
+      <span class="summary-pill">${s.guestCount} hóspedes</span>
+      <span class="summary-pill">${s.roomCount} grupos/quartos</span>
+      <span class="summary-pill">${hotels.length} hotel(is)</span>
+      <span class="summary-pill">${s.groupsWithPayment} grupo(s) com pagamento</span>
+      <span class="summary-pill">${s.individualPayersCount} pagante(s) identificado(s)</span>
+    </div>
+    <div class="file-line">Arquivo utilizado: <strong>${escapeHtml(fileUsed || "não encontrado")}</strong></div>
+    <div class="totals">
+      <div class="total-box"><div class="k">Diárias listadas</div><div class="v mono">${formatMoney(s.nightlyTotal)}</div></div>
+      <div class="total-box"><div class="k">Grupos com pagamento</div><div class="v">${s.groupsWithPayment}</div></div>
+      <div class="total-box"><div class="k">Pagantes individuais</div><div class="v">${s.individualPayersCount}</div></div>
+      <div class="total-box"><div class="k">Base financeira</div><div class="v">Fortaleza</div></div>
+    </div>
+    <div class="footer-note">
+      O arquivo de João Pessoa organiza os quartos, mas <code>TotalGrupo</code> e <code>PagoGrupo</code> usados no cálculo geral vêm do arquivo de Fortaleza, salvo falta total dessa base para a família.
+    </div>
+  `;
+
+  if(!rows.length){
+    el.innerHTML = html + `<div class="empty">Nenhum dado de hospedagem encontrado para ${escapeHtml(title)}.</div>`;
+    return;
+  }
+
+  html += `
+    <div class="table-wrap" style="margin-top:12px">
+      <table>
+        <thead>
+          <tr>
+            <th>Grupo</th>
+            <th>Hóspedes</th>
+            <th>Quem pagou</th>
+            <th>Quarto</th>
+            <th>Hotel</th>
+            <th>Pago da família</th>
+            <th>Total geral família</th>
+            <th>Saldo geral</th>
+            <th>Base financeira</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${s.rooms.map(room => `
+            <tr>
+              <td>${escapeHtml(room.group)}</td>
+              <td><div class="room-names">${room.guests.map(name => `<div>${escapeHtml(name)}</div>`).join("")}</div></td>
+              <td>${(room.payers || []).length ? `<div class="room-names">${room.payers.map(payer => `<div>${escapeHtml(payer.name)}${payer.amount ? ` — ${formatMoney(payer.amount)}` : " — pago informado"}</div>`).join("")}</div>` : "—"}</td>
+              <td>${escapeHtml(room.roomType || "—")}</td>
+              <td>${escapeHtml(room.hotel || "—")}</td>
+              <td class="mono">${room.familyPaid ? formatMoney(room.familyPaid) : "—"}</td>
+              <td class="mono">${room.familyTotal ? formatMoney(room.familyTotal) : "—"}</td>
+              <td class="mono">${room.familyTotal ? formatMoney(room.familyPending) : "—"}</td>
+              <td>${escapeHtml(room.financialSource || "—")}</td>
+            </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  if(hotels.length){
+    html += `<details style="margin-top:12px"><summary style="cursor:pointer;font-weight:700">Hotéis informados</summary><div class="summary-row" style="margin-top:10px">${hotels.map(h => `<span class="summary-pill">${escapeHtml(h)}</span>`).join("")}</div></details>`;
+  }
+
+  el.innerHTML = html;
+}
+
+function validateCrossReferences(){
+  const passengerKeys = new Set(state.passengers.map(p => p.nameKey));
+
+  [["Fortaleza", state.lodgings.fortaleza], ["João Pessoa", state.lodgings.joao_pessoa]].forEach(([label, rows]) => {
+    const missing = rows.filter(r => !passengerKeys.has(r.nameKey)).map(r => r.name);
+    if(missing.length){
+      state.issues.push(`${label}: ${missing.length} nome(s) da hospedagem não estão em passageiros.csv (${missing.join(", ")}).`);
+    }
+  });
+}
+
+async function init(){
+  const passengersResult = await fetchFirstAvailable(["passageiros.csv", "passageiros", "passageiros_total_grupo.csv"]);
+  const fortalezaResult = await fetchFirstAvailable(["hospedagem_fortaleza.csv", "hospedagem_fortaleza", "hospedagem_fortaleza_total_grupo.csv"]);
+  const joaoPessoaResult = await fetchFirstAvailable(["hospedagem_joao_pessoa.csv", "hospedagem_joao_pessoa", "hospedagem_joao_pessoa_total_grupo.csv"]);
+
+  state.files.passageiros = passengersResult.path;
+  state.files.fortaleza = fortalezaResult.path;
+  state.files.joao_pessoa = joaoPessoaResult.path;
+
+  state.passengers = parsePassengers(passengersResult.text);
+  state.lodgings.fortaleza = parseLodging(fortalezaResult.text);
+  state.lodgings.joao_pessoa = parseLodging(joaoPessoaResult.text);
+
+  validateCrossReferences();
+  renderAlerts();
+  renderSeatSummary();
+  renderBusPanel();
+
+  const consolidatedLodging = summarizeConsolidatedLodging();
+  renderLodgingSummaryPanels();
+  renderPassengerTable();
+  buildSeatLayout();
+
+  renderDestination("fortalezaCard", "Fortaleza", state.lodgings.fortaleza, state.files.fortaleza, consolidatedLodging);
+  renderDestination("joaoPessoaCard", "João Pessoa", state.lodgings.joao_pessoa, state.files.joao_pessoa, consolidatedLodging);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  init().catch(err => {
+    console.error(err);
+    document.getElementById("alertBox").innerHTML =
+      `<div class="alert"><strong>Erro ao carregar os arquivos.</strong><br>${escapeHtml(err.message || String(err))}</div>`;
+  });
+});
+</script>
+</body>
+</html>
