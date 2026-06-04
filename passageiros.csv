@@ -1,13 +1,11 @@
 Nome;Categoria;Parcelas;Poltrona
 Adeilza;adulto;10;51
-Ana Carolina;adulto;2;
 Ana Mercia;adulto;10;
 Antônia;adulto;2;
 Bosco;adulto;10;2
-Carmem;adulto;1;11
+Carmem;adulto;10;11
 Cláudio;adulto;5;
-Davi;crianca_colo;0;
-Davi Lima;crianca_colo;1;
+Davi Lima;crianca_colo;10;12
 Dissér;adulto;5;46
 Edina;adulto;10;8
 Aninha Esposa do Reinaldo;adulto;10;5
@@ -43,7 +41,6 @@ Mª Aparecida;adulto;10;53
 Pedro Lima;adulto;0;12
 Raíssa Lima;adulto;5;
 Rhalisson;adulto;7;
-Robson;adulto;2;
 Rosa Maria;adulto;7;
 Suely;adulto;5;
 Tainá;adulto;0;
