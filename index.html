@@ -66,7 +66,7 @@
     main section{margin-top:16px}
     .grid{display:grid;gap:14px}
     .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
-    .top-panel{grid-template-columns:minmax(0,1.45fr) minmax(340px,.55fr);align-items:start}
+    .top-panel{grid-template-columns:1fr;align-items:start}
     .twocol{grid-template-columns:repeat(2,minmax(0,1fr))}
     .stat-label{font-size:.82rem;color:var(--muted);margin-bottom:6px}
     .stat-value{font-size:1.55rem;font-weight:800;line-height:1}
@@ -165,6 +165,36 @@
     .seat-chip:hover,.seat-chip:focus{outline:none;border-color:#0284c7;background:#e0f2fe}
     .seat-chip.active{background:#fef08a;border-color:#ca8a04;color:#713f12}
 
+
+    .seat-inline-zoom{
+      margin-top:8px;
+      border:1px solid #dbeafe;
+      background:linear-gradient(180deg,#eff6ff,#f8fafc);
+      border-radius:14px;
+      padding:8px;
+      max-width:260px;
+    }
+    .seat-inline-head{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:flex-start;
+      margin-bottom:6px;
+      font-size:.74rem;
+      color:#075985;
+      font-weight:800;
+    }
+    .seat-inline-sub{font-weight:700;color:#64748b;font-size:.7rem;text-align:right}
+    .seat-inline-row{display:grid;grid-template-columns:34px 34px 16px 34px 34px;gap:5px;align-items:center;justify-content:start}
+    .inline-seat{
+      min-height:34px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;
+      display:flex;align-items:center;justify-content:center;text-align:center;font-size:.74rem;font-weight:900;position:relative;
+    }
+    .inline-seat.occupied{background:#dcfce7;border-color:#22c55e}
+    .inline-seat.selected{background:#fef08a;border-color:#ca8a04;box-shadow:0 0 0 2px rgba(250,204,21,.34)}
+    .inline-seat .inline-name{position:absolute;left:2px;right:2px;bottom:1px;font-size:.48rem;font-weight:700;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .inline-aisle{height:34px;border-radius:999px;border:1px dashed #94a3b8;background:#f1f5f9}
+
     @media(max-width:1050px){
       .hero,.stats,.top-panel,.twocol,.totals,.room-pair-grid{grid-template-columns:1fr!important}
       .fort-side{border-right:0;border-bottom:1px solid var(--border)}
@@ -187,7 +217,7 @@
       <div>
         <h1>Viagem de Família 2027</h1>
         <div class="subtitle">
-          Painel único por quarto, com Fortaleza como base. O CSV continua sendo individual, mas a visualização agrupa por quarto, mostra os ocupantes, o pagamento individual da hospedagem e o pagamento individual do ônibus. A comparação com João Pessoa é feita pelo conjunto de ocupantes, não pelo código F/J.
+          Painel único por quarto, com Fortaleza como base. O CSV continua sendo individual, mas a visualização agrupa por quarto, mostra os ocupantes, o pagamento individual da hospedagem, o pagamento individual do ônibus e o mini zoom da poltrona dentro do próprio card da hospedagem. A comparação com João Pessoa é feita pelo conjunto de ocupantes, não pelo código F/J.
         </div>
         <div class="hero-badges">
           <span class="badge" id="badgePeople">👨‍👩‍👧‍👦 0 pessoas</span>
@@ -244,19 +274,6 @@
           <div class="progress-track"><div class="progress-fill" id="lodgingProgress"></div></div>
           <div class="progress-meta"><span id="lodgingProgressLabel">0% pago</span><strong id="lodgingRoomsLabel">—</strong></div>
         </div>
-      </div>
-    </div>
-
-    <div class="card zoom-card">
-      <div class="zoom-head">
-        <div>
-          <h2>Mini zoom da poltrona</h2>
-          <p class="muted small">Clique em uma poltrona no painel para ver a posição no ônibus.</p>
-        </div>
-      </div>
-      <div id="seatZoomPanel" class="mini-bus">
-        <div class="mini-front"></div>
-        <div class="empty">Nenhuma poltrona selecionada.</div>
       </div>
     </div>
   </section>
@@ -497,12 +514,32 @@ function renderStats(){
   document.getElementById("lodgingProgressLabel").textContent = `${pct(s.lodgingPct)} pago`;
   document.getElementById("lodgingRoomsLabel").textContent = `${s.rooms.fortaleza.length} quarto(s) base`;
 }
+function inlineSeatZoom(seat){
+  if(!seat) return "";
+  const info = findSeatInfo(seat);
+  if(!info) return "";
+  const pSeat = passengerBySeat(seat);
+  const cells = info.row.map(cell => {
+    if(cell == null) return `<div class="inline-aisle" title="Corredor"></div>`;
+    const occupant = passengerBySeat(cell);
+    const cls = ["inline-seat", occupant ? "occupied" : "", Number(cell) === Number(seat) ? "selected" : ""].filter(Boolean).join(" ");
+    return `<div class="${cls}" title="${occupant ? escapeHtml(occupant.nome) : 'Livre'}"><span>${cell}</span>${occupant ? `<span class="inline-name">${escapeHtml(firstName(occupant.nome))}</span>` : ""}</div>`;
+  }).join("");
+  return `<div class="seat-inline-zoom">
+    <div class="seat-inline-head">
+      <span>Mini zoom da poltrona ${escapeHtml(seat)}</span>
+      <span class="seat-inline-sub">${escapeHtml(info.deck)} • fileira ${info.rowIndex} • ${escapeHtml(info.side)}</span>
+    </div>
+    <div class="seat-inline-row">${cells}</div>
+  </div>`;
+}
 function personPaymentLine(p, dest){
   const totalHosp = dest === "fortaleza" ? p.totalFortaleza : p.totalJoao;
   const paidHosp = dest === "fortaleza" ? p.pagoFortaleza : p.pagoJoao;
   const busPlanned = p.valorOnibus || 0;
   const busPaidValue = busPaid(p);
-  const seat = p.poltrona && p.categoria !== "crianca_colo" ? `<button class="seat-chip" type="button" data-seat="${escapeHtml(p.poltrona)}">poltrona ${escapeHtml(p.poltrona)}</button>` : "";
+  const seat = p.poltrona && p.categoria !== "crianca_colo" ? `<span class="chip info">poltrona ${escapeHtml(p.poltrona)}</span>` : "";
+  const seatZoom = p.poltrona && p.categoria !== "crianca_colo" ? inlineSeatZoom(p.poltrona) : "";
   return `<div class="person-line">
     <div class="name">${escapeHtml(p.nome)}</div>
     <div class="loc">${escapeHtml(profileLabel(p.categoria))}${dest === "joao" ? ` • ${escapeHtml(personLocation(p,"fortaleza"))}` : ` • ${escapeHtml(personLocation(p,"joao"))}`}</div>
@@ -512,6 +549,7 @@ function personPaymentLine(p, dest){
       ${seat}
       ${p.observacoes ? `<span class="chip">${escapeHtml(p.observacoes)}</span>` : ""}
     </div>
+    ${seatZoom}
   </div>`;
 }
 function peopleList(people, dest){
@@ -543,8 +581,9 @@ function renderJoaoRoomForBase(joaoRoom, baseKeys, same){
           <div class="values">
             <span class="chip ${p.totalJoao && p.pagoJoao >= p.totalJoao ? 'ok' : (p.totalJoao ? 'warn' : 'info')}">Hosp. JP ${formatMoney(p.pagoJoao)} / ${formatMoney(p.totalJoao)}</span>
             <span class="chip info">Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}${p.valorOnibus ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span>
-            ${p.poltrona && p.categoria !== "crianca_colo" ? `<button class="seat-chip" type="button" data-seat="${escapeHtml(p.poltrona)}">poltrona ${escapeHtml(p.poltrona)}</button>` : ""}
+            ${p.poltrona && p.categoria !== "crianca_colo" ? `<span class="chip info">poltrona ${escapeHtml(p.poltrona)}</span>` : ""}
           </div>
+          ${p.poltrona && p.categoria !== "crianca_colo" ? inlineSeatZoom(p.poltrona) : ""}
         </div>`;
       }).join("")}
     </div>
@@ -618,10 +657,11 @@ function renderOnlyBusCard(people){
           <div class="loc">${escapeHtml(profileLabel(p.categoria))} • sem quarto em Fortaleza • sem quarto em João Pessoa</div>
           <div class="values">
             <span class="chip info">Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}${p.valorOnibus ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span>
-            ${p.poltrona && p.categoria !== "crianca_colo" ? `<button class="seat-chip" type="button" data-seat="${escapeHtml(p.poltrona)}">poltrona ${escapeHtml(p.poltrona)}</button>` : ""}
+            ${p.poltrona && p.categoria !== "crianca_colo" ? `<span class="chip info">poltrona ${escapeHtml(p.poltrona)}</span>` : ""}
             <span class="chip warn">sem quarto atribuído</span>
             ${p.observacoes ? `<span class="chip">${escapeHtml(p.observacoes)}</span>` : ""}
           </div>
+          ${p.poltrona && p.categoria !== "crianca_colo" ? inlineSeatZoom(p.poltrona) : ""}
         </div>`).join("")}
       </div>
     </div>`;
@@ -717,7 +757,6 @@ function renderAll(){
   renderAlerts();
   renderStats();
   renderSinglePanel();
-  renderInitialSeatZoom();
 }
 function loadText(text, source){
   const raw = parseDelimitedText(text);
@@ -732,17 +771,6 @@ function loadText(text, source){
   document.getElementById("fileStatus").textContent = state.rows.length ? `Carregado: ${source}` : "Arquivo sem dados reconhecidos";
   renderAll();
 }
-document.addEventListener("click", event => {
-  const btn = event.target.closest(".seat-chip[data-seat]");
-  if(btn){
-    state.selectedSeat = btn.dataset.seat;
-    renderSeatZoom(btn.dataset.seat);
-  }
-});
-document.addEventListener("mouseover", event => {
-  const btn = event.target.closest(".seat-chip[data-seat]");
-  if(btn) renderSeatZoom(btn.dataset.seat);
-});
 document.addEventListener("DOMContentLoaded", async () => {
   const res = await fetchFirstAvailable();
   if(res.text){
