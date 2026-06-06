@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Viagem de Família 2027 — Painel por quarto</title>
+  <title>Viagem de Família 2027 — Painel único por quarto</title>
   <style>
     :root{
       --bg:#f5f7fb;
@@ -16,19 +16,17 @@
       --accent2:#0ea5e9;
       --warn:#b45309;
       --danger:#b91c1c;
+      --ok:#166534;
       --ok-bg:#f0fdf4;
       --ok-border:#bbf7d0;
       --warn-bg:#fff7ed;
       --warn-border:#fed7aa;
       --info-bg:#eff6ff;
       --info-border:#bfdbfe;
-      --free:#f3f4f6;
-      --occupied:#dcfce7;
-      --occupied-border:#22c55e;
-      --shadow:0 10px 28px rgba(15,23,42,.08);
+      --danger-bg:#fef2f2;
+      --danger-border:#fecaca;
+      --shadow:0 12px 32px rgba(15,23,42,.08);
       --radius:18px;
-      --seat-size:44px;
-      --aisle-size:24px;
     }
     *{box-sizing:border-box}
     body{
@@ -41,73 +39,145 @@
       background:linear-gradient(135deg,#facc15 0%,#86efac 42%,#dbeafe 100%);
       border-bottom:1px solid rgba(15,23,42,.08);
     }
-    .wrap{max-width:1280px;margin:0 auto;padding:18px 14px 28px}
-    .hero{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:center}
+    .wrap{max-width:1320px;margin:0 auto;padding:18px 14px 30px}
+    .hero{display:grid;grid-template-columns:1.3fr .7fr;gap:18px;align-items:center}
     h1{font-size:clamp(1.8rem,3vw,2.65rem);line-height:1.05;margin:0 0 8px}
-    h2{font-size:1.12rem;margin:0}.subtitle{color:#1f2937;max-width:800px}.muted{color:var(--muted)}.small{font-size:.82rem}.mono{font-variant-numeric:tabular-nums;white-space:nowrap}
-    .hero-box{background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.9);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+    h2{font-size:1.12rem;margin:0}
+    h3{font-size:.98rem;margin:0}
+    .subtitle{color:#1f2937;max-width:840px}
+    .muted{color:var(--muted)}
+    .small{font-size:.82rem}
+    .mono{font-variant-numeric:tabular-nums;white-space:nowrap}
+    .hero-box,.card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+    .hero-box{background:rgba(255,255,255,.76);border-color:rgba(255,255,255,.9)}
     .hero-badges,.summary-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-    .badge,.summary-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#f8fafc;border:1px solid var(--border);font-size:.82rem;color:#334155}
-    .grid{display:grid;gap:14px}.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.twocol{grid-template-columns:repeat(2,minmax(0,1fr))}
-    section{margin-top:16px}.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:10px}.section-head p{margin:3px 0 0;color:var(--muted);font-size:.86rem}
-    .stat-label{font-size:.82rem;color:var(--muted);margin-bottom:6px}.stat-value{font-size:1.48rem;font-weight:800;line-height:1}.stat-note{margin-top:6px;color:var(--muted);font-size:.78rem}
-    .totals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0 14px}.total-box{background:#f8fafc;border:1px solid var(--border);border-radius:14px;padding:10px 12px}.total-box .k{font-size:.78rem;color:var(--muted)}.total-box .v{font-weight:800;font-size:1.05rem;margin-top:2px}
-    .progress-wrap{display:grid;gap:8px;margin-top:10px}.progress-track{height:13px;background:#e5e7eb;border-radius:999px;overflow:hidden}.progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);width:0%}.progress-fill.bus{background:linear-gradient(90deg,#0ea5e9,#0284c7)}.progress-meta{display:flex;justify-content:space-between;gap:10px;font-size:.88rem}
-    .alert{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;padding:12px;border-radius:14px;margin:14px 0}.empty{padding:12px;border-radius:14px;background:#f8fafc;border:1px dashed var(--border);color:var(--muted)}
-    .file-control{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.file-control input{max-width:100%}code{background:#f8fafc;border:1px solid var(--border);padding:2px 5px;border-radius:8px}
-    table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}th{font-size:.75rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);background:#fbfdff;position:sticky;top:0;z-index:1}.table-wrap{overflow:auto;max-height:680px}
-    .chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:3px 8px;border:1px solid var(--border);background:#f8fafc;font-size:.78rem;color:#334155;white-space:nowrap}.chip.ok{background:var(--ok-bg);border-color:var(--ok-border);color:#166534}.chip.warn{background:var(--warn-bg);border-color:var(--warn-border);color:#9a3412}.chip.info{background:var(--info-bg);border-color:var(--info-border);color:#1d4ed8}.chip.danger{background:#fef2f2;border-color:#fecaca;color:#991b1b}
-    .room-card{border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;margin:10px 0}.room-title{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}.room-title strong{font-size:1rem}.occupant-list{display:grid;gap:8px}.occupant{border:1px solid #e5e7eb;border-radius:14px;background:#fff;padding:8px}.occupant-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-bottom:6px}.occupant-name{font-weight:800}.pay-row{display:flex;flex-wrap:wrap;gap:6px}.loc-list{display:grid;gap:4px}.room-names{display:grid;gap:6px}
-    .split-panel{display:grid;grid-template-columns:1fr;gap:14px}.mini-table th{position:static}.footer-note{margin-top:14px;color:var(--muted);font-size:.88rem}.onlybus{background:#fff;border:1px solid var(--border);border-radius:14px;padding:10px;margin-bottom:8px}
-    .diff-columns{display:grid;grid-template-columns:1fr;gap:14px}
-    .diff-section{border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;overflow:hidden}
-    .diff-section h3{margin:0 0 4px;font-size:1rem}.diff-section .hint{margin:0 0 10px;color:var(--muted);font-size:.84rem}
-    .diff-list{display:grid;gap:10px}
-    .diff-card{border:1px solid #dbe2ea;border-radius:14px;background:#fff;padding:10px;display:grid;gap:8px}
-    .diff-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:8px}
-    .diff-head strong{font-size:.98rem}.diff-meta{display:flex;flex-wrap:wrap;gap:6px}
-    .diff-people{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
-    .person-compact{border:1px solid #e5e7eb;border-radius:12px;background:#f8fafc;padding:8px;min-width:0}
-    .person-compact .name{font-weight:800;margin-bottom:2px;overflow-wrap:anywhere}
-    .person-compact .loc{color:var(--muted);font-size:.8rem;margin-bottom:5px;overflow-wrap:anywhere}
-    .person-compact .values{display:flex;flex-wrap:wrap;gap:5px}
-    .diff-finance{display:flex;flex-wrap:wrap;gap:6px;border-top:1px dashed #dbe2ea;padding-top:8px}
-    table{table-layout:auto}.table-wrap table{min-width:900px}.mini-table{table-layout:fixed;min-width:0}.mini-table td,.mini-table th{overflow-wrap:anywhere}.mini-table .mono{white-space:normal}.room-names .mono{white-space:normal}
+    .badge,.summary-pill{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:6px 10px;border-radius:999px;background:#f8fafc;
+      border:1px solid var(--border);font-size:.84rem;color:#334155;
+    }
+    code{background:#f8fafc;border:1px solid var(--border);padding:2px 5px;border-radius:8px}
+    main section{margin-top:16px}
+    .grid{display:grid;gap:14px}
+    .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .top-panel{grid-template-columns:minmax(0,1.45fr) minmax(340px,.55fr);align-items:start}
+    .twocol{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .stat-label{font-size:.82rem;color:var(--muted);margin-bottom:6px}
+    .stat-value{font-size:1.55rem;font-weight:800;line-height:1}
+    .stat-note{margin-top:6px;color:var(--muted);font-size:.78rem}
+    .section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+    .section-head p{margin:2px 0 0;color:var(--muted);font-size:.86rem}
+    .totals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}
+    .total-box{background:#f8fafc;border:1px solid var(--border);border-radius:14px;padding:10px 12px}
+    .total-box .k{font-size:.76rem;color:var(--muted)}
+    .total-box .v{font-weight:800;font-size:1.05rem;margin-top:2px}
+    .progress-wrap{display:grid;gap:8px;margin-top:10px}
+    .progress-track{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden}
+    .progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);width:0%}
+    .progress-fill.bus{background:linear-gradient(90deg,#0ea5e9,#0284c7)}
+    .progress-meta{display:flex;justify-content:space-between;gap:10px;font-size:.86rem;color:var(--muted)}
+    .alert{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:14px;padding:12px;margin-bottom:14px}
+    .empty{padding:12px;border-radius:14px;background:#f8fafc;border:1px dashed var(--border);color:var(--muted)}
 
-
-    /* Painel de divergências com base em Fortaleza */
-    .diff-base-list{display:grid;gap:14px}
-    .diff-pair-card{border:1px solid var(--border);border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 4px 14px rgba(15,23,42,.04)}
-    .diff-pair-grid{display:grid;grid-template-columns:minmax(280px,.42fr) minmax(320px,.58fr);align-items:stretch}
-    .fort-side,.joao-side{padding:12px;min-width:0}
-    .fort-side{background:#fff7ed;border-right:1px solid var(--border)}
-    .joao-side{background:#f8fafc}
-    .side-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800;margin-bottom:7px}
-    .room-main-name{font-weight:900;font-size:1rem;overflow-wrap:anywhere;margin-bottom:5px}
+    /* Painel único */
+    .single-panel-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+    .room-pair-card{border:1px solid var(--border);border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 4px 16px rgba(15,23,42,.04)}
+    .room-pair-card.same{border-color:var(--ok-border)}
+    .room-pair-card.diff{border-color:var(--warn-border)}
+    .room-pair-card.no-fort{border-color:var(--info-border)}
+    .pair-status{
+      display:flex;justify-content:space-between;gap:10px;align-items:center;
+      padding:10px 12px;border-bottom:1px solid var(--border);background:#f8fafc;
+    }
+    .room-pair-card.same .pair-status{background:var(--ok-bg);border-bottom-color:var(--ok-border)}
+    .room-pair-card.diff .pair-status{background:var(--warn-bg);border-bottom-color:var(--warn-border)}
+    .room-pair-card.no-fort .pair-status{background:var(--info-bg);border-bottom-color:var(--info-border)}
+    .status-title{font-weight:800}
+    .room-pair-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
+    .fort-side{padding:12px;border-right:1px solid var(--border);background:#fff}
+    .joao-side{padding:12px;background:#fbfdff}
+    .side-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;font-weight:800;color:#64748b;margin-bottom:4px}
+    .room-main-name{font-weight:900;font-size:1rem;margin-bottom:6px;overflow-wrap:anywhere}
     .room-sub{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
-    .base-people{display:grid;gap:8px;margin-top:8px}
-    .person-line{border:1px solid #e5e7eb;border-radius:12px;background:#fff;padding:8px;min-width:0}
-    .person-line .name{font-weight:800;overflow-wrap:anywhere;margin-bottom:4px}
-    .person-line .values{display:flex;flex-wrap:wrap;gap:5px}
+    .chip{
+      display:inline-flex;align-items:center;gap:5px;
+      padding:4px 8px;border-radius:999px;background:#f8fafc;border:1px solid var(--border);
+      font-size:.78rem;color:#334155;max-width:100%;overflow-wrap:anywhere;
+    }
+    .chip.ok{background:var(--ok-bg);border-color:var(--ok-border);color:#166534}
+    .chip.warn{background:var(--warn-bg);border-color:var(--warn-border);color:#9a3412}
+    .chip.info{background:var(--info-bg);border-color:var(--info-border);color:#075985}
+    .chip.danger{background:var(--danger-bg);border-color:var(--danger-border);color:#991b1b}
+    .base-people,.person-tag-list{display:grid;gap:8px}
+    .person-line,.person-tag,.onlybus{
+      border:1px solid #e5eaf1;background:#fff;border-radius:14px;padding:9px;min-width:0;
+    }
+    .person-line .name,.person-tag .tag-name,.onlybus .name{font-weight:800;margin-bottom:2px;overflow-wrap:anywhere}
+    .values{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+    .loc{color:#64748b;font-size:.78rem;overflow-wrap:anywhere;margin-top:1px}
+    .person-tag.in-base{border-color:var(--ok-border);background:#fcfffd}
+    .person-tag.extra{border-color:var(--warn-border);background:#fffaf5}
+    .person-tag.missing{border-color:var(--danger-border);background:#fffafa}
+    .tag-note{font-size:.76rem;color:#64748b;margin-top:2px;overflow-wrap:anywhere}
     .joao-room-list{display:grid;gap:10px}
-    .joao-room-card{border:1px solid #dbe2ea;border-radius:14px;background:#fff;padding:10px;min-width:0}
-    .joao-room-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:flex-start;border-bottom:1px dashed #dbe2ea;padding-bottom:7px;margin-bottom:8px}
-    .joao-room-head strong{overflow-wrap:anywhere}
-    .person-tag-list{display:grid;gap:6px}
-    .person-tag{border:1px solid #e5e7eb;border-radius:12px;background:#f8fafc;padding:7px;min-width:0}
-    .person-tag.in-base{background:#f0fdf4;border-color:#bbf7d0}
-    .person-tag.extra{background:#eff6ff;border-color:#bfdbfe}
-    .person-tag.missing{background:#fef2f2;border-color:#fecaca}
-    .person-tag .tag-name{font-weight:800;overflow-wrap:anywhere}
-    .person-tag .tag-note{font-size:.8rem;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
-    .diff-extra-section{margin-top:14px;border:1px dashed #cbd5e1;border-radius:16px;background:#fbfdff;padding:12px}
-    .diff-extra-section h3{margin:0 0 6px;font-size:1rem}
-    @media(max-width:900px){.diff-pair-grid{grid-template-columns:1fr}.fort-side{border-right:0;border-bottom:1px solid var(--border)}}
+    .joao-room-card{border:1px solid var(--border);border-radius:16px;background:#fff;padding:10px}
+    .joao-room-card.same-room{border-color:var(--ok-border);background:#fcfffd}
+    .joao-room-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}
+    .diff-meta{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
+    .note-box{border:1px dashed var(--border);border-radius:12px;padding:8px;background:#f8fafc;color:#475569;font-size:.82rem;margin-top:8px}
+    .note-box.ok{border-color:var(--ok-border);background:var(--ok-bg);color:#166534}
+    .note-box.warn{border-color:var(--warn-border);background:var(--warn-bg);color:#9a3412}
+    .room-section-title{font-size:.92rem;font-weight:900;margin:18px 0 8px;color:#334155}
 
-    /* BUS */
-    .seat-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}.seat-board{display:grid;gap:14px}.bus-deck{background:linear-gradient(180deg,#f8fafc 0%,#eef2f7 100%);border:1px solid var(--border);border-radius:24px;padding:14px;position:relative;overflow:hidden}.bus-deck::before{content:"";position:absolute;inset:8px;border-radius:20px;border:2px solid #cbd5e1;pointer-events:none}.bus-deck-header{display:flex;justify-content:space-between;gap:8px;margin-bottom:12px;font-size:.85rem;color:#334155;font-weight:700;position:relative;z-index:2}.bus-shell{position:relative;background:linear-gradient(180deg,#e2e8f0 0%,#f8fafc 50%,#e2e8f0 100%);border:2px solid #94a3b8;border-radius:38px 38px 26px 26px;padding:18px 16px 16px;overflow:hidden}.bus-shell.lower{border-radius:24px;padding-top:16px}.bus-front{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:18px;margin:0 auto 14px;width:100%;min-height:54px}.windshield{width:180px;height:42px;border-radius:22px 22px 10px 10px;background:linear-gradient(180deg,#eff6ff 0%,#dbeafe 100%);border:2px solid #93c5fd}.driver-cabin{width:44px;height:32px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;position:absolute;right:18px;bottom:0}.stair-core{position:absolute;right:18px;top:68px;width:52px;padding:8px 6px;border-radius:14px;background:#e2e8f0;border:2px solid #94a3b8;text-align:center;font-size:.66rem;font-weight:700;color:#475569;z-index:2}.seat-zone,.lower-zone{display:flex;align-items:flex-start;justify-content:center;gap:12px;position:relative;z-index:1}.seat-zone{padding-right:64px}.seat-block{display:grid;gap:8px;grid-auto-rows:var(--seat-size)}.seat-block.double{grid-template-columns:repeat(2,var(--seat-size))}.aisle{width:var(--aisle-size);align-self:stretch;border-radius:999px;background:repeating-linear-gradient(180deg,transparent 0 10px,rgba(148,163,184,.45) 10px 18px),linear-gradient(180deg,#fff 0%,#f1f5f9 100%);border:1px dashed #94a3b8}.bus-tail{margin-top:14px;height:14px;border-radius:999px;background:linear-gradient(90deg,#cbd5e1 0%,#94a3b8 50%,#cbd5e1 100%);opacity:.7}.seat,.seat-gap{width:var(--seat-size);height:var(--seat-size)}.seat-gap{visibility:hidden}.seat{border-radius:14px 14px 10px 10px;border:1px solid #cbd5e1;background:linear-gradient(180deg,#fff 0%,var(--free) 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 3px 6px rgba(15,23,42,.05);position:relative}.seat.occupied{background:linear-gradient(180deg,#f0fdf4 0%,var(--occupied) 100%);border-color:var(--occupied-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 3px 8px rgba(34,197,94,.14)}.seat-number{font-size:.65rem;font-weight:800;line-height:1;margin-top:4px}.seat-name{font-size:.58rem;line-height:1.05;margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis}.legend-item{display:inline-flex;align-items:center;gap:6px;font-size:.84rem}.legend-color{width:14px;height:14px;border-radius:4px;border:1px solid #d1d5db;background:var(--free)}.legend-color.occupied{background:var(--occupied);border-color:var(--occupied-border)}
-    @media(max-width:980px){.hero,.stats,.twocol,.totals,.seat-layout,.split-panel{grid-template-columns:1fr!important}.table-wrap{max-height:none}}
-    @media(max-width:640px){:root{--seat-size:39px;--aisle-size:18px}.seat-zone{gap:8px;padding-right:48px}.lower-zone{gap:8px}.stair-core{width:42px;right:12px;font-size:.58rem}.windshield{width:136px}.room-title{display:block}.occupant-top{display:block}.table-wrap{font-size:.84rem}}
+    /* Mini zoom */
+    .zoom-card{position:sticky;top:12px}
+    .zoom-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .zoom-seat-title{font-size:1.4rem;font-weight:900;line-height:1}
+    .zoom-passenger{font-weight:800;margin-top:3px;overflow-wrap:anywhere}
+    .mini-bus{
+      border:1px solid #cbd5e1;border-radius:18px;background:linear-gradient(180deg,#e2e8f0,#f8fafc 48%,#e2e8f0);
+      padding:14px;overflow:hidden;
+    }
+    .mini-front{height:32px;border:2px solid #93c5fd;border-radius:20px 20px 8px 8px;background:#dbeafe;margin:0 auto 14px;max-width:190px}
+    .zoom-row-wrap{display:grid;gap:8px;justify-items:center}
+    .zoom-row-label{font-size:.8rem;color:#475569;font-weight:800}
+    .zoom-row{display:grid;grid-template-columns:54px 54px 28px 54px 54px;gap:8px;align-items:center;justify-content:center}
+    .zoom-cell{
+      min-height:54px;border-radius:14px;border:1px solid #cbd5e1;background:#fff;display:flex;align-items:center;justify-content:center;
+      text-align:center;font-weight:900;position:relative;box-shadow:0 2px 6px rgba(15,23,42,.06);font-size:.9rem;
+    }
+    .zoom-cell.occupied{background:#dcfce7;border-color:#22c55e}
+    .zoom-cell.selected{background:#fef08a;border-color:#ca8a04;box-shadow:0 0 0 3px rgba(250,204,21,.35)}
+    .zoom-cell.empty{visibility:hidden}
+    .zoom-cell .tiny-name{position:absolute;left:3px;right:3px;bottom:3px;font-size:.56rem;font-weight:700;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .zoom-aisle{height:54px;border-radius:999px;border:1px dashed #94a3b8;background:#f1f5f9}
+    .zoom-mini-info{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+    .seat-chip{
+      border:1px solid #bfdbfe;background:#eff6ff;color:#075985;cursor:pointer;
+      border-radius:999px;padding:4px 8px;font-size:.78rem;font-family:inherit;line-height:1;
+    }
+    .seat-chip:hover,.seat-chip:focus{outline:none;border-color:#0284c7;background:#e0f2fe}
+    .seat-chip.active{background:#fef08a;border-color:#ca8a04;color:#713f12}
+
+    @media(max-width:1050px){
+      .hero,.stats,.top-panel,.twocol,.totals,.room-pair-grid{grid-template-columns:1fr!important}
+      .fort-side{border-right:0;border-bottom:1px solid var(--border)}
+      .zoom-card{position:static}
+    }
+    @media(max-width:640px){
+      .wrap{padding:14px 10px 24px}
+      .pair-status,.joao-room-head{display:block}
+      .zoom-row{grid-template-columns:44px 44px 20px 44px 44px;gap:6px}
+      .zoom-cell{min-height:44px;font-size:.8rem}
+      .zoom-aisle{height:44px}
+      .progress-meta{display:block}
+    }
   </style>
 </head>
 <body>
@@ -117,23 +187,20 @@
       <div>
         <h1>Viagem de Família 2027</h1>
         <div class="subtitle">
-          Painel único por quarto, usando o CSV individual de ônibus e hospedagem. A correspondência entre Fortaleza e João Pessoa é feita pelo conjunto de ocupantes, não pelo código do quarto.
+          Painel único por quarto, com Fortaleza como base. O CSV continua sendo individual, mas a visualização agrupa por quarto, mostra os ocupantes, o pagamento individual da hospedagem e o pagamento individual do ônibus. A comparação com João Pessoa é feita pelo conjunto de ocupantes, não pelo código F/J.
         </div>
         <div class="hero-badges">
           <span class="badge" id="badgePeople">👨‍👩‍👧‍👦 0 pessoas</span>
           <span class="badge" id="badgeRooms">🏨 0 quartos</span>
           <span class="badge" id="badgeBus">🚌 Ônibus: 0%</span>
-          <span class="badge" id="badgeDiff">🔀 0 divergências</span>
+          <span class="badge" id="badgeDiff">🔀 0 quartos diferentes</span>
         </div>
       </div>
       <div class="hero-box">
         <strong>Arquivo esperado:</strong><br>
         <code>viagem_familia_2027_unificado_responsaveis.csv</code>
-        <p class="muted small">O HTML tenta carregar automaticamente o CSV na mesma pasta. Se o navegador bloquear, selecione o arquivo manualmente.</p>
-        <div class="file-control">
-          <input id="csvInput" type="file" accept=".csv,text/csv" />
-          <span class="muted small" id="fileStatus">Tentando carregar automaticamente...</span>
-        </div>
+        <p class="muted small">O painel carrega automaticamente o CSV que estiver na mesma pasta do HTML. Não há atualização nem envio de arquivo pelo site.</p>
+        <span class="muted small" id="fileStatus">Tentando carregar automaticamente...</span>
       </div>
     </div>
   </div>
@@ -144,37 +211,52 @@
 
   <div class="grid stats">
     <div class="card"><div class="stat-label">Pessoas no CSV</div><div class="stat-value" id="statPeople">0</div><div class="stat-note" id="statPeopleNote">—</div></div>
-    <div class="card"><div class="stat-label">Quartos Fortaleza</div><div class="stat-value" id="statRoomsFort">0</div><div class="stat-note" id="statRoomsFortNote">base financeira</div></div>
-    <div class="card"><div class="stat-label">Quartos João Pessoa</div><div class="stat-value" id="statRoomsJoao">0</div><div class="stat-note" id="statRoomsJoaoNote">configuração própria</div></div>
+    <div class="card"><div class="stat-label">Quartos Fortaleza</div><div class="stat-value" id="statRoomsFort">0</div><div class="stat-note">base do painel</div></div>
+    <div class="card"><div class="stat-label">Quartos com mesma composição</div><div class="stat-value" id="statRoomsSame">0</div><div class="stat-note">Fortaleza ↔ João Pessoa</div></div>
     <div class="card"><div class="stat-label">Somente ônibus</div><div class="stat-value" id="statOnlyBus">0</div><div class="stat-note">sem quarto atribuído</div></div>
   </div>
 
-  <section class="grid twocol">
-    <div class="card">
-      <div class="section-head"><div><h2>Resumo do ônibus</h2><p>Pagamento individual por passageiro.</p></div></div>
-      <div class="totals">
-        <div class="total-box"><div class="k">Pagantes</div><div class="v" id="busPayers">0</div></div>
-        <div class="total-box"><div class="k">Pago</div><div class="v mono" id="busPaid">R$ 0,00</div></div>
-        <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="busPlanned">R$ 0,00</div></div>
-        <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="busPending">R$ 0,00</div></div>
+  <section class="grid top-panel">
+    <div class="grid twocol">
+      <div class="card">
+        <div class="section-head"><div><h2>Resumo do ônibus</h2><p>Pagamento individual por passageiro.</p></div></div>
+        <div class="totals">
+          <div class="total-box"><div class="k">Pagantes</div><div class="v" id="busPayers">0</div></div>
+          <div class="total-box"><div class="k">Pago</div><div class="v mono" id="busPaid">R$ 0,00</div></div>
+          <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="busPlanned">R$ 0,00</div></div>
+          <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="busPending">R$ 0,00</div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-track"><div class="progress-fill bus" id="busProgress"></div></div>
+          <div class="progress-meta"><span id="busProgressLabel">0% pago</span><strong id="seatCountLabel">—</strong></div>
+        </div>
       </div>
-      <div class="progress-wrap">
-        <div class="progress-track"><div class="progress-fill bus" id="busProgress"></div></div>
-        <div class="progress-meta"><span id="busProgressLabel">0% pago</span><strong id="busInstallmentsLabel">—</strong></div>
+
+      <div class="card">
+        <div class="section-head"><div><h2>Resumo da hospedagem</h2><p>Valores individuais somados por quarto.</p></div></div>
+        <div class="totals">
+          <div class="total-box"><div class="k">Pessoas com quarto</div><div class="v" id="lodgingPeople">0</div></div>
+          <div class="total-box"><div class="k">Pago</div><div class="v mono" id="lodgingPaid">R$ 0,00</div></div>
+          <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="lodgingPlanned">R$ 0,00</div></div>
+          <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="lodgingPending">R$ 0,00</div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-track"><div class="progress-fill" id="lodgingProgress"></div></div>
+          <div class="progress-meta"><span id="lodgingProgressLabel">0% pago</span><strong id="lodgingRoomsLabel">—</strong></div>
+        </div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="section-head"><div><h2>Resumo da hospedagem</h2><p>Pagamento individual por ocupante, com totais agregados por quarto.</p></div></div>
-      <div class="totals">
-        <div class="total-box"><div class="k">Pessoas com quarto</div><div class="v" id="lodgingPeople">0</div></div>
-        <div class="total-box"><div class="k">Pago</div><div class="v mono" id="lodgingPaid">R$ 0,00</div></div>
-        <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="lodgingPlanned">R$ 0,00</div></div>
-        <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="lodgingPending">R$ 0,00</div></div>
+    <div class="card zoom-card">
+      <div class="zoom-head">
+        <div>
+          <h2>Mini zoom da poltrona</h2>
+          <p class="muted small">Clique em uma poltrona no painel para ver a posição no ônibus.</p>
+        </div>
       </div>
-      <div class="progress-wrap">
-        <div class="progress-track"><div class="progress-fill" id="lodgingProgress"></div></div>
-        <div class="progress-meta"><span id="lodgingProgressLabel">0% pago</span><strong id="lodgingRoomsLabel">—</strong></div>
+      <div id="seatZoomPanel" class="mini-bus">
+        <div class="mini-front"></div>
+        <div class="empty">Nenhuma poltrona selecionada.</div>
       </div>
     </div>
   </section>
@@ -182,86 +264,15 @@
   <section class="card">
     <div class="section-head">
       <div>
-        <h2>Painel por quarto</h2>
-        <p>Mostra apenas os quartos cuja composição de ocupantes é igual nos dois destinos. O código do quarto pode ser diferente: F01 pode corresponder a J03 se tiver exatamente os mesmos ocupantes.</p>
+        <h2>Painel único por quarto — base Fortaleza</h2>
+        <p>Todos os quartos de Fortaleza aparecem à esquerda. À direita, aparece o quarto equivalente em João Pessoa ou o detalhamento dos quartos diferentes.</p>
       </div>
     </div>
     <div class="summary-row" id="roomsSummary"></div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Quarto em Fortaleza</th>
-            <th>Ocupantes e pagamentos individuais</th>
-            <th>Quarto equivalente em João Pessoa</th>
-            <th>Totais do quarto</th>
-            <th>Situação</th>
-          </tr>
-        </thead>
-        <tbody id="mainRoomsBody"></tbody>
-      </table>
-    </div>
+    <div id="singleRoomsPanel" class="single-panel-grid"></div>
   </section>
 
-  <section class="card">
-    <div class="section-head">
-      <div>
-        <h2>Quartos diferentes entre Fortaleza e João Pessoa</h2>
-        <p>Quadro separado para quartos cuja composição de ocupantes não encontra um quarto equivalente no outro destino. A comparação é feita pelos nomes dos ocupantes, não pelos códigos F01/J01.</p>
-      </div>
-    </div>
-    <div class="summary-row" id="diffSummary"></div>
-    <div id="diffPanel"></div>
-  </section>
-
-  <section class="card">
-    <div class="section-head">
-      <div>
-        <h2>Somente ônibus / sem quarto atribuído</h2>
-        <p>Pessoas que aparecem no controle do ônibus, mas não têm quarto em Fortaleza nem em João Pessoa.</p>
-      </div>
-    </div>
-    <div id="onlyBusPanel"></div>
-  </section>
-
-  <section class="card">
-    <div class="section-head">
-      <div>
-        <h2>Mapa de assentos</h2>
-        <p>Poltronas marcadas no CSV único.</p>
-      </div>
-    </div>
-    <div class="seat-layout">
-      <div class="seat-board">
-        <div class="bus-deck">
-          <div class="bus-deck-header"><span>Piso superior</span><span>Poltronas 1–44</span></div>
-          <div class="bus-shell">
-            <div class="bus-front"><div class="windshield" title="Frente do ônibus"></div><div class="driver-cabin" title="Cabine do motorista"></div></div>
-            <div class="stair-core">Escada</div>
-            <div class="seat-zone"><div class="seat-block double" id="seat-grid-upper-left"></div><div class="aisle"></div><div class="seat-block double" id="seat-grid-upper-right"></div></div>
-            <div class="bus-tail"></div>
-          </div>
-        </div>
-        <div class="bus-deck">
-          <div class="bus-deck-header"><span>Piso inferior</span><span>Poltronas 45–56</span></div>
-          <div class="bus-shell lower">
-            <div class="lower-zone"><div class="seat-block double" id="seat-grid-lower-left"></div><div class="aisle"></div><div class="seat-block double" id="seat-grid-lower-right"></div></div>
-            <div class="bus-tail"></div>
-          </div>
-        </div>
-      </div>
-      <div class="card" style="padding:12px">
-        <div class="section-head" style="margin-bottom:8px"><div><h2 style="font-size:1rem">Legenda</h2><p>Leitura automática da planilha</p></div></div>
-        <div class="summary-row" style="margin-bottom:12px">
-          <span class="legend-item"><span class="legend-color"></span>Livre</span>
-          <span class="legend-item"><span class="legend-color occupied"></span>Ocupada</span>
-        </div>
-        <div class="muted" id="seatSummaryText">Nenhuma poltrona processada.</div>
-      </div>
-    </div>
-  </section>
-
-  <div class="footer-note">
+  <div class="muted small" style="margin-top:14px">
     Colunas lidas no CSV: <code>Nome</code>, <code>Categoria</code>, <code>ParcelasOnibus</code>, <code>ParcelasTotalOnibus</code>, <code>Poltrona</code>, <code>ValorOnibus</code>, <code>FamiliaFortaleza</code>, <code>QuartoFortaleza</code>, <code>HotelFortaleza</code>, <code>TotalPessoaFortaleza</code>, <code>PagoPessoaFortaleza</code>, <code>FamiliaJoaoPessoa</code>, <code>QuartoJoaoPessoa</code>, <code>HotelJoaoPessoa</code>, <code>TotalPessoaJoaoPessoa</code>, <code>PagoPessoaJoaoPessoa</code> e <code>Observacoes</code>.
   </div>
 </main>
@@ -276,14 +287,17 @@ const FILE_CANDIDATES = [
 ];
 const DEFAULT_BUS_VALUE = 1100;
 const DEFAULT_BUS_INSTALLMENTS = 10;
-const state = { rows: [], source: "", issues: [] };
+const state = { rows: [], source: "", issues: [], selectedSeat: null };
 
-function normalizeHeader(v){
-  return String(v || "").replace(/^\uFEFF/, "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
-}
-function normalizeText(v){
-  return String(v || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ");
-}
+const upperLayout = [
+  [1,2,null,4,3],[5,6,null,8,7],[9,10,null,12,11],[13,14,null,null,null],
+  [15,16,null,null,null],[17,18,null,20,19],[21,22,null,24,23],[25,26,null,28,27],
+  [29,30,null,32,31],[33,34,null,36,35],[37,38,null,40,39],[41,42,null,44,43]
+];
+const lowerLayout = [[45,46,null,48,47],[49,50,null,52,51],[53,54,null,56,55]];
+
+function normalizeHeader(v){ return String(v || "").replace(/^\uFEFF/, "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, ""); }
+function normalizeText(v){ return String(v || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " "); }
 function normalizeName(v){ return normalizeText(v).replace(/[^a-z0-9 ]/g, "").trim(); }
 function escapeHtml(v){ return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
 function clamp(v,min,max){ return Math.min(Math.max(Number(v)||0,min),max); }
@@ -305,6 +319,7 @@ function formatMoney(v){ return (Number(v)||0).toLocaleString("pt-BR", {style:"c
 function pct(v){ return `${Math.round(Number(v)||0)}%`; }
 function firstName(full){ const s=String(full||"").trim(); return s ? s.split(/\s+/)[0] : ""; }
 function setProgress(id, value){ document.getElementById(id).style.width = `${clamp(value,0,100)}%`; }
+function sortNatural(a,b){ return String(a).localeCompare(String(b), "pt-BR", {numeric:true, sensitivity:"base"}); }
 
 function splitCsvLine(line, delimiter){
   const out=[]; let cur=""; let quoted=false;
@@ -383,17 +398,12 @@ function busPaid(p){ return (p.valorOnibus || 0) * clamp((p.parcelas||0)/(p.parc
 function hasFortaleza(p){ return Boolean(p.familiaFortaleza || p.quartoFortaleza || p.hotelFortaleza || p.totalFortaleza || p.pagoFortaleza); }
 function hasJoao(p){ return Boolean(p.familiaJoao || p.quartoJoao || p.hotelJoao || p.totalJoao || p.pagoJoao); }
 function hasAnyRoom(p){ return hasFortaleza(p) || hasJoao(p); }
-function roomLabel(room){
-  if(!room) return "—";
-  return `${room.familia || "Sem família"} • ${room.quarto || "Quarto não informado"}${room.hotel ? " • " + room.hotel : ""}`;
-}
+function roomLabel(room){ return `${room.familia || "Sem família"} • ${room.quarto || "Quarto não informado"}${room.hotel ? " • " + room.hotel : ""}`; }
 function personLocation(p, dest){
   if(dest === "fortaleza") return hasFortaleza(p) ? `${p.familiaFortaleza || "Sem família"} • ${p.quartoFortaleza || "quarto não informado"}` : "sem quarto em Fortaleza";
   return hasJoao(p) ? `${p.familiaJoao || "Sem família"} • ${p.quartoJoao || "quarto não informado"}` : "sem quarto em João Pessoa";
 }
 function roomSignature(room){ return room.people.map(p=>p.nomeKey).sort().join("|"); }
-function sameSet(a,b){ return a && b && roomSignature(a) === roomSignature(b); }
-function sortNatural(a,b){ return String(a).localeCompare(String(b), "pt-BR", {numeric:true, sensitivity:"base"}); }
 
 async function fetchFirstAvailable(){
   for(const path of FILE_CANDIDATES){
@@ -462,127 +472,54 @@ function renderAlerts(){
 function renderStats(){
   const s = summarize();
   const seatCount = state.rows.filter(p => p.poltrona && p.categoria !== "crianca_colo").length;
-  const diffCount = s.rooms.unmatchedFort.length + s.rooms.unmatchedJoao.length;
+  const diffCount = s.rooms.unmatchedFort.length;
   document.getElementById("statPeople").textContent = s.people.length;
   document.getElementById("statPeopleNote").textContent = state.source || "arquivo não carregado";
   document.getElementById("statRoomsFort").textContent = s.rooms.fortaleza.length;
-  document.getElementById("statRoomsJoao").textContent = s.rooms.joao.length;
+  document.getElementById("statRoomsSame").textContent = s.rooms.matchedFort.length;
   document.getElementById("statOnlyBus").textContent = s.onlyBus.length;
   document.getElementById("badgePeople").textContent = `👨‍👩‍👧‍👦 ${s.people.length} pessoas`;
   document.getElementById("badgeRooms").textContent = `🏨 ${s.rooms.fortaleza.length} quartos Fortaleza`;
   document.getElementById("badgeBus").textContent = `🚌 Ônibus: ${pct(s.busPct)}`;
-  document.getElementById("badgeDiff").textContent = `🔀 ${diffCount} divergências`;
-
+  document.getElementById("badgeDiff").textContent = `🔀 ${diffCount} quartos diferentes`;
   document.getElementById("busPayers").textContent = s.busPayers.length;
   document.getElementById("busPaid").textContent = formatMoney(s.busPaidTotal);
   document.getElementById("busPlanned").textContent = formatMoney(s.busPlanned);
   document.getElementById("busPending").textContent = formatMoney(s.busPending);
   setProgress("busProgress", s.busPct);
-  document.getElementById("busProgressLabel").textContent = `${pct(s.busPct)} do valor planejado pago`;
-  document.getElementById("busInstallmentsLabel").textContent = `${seatCount} poltronas marcadas`;
-
+  document.getElementById("busProgressLabel").textContent = `${pct(s.busPct)} pago`;
+  document.getElementById("seatCountLabel").textContent = `${seatCount} poltrona(s) marcada(s)`;
   document.getElementById("lodgingPeople").textContent = s.lodgingPeople.length;
   document.getElementById("lodgingPaid").textContent = formatMoney(s.lodgingPaid);
   document.getElementById("lodgingPlanned").textContent = formatMoney(s.lodgingPlanned);
   document.getElementById("lodgingPending").textContent = formatMoney(s.lodgingPending);
   setProgress("lodgingProgress", s.lodgingPct);
-  document.getElementById("lodgingProgressLabel").textContent = `${pct(s.lodgingPct)} do total previsto pago`;
-  document.getElementById("lodgingRoomsLabel").textContent = `${s.rooms.fortaleza.length} quartos Fortaleza • ${s.rooms.joao.length} quartos João Pessoa`;
+  document.getElementById("lodgingProgressLabel").textContent = `${pct(s.lodgingPct)} pago`;
+  document.getElementById("lodgingRoomsLabel").textContent = `${s.rooms.fortaleza.length} quarto(s) base`;
 }
-function occupantHtml(p){
-  const totalHosp = p.totalFortaleza + p.totalJoao;
-  const paidHosp = p.pagoFortaleza + p.pagoJoao;
-  const bPaid = busPaid(p);
-  return `<div class="occupant">
-    <div class="occupant-top">
-      <span class="occupant-name">${escapeHtml(p.nome)}</span>
-      <span class="muted small">${escapeHtml(profileLabel(p.categoria))}${p.poltrona ? ` • poltrona ${escapeHtml(p.poltrona)}` : ""}</span>
-    </div>
-    <div class="pay-row">
-      <span class="chip ${totalHosp && paidHosp>=totalHosp ? 'ok' : (totalHosp ? 'warn' : 'info')}">Hospedagem: ${formatMoney(paidHosp)} / ${formatMoney(totalHosp)}</span>
-      <span class="chip info">Ônibus: ${formatMoney(bPaid)} / ${formatMoney(p.valorOnibus || 0)} (${p.valorOnibus ? `${p.parcelas}/${p.parcelasTotal}` : "sem cobrança"})</span>
+function personPaymentLine(p, dest){
+  const totalHosp = dest === "fortaleza" ? p.totalFortaleza : p.totalJoao;
+  const paidHosp = dest === "fortaleza" ? p.pagoFortaleza : p.pagoJoao;
+  const busPlanned = p.valorOnibus || 0;
+  const busPaidValue = busPaid(p);
+  const seat = p.poltrona && p.categoria !== "crianca_colo" ? `<button class="seat-chip" type="button" data-seat="${escapeHtml(p.poltrona)}">poltrona ${escapeHtml(p.poltrona)}</button>` : "";
+  return `<div class="person-line">
+    <div class="name">${escapeHtml(p.nome)}</div>
+    <div class="loc">${escapeHtml(profileLabel(p.categoria))}${dest === "joao" ? ` • ${escapeHtml(personLocation(p,"fortaleza"))}` : ` • ${escapeHtml(personLocation(p,"joao"))}`}</div>
+    <div class="values">
+      <span class="chip ${totalHosp && paidHosp >= totalHosp ? 'ok' : (totalHosp ? 'warn' : 'info')}">Hosp. ${formatMoney(paidHosp)} / ${formatMoney(totalHosp)}</span>
+      <span class="chip info">Ônibus ${formatMoney(busPaidValue)} / ${formatMoney(busPlanned)}${busPlanned ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span>
+      ${seat}
       ${p.observacoes ? `<span class="chip">${escapeHtml(p.observacoes)}</span>` : ""}
     </div>
   </div>`;
 }
-function simplePeopleHtml(people, otherDest){
-  return `<div class="room-names">${people.map(p => `<div>${escapeHtml(p.nome)}<br><span class="muted small">${escapeHtml(personLocation(p, otherDest))}</span><br><span class="mono small">Hosp. ${formatMoney(p.pagoFortaleza+p.pagoJoao)} / ${formatMoney(p.totalFortaleza+p.totalJoao)} • Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus)}</span></div>`).join("")}</div>`;
+function peopleList(people, dest){
+  return `<div class="base-people">${people.map(p => personPaymentLine(p, dest)).join("")}</div>`;
 }
-function otherJoaoLabelsForFortRoom(room){
-  const labels = Array.from(new Set(room.people.map(p => personLocation(p,"joao"))));
-  return labels.sort(sortNatural);
-}
-function renderMainRooms(){
-  const {rooms} = summarize();
-  const tbody = document.getElementById("mainRoomsBody");
-  const matched = rooms.matchedFort;
-  document.getElementById("roomsSummary").innerHTML = [
-    `${matched.length} quarto(s) com ocupação igual nos dois destinos`,
-    `${rooms.unmatchedFort.length} quarto(s) de Fortaleza no quadro de diferenças`,
-    `${rooms.unmatchedJoao.length} quarto(s) de João Pessoa no quadro de diferenças`,
-    `${formatMoney(matched.reduce((s,r)=>s+r.paid,0))} pago em hospedagem nos quartos equivalentes`
-  ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
-
-  if(!matched.length){
-    tbody.innerHTML = `<tr><td colspan="5"><div class="empty">Nenhum quarto tem exatamente o mesmo conjunto de ocupantes nos dois destinos. Veja o quadro de diferenças abaixo.</div></td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = matched.map(room => {
-    const joaoText = `<strong>${escapeHtml(roomLabel(room.match))}</strong><br><span class="chip ok">mesmos ocupantes, ainda que o código do quarto seja diferente</span>`;
-    const totalBus = room.people.reduce((s,p)=>s+p.valorOnibus,0);
-    const paidBus = room.people.reduce((s,p)=>s+busPaid(p),0);
-    return `<tr>
-      <td><strong>${escapeHtml(roomLabel(room))}</strong><br><span class="muted small">${room.people.length} ocupante(s)</span></td>
-      <td><div class="occupant-list">${room.people.map(occupantHtml).join("")}</div></td>
-      <td>${joaoText}</td>
-      <td class="mono">
-        Hospedagem: <strong>${formatMoney(room.paid)}</strong> / ${formatMoney(room.total)}<br>
-        Saldo hospedagem: ${formatMoney(room.saldo)}<br>
-        Ônibus: <strong>${formatMoney(paidBus)}</strong> / ${formatMoney(totalBus)}
-      </td>
-      <td><span class="chip ok">ocupação igual por pessoas</span></td>
-    </tr>`;
-  }).join("");
-}
-function compactPeopleHtml(people, otherDest){
-  return `<div class="diff-people">${people.map(p => {
-    const totalHosp = p.totalFortaleza + p.totalJoao;
-    const paidHosp = p.pagoFortaleza + p.pagoJoao;
-    return `<div class="person-compact">
-      <div class="name">${escapeHtml(p.nome)}</div>
-      <div class="loc">No outro destino: ${escapeHtml(personLocation(p, otherDest))}</div>
-      <div class="values">
-        <span class="chip ${totalHosp && paidHosp >= totalHosp ? 'ok' : (totalHosp ? 'warn' : 'info')}">Hosp. ${formatMoney(paidHosp)} / ${formatMoney(totalHosp)}</span>
-        <span class="chip info">Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}</span>
-        ${p.poltrona ? `<span class="chip">poltrona ${escapeHtml(p.poltrona)}</span>` : ""}
-      </div>
-    </div>`;
-  }).join("")}</div>`;
-}
-function peopleMiniList(people, opts = {}){
-  const dest = opts.dest || "fortaleza";
-  const mode = opts.mode || "base";
-  return `<div class="base-people">${people.map(p => {
-    const totalHosp = dest === "fortaleza" ? p.totalFortaleza : p.totalJoao;
-    const paidHosp = dest === "fortaleza" ? p.pagoFortaleza : p.pagoJoao;
-    const busPlanned = p.valorOnibus || 0;
-    const busPaidValue = busPaid(p);
-    return `<div class="person-line">
-      <div class="name">${escapeHtml(p.nome)}</div>
-      <div class="values">
-        <span class="chip ${totalHosp && paidHosp >= totalHosp ? 'ok' : (totalHosp ? 'warn' : 'info')}">Hosp. ${formatMoney(paidHosp)} / ${formatMoney(totalHosp)}</span>
-        <span class="chip info">Ônibus ${formatMoney(busPaidValue)} / ${formatMoney(busPlanned)}${busPlanned ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span>
-        ${p.poltrona ? `<span class="chip">poltrona ${escapeHtml(p.poltrona)}</span>` : ""}
-        ${mode === "missing" ? `<span class="chip danger">sem quarto em João Pessoa</span>` : ""}
-      </div>
-    </div>`;
-  }).join("")}</div>`;
-}
-function renderJoaoRoomForBase(joaoRoom, baseKeys){
-  const paidBus = joaoRoom.people.reduce((s,p)=>s+busPaid(p),0);
-  const totalBus = joaoRoom.people.reduce((s,p)=>s+(p.valorOnibus || 0),0);
-  return `<div class="joao-room-card">
+function renderJoaoRoomForBase(joaoRoom, baseKeys, same){
+  const css = same ? "joao-room-card same-room" : "joao-room-card";
+  return `<div class="${css}">
     <div class="joao-room-head">
       <div>
         <strong>${escapeHtml(roomLabel(joaoRoom))}</strong><br>
@@ -590,160 +527,197 @@ function renderJoaoRoomForBase(joaoRoom, baseKeys){
       </div>
       <div class="diff-meta">
         <span class="chip ${joaoRoom.total && joaoRoom.paid >= joaoRoom.total ? 'ok' : (joaoRoom.total ? 'warn' : 'info')}">Hosp. ${formatMoney(joaoRoom.paid)} / ${formatMoney(joaoRoom.total)}</span>
-        <span class="chip info">Ônibus ${formatMoney(paidBus)} / ${formatMoney(totalBus)}</span>
+        <span class="chip info">Ônibus ${formatMoney(joaoRoom.busPaid)} / ${formatMoney(joaoRoom.busPlanned)}</span>
       </div>
     </div>
     <div class="person-tag-list">
       ${joaoRoom.people.map(p => {
         const inBase = baseKeys.has(p.nomeKey);
-        const css = inBase ? "in-base" : (hasFortaleza(p) ? "extra" : "missing");
+        const cssTag = inBase ? "in-base" : (hasFortaleza(p) ? "extra" : "missing");
         const note = inBase
-          ? "também está no quarto-base de Fortaleza"
+          ? (same ? "mesmo quarto nos dois destinos" : "também está no quarto-base de Fortaleza")
           : (hasFortaleza(p) ? `ocupante extra neste quarto; em Fortaleza está em ${personLocation(p, "fortaleza")}` : "ocupante sem quarto em Fortaleza");
-        return `<div class="person-tag ${css}">
+        return `<div class="person-tag ${cssTag}">
           <div class="tag-name">${escapeHtml(p.nome)}</div>
           <div class="tag-note">${escapeHtml(note)}</div>
-          <div class="values" style="margin-top:5px">
+          <div class="values">
             <span class="chip ${p.totalJoao && p.pagoJoao >= p.totalJoao ? 'ok' : (p.totalJoao ? 'warn' : 'info')}">Hosp. JP ${formatMoney(p.pagoJoao)} / ${formatMoney(p.totalJoao)}</span>
-            <span class="chip info">Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}</span>
-            ${p.poltrona ? `<span class="chip">poltrona ${escapeHtml(p.poltrona)}</span>` : ""}
+            <span class="chip info">Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}${p.valorOnibus ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span>
+            ${p.poltrona && p.categoria !== "crianca_colo" ? `<button class="seat-chip" type="button" data-seat="${escapeHtml(p.poltrona)}">poltrona ${escapeHtml(p.poltrona)}</button>` : ""}
           </div>
         </div>`;
       }).join("")}
     </div>
   </div>`;
 }
-function renderDiffPanel(){
-  const {rooms} = summarize();
-  const baseRooms = rooms.unmatchedFort;
+function renderRoomPair(baseRoom, rooms){
+  const baseKeys = new Set(baseRoom.people.map(p => p.nomeKey));
+  const isSame = Boolean(baseRoom.match);
+  const relatedJoaoRooms = isSame ? [baseRoom.match] : rooms.joao.filter(jr => jr.people.some(p => baseKeys.has(p.nomeKey)));
+  const relatedPeopleKeys = new Set(relatedJoaoRooms.flatMap(jr => jr.people.map(p => p.nomeKey)));
+  const missingInJoao = baseRoom.people.filter(p => !relatedPeopleKeys.has(p.nomeKey));
+  const cardClass = isSame ? "room-pair-card same" : "room-pair-card diff";
+  const statusTitle = isSame ? "Mesmo conjunto de ocupantes" : "Quarto diferente em João Pessoa";
+  const statusText = isSame ? "equivalente por ocupantes" : "detalhar à direita";
+  const joaoHtml = relatedJoaoRooms.length
+    ? `<div class="joao-room-list">${relatedJoaoRooms.map(jr => renderJoaoRoomForBase(jr, baseKeys, isSame && jr === baseRoom.match)).join("")}</div>`
+    : `<div class="empty">Nenhum ocupante deste quarto de Fortaleza tem quarto em João Pessoa.</div>`;
+  const missingHtml = missingInJoao.length
+    ? `<div class="note-box warn"><strong>Sem quarto em João Pessoa:</strong> ${missingInJoao.map(p=>escapeHtml(p.nome)).join(", ")}</div>`
+    : "";
+  return `<div class="${cardClass}">
+    <div class="pair-status">
+      <div><span class="status-title">${escapeHtml(statusTitle)}</span> <span class="muted small">• ${escapeHtml(statusText)}</span></div>
+      <div class="diff-meta"><span class="chip ${isSame ? 'ok' : 'warn'}">${isSame ? 'igual por ocupantes' : 'composição diferente'}</span></div>
+    </div>
+    <div class="room-pair-grid">
+      <div class="fort-side">
+        <div class="side-label">Base — Fortaleza</div>
+        <div class="room-main-name">${escapeHtml(roomLabel(baseRoom))}</div>
+        <div class="room-sub">
+          <span class="chip ${isSame ? 'ok' : 'warn'}">${baseRoom.people.length} ocupante(s)</span>
+          <span class="chip ${baseRoom.total && baseRoom.paid >= baseRoom.total ? 'ok' : (baseRoom.total ? 'warn' : 'info')}">Hosp. ${formatMoney(baseRoom.paid)} / ${formatMoney(baseRoom.total)}</span>
+          <span class="chip info">Ônibus ${formatMoney(baseRoom.busPaid)} / ${formatMoney(baseRoom.busPlanned)}</span>
+          <span class="chip">saldo ${formatMoney(baseRoom.saldo || 0)}</span>
+        </div>
+        ${peopleList(baseRoom.people, "fortaleza")}
+      </div>
+      <div class="joao-side">
+        <div class="side-label">Detalhamento — João Pessoa</div>
+        ${isSame ? `<div class="note-box ok">O quarto de João Pessoa abaixo tem exatamente os mesmos ocupantes do quarto de Fortaleza.</div>` : ""}
+        ${joaoHtml}
+        ${missingHtml}
+      </div>
+    </div>
+  </div>`;
+}
+function renderJoaoWithoutFort(joaoRoom){
+  const emptyKeys = new Set();
+  return `<div class="room-pair-card no-fort">
+    <div class="pair-status">
+      <div><span class="status-title">João Pessoa sem base Fortaleza</span> <span class="muted small">• ocupante sem quarto de Fortaleza</span></div>
+      <div class="diff-meta"><span class="chip info">fora da base Fortaleza</span></div>
+    </div>
+    <div class="room-pair-grid">
+      <div class="fort-side"><div class="side-label">Base — Fortaleza</div><div class="empty">Não há quarto-base de Fortaleza para este conjunto.</div></div>
+      <div class="joao-side"><div class="side-label">Detalhamento — João Pessoa</div>${renderJoaoRoomForBase(joaoRoom, emptyKeys, false)}</div>
+    </div>
+  </div>`;
+}
+function renderOnlyBusCard(people){
+  if(!people.length) return "";
+  return `<div class="room-section-title">Somente ônibus / sem quarto atribuído</div>
+    <div class="room-pair-card no-fort">
+      <div class="pair-status">
+        <div><span class="status-title">Pessoas sem quarto</span> <span class="muted small">• estão no ônibus, mas sem quarto em Fortaleza e João Pessoa</span></div>
+        <div class="diff-meta"><span class="chip info">${people.length} pessoa(s)</span></div>
+      </div>
+      <div style="padding:12px" class="base-people">
+        ${people.sort((a,b)=>sortNatural(a.nome,b.nome)).map(p => `<div class="person-line">
+          <div class="name">${escapeHtml(p.nome)}</div>
+          <div class="loc">${escapeHtml(profileLabel(p.categoria))} • sem quarto em Fortaleza • sem quarto em João Pessoa</div>
+          <div class="values">
+            <span class="chip info">Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}${p.valorOnibus ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span>
+            ${p.poltrona && p.categoria !== "crianca_colo" ? `<button class="seat-chip" type="button" data-seat="${escapeHtml(p.poltrona)}">poltrona ${escapeHtml(p.poltrona)}</button>` : ""}
+            <span class="chip warn">sem quarto atribuído</span>
+            ${p.observacoes ? `<span class="chip">${escapeHtml(p.observacoes)}</span>` : ""}
+          </div>
+        </div>`).join("")}
+      </div>
+    </div>`;
+}
+function renderSinglePanel(){
+  const s = summarize();
+  const rooms = s.rooms;
   const coveredJoaoKeys = new Set();
   const allFortPeopleKeys = new Set(rooms.fortaleza.flatMap(r => r.people.map(p => p.nomeKey)));
 
-  document.getElementById("diffSummary").innerHTML = [
-    `${baseRooms.length} quarto(s) de Fortaleza com composição diferente em João Pessoa`,
-    `${rooms.unmatchedJoao.length} quarto(s) de João Pessoa sem equivalente exato por ocupantes`,
-    `comparação feita por nomes, não por códigos F/J`
-  ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
-
-  if(!baseRooms.length && !rooms.unmatchedJoao.length){
-    document.getElementById("diffPanel").innerHTML = `<div class="empty">Todos os quartos têm um quarto equivalente com o mesmo conjunto de ocupantes nos dois destinos.</div>`;
-    return;
-  }
-
-  const cards = baseRooms.map(baseRoom => {
+  rooms.fortaleza.forEach(baseRoom => {
     const baseKeys = new Set(baseRoom.people.map(p => p.nomeKey));
-    const relatedJoaoRooms = rooms.joao.filter(jr => jr.people.some(p => baseKeys.has(p.nomeKey)));
-    relatedJoaoRooms.forEach(jr => coveredJoaoKeys.add(jr.key));
-    const relatedPeopleKeys = new Set(relatedJoaoRooms.flatMap(jr => jr.people.map(p => p.nomeKey)));
-    const missingInJoao = baseRoom.people.filter(p => !relatedPeopleKeys.has(p.nomeKey));
-    const totalBus = baseRoom.people.reduce((s,p)=>s+(p.valorOnibus || 0),0);
-    const paidBus = baseRoom.people.reduce((s,p)=>s+busPaid(p),0);
-
-    const joaoHtml = relatedJoaoRooms.length
-      ? `<div class="joao-room-list">${relatedJoaoRooms.map(jr => renderJoaoRoomForBase(jr, baseKeys)).join("")}</div>`
-      : `<div class="empty">Nenhum ocupante deste quarto de Fortaleza tem quarto em João Pessoa.</div>`;
-
-    const missingHtml = missingInJoao.length
-      ? `<div style="margin-top:10px">${peopleMiniList(missingInJoao, {dest:"joao", mode:"missing"})}</div>`
-      : "";
-
-    return `<div class="diff-pair-card">
-      <div class="diff-pair-grid">
-        <div class="fort-side">
-          <div class="side-label">Base — Fortaleza</div>
-          <div class="room-main-name">${escapeHtml(roomLabel(baseRoom))}</div>
-          <div class="room-sub">
-            <span class="chip warn">${baseRoom.people.length} ocupante(s)</span>
-            <span class="chip ${baseRoom.total && baseRoom.paid >= baseRoom.total ? 'ok' : (baseRoom.total ? 'warn' : 'info')}">Hosp. ${formatMoney(baseRoom.paid)} / ${formatMoney(baseRoom.total)}</span>
-            <span class="chip info">Ônibus ${formatMoney(paidBus)} / ${formatMoney(totalBus)}</span>
-            <span class="chip">saldo ${formatMoney(baseRoom.saldo || 0)}</span>
-          </div>
-          ${peopleMiniList(baseRoom.people, {dest:"fortaleza"})}
-        </div>
-        <div class="joao-side">
-          <div class="side-label">Detalhamento — João Pessoa</div>
-          ${joaoHtml}
-          ${missingHtml}
-        </div>
-      </div>
-    </div>`;
-  }).join("");
+    const rel = baseRoom.match ? [baseRoom.match] : rooms.joao.filter(jr => jr.people.some(p => baseKeys.has(p.nomeKey)));
+    rel.forEach(jr => coveredJoaoKeys.add(jr.key));
+  });
 
   const joaoWithoutFortBase = rooms.unmatchedJoao.filter(jr => {
     if(coveredJoaoKeys.has(jr.key)) return false;
     return jr.people.some(p => !allFortPeopleKeys.has(p.nomeKey));
   });
 
-  const extraJoaoHtml = joaoWithoutFortBase.length ? `<div class="diff-extra-section">
-    <h3>Quartos de João Pessoa com ocupante sem quarto em Fortaleza</h3>
-    <p class="muted small">Estes casos não partem de um quarto-base de Fortaleza, porque ao menos uma pessoa não tem quarto de Fortaleza atribuído no CSV.</p>
-    <div class="joao-room-list">${joaoWithoutFortBase.map(jr => renderJoaoRoomForBase(jr, new Set())).join("")}</div>
-  </div>` : "";
+  document.getElementById("roomsSummary").innerHTML = [
+    `${rooms.fortaleza.length} quarto(s) de Fortaleza`,
+    `${rooms.matchedFort.length} com composição igual em João Pessoa`,
+    `${rooms.unmatchedFort.length} com composição diferente`,
+    `${joaoWithoutFortBase.length} quarto(s) de João Pessoa sem base Fortaleza`,
+    `${s.onlyBus.length} pessoa(s) somente ônibus`
+  ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
 
-  document.getElementById("diffPanel").innerHTML = cards
-    ? `<div class="diff-base-list">${cards}</div>${extraJoaoHtml}`
-    : `${extraJoaoHtml || `<div class="empty">Não há quartos de Fortaleza com diferença. Verifique apenas os casos de João Pessoa sem base, se houver.</div>`}`;
+  const fortCards = rooms.fortaleza.map(r => renderRoomPair(r, rooms)).join("");
+  const joaoExtra = joaoWithoutFortBase.length
+    ? `<div class="room-section-title">Quartos de João Pessoa sem quarto-base em Fortaleza</div>${joaoWithoutFortBase.map(renderJoaoWithoutFort).join("")}`
+    : "";
+  const onlyBus = renderOnlyBusCard(s.onlyBus);
+  document.getElementById("singleRoomsPanel").innerHTML = fortCards || `<div class="empty">Nenhum quarto de Fortaleza encontrado no CSV.</div>`;
+  if(joaoExtra || onlyBus) document.getElementById("singleRoomsPanel").insertAdjacentHTML("beforeend", joaoExtra + onlyBus);
 }
-function renderOnlyBus(){
-  const {onlyBus} = summarize();
-  const el = document.getElementById("onlyBusPanel");
-  if(!onlyBus.length){
-    el.innerHTML = `<div class="empty">Nenhuma pessoa está apenas no ônibus sem quarto atribuído.</div>`;
+function findSeatInfo(seat){
+  const target = Number(seat);
+  const layouts = [{deck:"Piso superior", rows:upperLayout, offset:1}, {deck:"Piso inferior", rows:lowerLayout, offset:45}];
+  for(const layout of layouts){
+    for(let i=0;i<layout.rows.length;i++){
+      const row = layout.rows[i];
+      if(row.includes(target)){
+        const posIndex = row.indexOf(target);
+        const side = posIndex <= 1 ? "lado esquerdo" : "lado direito";
+        return {deck:layout.deck, rowIndex:i+1, row, side, seat:target};
+      }
+    }
+  }
+  return null;
+}
+function passengerBySeat(seat){ return state.rows.find(p => String(p.poltrona) === String(seat) && p.categoria !== "crianca_colo"); }
+function renderSeatZoom(seat){
+  const el = document.getElementById("seatZoomPanel");
+  const info = findSeatInfo(seat);
+  const p = passengerBySeat(seat);
+  document.querySelectorAll(".seat-chip.active").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(`.seat-chip[data-seat="${CSS.escape(String(seat))}"]`).forEach(btn => btn.classList.add("active"));
+  if(!info){
+    el.innerHTML = `<div class="mini-front"></div><div class="empty">Poltrona ${escapeHtml(seat)} não encontrada no mapa do ônibus.</div>`;
     return;
   }
-  el.innerHTML = onlyBus.sort((a,b)=>sortNatural(a.nome,b.nome)).map(p => `<div class="onlybus">
-    <div class="occupant-top"><span class="occupant-name">${escapeHtml(p.nome)}</span><span class="muted small">${escapeHtml(profileLabel(p.categoria))}${p.poltrona ? ` • poltrona ${escapeHtml(p.poltrona)}` : ""}</span></div>
-    <div class="pay-row">
-      <span class="chip info">Ônibus: ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)} (${p.valorOnibus ? `${p.parcelas}/${p.parcelasTotal}` : "sem cobrança"})</span>
-      <span class="chip warn">sem quarto em Fortaleza</span>
-      <span class="chip warn">sem quarto em João Pessoa</span>
-      ${p.observacoes ? `<span class="chip">${escapeHtml(p.observacoes)}</span>` : ""}
+  const cells = info.row.map(cell => {
+    if(cell == null) return `<div class="zoom-aisle" title="Corredor"></div>`;
+    const occupant = passengerBySeat(cell);
+    const cls = ["zoom-cell", occupant ? "occupied" : "", Number(cell) === Number(seat) ? "selected" : ""].filter(Boolean).join(" ");
+    return `<div class="${cls}" title="${occupant ? escapeHtml(occupant.nome) : 'Livre'}"><span>${cell}</span>${occupant ? `<span class="tiny-name">${escapeHtml(firstName(occupant.nome))}</span>` : ""}</div>`;
+  }).join("");
+  el.innerHTML = `<div class="mini-front"></div>
+    <div class="zoom-head">
+      <div>
+        <div class="zoom-seat-title">Poltrona ${escapeHtml(info.seat)}</div>
+        <div class="zoom-passenger">${p ? escapeHtml(p.nome) : "Livre"}</div>
+        <div class="muted small">${escapeHtml(info.deck)} • fileira ${info.rowIndex} • ${escapeHtml(info.side)}</div>
+      </div>
     </div>
-  </div>`).join("");
+    <div class="zoom-row-wrap">
+      <div class="zoom-row-label">Contexto da fileira</div>
+      <div class="zoom-row">${cells}</div>
+    </div>
+    <div class="zoom-mini-info">
+      ${p ? `<span class="chip info">Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}</span>` : `<span class="chip">assento livre</span>`}
+      ${p && hasFortaleza(p) ? `<span class="chip">Fortaleza: ${escapeHtml(p.familiaFortaleza || "—")}</span>` : ""}
+      ${p && hasJoao(p) ? `<span class="chip">João Pessoa: ${escapeHtml(p.familiaJoao || "—")}</span>` : ""}
+    </div>`;
 }
-
-const upperLayout = [[1,2,null,4,3],[5,6,null,8,7],[9,10,null,12,11],[13,14,null,null,null],[15,16,null,null,null],[17,18,null,20,19],[21,22,null,24,23],[25,26,null,28,27],[29,30,null,32,31],[33,34,null,36,35],[37,38,null,40,39],[41,42,null,44,43]];
-const lowerLayout = [[45,46,null,48,47],[49,50,null,52,51],[53,54,null,56,55]];
-function passengerBySeat(seat){ return state.rows.find(p => String(p.poltrona) === String(seat) && p.categoria !== "crianca_colo"); }
-function createSeat(seat){
-  const el = document.createElement("div");
-  el.className = "seat";
-  const p = passengerBySeat(seat);
-  el.innerHTML = `<div class="seat-number">${seat}</div>`;
-  if(p){
-    el.classList.add("occupied");
-    el.title = `Ocupado por ${p.nome}`;
-    const n = document.createElement("div");
-    n.className = "seat-name";
-    n.textContent = firstName(p.nome);
-    el.appendChild(n);
-  }else{
-    el.title = "Livre";
-  }
-  return el;
-}
-function fillLayout(layout,leftId,rightId){
-  const left=document.getElementById(leftId), right=document.getElementById(rightId);
-  left.innerHTML=""; right.innerHTML="";
-  layout.forEach(row => {
-    [row[0],row[1]].forEach(cell => { const e = cell == null ? document.createElement("div") : createSeat(cell); if(cell == null) e.className="seat-gap"; left.appendChild(e); });
-    [row[3],row[4]].forEach(cell => { const e = cell == null ? document.createElement("div") : createSeat(cell); if(cell == null) e.className="seat-gap"; right.appendChild(e); });
-  });
-}
-function renderSeats(){
-  fillLayout(upperLayout,"seat-grid-upper-left","seat-grid-upper-right");
-  fillLayout(lowerLayout,"seat-grid-lower-left","seat-grid-lower-right");
-  const marked = state.rows.filter(p => p.poltrona && p.categoria !== "crianca_colo").length;
-  const lap = state.rows.filter(p => p.categoria === "crianca_colo").length;
-  document.getElementById("seatSummaryText").textContent = `${marked} poltrona(s) marcada(s). ${lap} criança(s) no colo não entram como poltrona paga.`;
+function renderInitialSeatZoom(){
+  const first = state.rows.find(p => p.poltrona && p.categoria !== "crianca_colo");
+  if(first) renderSeatZoom(first.poltrona);
 }
 function renderAll(){
   renderAlerts();
   renderStats();
-  renderMainRooms();
-  renderDiffPanel();
-  renderOnlyBus();
-  renderSeats();
+  renderSinglePanel();
+  renderInitialSeatZoom();
 }
 function loadText(text, source){
   const raw = parseDelimitedText(text);
@@ -758,18 +732,24 @@ function loadText(text, source){
   document.getElementById("fileStatus").textContent = state.rows.length ? `Carregado: ${source}` : "Arquivo sem dados reconhecidos";
   renderAll();
 }
-document.getElementById("csvInput").addEventListener("change", async e => {
-  const file = e.target.files?.[0];
-  if(!file) return;
-  loadText(await file.text(), file.name);
+document.addEventListener("click", event => {
+  const btn = event.target.closest(".seat-chip[data-seat]");
+  if(btn){
+    state.selectedSeat = btn.dataset.seat;
+    renderSeatZoom(btn.dataset.seat);
+  }
+});
+document.addEventListener("mouseover", event => {
+  const btn = event.target.closest(".seat-chip[data-seat]");
+  if(btn) renderSeatZoom(btn.dataset.seat);
 });
 document.addEventListener("DOMContentLoaded", async () => {
   const res = await fetchFirstAvailable();
   if(res.text){
     loadText(res.text, res.path);
   }else{
-    state.issues.push("Não consegui carregar automaticamente o CSV único. Selecione o arquivo manualmente acima.");
-    document.getElementById("fileStatus").textContent = "Carregue o CSV manualmente";
+    state.issues.push("Não consegui carregar automaticamente o CSV único. Verifique se o arquivo viagem_familia_2027_unificado_responsaveis.csv está na mesma pasta do HTML.");
+    document.getElementById("fileStatus").textContent = "CSV não encontrado na mesma pasta";
     renderAll();
   }
 });
