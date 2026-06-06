@@ -1,8 +1,8 @@
 Nome;Categoria;ParcelasOnibus;ParcelasTotalOnibus;Poltrona;ValorOnibus;FamiliaFortaleza;QuartoFortaleza;HotelFortaleza;TotalPessoaFortaleza;PagoPessoaFortaleza;FamiliaJoaoPessoa;QuartoJoaoPessoa;HotelJoaoPessoa;TotalPessoaJoaoPessoa;PagoPessoaJoaoPessoa;Observacoes
 Francireide;adulto;10;10;15;1100,00;F21;Duplo;Hotel Fortaleza;1820,00;600,00;J22;Duplo;Hotel João Pessoa;;;
 Artur;adulto;10;10;16;1100,00;F21;Duplo;Hotel Fortaleza;0,00;0,00;J22;Duplo;Hotel João Pessoa;;;
-Isadora;adulto;5;10;15;1100,00;F22;Duplo;Hotel Fortaleza;1820,00;268,00;J23;Duplo;Hotel João Pessoa;;;
-Isabela;adulto;5;10;15;1100,00;F22;Duplo;Hotel Fortaleza;1820,00;268,00;J23;Duplo;Hotel João Pessoa;;;
+Isadora;adulto;5;10;;1100,00;F22;Duplo;Hotel Fortaleza;1820,00;268,00;J23;Duplo;Hotel João Pessoa;;;
+Isabela;adulto;5;10;;1100,00;F22;Duplo;Hotel Fortaleza;1820,00;268,00;J23;Duplo;Hotel João Pessoa;;;
 Adeilza;adulto;10;10;51;1100,00;F11;Duplo;Hotel Fortaleza;0,00;0,00;J09;Duplo;Hotel João Pessoa;;;
 Ana Mercia;adulto;10;10;;1100,00;F07;Duplo;Hotel Fortaleza;910,00;0,00;J10;Duplo;Hotel João Pessoa;;;
 Antônia;adulto;2;10;;1100,00;F17;Triplo;Hotel Fortaleza;1000,00;380,00;J21;Triplo;Hotel João Pessoa;;;
