@@ -42,7 +42,7 @@ Maria Eunice;adulto;5;10;52;1100,00;F12;Duplo;Hotel Fortaleza;1320,00;822,00;J09
 Maria Ferreira de Andrade;adulto;10;10;49;1100,00;F19;Triplo;Hotel Fortaleza;0,00;0,00;J19;Triplo;Hotel João Pessoa;;;
 Mida;adulto;5;10;;1100,00;F16;Triplo;Hotel Fortaleza;900,00;540,00;J08;Duplo;Hotel João Pessoa;;;
 Mª Aparecida;adulto;10;10;53;1100,00;F01;Duplo;Hotel Fortaleza;0,00;0,00;J05;Duplo;Hotel João Pessoa;;;
-Pedro Lima;crianca_colo;0;10;;0,00;;;;;;J12;Duplo;Hotel João Pessoa;;;
+Pedro Lima;crianca_colo;0;10;;0,00;F10;Duplo;Hotel Fortaleza;0,00;0,00;J12;Duplo;Hotel João Pessoa;;;
 Raíssa Lima;adulto;5;10;;1100,00;F20;Quádruplo;Hotel Fortaleza;890,00;618,50;J14;Duplo;Hotel João Pessoa;;;
 Rhalisson;adulto;7;10;;1100,00;F13;Triplo;Hotel Fortaleza;0,00;0,00;J20;Triplo;Hotel João Pessoa;;;
 Rosa Maria;adulto;7;10;;1100,00;F13;Triplo;Hotel Fortaleza;0,00;0,00;J20;Triplo;Hotel João Pessoa;;;
