@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -74,6 +73,36 @@
     .person-compact .values{display:flex;flex-wrap:wrap;gap:5px}
     .diff-finance{display:flex;flex-wrap:wrap;gap:6px;border-top:1px dashed #dbe2ea;padding-top:8px}
     table{table-layout:auto}.table-wrap table{min-width:900px}.mini-table{table-layout:fixed;min-width:0}.mini-table td,.mini-table th{overflow-wrap:anywhere}.mini-table .mono{white-space:normal}.room-names .mono{white-space:normal}
+
+
+    /* Painel de divergências com base em Fortaleza */
+    .diff-base-list{display:grid;gap:14px}
+    .diff-pair-card{border:1px solid var(--border);border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 4px 14px rgba(15,23,42,.04)}
+    .diff-pair-grid{display:grid;grid-template-columns:minmax(280px,.42fr) minmax(320px,.58fr);align-items:stretch}
+    .fort-side,.joao-side{padding:12px;min-width:0}
+    .fort-side{background:#fff7ed;border-right:1px solid var(--border)}
+    .joao-side{background:#f8fafc}
+    .side-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800;margin-bottom:7px}
+    .room-main-name{font-weight:900;font-size:1rem;overflow-wrap:anywhere;margin-bottom:5px}
+    .room-sub{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+    .base-people{display:grid;gap:8px;margin-top:8px}
+    .person-line{border:1px solid #e5e7eb;border-radius:12px;background:#fff;padding:8px;min-width:0}
+    .person-line .name{font-weight:800;overflow-wrap:anywhere;margin-bottom:4px}
+    .person-line .values{display:flex;flex-wrap:wrap;gap:5px}
+    .joao-room-list{display:grid;gap:10px}
+    .joao-room-card{border:1px solid #dbe2ea;border-radius:14px;background:#fff;padding:10px;min-width:0}
+    .joao-room-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:flex-start;border-bottom:1px dashed #dbe2ea;padding-bottom:7px;margin-bottom:8px}
+    .joao-room-head strong{overflow-wrap:anywhere}
+    .person-tag-list{display:grid;gap:6px}
+    .person-tag{border:1px solid #e5e7eb;border-radius:12px;background:#f8fafc;padding:7px;min-width:0}
+    .person-tag.in-base{background:#f0fdf4;border-color:#bbf7d0}
+    .person-tag.extra{background:#eff6ff;border-color:#bfdbfe}
+    .person-tag.missing{background:#fef2f2;border-color:#fecaca}
+    .person-tag .tag-name{font-weight:800;overflow-wrap:anywhere}
+    .person-tag .tag-note{font-size:.8rem;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
+    .diff-extra-section{margin-top:14px;border:1px dashed #cbd5e1;border-radius:16px;background:#fbfdff;padding:12px}
+    .diff-extra-section h3{margin:0 0 6px;font-size:1rem}
+    @media(max-width:900px){.diff-pair-grid{grid-template-columns:1fr}.fort-side{border-right:0;border-bottom:1px solid var(--border)}}
 
     /* BUS */
     .seat-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}.seat-board{display:grid;gap:14px}.bus-deck{background:linear-gradient(180deg,#f8fafc 0%,#eef2f7 100%);border:1px solid var(--border);border-radius:24px;padding:14px;position:relative;overflow:hidden}.bus-deck::before{content:"";position:absolute;inset:8px;border-radius:20px;border:2px solid #cbd5e1;pointer-events:none}.bus-deck-header{display:flex;justify-content:space-between;gap:8px;margin-bottom:12px;font-size:.85rem;color:#334155;font-weight:700;position:relative;z-index:2}.bus-shell{position:relative;background:linear-gradient(180deg,#e2e8f0 0%,#f8fafc 50%,#e2e8f0 100%);border:2px solid #94a3b8;border-radius:38px 38px 26px 26px;padding:18px 16px 16px;overflow:hidden}.bus-shell.lower{border-radius:24px;padding-top:16px}.bus-front{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:18px;margin:0 auto 14px;width:100%;min-height:54px}.windshield{width:180px;height:42px;border-radius:22px 22px 10px 10px;background:linear-gradient(180deg,#eff6ff 0%,#dbeafe 100%);border:2px solid #93c5fd}.driver-cabin{width:44px;height:32px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;position:absolute;right:18px;bottom:0}.stair-core{position:absolute;right:18px;top:68px;width:52px;padding:8px 6px;border-radius:14px;background:#e2e8f0;border:2px solid #94a3b8;text-align:center;font-size:.66rem;font-weight:700;color:#475569;z-index:2}.seat-zone,.lower-zone{display:flex;align-items:flex-start;justify-content:center;gap:12px;position:relative;z-index:1}.seat-zone{padding-right:64px}.seat-block{display:grid;gap:8px;grid-auto-rows:var(--seat-size)}.seat-block.double{grid-template-columns:repeat(2,var(--seat-size))}.aisle{width:var(--aisle-size);align-self:stretch;border-radius:999px;background:repeating-linear-gradient(180deg,transparent 0 10px,rgba(148,163,184,.45) 10px 18px),linear-gradient(180deg,#fff 0%,#f1f5f9 100%);border:1px dashed #94a3b8}.bus-tail{margin-top:14px;height:14px;border-radius:999px;background:linear-gradient(90deg,#cbd5e1 0%,#94a3b8 50%,#cbd5e1 100%);opacity:.7}.seat,.seat-gap{width:var(--seat-size);height:var(--seat-size)}.seat-gap{visibility:hidden}.seat{border-radius:14px 14px 10px 10px;border:1px solid #cbd5e1;background:linear-gradient(180deg,#fff 0%,var(--free) 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 3px 6px rgba(15,23,42,.05);position:relative}.seat.occupied{background:linear-gradient(180deg,#f0fdf4 0%,var(--occupied) 100%);border-color:var(--occupied-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 3px 8px rgba(34,197,94,.14)}.seat-number{font-size:.65rem;font-weight:800;line-height:1;margin-top:4px}.seat-name{font-size:.58rem;line-height:1.05;margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis}.legend-item{display:inline-flex;align-items:center;gap:6px;font-size:.84rem}.legend-color{width:14px;height:14px;border-radius:4px;border:1px solid #d1d5db;background:var(--free)}.legend-color.occupied{background:var(--occupied);border-color:var(--occupied-border)}
@@ -531,66 +560,129 @@ function compactPeopleHtml(people, otherDest){
     </div>`;
   }).join("")}</div>`;
 }
+function peopleMiniList(people, opts = {}){
+  const dest = opts.dest || "fortaleza";
+  const mode = opts.mode || "base";
+  return `<div class="base-people">${people.map(p => {
+    const totalHosp = dest === "fortaleza" ? p.totalFortaleza : p.totalJoao;
+    const paidHosp = dest === "fortaleza" ? p.pagoFortaleza : p.pagoJoao;
+    const busPlanned = p.valorOnibus || 0;
+    const busPaidValue = busPaid(p);
+    return `<div class="person-line">
+      <div class="name">${escapeHtml(p.nome)}</div>
+      <div class="values">
+        <span class="chip ${totalHosp && paidHosp >= totalHosp ? 'ok' : (totalHosp ? 'warn' : 'info')}">Hosp. ${formatMoney(paidHosp)} / ${formatMoney(totalHosp)}</span>
+        <span class="chip info">Ônibus ${formatMoney(busPaidValue)} / ${formatMoney(busPlanned)}${busPlanned ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span>
+        ${p.poltrona ? `<span class="chip">poltrona ${escapeHtml(p.poltrona)}</span>` : ""}
+        ${mode === "missing" ? `<span class="chip danger">sem quarto em João Pessoa</span>` : ""}
+      </div>
+    </div>`;
+  }).join("")}</div>`;
+}
+function renderJoaoRoomForBase(joaoRoom, baseKeys){
+  const paidBus = joaoRoom.people.reduce((s,p)=>s+busPaid(p),0);
+  const totalBus = joaoRoom.people.reduce((s,p)=>s+(p.valorOnibus || 0),0);
+  return `<div class="joao-room-card">
+    <div class="joao-room-head">
+      <div>
+        <strong>${escapeHtml(roomLabel(joaoRoom))}</strong><br>
+        <span class="muted small">${joaoRoom.people.length} ocupante(s) em João Pessoa</span>
+      </div>
+      <div class="diff-meta">
+        <span class="chip ${joaoRoom.total && joaoRoom.paid >= joaoRoom.total ? 'ok' : (joaoRoom.total ? 'warn' : 'info')}">Hosp. ${formatMoney(joaoRoom.paid)} / ${formatMoney(joaoRoom.total)}</span>
+        <span class="chip info">Ônibus ${formatMoney(paidBus)} / ${formatMoney(totalBus)}</span>
+      </div>
+    </div>
+    <div class="person-tag-list">
+      ${joaoRoom.people.map(p => {
+        const inBase = baseKeys.has(p.nomeKey);
+        const css = inBase ? "in-base" : (hasFortaleza(p) ? "extra" : "missing");
+        const note = inBase
+          ? "também está no quarto-base de Fortaleza"
+          : (hasFortaleza(p) ? `ocupante extra neste quarto; em Fortaleza está em ${personLocation(p, "fortaleza")}` : "ocupante sem quarto em Fortaleza");
+        return `<div class="person-tag ${css}">
+          <div class="tag-name">${escapeHtml(p.nome)}</div>
+          <div class="tag-note">${escapeHtml(note)}</div>
+          <div class="values" style="margin-top:5px">
+            <span class="chip ${p.totalJoao && p.pagoJoao >= p.totalJoao ? 'ok' : (p.totalJoao ? 'warn' : 'info')}">Hosp. JP ${formatMoney(p.pagoJoao)} / ${formatMoney(p.totalJoao)}</span>
+            <span class="chip info">Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}</span>
+            ${p.poltrona ? `<span class="chip">poltrona ${escapeHtml(p.poltrona)}</span>` : ""}
+          </div>
+        </div>`;
+      }).join("")}
+    </div>
+  </div>`;
+}
 function renderDiffPanel(){
   const {rooms} = summarize();
-  const diffCount = rooms.unmatchedFort.length + rooms.unmatchedJoao.length;
+  const baseRooms = rooms.unmatchedFort;
+  const coveredJoaoKeys = new Set();
+  const allFortPeopleKeys = new Set(rooms.fortaleza.flatMap(r => r.people.map(p => p.nomeKey)));
+
   document.getElementById("diffSummary").innerHTML = [
-    `${rooms.unmatchedFort.length} quarto(s) de Fortaleza sem equivalente exato`,
-    `${rooms.unmatchedJoao.length} quarto(s) de João Pessoa sem equivalente exato`,
-    `${diffCount} quarto(s) no painel de diferença`
+    `${baseRooms.length} quarto(s) de Fortaleza com composição diferente em João Pessoa`,
+    `${rooms.unmatchedJoao.length} quarto(s) de João Pessoa sem equivalente exato por ocupantes`,
+    `comparação feita por nomes, não por códigos F/J`
   ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
 
-  if(!diffCount){
+  if(!baseRooms.length && !rooms.unmatchedJoao.length){
     document.getElementById("diffPanel").innerHTML = `<div class="empty">Todos os quartos têm um quarto equivalente com o mesmo conjunto de ocupantes nos dois destinos.</div>`;
     return;
   }
 
-  const renderSide = (title, hint, list, otherDest, emptyText) => {
-    const cards = list.length ? list.map(room => {
-      const paidBus = room.people.reduce((s,p)=>s+busPaid(p),0);
-      const totalBus = room.people.reduce((s,p)=>s+(p.valorOnibus || 0),0);
-      return `<div class="diff-card">
-        <div class="diff-head">
-          <div>
-            <strong>${escapeHtml(roomLabel(room))}</strong><br>
-            <span class="muted small">${room.people.length} ocupante(s)</span>
-          </div>
-          <div class="diff-meta">
-            <span class="chip ${room.total && room.paid >= room.total ? 'ok' : (room.total ? 'warn' : 'info')}">Hosp. ${formatMoney(room.paid)} / ${formatMoney(room.total)}</span>
+  const cards = baseRooms.map(baseRoom => {
+    const baseKeys = new Set(baseRoom.people.map(p => p.nomeKey));
+    const relatedJoaoRooms = rooms.joao.filter(jr => jr.people.some(p => baseKeys.has(p.nomeKey)));
+    relatedJoaoRooms.forEach(jr => coveredJoaoKeys.add(jr.key));
+    const relatedPeopleKeys = new Set(relatedJoaoRooms.flatMap(jr => jr.people.map(p => p.nomeKey)));
+    const missingInJoao = baseRoom.people.filter(p => !relatedPeopleKeys.has(p.nomeKey));
+    const totalBus = baseRoom.people.reduce((s,p)=>s+(p.valorOnibus || 0),0);
+    const paidBus = baseRoom.people.reduce((s,p)=>s+busPaid(p),0);
+
+    const joaoHtml = relatedJoaoRooms.length
+      ? `<div class="joao-room-list">${relatedJoaoRooms.map(jr => renderJoaoRoomForBase(jr, baseKeys)).join("")}</div>`
+      : `<div class="empty">Nenhum ocupante deste quarto de Fortaleza tem quarto em João Pessoa.</div>`;
+
+    const missingHtml = missingInJoao.length
+      ? `<div style="margin-top:10px">${peopleMiniList(missingInJoao, {dest:"joao", mode:"missing"})}</div>`
+      : "";
+
+    return `<div class="diff-pair-card">
+      <div class="diff-pair-grid">
+        <div class="fort-side">
+          <div class="side-label">Base — Fortaleza</div>
+          <div class="room-main-name">${escapeHtml(roomLabel(baseRoom))}</div>
+          <div class="room-sub">
+            <span class="chip warn">${baseRoom.people.length} ocupante(s)</span>
+            <span class="chip ${baseRoom.total && baseRoom.paid >= baseRoom.total ? 'ok' : (baseRoom.total ? 'warn' : 'info')}">Hosp. ${formatMoney(baseRoom.paid)} / ${formatMoney(baseRoom.total)}</span>
             <span class="chip info">Ônibus ${formatMoney(paidBus)} / ${formatMoney(totalBus)}</span>
+            <span class="chip">saldo ${formatMoney(baseRoom.saldo || 0)}</span>
           </div>
+          ${peopleMiniList(baseRoom.people, {dest:"fortaleza"})}
         </div>
-        ${compactPeopleHtml(room.people, otherDest)}
-        <div class="diff-finance">
-          <span class="chip">saldo hospedagem ${formatMoney(room.saldo || 0)}</span>
-          <span class="chip warn">sem quarto com exatamente estes mesmos ocupantes no outro destino</span>
+        <div class="joao-side">
+          <div class="side-label">Detalhamento — João Pessoa</div>
+          ${joaoHtml}
+          ${missingHtml}
         </div>
-      </div>`;
-    }).join("") : `<div class="empty">${escapeHtml(emptyText)}</div>`;
-
-    return `<div class="diff-section">
-      <h3>${escapeHtml(title)}</h3>
-      <p class="hint">${escapeHtml(hint)}</p>
-      <div class="diff-list">${cards}</div>
+      </div>
     </div>`;
-  };
+  }).join("");
 
-  document.getElementById("diffPanel").innerHTML = `<div class="diff-columns">
-    ${renderSide(
-      "Quartos de Fortaleza sem equivalente exato",
-      "Cada cartão mostra onde os mesmos ocupantes aparecem em João Pessoa. Se todos aparecem juntos no mesmo quarto, esse quarto não entraria aqui.",
-      rooms.unmatchedFort,
-      "joao",
-      "Sem divergências partindo de Fortaleza."
-    )}
-    ${renderSide(
-      "Quartos de João Pessoa sem equivalente exato",
-      "Cada cartão mostra onde os mesmos ocupantes aparecem em Fortaleza. O problema é a composição do quarto, não o código J/F.",
-      rooms.unmatchedJoao,
-      "fortaleza",
-      "Sem divergências partindo de João Pessoa."
-    )}
-  </div>`;
+  const joaoWithoutFortBase = rooms.unmatchedJoao.filter(jr => {
+    if(coveredJoaoKeys.has(jr.key)) return false;
+    return jr.people.some(p => !allFortPeopleKeys.has(p.nomeKey));
+  });
+
+  const extraJoaoHtml = joaoWithoutFortBase.length ? `<div class="diff-extra-section">
+    <h3>Quartos de João Pessoa com ocupante sem quarto em Fortaleza</h3>
+    <p class="muted small">Estes casos não partem de um quarto-base de Fortaleza, porque ao menos uma pessoa não tem quarto de Fortaleza atribuído no CSV.</p>
+    <div class="joao-room-list">${joaoWithoutFortBase.map(jr => renderJoaoRoomForBase(jr, new Set())).join("")}</div>
+  </div>` : "";
+
+  document.getElementById("diffPanel").innerHTML = cards
+    ? `<div class="diff-base-list">${cards}</div>${extraJoaoHtml}`
+    : `${extraJoaoHtml || `<div class="empty">Não há quartos de Fortaleza com diferença. Verifique apenas os casos de João Pessoa sem base, se houver.</div>`}`;
 }
 function renderOnlyBus(){
   const {onlyBus} = summarize();
