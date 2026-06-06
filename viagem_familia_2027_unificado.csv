@@ -12,17 +12,17 @@ Cláudio;adulto;5;10;;1100,00;F15;Triplo;Hotel Fortaleza;2700,00;1340,00;J18;Dup
 Davi Lima;crianca;10;10;12;1100,00;F10;Duplo;Hotel Fortaleza;0,00;0,00;J12;Duplo;Hotel João Pessoa;;;Nome padronizado a partir de Davi no bloco de hospedagem.
 Dissér;adulto;5;10;46;1100,00;F14;Triplo;Hotel Fortaleza;0,00;0,00;J13;Duplo;Hotel João Pessoa;;;
 Edina;adulto;10;10;8;1100,00;F03;Duplo;Hotel Fortaleza;0,00;0,00;J04;Duplo;Hotel João Pessoa;;;
-Aninha Esposa do Reinaldo;adulto;10;10;5;1100,00;F06;Quádruplo;Hotel Fortaleza;0,00;0,00;J07;Duplo;Hotel João Pessoa;;;
+Aninha;adulto;10;10;5;1100,00;F06;Quádruplo;Hotel Fortaleza;0,00;0,00;J07;Duplo;Hotel João Pessoa;;;
 Reinaldo;adulto;10;10;6;1100,00;F06;Quádruplo;Hotel Fortaleza;1820,00;1456,00;J07;Duplo;Hotel João Pessoa;;;Responsável financeiro pela hospedagem de Fortaleza.
 Chaguinha;adulto;4;10;17;1100,00;F04;Duplo;Hotel Fortaleza;0,00;0,00;J01;Duplo;Hotel João Pessoa;;;
 Francisca das Chagas Lima;adulto;5;10;;1100,00;F20;Quádruplo;Hotel Fortaleza;890,00;695,00;J14;Duplo;Hotel João Pessoa;;;
 Francisca Márcia Lima;adulto;5;10;;1100,00;F05;Duplo;Hotel Fortaleza;0,00;0,00;J02;Duplo;Hotel João Pessoa;;;
-Francisco Onofre;adulto;4;10;18;1100,00;F04;Duplo;Hotel Fortaleza;1820,00;764,00;J01;Duplo;Hotel João Pessoa;;;Responsável financeiro pela hospedagem de Fortaleza.
+Onofre;adulto;4;10;18;1100,00;F04;Duplo;Hotel Fortaleza;1820,00;764,00;J01;Duplo;Hotel João Pessoa;;;Responsável financeiro pela hospedagem de Fortaleza.
 Francisco Raimundo;adulto;5;10;;1100,00;F05;Duplo;Hotel Fortaleza;1820,00;910,00;J02;Duplo;Hotel João Pessoa;;;Responsável financeiro pela hospedagem de Fortaleza.
 Francisco Rosendo;adulto;7;10;;1100,00;F13;Triplo;Hotel Fortaleza;3000,00;2000,00;J20;Triplo;Hotel João Pessoa;;;Responsável financeiro pela hospedagem de Fortaleza.
-Gabriel Lima;crianca;5;10;;1100,00;F14;Triplo;Hotel Fortaleza;0,00;0,00;J11;Duplo;Hotel João Pessoa;;;
+Gabriel;crianca;5;10;;1100,00;F14;Triplo;Hotel Fortaleza;0,00;0,00;J11;Duplo;Hotel João Pessoa;;;
 Hellen;adulto;4;10;;1100,00;F17;Triplo;Hotel Fortaleza;1000,00;380,00;J21;Triplo;Hotel João Pessoa;;;
-Israel Agripino Ferreira dos Santos;adulto;10;10;50;1100,00;F19;Triplo;Hotel Fortaleza;0,00;0,00;J19;Triplo;Hotel João Pessoa;;;
+Israel;adulto;10;10;50;1100,00;F19;Triplo;Hotel Fortaleza;0,00;0,00;J19;Triplo;Hotel João Pessoa;;;
 Janduy;adulto;10;10;3;1100,00;F11;Duplo;Hotel Fortaleza;1820,00;1820,00;J03;Duplo;Hotel João Pessoa;;;Responsável financeiro pela hospedagem de Fortaleza.
 Janival;adulto;10;10;4;1100,00;F19;Triplo;Hotel Fortaleza;3000,00;3000,00;J19;Triplo;Hotel João Pessoa;;;Responsável financeiro pela hospedagem de Fortaleza.
 Joel;adulto;10;10;7;1100,00;F03;Duplo;Hotel Fortaleza;1820,00;1820,00;J04;Duplo;Hotel João Pessoa;;;Responsável financeiro pela hospedagem de Fortaleza.
@@ -30,9 +30,9 @@ João Neto;adulto;10;10;1;1100,00;F16;Triplo;Hotel Fortaleza;900,00;360,00;J03;D
 Juninho;adulto;5;10;;1100,00;F15;Triplo;Hotel Fortaleza;0,00;0,00;J11;Duplo;Hotel João Pessoa;;;
 Juracy;adulto;10;10;21;1100,00;F01;Duplo;Hotel Fortaleza;1820,00;728,00;J05;Duplo;Hotel João Pessoa;;;Responsável financeiro pela hospedagem de Fortaleza.
 Jurandy;adulto;10;10;47;1100,00;F02;Duplo;Hotel Fortaleza;1820,00;1092,00;J06;Duplo;Hotel João Pessoa;;;Responsável financeiro pela hospedagem de Fortaleza.
-Leonice Rita de Jesus;adulto;10;10;;1100,00;F20;Quádruplo;Hotel Fortaleza;890,00;542,00;J15;Duplo;Hotel João Pessoa;;;
+Leonice;adulto;10;10;;1100,00;F20;Quádruplo;Hotel Fortaleza;890,00;542,00;J15;Duplo;Hotel João Pessoa;;;
 Liz;crianca;9;10;10;1100,00;F18;Triplo;Hotel Fortaleza;0,00;0,00;J17;Duplo;Hotel João Pessoa;;;
-Lourival Ferreira de Lima;adulto;10;10;;1100,00;F20;Quádruplo;Hotel Fortaleza;890,00;542,00;J15;Duplo;Hotel João Pessoa;;;
+Lourival;adulto;10;10;;1100,00;F20;Quádruplo;Hotel Fortaleza;890,00;542,00;J15;Duplo;Hotel João Pessoa;;;
 Luzanira;adulto;2;10;;1100,00;F17;Triplo;Hotel Fortaleza;1000,00;400,00;J21;Triplo;Hotel João Pessoa;;;
 Luís;crianca;7;10;;1100,00;F09;Triplo;Hotel Fortaleza;0,00;0,00;J16;Duplo;Hotel João Pessoa;;;Nome padronizado a partir de Luiz no bloco F13.
 Luíza;crianca_colo;0;10;;0,00;;;;;;;;;;;
