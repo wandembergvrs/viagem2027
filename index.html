@@ -74,7 +74,7 @@
       <div>
         <h1>Viagem de Família 2027</h1>
         <div class="subtitle">
-          Painel único por quarto, usando o CSV individual de ônibus e hospedagem. Cada ocupante aparece com quanto pagou de hospedagem e quanto pagou de ônibus.
+          Painel único por quarto, usando o CSV individual de ônibus e hospedagem. A correspondência entre Fortaleza e João Pessoa é feita pelo conjunto de ocupantes, não pelo código do quarto.
         </div>
         <div class="hero-badges">
           <span class="badge" id="badgePeople">👨‍👩‍👧‍👦 0 pessoas</span>
@@ -140,7 +140,7 @@
     <div class="section-head">
       <div>
         <h2>Painel por quarto</h2>
-        <p>Base principal em Fortaleza, com ocupantes, pagamento individual de hospedagem e pagamento individual do ônibus. Quando a ocupação em João Pessoa é igual, o quarto correspondente aparece na mesma linha.</p>
+        <p>Mostra apenas os quartos cuja composição de ocupantes é igual nos dois destinos. O código do quarto pode ser diferente: F01 pode corresponder a J03 se tiver exatamente os mesmos ocupantes.</p>
       </div>
     </div>
     <div class="summary-row" id="roomsSummary"></div>
@@ -148,9 +148,9 @@
       <table>
         <thead>
           <tr>
-            <th>Quarto base</th>
+            <th>Quarto em Fortaleza</th>
             <th>Ocupantes e pagamentos individuais</th>
-            <th>Quarto em João Pessoa</th>
+            <th>Quarto equivalente em João Pessoa</th>
             <th>Totais do quarto</th>
             <th>Situação</th>
           </tr>
@@ -164,7 +164,7 @@
     <div class="section-head">
       <div>
         <h2>Quartos diferentes entre Fortaleza e João Pessoa</h2>
-        <p>Quadro separado para quartos cuja composição de ocupantes não é a mesma nos dois destinos, inclusive pessoas com quarto só em um destino.</p>
+        <p>Quadro separado para quartos cuja composição de ocupantes não encontra um quarto equivalente no outro destino. A comparação é feita pelos nomes dos ocupantes, não pelos códigos F01/J01.</p>
       </div>
     </div>
     <div class="summary-row" id="diffSummary"></div>
@@ -472,21 +472,21 @@ function otherJoaoLabelsForFortRoom(room){
 function renderMainRooms(){
   const {rooms} = summarize();
   const tbody = document.getElementById("mainRoomsBody");
+  const matched = rooms.matchedFort;
   document.getElementById("roomsSummary").innerHTML = [
-    `${rooms.fortaleza.length} quartos de Fortaleza`,
-    `${rooms.matchedFort.length} com mesma ocupação em João Pessoa`,
-    `${rooms.unmatchedFort.length} com ocupação diferente`,
-    `${formatMoney(rooms.fortaleza.reduce((s,r)=>s+r.paid,0))} pago em hospedagem`
+    `${matched.length} quarto(s) com ocupação igual nos dois destinos`,
+    `${rooms.unmatchedFort.length} quarto(s) de Fortaleza no quadro de diferenças`,
+    `${rooms.unmatchedJoao.length} quarto(s) de João Pessoa no quadro de diferenças`,
+    `${formatMoney(matched.reduce((s,r)=>s+r.paid,0))} pago em hospedagem nos quartos equivalentes`
   ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
 
-  if(!rooms.fortaleza.length){
-    tbody.innerHTML = `<tr><td colspan="5"><div class="empty">Nenhum quarto de Fortaleza encontrado no CSV.</div></td></tr>`;
+  if(!matched.length){
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty">Nenhum quarto tem exatamente o mesmo conjunto de ocupantes nos dois destinos. Veja o quadro de diferenças abaixo.</div></td></tr>`;
     return;
   }
-  tbody.innerHTML = rooms.fortaleza.map(room => {
-    const joaoText = room.isMatched
-      ? `<strong>${escapeHtml(roomLabel(room.match))}</strong><br><span class="chip ok">mesmos ocupantes</span>`
-      : `<span class="chip warn">ver quadro de diferenças</span><div class="loc-list" style="margin-top:6px">${otherJoaoLabelsForFortRoom(room).map(l=>`<span class="small">${escapeHtml(l)}</span>`).join("")}</div>`;
+
+  tbody.innerHTML = matched.map(room => {
+    const joaoText = `<strong>${escapeHtml(roomLabel(room.match))}</strong><br><span class="chip ok">mesmos ocupantes, ainda que o código do quarto seja diferente</span>`;
     const totalBus = room.people.reduce((s,p)=>s+p.valorOnibus,0);
     const paidBus = room.people.reduce((s,p)=>s+busPaid(p),0);
     return `<tr>
@@ -498,7 +498,7 @@ function renderMainRooms(){
         Saldo hospedagem: ${formatMoney(room.saldo)}<br>
         Ônibus: <strong>${formatMoney(paidBus)}</strong> / ${formatMoney(totalBus)}
       </td>
-      <td>${room.isMatched ? `<span class="chip ok">ocupação igual</span>` : `<span class="chip warn">ocupação diferente</span>`}</td>
+      <td><span class="chip ok">ocupação igual por pessoas</span></td>
     </tr>`;
   }).join("");
 }
@@ -506,13 +506,13 @@ function renderDiffPanel(){
   const {rooms} = summarize();
   const diffCount = rooms.unmatchedFort.length + rooms.unmatchedJoao.length;
   document.getElementById("diffSummary").innerHTML = [
-    `${rooms.unmatchedFort.length} quarto(s) de Fortaleza sem correspondência exata`,
-    `${rooms.unmatchedJoao.length} quarto(s) de João Pessoa sem correspondência exata`,
+    `${rooms.unmatchedFort.length} quarto(s) de Fortaleza sem quarto equivalente por ocupantes`,
+    `${rooms.unmatchedJoao.length} quarto(s) de João Pessoa sem quarto equivalente por ocupantes`,
     `${diffCount} registro(s) de divergência`
   ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
 
   if(!diffCount){
-    document.getElementById("diffPanel").innerHTML = `<div class="empty">Todos os quartos têm a mesma composição de ocupantes nos dois destinos.</div>`;
+    document.getElementById("diffPanel").innerHTML = `<div class="empty">Todos os quartos têm um quarto equivalente com o mesmo conjunto de ocupantes nos dois destinos.</div>`;
     return;
   }
 
@@ -530,11 +530,11 @@ function renderDiffPanel(){
 
   document.getElementById("diffPanel").innerHTML = `<div class="split-panel">
     <div>
-      <h3 style="margin:0 0 8px;font-size:1rem">Fortaleza sem correspondência exata</h3>
+      <h3 style="margin:0 0 8px;font-size:1rem">Fortaleza sem quarto equivalente por ocupantes</h3>
       <div class="table-wrap"><table class="mini-table"><thead><tr><th>Quarto</th><th>Ocupantes e localização em João Pessoa</th><th>Totais</th></tr></thead><tbody>${fortRows}</tbody></table></div>
     </div>
     <div>
-      <h3 style="margin:0 0 8px;font-size:1rem">João Pessoa sem correspondência exata</h3>
+      <h3 style="margin:0 0 8px;font-size:1rem">João Pessoa sem quarto equivalente por ocupantes</h3>
       <div class="table-wrap"><table class="mini-table"><thead><tr><th>Quarto</th><th>Ocupantes e localização em Fortaleza</th><th>Pagamentos</th></tr></thead><tbody>${joaoRows}</tbody></table></div>
     </div>
   </div>`;
