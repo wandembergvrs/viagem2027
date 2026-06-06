@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Viagem de Família 2027 — ônibus e hospedagem</title>
+  <title>Viagem de Família 2027 — Painel por quarto</title>
   <style>
     :root{
       --bg:#f5f7fb;
@@ -12,10 +12,17 @@
       --text:#0f172a;
       --muted:#64748b;
       --border:#dbe2ea;
+      --soft:#f8fafc;
       --accent:#166534;
       --accent2:#0ea5e9;
       --warn:#b45309;
       --danger:#b91c1c;
+      --ok-bg:#f0fdf4;
+      --ok-border:#bbf7d0;
+      --warn-bg:#fff7ed;
+      --warn-border:#fed7aa;
+      --info-bg:#eff6ff;
+      --info-border:#bfdbfe;
       --free:#f3f4f6;
       --occupied:#dcfce7;
       --occupied-border:#22c55e;
@@ -25,26 +32,39 @@
       --aisle-size:24px;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#eef2f7 0%,var(--bg) 100%);color:var(--text)}
-    header{background:linear-gradient(135deg,#facc15 0%,#86efac 42%,#dbeafe 100%);border-bottom:1px solid rgba(15,23,42,.08)}
-    .wrap{max-width:1240px;margin:0 auto;padding:18px 14px 28px}
-    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:center}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#eef2f7 0%,var(--bg) 100%);
+      color:var(--text);
+    }
+    header{
+      background:linear-gradient(135deg,#facc15 0%,#86efac 42%,#dbeafe 100%);
+      border-bottom:1px solid rgba(15,23,42,.08);
+    }
+    .wrap{max-width:1280px;margin:0 auto;padding:18px 14px 28px}
+    .hero{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:center}
     h1{font-size:clamp(1.8rem,3vw,2.65rem);line-height:1.05;margin:0 0 8px}
-    h2{font-size:1.12rem;margin:0}
-    .subtitle{color:#1f2937;max-width:760px}.muted{color:var(--muted)}
-    .hero-box{background:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.9);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+    h2{font-size:1.12rem;margin:0}.subtitle{color:#1f2937;max-width:800px}.muted{color:var(--muted)}.small{font-size:.82rem}.mono{font-variant-numeric:tabular-nums;white-space:nowrap}
+    .hero-box{background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.9);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
     .hero-badges,.summary-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
     .badge,.summary-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#f8fafc;border:1px solid var(--border);font-size:.82rem;color:#334155}
-    .grid{display:grid;gap:14px}.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.twocol{grid-template-columns:repeat(2,minmax(0,1fr))}.threecol{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid{display:grid;gap:14px}.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.twocol{grid-template-columns:repeat(2,minmax(0,1fr))}
     section{margin-top:16px}.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:10px}.section-head p{margin:3px 0 0;color:var(--muted);font-size:.86rem}
-    .stat-label{font-size:.82rem;color:var(--muted);margin-bottom:6px}.stat-value{font-size:1.52rem;font-weight:800;line-height:1}.stat-note{margin-top:6px;color:var(--muted);font-size:.78rem}.mono{font-variant-numeric:tabular-nums;white-space:nowrap}.small{font-size:.82rem}.helper,.footer-note,.file-line{color:var(--muted)}
+    .stat-label{font-size:.82rem;color:var(--muted);margin-bottom:6px}.stat-value{font-size:1.48rem;font-weight:800;line-height:1}.stat-note{margin-top:6px;color:var(--muted);font-size:.78rem}
     .totals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0 14px}.total-box{background:#f8fafc;border:1px solid var(--border);border-radius:14px;padding:10px 12px}.total-box .k{font-size:.78rem;color:var(--muted)}.total-box .v{font-weight:800;font-size:1.05rem;margin-top:2px}
     .progress-wrap{display:grid;gap:8px;margin-top:10px}.progress-track{height:13px;background:#e5e7eb;border-radius:999px;overflow:hidden}.progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);width:0%}.progress-fill.bus{background:linear-gradient(90deg,#0ea5e9,#0284c7)}.progress-meta{display:flex;justify-content:space-between;gap:10px;font-size:.88rem}
     .alert{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;padding:12px;border-radius:14px;margin:14px 0}.empty{padding:12px;border-radius:14px;background:#f8fafc;border:1px dashed var(--border);color:var(--muted)}
     .file-control{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.file-control input{max-width:100%}code{background:#f8fafc;border:1px solid var(--border);padding:2px 5px;border-radius:8px}
-    table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:9px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}th{font-size:.75rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);background:#fbfdff;position:sticky;top:0}.table-wrap{overflow:auto;max-height:620px}.room-names{display:flex;flex-direction:column;gap:3px}.chip{display:inline-flex;align-items:center;border-radius:999px;padding:2px 8px;border:1px solid var(--border);background:#f8fafc;font-size:.78rem;color:#334155}.chip.ok{background:#f0fdf4;border-color:#bbf7d0;color:#166534}.chip.warn{background:#fff7ed;border-color:#fed7aa;color:#9a3412}
+    table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}th{font-size:.75rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);background:#fbfdff;position:sticky;top:0;z-index:1}.table-wrap{overflow:auto;max-height:680px}
+    .chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:3px 8px;border:1px solid var(--border);background:#f8fafc;font-size:.78rem;color:#334155;white-space:nowrap}.chip.ok{background:var(--ok-bg);border-color:var(--ok-border);color:#166534}.chip.warn{background:var(--warn-bg);border-color:var(--warn-border);color:#9a3412}.chip.info{background:var(--info-bg);border-color:var(--info-border);color:#1d4ed8}.chip.danger{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+    .room-card{border:1px solid var(--border);border-radius:16px;background:#fbfdff;padding:12px;margin:10px 0}.room-title{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}.room-title strong{font-size:1rem}.occupant-list{display:grid;gap:8px}.occupant{border:1px solid #e5e7eb;border-radius:14px;background:#fff;padding:8px}.occupant-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-bottom:6px}.occupant-name{font-weight:800}.pay-row{display:flex;flex-wrap:wrap;gap:6px}.loc-list{display:grid;gap:4px}.room-names{display:grid;gap:6px}
+    .split-panel{display:grid;grid-template-columns:1fr 1fr;gap:14px}.mini-table th{position:static}.footer-note{margin-top:14px;color:var(--muted);font-size:.88rem}.onlybus{background:#fff;border:1px solid var(--border);border-radius:14px;padding:10px;margin-bottom:8px}
+
+    /* BUS */
     .seat-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}.seat-board{display:grid;gap:14px}.bus-deck{background:linear-gradient(180deg,#f8fafc 0%,#eef2f7 100%);border:1px solid var(--border);border-radius:24px;padding:14px;position:relative;overflow:hidden}.bus-deck::before{content:"";position:absolute;inset:8px;border-radius:20px;border:2px solid #cbd5e1;pointer-events:none}.bus-deck-header{display:flex;justify-content:space-between;gap:8px;margin-bottom:12px;font-size:.85rem;color:#334155;font-weight:700;position:relative;z-index:2}.bus-shell{position:relative;background:linear-gradient(180deg,#e2e8f0 0%,#f8fafc 50%,#e2e8f0 100%);border:2px solid #94a3b8;border-radius:38px 38px 26px 26px;padding:18px 16px 16px;overflow:hidden}.bus-shell.lower{border-radius:24px;padding-top:16px}.bus-front{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:18px;margin:0 auto 14px;width:100%;min-height:54px}.windshield{width:180px;height:42px;border-radius:22px 22px 10px 10px;background:linear-gradient(180deg,#eff6ff 0%,#dbeafe 100%);border:2px solid #93c5fd}.driver-cabin{width:44px;height:32px;border-radius:12px;background:#1e293b;border:2px solid #0f172a;position:absolute;right:18px;bottom:0}.stair-core{position:absolute;right:18px;top:68px;width:52px;padding:8px 6px;border-radius:14px;background:#e2e8f0;border:2px solid #94a3b8;text-align:center;font-size:.66rem;font-weight:700;color:#475569;z-index:2}.seat-zone,.lower-zone{display:flex;align-items:flex-start;justify-content:center;gap:12px;position:relative;z-index:1}.seat-zone{padding-right:64px}.seat-block{display:grid;gap:8px;grid-auto-rows:var(--seat-size)}.seat-block.double{grid-template-columns:repeat(2,var(--seat-size))}.aisle{width:var(--aisle-size);align-self:stretch;border-radius:999px;background:repeating-linear-gradient(180deg,transparent 0 10px,rgba(148,163,184,.45) 10px 18px),linear-gradient(180deg,#fff 0%,#f1f5f9 100%);border:1px dashed #94a3b8}.bus-tail{margin-top:14px;height:14px;border-radius:999px;background:linear-gradient(90deg,#cbd5e1 0%,#94a3b8 50%,#cbd5e1 100%);opacity:.7}.seat,.seat-gap{width:var(--seat-size);height:var(--seat-size)}.seat-gap{visibility:hidden}.seat{border-radius:14px 14px 10px 10px;border:1px solid #cbd5e1;background:linear-gradient(180deg,#fff 0%,var(--free) 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 3px 6px rgba(15,23,42,.05);position:relative}.seat.occupied{background:linear-gradient(180deg,#f0fdf4 0%,var(--occupied) 100%);border-color:var(--occupied-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 3px 8px rgba(34,197,94,.14)}.seat-number{font-size:.65rem;font-weight:800;line-height:1;margin-top:4px}.seat-name{font-size:.58rem;line-height:1.05;margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis}.legend-item{display:inline-flex;align-items:center;gap:6px;font-size:.84rem}.legend-color{width:14px;height:14px;border-radius:4px;border:1px solid #d1d5db;background:var(--free)}.legend-color.occupied{background:var(--occupied);border-color:var(--occupied-border)}
-    @media(max-width:960px){.hero,.stats,.twocol,.threecol,.seat-layout,.totals{grid-template-columns:1fr!important}.table-wrap{max-height:none}}@media(max-width:640px){:root{--seat-size:39px;--aisle-size:18px}.seat-zone{gap:8px;padding-right:48px}.lower-zone{gap:8px}.stair-core{width:42px;right:12px;font-size:.58rem}.windshield{width:136px}}
+    @media(max-width:980px){.hero,.stats,.twocol,.totals,.seat-layout,.split-panel{grid-template-columns:1fr!important}.table-wrap{max-height:none}}
+    @media(max-width:640px){:root{--seat-size:39px;--aisle-size:18px}.seat-zone{gap:8px;padding-right:48px}.lower-zone{gap:8px}.stair-core{width:42px;right:12px;font-size:.58rem}.windshield{width:136px}.room-title{display:block}.occupant-top{display:block}.table-wrap{font-size:.84rem}}
   </style>
 </head>
 <body>
@@ -54,19 +74,19 @@
       <div>
         <h1>Viagem de Família 2027</h1>
         <div class="subtitle">
-          Painel único com leitura de <strong>um só CSV</strong> para ônibus e hospedagem. O controle financeiro da hospedagem agora é <strong>por pessoa</strong>, e cada destino tem sua própria configuração de quarto.
+          Painel único por quarto, usando o CSV individual de ônibus e hospedagem. Cada ocupante aparece com quanto pagou de hospedagem e quanto pagou de ônibus.
         </div>
         <div class="hero-badges">
-          <span class="badge" id="badge-passengers">👨‍👩‍👧‍👦 0 pessoas</span>
-          <span class="badge" id="badge-seats">🪑 0 poltronas</span>
-          <span class="badge" id="badge-bus">💳 Ônibus: 0%</span>
-          <span class="badge" id="badge-lodging">🏨 Hospedagem: 0%</span>
+          <span class="badge" id="badgePeople">👨‍👩‍👧‍👦 0 pessoas</span>
+          <span class="badge" id="badgeRooms">🏨 0 quartos</span>
+          <span class="badge" id="badgeBus">🚌 Ônibus: 0%</span>
+          <span class="badge" id="badgeDiff">🔀 0 divergências</span>
         </div>
       </div>
       <div class="hero-box">
         <strong>Arquivo esperado:</strong><br>
-        <code>viagem_familia_2027_unificado.csv</code>
-        <p class="muted small">Coloque o HTML e o CSV na mesma pasta. Se o navegador bloquear a leitura automática, use o seletor abaixo.</p>
+        <code>viagem_familia_2027_unificado_responsaveis.csv</code>
+        <p class="muted small">O HTML tenta carregar automaticamente o CSV na mesma pasta. Se o navegador bloquear, selecione o arquivo manualmente.</p>
         <div class="file-control">
           <input id="csvInput" type="file" accept=".csv,text/csv" />
           <span class="muted small" id="fileStatus">Tentando carregar automaticamente...</span>
@@ -81,147 +101,533 @@
 
   <div class="grid stats">
     <div class="card"><div class="stat-label">Pessoas no CSV</div><div class="stat-value" id="statPeople">0</div><div class="stat-note" id="statPeopleNote">—</div></div>
-    <div class="card"><div class="stat-label">Poltronas marcadas</div><div class="stat-value" id="statSeats">0</div><div class="stat-note" id="statSeatsNote">—</div></div>
-    <div class="card"><div class="stat-label">Ônibus pago</div><div class="stat-value mono" id="statBusPaid">R$ 0,00</div><div class="stat-note" id="statBusPercent">0% pago</div></div>
-    <div class="card"><div class="stat-label">Hospedagem paga</div><div class="stat-value mono" id="statLodgingPaid">R$ 0,00</div><div class="stat-note" id="statLodgingPercent">0% pago</div></div>
+    <div class="card"><div class="stat-label">Quartos Fortaleza</div><div class="stat-value" id="statRoomsFort">0</div><div class="stat-note" id="statRoomsFortNote">base financeira</div></div>
+    <div class="card"><div class="stat-label">Quartos João Pessoa</div><div class="stat-value" id="statRoomsJoao">0</div><div class="stat-note" id="statRoomsJoaoNote">configuração própria</div></div>
+    <div class="card"><div class="stat-label">Somente ônibus</div><div class="stat-value" id="statOnlyBus">0</div><div class="stat-note">sem quarto atribuído</div></div>
   </div>
 
   <section class="grid twocol">
     <div class="card">
-      <div class="section-head"><div><h2>Ônibus</h2><p>Pagamento calculado por pessoa a partir de parcelas pagas e valor individual.</p></div></div>
+      <div class="section-head"><div><h2>Resumo do ônibus</h2><p>Pagamento individual por passageiro.</p></div></div>
       <div class="totals">
         <div class="total-box"><div class="k">Pagantes</div><div class="v" id="busPayers">0</div></div>
-        <div class="total-box"><div class="k">Pagamento iniciado</div><div class="v" id="busStarted">0</div></div>
-        <div class="total-box"><div class="k">Quitados</div><div class="v" id="busFull">0</div></div>
+        <div class="total-box"><div class="k">Pago</div><div class="v mono" id="busPaid">R$ 0,00</div></div>
+        <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="busPlanned">R$ 0,00</div></div>
         <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="busPending">R$ 0,00</div></div>
       </div>
-      <div class="progress-wrap"><div class="progress-track"><div class="progress-fill bus" id="busProgress"></div></div><div class="progress-meta"><span id="busProgressLabel">0% pago</span><strong class="mono" id="busPlannedLabel">R$ 0,00 planejado</strong></div></div>
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill bus" id="busProgress"></div></div>
+        <div class="progress-meta"><span id="busProgressLabel">0% pago</span><strong id="busInstallmentsLabel">—</strong></div>
+      </div>
     </div>
+
     <div class="card">
-      <div class="section-head"><div><h2>Hospedagem</h2><p>Controle por pessoa. A soma dos campos <code>PagoPessoa*</code> compõe o total pago.</p></div></div>
+      <div class="section-head"><div><h2>Resumo da hospedagem</h2><p>Pagamento individual por ocupante, com totais agregados por quarto.</p></div></div>
       <div class="totals">
-        <div class="total-box"><div class="k">Pessoas com hospedagem</div><div class="v" id="lodgingPeople">0</div></div>
-        <div class="total-box"><div class="k">Com pagamento</div><div class="v" id="lodgingPeoplePaid">0</div></div>
-        <div class="total-box"><div class="k">Total previsto</div><div class="v mono" id="lodgingPlanned">R$ 0,00</div></div>
+        <div class="total-box"><div class="k">Pessoas com quarto</div><div class="v" id="lodgingPeople">0</div></div>
+        <div class="total-box"><div class="k">Pago</div><div class="v mono" id="lodgingPaid">R$ 0,00</div></div>
+        <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="lodgingPlanned">R$ 0,00</div></div>
         <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="lodgingPending">R$ 0,00</div></div>
       </div>
-      <div class="progress-wrap"><div class="progress-track"><div class="progress-fill" id="lodgingProgress"></div></div><div class="progress-meta"><span id="lodgingProgressLabel">0% pago</span><strong class="mono" id="lodgingPaidLabel">R$ 0,00 pago</strong></div></div>
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill" id="lodgingProgress"></div></div>
+        <div class="progress-meta"><span id="lodgingProgressLabel">0% pago</span><strong id="lodgingRoomsLabel">—</strong></div>
+      </div>
     </div>
   </section>
 
   <section class="card">
-    <div class="section-head"><div><h2>Mapa de assentos</h2><p>Poltronas preenchidas a partir da coluna <code>Poltrona</code> no CSV único.</p></div></div>
+    <div class="section-head">
+      <div>
+        <h2>Painel por quarto</h2>
+        <p>Base principal em Fortaleza, com ocupantes, pagamento individual de hospedagem e pagamento individual do ônibus. Quando a ocupação em João Pessoa é igual, o quarto correspondente aparece na mesma linha.</p>
+      </div>
+    </div>
+    <div class="summary-row" id="roomsSummary"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Quarto base</th>
+            <th>Ocupantes e pagamentos individuais</th>
+            <th>Quarto em João Pessoa</th>
+            <th>Totais do quarto</th>
+            <th>Situação</th>
+          </tr>
+        </thead>
+        <tbody id="mainRoomsBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-head">
+      <div>
+        <h2>Quartos diferentes entre Fortaleza e João Pessoa</h2>
+        <p>Quadro separado para quartos cuja composição de ocupantes não é a mesma nos dois destinos, inclusive pessoas com quarto só em um destino.</p>
+      </div>
+    </div>
+    <div class="summary-row" id="diffSummary"></div>
+    <div id="diffPanel"></div>
+  </section>
+
+  <section class="card">
+    <div class="section-head">
+      <div>
+        <h2>Somente ônibus / sem quarto atribuído</h2>
+        <p>Pessoas que aparecem no controle do ônibus, mas não têm quarto em Fortaleza nem em João Pessoa.</p>
+      </div>
+    </div>
+    <div id="onlyBusPanel"></div>
+  </section>
+
+  <section class="card">
+    <div class="section-head">
+      <div>
+        <h2>Mapa de assentos</h2>
+        <p>Poltronas marcadas no CSV único.</p>
+      </div>
+    </div>
     <div class="seat-layout">
       <div class="seat-board">
-        <div class="bus-deck"><div class="bus-deck-header"><span>Piso superior</span><span>Poltronas 1–44</span></div><div class="bus-shell"><div class="bus-front"><div class="windshield"></div><div class="driver-cabin"></div></div><div class="stair-core">Escada</div><div class="seat-zone"><div class="seat-block double" id="seat-grid-upper-left"></div><div class="aisle"></div><div class="seat-block double" id="seat-grid-upper-right"></div></div><div class="bus-tail"></div></div></div>
-        <div class="bus-deck"><div class="bus-deck-header"><span>Piso inferior</span><span>Poltronas 45–56</span></div><div class="bus-shell lower"><div class="lower-zone"><div class="seat-block double" id="seat-grid-lower-left"></div><div class="aisle"></div><div class="seat-block double" id="seat-grid-lower-right"></div></div><div class="bus-tail"></div></div></div>
+        <div class="bus-deck">
+          <div class="bus-deck-header"><span>Piso superior</span><span>Poltronas 1–44</span></div>
+          <div class="bus-shell">
+            <div class="bus-front"><div class="windshield" title="Frente do ônibus"></div><div class="driver-cabin" title="Cabine do motorista"></div></div>
+            <div class="stair-core">Escada</div>
+            <div class="seat-zone"><div class="seat-block double" id="seat-grid-upper-left"></div><div class="aisle"></div><div class="seat-block double" id="seat-grid-upper-right"></div></div>
+            <div class="bus-tail"></div>
+          </div>
+        </div>
+        <div class="bus-deck">
+          <div class="bus-deck-header"><span>Piso inferior</span><span>Poltronas 45–56</span></div>
+          <div class="bus-shell lower">
+            <div class="lower-zone"><div class="seat-block double" id="seat-grid-lower-left"></div><div class="aisle"></div><div class="seat-block double" id="seat-grid-lower-right"></div></div>
+            <div class="bus-tail"></div>
+          </div>
+        </div>
       </div>
       <div class="card" style="padding:12px">
-        <div class="section-head" style="margin-bottom:8px"><div><h2 style="font-size:1rem">Legenda</h2><p>Leitura automática do CSV</p></div></div>
-        <div class="summary-row" style="margin-bottom:12px"><div class="legend-item"><span class="legend-color"></span>Livre</div><div class="legend-item"><span class="legend-color occupied"></span>Ocupada</div></div>
-        <div class="helper" id="seatSummaryText">Nenhuma poltrona processada.</div>
+        <div class="section-head" style="margin-bottom:8px"><div><h2 style="font-size:1rem">Legenda</h2><p>Leitura automática da planilha</p></div></div>
+        <div class="summary-row" style="margin-bottom:12px">
+          <span class="legend-item"><span class="legend-color"></span>Livre</span>
+          <span class="legend-item"><span class="legend-color occupied"></span>Ocupada</span>
+        </div>
+        <div class="muted" id="seatSummaryText">Nenhuma poltrona processada.</div>
       </div>
     </div>
-  </section>
-
-  <section class="card">
-    <div class="section-head"><div><h2>Controle individual de pagamento da hospedagem</h2><p>Uma linha por pessoa. O saldo é calculado por pessoa e somado por família nos destinos.</p></div></div>
-    <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Fortaleza</th><th>João Pessoa</th><th>Total pessoa</th><th>Pago pessoa</th><th>Saldo pessoa</th><th>%</th></tr></thead><tbody id="individualLodgingBody"></tbody></table></div>
-  </section>
-
-  <section>
-    <div class="section-head"><div><h2>Hospedagem por destino</h2><p>Os quartos e famílias são independentes em Fortaleza e João Pessoa.</p></div></div>
-    <div class="grid twocol"><div class="card" id="fortalezaCard"></div><div class="card" id="joaoPessoaCard"></div></div>
-  </section>
-
-  <section class="card">
-    <div class="section-head"><div><h2>Passageiros e hospedagem consolidada</h2><p>Tabela completa do CSV único.</p></div></div>
-    <div class="summary-row" id="generalSummary"></div>
-    <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Perfil</th><th>Ônibus</th><th>Poltrona</th><th>Fortaleza</th><th>João Pessoa</th><th>Pago hospedagem</th><th>Saldo hospedagem</th></tr></thead><tbody id="peopleTableBody"></tbody></table></div>
   </section>
 
   <div class="footer-note">
-    Colunas aceitas no CSV único: <code>Nome</code>, <code>Categoria</code>, <code>ParcelasOnibus</code>, <code>ParcelasTotalOnibus</code>, <code>Poltrona</code>, <code>ValorOnibus</code>, <code>FamiliaFortaleza</code>, <code>QuartoFortaleza</code>, <code>HotelFortaleza</code>, <code>TotalPessoaFortaleza</code>, <code>PagoPessoaFortaleza</code>, <code>FamiliaJoaoPessoa</code>, <code>QuartoJoaoPessoa</code>, <code>HotelJoaoPessoa</code>, <code>TotalPessoaJoaoPessoa</code> e <code>PagoPessoaJoaoPessoa</code>.
+    Colunas lidas no CSV: <code>Nome</code>, <code>Categoria</code>, <code>ParcelasOnibus</code>, <code>ParcelasTotalOnibus</code>, <code>Poltrona</code>, <code>ValorOnibus</code>, <code>FamiliaFortaleza</code>, <code>QuartoFortaleza</code>, <code>HotelFortaleza</code>, <code>TotalPessoaFortaleza</code>, <code>PagoPessoaFortaleza</code>, <code>FamiliaJoaoPessoa</code>, <code>QuartoJoaoPessoa</code>, <code>HotelJoaoPessoa</code>, <code>TotalPessoaJoaoPessoa</code>, <code>PagoPessoaJoaoPessoa</code> e <code>Observacoes</code>.
   </div>
 </main>
 
 <script>
+const FILE_CANDIDATES = [
+  "viagem_familia_2027_unificado_responsaveis.csv",
+  "viagem_familia_2027_unificado.csv",
+  "viagem_familia_2027.csv",
+  "dados_viagem.csv",
+  "passageiros_hospedagem.csv"
+];
 const DEFAULT_BUS_VALUE = 1100;
 const DEFAULT_BUS_INSTALLMENTS = 10;
-const FILE_CANDIDATES = ["viagem_familia_2027_unificado.csv", "viagem_familia_2027.csv", "dados_viagem.csv", "passageiros_hospedagem.csv"];
 const state = { rows: [], source: "", issues: [] };
 
-function normalizeHeader(v){return String(v||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"");}
-function escapeHtml(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#39;");}
-function clamp(v,min,max){return Math.min(Math.max(v,min),max)}
-function parseBRL(value){if(value==null)return 0;let s=String(value).trim();if(!s)return 0;s=s.replace(/\s+/g,"").replace(/R\$/gi,"");if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");const n=Number(s);return Number.isFinite(n)?n:0;}
-function formatMoney(v){return (Number(v)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
-function pct(v){return `${Math.round(Number(v)||0)}%`;}
-function firstName(v){const s=String(v||"").trim();return s?s.split(/\s+/)[0]:"";}
-function get(row, names){for(const name of names){const k=normalizeHeader(name);if(Object.prototype.hasOwnProperty.call(row,k))return row[k];}return "";}
-function normalizeCategory(v){const s=String(v||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");if(s.includes("colo"))return "crianca_colo";if(s.includes("crianca"))return "crianca";return s||"adulto";}
-function profileLabel(cat){if(cat==="crianca_colo")return "Criança / colo";if(cat==="crianca")return "Criança";return "Adulto";}
-function parseDelimitedText(text){const clean=String(text||"").replace(/^\uFEFF/,"").trim();if(!clean)return [];const lines=clean.split(/\r?\n/).filter(x=>x.trim().length);if(!lines.length)return [];const delimiter=lines[0].includes(";")?";":",";const headers=lines[0].split(delimiter).map(normalizeHeader);return lines.slice(1).map(line=>{const cols=line.split(delimiter).map(c=>String(c??"").trim());const row={};headers.forEach((h,i)=>row[h]=cols[i]??"");return row;});}
-function normalizeRecord(raw){
-  const nome = get(raw,["Nome"]);
-  const categoria = normalizeCategory(get(raw,["Categoria"]));
-  const parcelas = Number(get(raw,["ParcelasOnibus","Parcelas"])) || 0;
-  const parcelasTotal = Number(get(raw,["ParcelasTotalOnibus","ParcelasTotal"])) || DEFAULT_BUS_INSTALLMENTS;
-  const poltrona = String(get(raw,["Poltrona","Assento"])).trim();
-  let valorOnibus = parseBRL(get(raw,["ValorOnibus","Valor ônibus","ValorPassagem"]));
-  if(!valorOnibus && categoria !== "crianca_colo" && (parcelas || poltrona)) valorOnibus = DEFAULT_BUS_VALUE;
+function normalizeHeader(v){
+  return String(v || "").replace(/^\uFEFF/, "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+}
+function normalizeText(v){
+  return String(v || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ");
+}
+function normalizeName(v){ return normalizeText(v).replace(/[^a-z0-9 ]/g, "").trim(); }
+function escapeHtml(v){ return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+function clamp(v,min,max){ return Math.min(Math.max(Number(v)||0,min),max); }
+function parseBRL(v){
+  if(v == null) return 0;
+  let s = String(v).trim();
+  if(!s) return 0;
+  s = s.replace(/R\$/gi, "").replace(/\s+/g, "").replace(/[lL](?=,)/g, "0");
+  if(s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+  const n = Number(s);
+  return Number.isFinite(n) ? n : 0;
+}
+function parseNumber(v){
+  const s = String(v ?? "").replace(/[^0-9,.-]/g, "").replace(",", ".");
+  const n = Number(s);
+  return Number.isFinite(n) ? n : 0;
+}
+function formatMoney(v){ return (Number(v)||0).toLocaleString("pt-BR", {style:"currency", currency:"BRL"}); }
+function pct(v){ return `${Math.round(Number(v)||0)}%`; }
+function firstName(full){ const s=String(full||"").trim(); return s ? s.split(/\s+/)[0] : ""; }
+function setProgress(id, value){ document.getElementById(id).style.width = `${clamp(value,0,100)}%`; }
+
+function splitCsvLine(line, delimiter){
+  const out=[]; let cur=""; let quoted=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(ch==='"'){
+      if(quoted && line[i+1]==='"'){ cur+='"'; i++; }
+      else quoted=!quoted;
+    }else if(ch===delimiter && !quoted){ out.push(cur); cur=""; }
+    else cur+=ch;
+  }
+  out.push(cur);
+  return out;
+}
+function parseDelimitedText(text){
+  const clean = String(text || "").replace(/^\uFEFF/, "").trim();
+  if(!clean) return [];
+  const lines = clean.split(/\r?\n/).filter(line => line.trim() !== "");
+  if(!lines.length) return [];
+  const delimiter = lines[0].includes(";") ? ";" : ",";
+  const headers = splitCsvLine(lines[0], delimiter).map(normalizeHeader);
+  return lines.slice(1).map(line => {
+    const cols = splitCsvLine(line, delimiter).map(c => String(c ?? "").trim());
+    const row = {};
+    headers.forEach((h,i)=>row[h]=cols[i] ?? "");
+    return row;
+  });
+}
+function get(row, ...names){
+  for(const name of names){
+    const key = normalizeHeader(name);
+    if(row[key] != null && String(row[key]).trim() !== "") return row[key];
+  }
+  return "";
+}
+function profileLabel(cat){
+  const v = normalizeText(cat).replace(/[\s\-\/]+/g,"_");
+  if(v === "crianca_colo") return "Criança de colo";
+  if(v.includes("crianca")) return "Criança";
+  return "Adulto";
+}
+function normalizeCategory(cat){
+  const v = normalizeText(cat).replace(/[\s\-\/]+/g,"_");
+  if(v === "crianca_colo") return "crianca_colo";
+  if(v.includes("crianca")) return "crianca";
+  return "adulto";
+}
+function normalizeRecord(row){
+  const categoria = normalizeCategory(get(row,"Categoria"));
+  let parcelasTotal = parseNumber(get(row,"ParcelasTotalOnibus","ParcelasTotal")) || DEFAULT_BUS_INSTALLMENTS;
+  let valorOnibus = parseBRL(get(row,"ValorOnibus","Valor ônibus","ValorPassagem"));
+  if(!valorOnibus && categoria !== "crianca_colo") valorOnibus = DEFAULT_BUS_VALUE;
   if(categoria === "crianca_colo") valorOnibus = 0;
-  const totalFortaleza = parseBRL(get(raw,["TotalPessoaFortaleza","TotalFortaleza"]));
-  const pagoFortaleza = parseBRL(get(raw,["PagoPessoaFortaleza","PagoFortaleza"]));
-  const totalJoao = parseBRL(get(raw,["TotalPessoaJoaoPessoa","TotalPessoaJoãoPessoa","TotalJoaoPessoa"]));
-  const pagoJoao = parseBRL(get(raw,["PagoPessoaJoaoPessoa","PagoPessoaJoãoPessoa","PagoJoaoPessoa"]));
   return {
-    nome,categoria,parcelas,parcelasTotal,poltrona,valorOnibus,
-    familiaFortaleza:get(raw,["FamiliaFortaleza","FamíliaFortaleza"]),quartoFortaleza:get(raw,["QuartoFortaleza"]),hotelFortaleza:get(raw,["HotelFortaleza"]),totalFortaleza,pagoFortaleza,
-    familiaJoao:get(raw,["FamiliaJoaoPessoa","FamíliaJoaoPessoa","FamiliaJoãoPessoa"]),quartoJoao:get(raw,["QuartoJoaoPessoa","QuartoJoãoPessoa"]),hotelJoao:get(raw,["HotelJoaoPessoa","HotelJoãoPessoa"]),totalJoao,pagoJoao,
-    observacoes:get(raw,["Observacoes","Observações"])
+    nome: get(row,"Nome"),
+    nomeKey: normalizeName(get(row,"Nome")),
+    categoria,
+    parcelas: parseNumber(get(row,"ParcelasOnibus","Parcelas","ParcelasPagasOnibus")),
+    parcelasTotal: Math.max(1, parcelasTotal),
+    poltrona: String(get(row,"Poltrona","Assento") || "").trim(),
+    valorOnibus,
+    familiaFortaleza: String(get(row,"FamiliaFortaleza","FamíliaFortaleza") || "").trim(),
+    quartoFortaleza: String(get(row,"QuartoFortaleza") || "").trim(),
+    hotelFortaleza: String(get(row,"HotelFortaleza") || "").trim(),
+    totalFortaleza: parseBRL(get(row,"TotalPessoaFortaleza")),
+    pagoFortaleza: parseBRL(get(row,"PagoPessoaFortaleza")),
+    familiaJoao: String(get(row,"FamiliaJoaoPessoa","FamiliaJoãoPessoa","FamíliaJoaoPessoa","FamíliaJoãoPessoa") || "").trim(),
+    quartoJoao: String(get(row,"QuartoJoaoPessoa","QuartoJoãoPessoa") || "").trim(),
+    hotelJoao: String(get(row,"HotelJoaoPessoa","HotelJoãoPessoa") || "").trim(),
+    totalJoao: parseBRL(get(row,"TotalPessoaJoaoPessoa","TotalPessoaJoãoPessoa")),
+    pagoJoao: parseBRL(get(row,"PagoPessoaJoaoPessoa","PagoPessoaJoãoPessoa")),
+    observacoes: String(get(row,"Observacoes","Observações") || "").trim()
   };
 }
-async function fetchFirstAvailable(){let lastError=null;for(const path of FILE_CANDIDATES){try{const res=await fetch(path,{cache:"no-store"});if(res.ok)return {path,text:await res.text()};lastError=new Error(`${path}: ${res.status}`);}catch(err){lastError=err;}}return {path:"",text:"",error:lastError};}
-function renderAlerts(){const items=[...state.issues];document.getElementById("alertBox").innerHTML=items.length?`<div class="alert"><strong>Atenção:</strong><ul>${items.map(i=>`<li>${escapeHtml(i)}</li>`).join("")}</ul></div>`:"";}
-function setProgress(id,value){document.getElementById(id).style.width=`${clamp(Math.round(value),0,100)}%`;}
+function busPaid(p){ return (p.valorOnibus || 0) * clamp((p.parcelas||0)/(p.parcelasTotal||DEFAULT_BUS_INSTALLMENTS),0,1); }
+function hasFortaleza(p){ return Boolean(p.familiaFortaleza || p.quartoFortaleza || p.hotelFortaleza || p.totalFortaleza || p.pagoFortaleza); }
+function hasJoao(p){ return Boolean(p.familiaJoao || p.quartoJoao || p.hotelJoao || p.totalJoao || p.pagoJoao); }
+function hasAnyRoom(p){ return hasFortaleza(p) || hasJoao(p); }
+function roomLabel(room){
+  if(!room) return "—";
+  return `${room.familia || "Sem família"} • ${room.quarto || "Quarto não informado"}${room.hotel ? " • " + room.hotel : ""}`;
+}
+function personLocation(p, dest){
+  if(dest === "fortaleza") return hasFortaleza(p) ? `${p.familiaFortaleza || "Sem família"} • ${p.quartoFortaleza || "quarto não informado"}` : "sem quarto em Fortaleza";
+  return hasJoao(p) ? `${p.familiaJoao || "Sem família"} • ${p.quartoJoao || "quarto não informado"}` : "sem quarto em João Pessoa";
+}
+function roomSignature(room){ return room.people.map(p=>p.nomeKey).sort().join("|"); }
+function sameSet(a,b){ return a && b && roomSignature(a) === roomSignature(b); }
+function sortNatural(a,b){ return String(a).localeCompare(String(b), "pt-BR", {numeric:true, sensitivity:"base"}); }
+
+async function fetchFirstAvailable(){
+  for(const path of FILE_CANDIDATES){
+    try{
+      const res = await fetch(path, {cache:"no-store"});
+      if(res.ok) return {path, text: await res.text()};
+    }catch(e){}
+  }
+  return {path:null, text:""};
+}
+function groupRooms(dest){
+  const groups = new Map();
+  const isF = dest === "fortaleza";
+  state.rows.forEach(p => {
+    const has = isF ? hasFortaleza(p) : hasJoao(p);
+    if(!has) return;
+    const fam = isF ? p.familiaFortaleza : p.familiaJoao;
+    const quarto = isF ? p.quartoFortaleza : p.quartoJoao;
+    const hotel = isF ? p.hotelFortaleza : p.hotelJoao;
+    const key = fam || `${hotel || "hotel"}|${quarto || "quarto"}|${p.nomeKey}`;
+    if(!groups.has(key)) groups.set(key, {dest, key, familia:fam, quarto, hotel, people:[], total:0, paid:0, busPaid:0, busPlanned:0});
+    const g = groups.get(key);
+    g.people.push(p);
+    if(!g.quarto && quarto) g.quarto = quarto;
+    if(!g.hotel && hotel) g.hotel = hotel;
+    if(isF){ g.total += p.totalFortaleza || 0; g.paid += p.pagoFortaleza || 0; }
+    else { g.total += p.totalJoao || 0; g.paid += p.pagoJoao || 0; }
+    g.busPaid += busPaid(p);
+    g.busPlanned += p.valorOnibus || 0;
+  });
+  return Array.from(groups.values()).map(g => {
+    g.people.sort((a,b)=>sortNatural(a.nome,b.nome));
+    g.signature = roomSignature(g);
+    g.saldo = Math.max(g.total - g.paid, 0);
+    g.pct = g.total ? g.paid / g.total * 100 : 0;
+    return g;
+  }).sort((a,b)=>sortNatural(a.familia || a.key, b.familia || b.key));
+}
+function buildRoomData(){
+  const fortaleza = groupRooms("fortaleza");
+  const joao = groupRooms("joao");
+  const joaoBySig = new Map();
+  const fortBySig = new Map();
+  joao.forEach(r => { if(!joaoBySig.has(r.signature)) joaoBySig.set(r.signature, []); joaoBySig.get(r.signature).push(r); });
+  fortaleza.forEach(r => { if(!fortBySig.has(r.signature)) fortBySig.set(r.signature, []); fortBySig.get(r.signature).push(r); });
+  fortaleza.forEach(r => { r.match = (joaoBySig.get(r.signature) || [])[0] || null; r.isMatched = Boolean(r.match); });
+  joao.forEach(r => { r.match = (fortBySig.get(r.signature) || [])[0] || null; r.isMatched = Boolean(r.match); });
+  return { fortaleza, joao, matchedFort: fortaleza.filter(r=>r.isMatched), unmatchedFort: fortaleza.filter(r=>!r.isMatched), unmatchedJoao: joao.filter(r=>!r.isMatched) };
+}
 function summarize(){
   const people = state.rows;
-  const withSeat = people.filter(p=>p.poltrona && p.categoria !== "crianca_colo");
-  const busPayers = people.filter(p=>p.valorOnibus>0);
+  const busPayers = people.filter(p => (p.valorOnibus || 0) > 0);
   const busPlanned = busPayers.reduce((s,p)=>s+p.valorOnibus,0);
-  const busPaid = busPayers.reduce((s,p)=>s+p.valorOnibus*clamp(p.parcelas/p.parcelasTotal,0,1),0);
-  const lodgingRows = people.filter(p=>(p.totalFortaleza+p.totalJoao)>0 || p.familiaFortaleza || p.familiaJoao);
+  const busPaidTotal = busPayers.reduce((s,p)=>s+busPaid(p),0);
+  const lodgingPeople = people.filter(hasAnyRoom);
   const lodgingPlanned = people.reduce((s,p)=>s+p.totalFortaleza+p.totalJoao,0);
   const lodgingPaid = people.reduce((s,p)=>s+p.pagoFortaleza+p.pagoJoao,0);
-  return {people,withSeat,busPayers,busPlanned,busPaid,busPending:Math.max(busPlanned-busPaid,0),busPct:busPlanned?busPaid/busPlanned*100:0,busStarted:busPayers.filter(p=>p.parcelas>0).length,busFull:busPayers.filter(p=>p.parcelas>=p.parcelasTotal).length,lodgingRows,lodgingPlanned,lodgingPaid,lodgingPending:Math.max(lodgingPlanned-lodgingPaid,0),lodgingPct:lodgingPlanned?lodgingPaid/lodgingPlanned*100:0};
+  const rooms = buildRoomData();
+  const onlyBus = people.filter(p => !hasAnyRoom(p) && ((p.valorOnibus||0)>0 || p.parcelas>0 || p.poltrona));
+  return { people, busPayers, busPlanned, busPaidTotal, busPending:Math.max(busPlanned-busPaidTotal,0), busPct:busPlanned?busPaidTotal/busPlanned*100:0, lodgingPeople, lodgingPlanned, lodgingPaid, lodgingPending:Math.max(lodgingPlanned-lodgingPaid,0), lodgingPct:lodgingPlanned?lodgingPaid/lodgingPlanned*100:0, rooms, onlyBus };
 }
-function renderStats(){const s=summarize();
-  document.getElementById("statPeople").textContent=s.people.length;document.getElementById("statPeopleNote").textContent=state.source||"arquivo não carregado";document.getElementById("statSeats").textContent=s.withSeat.length;document.getElementById("statSeatsNote").textContent=`${s.withSeat.length} marcadas • ${s.people.filter(p=>p.categoria==="crianca_colo").length} no colo`;
-  document.getElementById("badge-passengers").textContent=`👨‍👩‍👧‍👦 ${s.people.length} pessoas`;document.getElementById("badge-seats").textContent=`🪑 ${s.withSeat.length} poltronas`;document.getElementById("badge-bus").textContent=`💳 Ônibus: ${pct(s.busPct)}`;document.getElementById("badge-lodging").textContent=`🏨 Hospedagem: ${pct(s.lodgingPct)}`;
-  document.getElementById("statBusPaid").textContent=formatMoney(s.busPaid);document.getElementById("statBusPercent").textContent=`${pct(s.busPct)} pago`;document.getElementById("busPayers").textContent=s.busPayers.length;document.getElementById("busStarted").textContent=s.busStarted;document.getElementById("busFull").textContent=s.busFull;document.getElementById("busPending").textContent=formatMoney(s.busPending);setProgress("busProgress",s.busPct);document.getElementById("busProgressLabel").textContent=`${pct(s.busPct)} do valor planejado pago`;document.getElementById("busPlannedLabel").textContent=`${formatMoney(s.busPlanned)} planejado`;
-  document.getElementById("statLodgingPaid").textContent=formatMoney(s.lodgingPaid);document.getElementById("statLodgingPercent").textContent=`${pct(s.lodgingPct)} pago`;document.getElementById("lodgingPeople").textContent=s.lodgingRows.length;document.getElementById("lodgingPeoplePaid").textContent=s.people.filter(p=>p.pagoFortaleza+p.pagoJoao>0).length;document.getElementById("lodgingPlanned").textContent=formatMoney(s.lodgingPlanned);document.getElementById("lodgingPending").textContent=formatMoney(s.lodgingPending);setProgress("lodgingProgress",s.lodgingPct);document.getElementById("lodgingProgressLabel").textContent=`${pct(s.lodgingPct)} pago`;document.getElementById("lodgingPaidLabel").textContent=`${formatMoney(s.lodgingPaid)} pago`;
-  document.getElementById("generalSummary").innerHTML=[`${s.people.length} pessoas`,`${s.busPayers.length} pagantes no ônibus`,`${s.lodgingRows.length} com hospedagem`,`${formatMoney(s.lodgingPending)} saldo hospedagem`].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
-  document.getElementById("seatSummaryText").textContent=`${s.withSeat.length} poltronas marcadas no CSV. Crianças no colo não entram como poltrona paga.`;
+function renderAlerts(){
+  const el = document.getElementById("alertBox");
+  el.innerHTML = state.issues.length ? `<div class="alert"><strong>Atenção:</strong><ul>${state.issues.map(i=>`<li>${escapeHtml(i)}</li>`).join("")}</ul></div>` : "";
 }
-function groupDestination(dest){
-  const isF=dest==="fortaleza";const groups=new Map();
-  state.rows.forEach(p=>{const fam=isF?p.familiaFortaleza:p.familiaJoao;if(!fam)return;const key=fam.trim();if(!groups.has(key))groups.set(key,{familia:key,quarto:isF?p.quartoFortaleza:p.quartoJoao,hotel:isF?p.hotelFortaleza:p.hotelJoao,guests:[],total:0,pago:0});const g=groups.get(key);g.guests.push(p.nome);if(!g.quarto)g.quarto=isF?p.quartoFortaleza:p.quartoJoao;if(!g.hotel)g.hotel=isF?p.hotelFortaleza:p.hotelJoao;g.total+=isF?p.totalFortaleza:p.totalJoao;g.pago+=isF?p.pagoFortaleza:p.pagoJoao;});
-  return Array.from(groups.values()).sort((a,b)=>a.familia.localeCompare(b.familia,"pt-BR",{numeric:true})).map(g=>({...g,saldo:Math.max(g.total-g.pago,0),pct:g.total?g.pago/g.total*100:0}));
+function renderStats(){
+  const s = summarize();
+  const seatCount = state.rows.filter(p => p.poltrona && p.categoria !== "crianca_colo").length;
+  const diffCount = s.rooms.unmatchedFort.length + s.rooms.unmatchedJoao.length;
+  document.getElementById("statPeople").textContent = s.people.length;
+  document.getElementById("statPeopleNote").textContent = state.source || "arquivo não carregado";
+  document.getElementById("statRoomsFort").textContent = s.rooms.fortaleza.length;
+  document.getElementById("statRoomsJoao").textContent = s.rooms.joao.length;
+  document.getElementById("statOnlyBus").textContent = s.onlyBus.length;
+  document.getElementById("badgePeople").textContent = `👨‍👩‍👧‍👦 ${s.people.length} pessoas`;
+  document.getElementById("badgeRooms").textContent = `🏨 ${s.rooms.fortaleza.length} quartos Fortaleza`;
+  document.getElementById("badgeBus").textContent = `🚌 Ônibus: ${pct(s.busPct)}`;
+  document.getElementById("badgeDiff").textContent = `🔀 ${diffCount} divergências`;
+
+  document.getElementById("busPayers").textContent = s.busPayers.length;
+  document.getElementById("busPaid").textContent = formatMoney(s.busPaidTotal);
+  document.getElementById("busPlanned").textContent = formatMoney(s.busPlanned);
+  document.getElementById("busPending").textContent = formatMoney(s.busPending);
+  setProgress("busProgress", s.busPct);
+  document.getElementById("busProgressLabel").textContent = `${pct(s.busPct)} do valor planejado pago`;
+  document.getElementById("busInstallmentsLabel").textContent = `${seatCount} poltronas marcadas`;
+
+  document.getElementById("lodgingPeople").textContent = s.lodgingPeople.length;
+  document.getElementById("lodgingPaid").textContent = formatMoney(s.lodgingPaid);
+  document.getElementById("lodgingPlanned").textContent = formatMoney(s.lodgingPlanned);
+  document.getElementById("lodgingPending").textContent = formatMoney(s.lodgingPending);
+  setProgress("lodgingProgress", s.lodgingPct);
+  document.getElementById("lodgingProgressLabel").textContent = `${pct(s.lodgingPct)} do total previsto pago`;
+  document.getElementById("lodgingRoomsLabel").textContent = `${s.rooms.fortaleza.length} quartos Fortaleza • ${s.rooms.joao.length} quartos João Pessoa`;
 }
-function renderDestination(cardId,title,dest){const groups=groupDestination(dest);const totals=groups.reduce((a,g)=>{a.total+=g.total;a.pago+=g.pago;a.guests+=g.guests.length;return a;},{total:0,pago:0,guests:0});const pctVal=totals.total?totals.pago/totals.total*100:0;let html=`<div class="section-head"><div><h2>${escapeHtml(title)}</h2><p>Configuração específica de quartos para este destino.</p></div></div><div class="summary-row"><span class="summary-pill">${groups.length} quartos/grupos</span><span class="summary-pill">${totals.guests} hóspedes</span><span class="summary-pill">${formatMoney(totals.total)} previsto</span><span class="summary-pill">${pct(pctVal)} pago</span></div>`;if(!groups.length){html+=`<div class="empty">Nenhum dado de hospedagem encontrado.</div>`;}else{html+=`<div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Família</th><th>Hóspedes</th><th>Quarto</th><th>Hotel</th><th>Total</th><th>Pago</th><th>Saldo</th><th>%</th></tr></thead><tbody>${groups.map(g=>`<tr><td>${escapeHtml(g.familia)}</td><td><div class="room-names">${g.guests.map(n=>`<div>${escapeHtml(n)}</div>`).join("")}</div></td><td>${escapeHtml(g.quarto||"—")}</td><td>${escapeHtml(g.hotel||"—")}</td><td class="mono">${g.total?formatMoney(g.total):"—"}</td><td class="mono">${g.pago?formatMoney(g.pago):"—"}</td><td class="mono">${g.total?formatMoney(g.saldo):"—"}</td><td>${g.total?`<span class="chip ${g.saldo<=0?'ok':'warn'}">${pct(g.pct)}</span>`:"—"}</td></tr>`).join("")}</tbody></table></div>`;}document.getElementById(cardId).innerHTML=html;}
-function renderIndividualLodging(){const rows=state.rows.filter(p=>p.familiaFortaleza||p.familiaJoao||p.totalFortaleza+p.totalJoao>0).sort((a,b)=>a.nome.localeCompare(b.nome,"pt-BR"));document.getElementById("individualLodgingBody").innerHTML=rows.length?rows.map(p=>{const total=p.totalFortaleza+p.totalJoao;const paid=p.pagoFortaleza+p.pagoJoao;const saldo=Math.max(total-paid,0);const pc=total?paid/total*100:0;return `<tr><td>${escapeHtml(p.nome)}</td><td>${p.familiaFortaleza?`${escapeHtml(p.familiaFortaleza)} • ${escapeHtml(p.quartoFortaleza||"—")}<br><span class="mono">${formatMoney(p.pagoFortaleza)} / ${formatMoney(p.totalFortaleza)}</span>`:"—"}</td><td>${p.familiaJoao?`${escapeHtml(p.familiaJoao)} • ${escapeHtml(p.quartoJoao||"—")}<br><span class="mono">${p.totalJoao?formatMoney(p.pagoJoao)+" / "+formatMoney(p.totalJoao):"sem valor informado"}</span>`:"—"}</td><td class="mono">${formatMoney(total)}</td><td class="mono">${formatMoney(paid)}</td><td class="mono">${formatMoney(saldo)}</td><td>${total?`<span class="chip ${saldo<=0?'ok':'warn'}">${pct(pc)}</span>`:"—"}</td></tr>`;}).join(""):`<tr><td colspan="7"><div class="empty">Nenhum dado de hospedagem encontrado.</div></td></tr>`;}
-function renderPeopleTable(){const rows=[...state.rows].sort((a,b)=>a.nome.localeCompare(b.nome,"pt-BR"));document.getElementById("peopleTableBody").innerHTML=rows.map(p=>{const busPaid=p.valorOnibus*clamp(p.parcelas/p.parcelasTotal,0,1);const total=p.totalFortaleza+p.totalJoao;const paid=p.pagoFortaleza+p.pagoJoao;const saldo=Math.max(total-paid,0);return `<tr><td>${escapeHtml(p.nome)}${p.observacoes?`<br><span class="muted small">${escapeHtml(p.observacoes)}</span>`:""}</td><td>${escapeHtml(profileLabel(p.categoria))}</td><td class="mono">${p.valorOnibus?`${p.parcelas}/${p.parcelasTotal}<br>${formatMoney(busPaid)} / ${formatMoney(p.valorOnibus)}`:"—"}</td><td>${p.categoria==="crianca_colo"?"No colo":(p.poltrona?`Poltrona ${escapeHtml(p.poltrona)}`:"Não definida")}</td><td>${p.familiaFortaleza?`${escapeHtml(p.familiaFortaleza)} • ${escapeHtml(p.quartoFortaleza||"—")}`:"—"}</td><td>${p.familiaJoao?`${escapeHtml(p.familiaJoao)} • ${escapeHtml(p.quartoJoao||"—")}`:"—"}</td><td class="mono">${total?formatMoney(paid):"—"}</td><td class="mono">${total?formatMoney(saldo):"—"}</td></tr>`;}).join("");}
-const upperLayout=[[1,2,null,4,3],[5,6,null,8,7],[9,10,null,12,11],[13,14,null,null,null],[15,16,null,null,null],[17,18,null,20,19],[21,22,null,24,23],[25,26,null,28,27],[29,30,null,32,31],[33,34,null,36,35],[37,38,null,40,39],[41,42,null,44,43]];
-const lowerLayout=[[45,46,null,48,47],[49,50,null,52,51],[53,54,null,56,55]];
-function passengerBySeat(seat){return state.rows.find(p=>String(p.poltrona)===String(seat)&&p.categoria!=="crianca_colo");}
-function createSeat(seat){const el=document.createElement("div");el.className="seat";const p=passengerBySeat(seat);el.innerHTML=`<div class="seat-number">${seat}</div>`;if(p){el.classList.add("occupied");el.title=`Ocupado por ${p.nome}`;const n=document.createElement("div");n.className="seat-name";n.textContent=firstName(p.nome);el.appendChild(n);}else{el.title="Livre";}return el;}
-function fillLayout(layout,leftId,rightId){const left=document.getElementById(leftId),right=document.getElementById(rightId);left.innerHTML="";right.innerHTML="";layout.forEach(row=>{[row[0],row[1]].forEach(cell=>{const e=cell==null?document.createElement("div"):createSeat(cell);if(cell==null)e.className="seat-gap";left.appendChild(e);});[row[3],row[4]].forEach(cell=>{const e=cell==null?document.createElement("div"):createSeat(cell);if(cell==null)e.className="seat-gap";right.appendChild(e);});});}
-function renderSeats(){fillLayout(upperLayout,"seat-grid-upper-left","seat-grid-upper-right");fillLayout(lowerLayout,"seat-grid-lower-left","seat-grid-lower-right");}
-function renderAll(){renderAlerts();renderStats();renderSeats();renderIndividualLodging();renderDestination("fortalezaCard","Fortaleza","fortaleza");renderDestination("joaoPessoaCard","João Pessoa","joao");renderPeopleTable();}
-function loadText(text,source){const raw=parseDelimitedText(text);state.rows=raw.map(normalizeRecord).filter(r=>r.nome);state.source=source;state.issues=[];if(!state.rows.length)state.issues.push("O CSV foi carregado, mas nenhuma linha com nome foi encontrada.");document.getElementById("fileStatus").textContent=state.rows.length?`Carregado: ${source}`:"Arquivo sem dados reconhecidos";renderAll();}
-document.getElementById("csvInput").addEventListener("change",async e=>{const file=e.target.files?.[0];if(!file)return;loadText(await file.text(),file.name);});
-document.addEventListener("DOMContentLoaded",async()=>{const res=await fetchFirstAvailable();if(res.text){loadText(res.text,res.path);}else{state.issues.push("Não consegui carregar automaticamente o CSV único. Selecione o arquivo manualmente acima.");document.getElementById("fileStatus").textContent="Carregue o CSV manualmente";renderAll();}});
+function occupantHtml(p){
+  const totalHosp = p.totalFortaleza + p.totalJoao;
+  const paidHosp = p.pagoFortaleza + p.pagoJoao;
+  const bPaid = busPaid(p);
+  return `<div class="occupant">
+    <div class="occupant-top">
+      <span class="occupant-name">${escapeHtml(p.nome)}</span>
+      <span class="muted small">${escapeHtml(profileLabel(p.categoria))}${p.poltrona ? ` • poltrona ${escapeHtml(p.poltrona)}` : ""}</span>
+    </div>
+    <div class="pay-row">
+      <span class="chip ${totalHosp && paidHosp>=totalHosp ? 'ok' : (totalHosp ? 'warn' : 'info')}">Hospedagem: ${formatMoney(paidHosp)} / ${formatMoney(totalHosp)}</span>
+      <span class="chip info">Ônibus: ${formatMoney(bPaid)} / ${formatMoney(p.valorOnibus || 0)} (${p.valorOnibus ? `${p.parcelas}/${p.parcelasTotal}` : "sem cobrança"})</span>
+      ${p.observacoes ? `<span class="chip">${escapeHtml(p.observacoes)}</span>` : ""}
+    </div>
+  </div>`;
+}
+function simplePeopleHtml(people, otherDest){
+  return `<div class="room-names">${people.map(p => `<div>${escapeHtml(p.nome)}<br><span class="muted small">${escapeHtml(personLocation(p, otherDest))}</span><br><span class="mono small">Hosp. ${formatMoney(p.pagoFortaleza+p.pagoJoao)} / ${formatMoney(p.totalFortaleza+p.totalJoao)} • Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus)}</span></div>`).join("")}</div>`;
+}
+function otherJoaoLabelsForFortRoom(room){
+  const labels = Array.from(new Set(room.people.map(p => personLocation(p,"joao"))));
+  return labels.sort(sortNatural);
+}
+function renderMainRooms(){
+  const {rooms} = summarize();
+  const tbody = document.getElementById("mainRoomsBody");
+  document.getElementById("roomsSummary").innerHTML = [
+    `${rooms.fortaleza.length} quartos de Fortaleza`,
+    `${rooms.matchedFort.length} com mesma ocupação em João Pessoa`,
+    `${rooms.unmatchedFort.length} com ocupação diferente`,
+    `${formatMoney(rooms.fortaleza.reduce((s,r)=>s+r.paid,0))} pago em hospedagem`
+  ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
+
+  if(!rooms.fortaleza.length){
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty">Nenhum quarto de Fortaleza encontrado no CSV.</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rooms.fortaleza.map(room => {
+    const joaoText = room.isMatched
+      ? `<strong>${escapeHtml(roomLabel(room.match))}</strong><br><span class="chip ok">mesmos ocupantes</span>`
+      : `<span class="chip warn">ver quadro de diferenças</span><div class="loc-list" style="margin-top:6px">${otherJoaoLabelsForFortRoom(room).map(l=>`<span class="small">${escapeHtml(l)}</span>`).join("")}</div>`;
+    const totalBus = room.people.reduce((s,p)=>s+p.valorOnibus,0);
+    const paidBus = room.people.reduce((s,p)=>s+busPaid(p),0);
+    return `<tr>
+      <td><strong>${escapeHtml(roomLabel(room))}</strong><br><span class="muted small">${room.people.length} ocupante(s)</span></td>
+      <td><div class="occupant-list">${room.people.map(occupantHtml).join("")}</div></td>
+      <td>${joaoText}</td>
+      <td class="mono">
+        Hospedagem: <strong>${formatMoney(room.paid)}</strong> / ${formatMoney(room.total)}<br>
+        Saldo hospedagem: ${formatMoney(room.saldo)}<br>
+        Ônibus: <strong>${formatMoney(paidBus)}</strong> / ${formatMoney(totalBus)}
+      </td>
+      <td>${room.isMatched ? `<span class="chip ok">ocupação igual</span>` : `<span class="chip warn">ocupação diferente</span>`}</td>
+    </tr>`;
+  }).join("");
+}
+function renderDiffPanel(){
+  const {rooms} = summarize();
+  const diffCount = rooms.unmatchedFort.length + rooms.unmatchedJoao.length;
+  document.getElementById("diffSummary").innerHTML = [
+    `${rooms.unmatchedFort.length} quarto(s) de Fortaleza sem correspondência exata`,
+    `${rooms.unmatchedJoao.length} quarto(s) de João Pessoa sem correspondência exata`,
+    `${diffCount} registro(s) de divergência`
+  ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
+
+  if(!diffCount){
+    document.getElementById("diffPanel").innerHTML = `<div class="empty">Todos os quartos têm a mesma composição de ocupantes nos dois destinos.</div>`;
+    return;
+  }
+
+  const fortRows = rooms.unmatchedFort.length ? rooms.unmatchedFort.map(room => `<tr>
+    <td><strong>${escapeHtml(roomLabel(room))}</strong><br><span class="muted small">${room.people.length} ocupante(s)</span></td>
+    <td>${simplePeopleHtml(room.people,"joao")}</td>
+    <td class="mono">Hosp. ${formatMoney(room.paid)} / ${formatMoney(room.total)}<br>Saldo ${formatMoney(room.saldo)}</td>
+  </tr>`).join("") : `<tr><td colspan="3"><div class="empty">Sem divergências partindo de Fortaleza.</div></td></tr>`;
+
+  const joaoRows = rooms.unmatchedJoao.length ? rooms.unmatchedJoao.map(room => `<tr>
+    <td><strong>${escapeHtml(roomLabel(room))}</strong><br><span class="muted small">${room.people.length} ocupante(s)</span></td>
+    <td>${simplePeopleHtml(room.people,"fortaleza")}</td>
+    <td class="mono">Hosp. individual registrada: ${formatMoney(room.people.reduce((s,p)=>s+p.pagoFortaleza+p.pagoJoao,0))}<br>Ônibus pago: ${formatMoney(room.people.reduce((s,p)=>s+busPaid(p),0))}</td>
+  </tr>`).join("") : `<tr><td colspan="3"><div class="empty">Sem divergências partindo de João Pessoa.</div></td></tr>`;
+
+  document.getElementById("diffPanel").innerHTML = `<div class="split-panel">
+    <div>
+      <h3 style="margin:0 0 8px;font-size:1rem">Fortaleza sem correspondência exata</h3>
+      <div class="table-wrap"><table class="mini-table"><thead><tr><th>Quarto</th><th>Ocupantes e localização em João Pessoa</th><th>Totais</th></tr></thead><tbody>${fortRows}</tbody></table></div>
+    </div>
+    <div>
+      <h3 style="margin:0 0 8px;font-size:1rem">João Pessoa sem correspondência exata</h3>
+      <div class="table-wrap"><table class="mini-table"><thead><tr><th>Quarto</th><th>Ocupantes e localização em Fortaleza</th><th>Pagamentos</th></tr></thead><tbody>${joaoRows}</tbody></table></div>
+    </div>
+  </div>`;
+}
+function renderOnlyBus(){
+  const {onlyBus} = summarize();
+  const el = document.getElementById("onlyBusPanel");
+  if(!onlyBus.length){
+    el.innerHTML = `<div class="empty">Nenhuma pessoa está apenas no ônibus sem quarto atribuído.</div>`;
+    return;
+  }
+  el.innerHTML = onlyBus.sort((a,b)=>sortNatural(a.nome,b.nome)).map(p => `<div class="onlybus">
+    <div class="occupant-top"><span class="occupant-name">${escapeHtml(p.nome)}</span><span class="muted small">${escapeHtml(profileLabel(p.categoria))}${p.poltrona ? ` • poltrona ${escapeHtml(p.poltrona)}` : ""}</span></div>
+    <div class="pay-row">
+      <span class="chip info">Ônibus: ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)} (${p.valorOnibus ? `${p.parcelas}/${p.parcelasTotal}` : "sem cobrança"})</span>
+      <span class="chip warn">sem quarto em Fortaleza</span>
+      <span class="chip warn">sem quarto em João Pessoa</span>
+      ${p.observacoes ? `<span class="chip">${escapeHtml(p.observacoes)}</span>` : ""}
+    </div>
+  </div>`).join("");
+}
+
+const upperLayout = [[1,2,null,4,3],[5,6,null,8,7],[9,10,null,12,11],[13,14,null,null,null],[15,16,null,null,null],[17,18,null,20,19],[21,22,null,24,23],[25,26,null,28,27],[29,30,null,32,31],[33,34,null,36,35],[37,38,null,40,39],[41,42,null,44,43]];
+const lowerLayout = [[45,46,null,48,47],[49,50,null,52,51],[53,54,null,56,55]];
+function passengerBySeat(seat){ return state.rows.find(p => String(p.poltrona) === String(seat) && p.categoria !== "crianca_colo"); }
+function createSeat(seat){
+  const el = document.createElement("div");
+  el.className = "seat";
+  const p = passengerBySeat(seat);
+  el.innerHTML = `<div class="seat-number">${seat}</div>`;
+  if(p){
+    el.classList.add("occupied");
+    el.title = `Ocupado por ${p.nome}`;
+    const n = document.createElement("div");
+    n.className = "seat-name";
+    n.textContent = firstName(p.nome);
+    el.appendChild(n);
+  }else{
+    el.title = "Livre";
+  }
+  return el;
+}
+function fillLayout(layout,leftId,rightId){
+  const left=document.getElementById(leftId), right=document.getElementById(rightId);
+  left.innerHTML=""; right.innerHTML="";
+  layout.forEach(row => {
+    [row[0],row[1]].forEach(cell => { const e = cell == null ? document.createElement("div") : createSeat(cell); if(cell == null) e.className="seat-gap"; left.appendChild(e); });
+    [row[3],row[4]].forEach(cell => { const e = cell == null ? document.createElement("div") : createSeat(cell); if(cell == null) e.className="seat-gap"; right.appendChild(e); });
+  });
+}
+function renderSeats(){
+  fillLayout(upperLayout,"seat-grid-upper-left","seat-grid-upper-right");
+  fillLayout(lowerLayout,"seat-grid-lower-left","seat-grid-lower-right");
+  const marked = state.rows.filter(p => p.poltrona && p.categoria !== "crianca_colo").length;
+  const lap = state.rows.filter(p => p.categoria === "crianca_colo").length;
+  document.getElementById("seatSummaryText").textContent = `${marked} poltrona(s) marcada(s). ${lap} criança(s) no colo não entram como poltrona paga.`;
+}
+function renderAll(){
+  renderAlerts();
+  renderStats();
+  renderMainRooms();
+  renderDiffPanel();
+  renderOnlyBus();
+  renderSeats();
+}
+function loadText(text, source){
+  const raw = parseDelimitedText(text);
+  state.rows = raw.map(normalizeRecord).filter(r => r.nome);
+  state.source = source;
+  state.issues = [];
+  if(!state.rows.length) state.issues.push("O CSV foi carregado, mas nenhuma linha com Nome foi encontrada.");
+  const duplicatedSeats = new Map();
+  state.rows.forEach(p => { if(p.poltrona && p.categoria !== "crianca_colo") duplicatedSeats.set(p.poltrona, (duplicatedSeats.get(p.poltrona)||0)+1); });
+  const duplicates = Array.from(duplicatedSeats.entries()).filter(([,n])=>n>1).map(([seat])=>seat);
+  if(duplicates.length) state.issues.push(`Há poltronas repetidas no CSV: ${duplicates.join(", ")}.`);
+  document.getElementById("fileStatus").textContent = state.rows.length ? `Carregado: ${source}` : "Arquivo sem dados reconhecidos";
+  renderAll();
+}
+document.getElementById("csvInput").addEventListener("change", async e => {
+  const file = e.target.files?.[0];
+  if(!file) return;
+  loadText(await file.text(), file.name);
+});
+document.addEventListener("DOMContentLoaded", async () => {
+  const res = await fetchFirstAvailable();
+  if(res.text){
+    loadText(res.text, res.path);
+  }else{
+    state.issues.push("Não consegui carregar automaticamente o CSV único. Selecione o arquivo manualmente acima.");
+    document.getElementById("fileStatus").textContent = "Carregue o CSV manualmente";
+    renderAll();
+  }
+});
 </script>
 </body>
 </html>
