@@ -1,8 +1,8 @@
 Nome;Categoria;ParcelasOnibus;ParcelasTotalOnibus;Poltrona;ValorOnibus;FamiliaFortaleza;QuartoFortaleza;HotelFortaleza;TotalPessoaFortaleza;PagoPessoaFortaleza;FamiliaJoaoPessoa;QuartoJoaoPessoa;HotelJoaoPessoa;TotalPessoaJoaoPessoa;PagoPessoaJoaoPessoa;Observacoes
 Francireide;adulto;10;10;15;1100,00;F21;Duplo;Hotel Fortaleza;1820,00;600,00;J22;Duplo;Hotel João Pessoa;;;
 Artur;adulto;10;10;16;1100,00;F21;Duplo;Hotel Fortaleza;0,00;0,00;J22;Duplo;Hotel João Pessoa;;;
-Isadora;adulto;6;10;;1100,00;F06;Quádruplo;Hotel Fortaleza;1820,00;268,00;J23;Duplo;Hotel João Pessoa;;;
-Isabela;adulto;6;10;;1100,00;F06;Quádruplo;Hotel Fortaleza;1820,00;268,00;J23;Duplo;Hotel João Pessoa;;;
+Isadora;adulto;6;10;;1100,00;F06;Quádruplo;Hotel Fortaleza;870,00;340,00;J23;Duplo;Hotel João Pessoa;;;
+Isabela;adulto;6;10;;1100,00;F06;Quádruplo;Hotel Fortaleza;870,00;340,00;J23;Duplo;Hotel João Pessoa;;;
 Adeilza;adulto;10;10;51;1100,00;F11;Duplo;Hotel Fortaleza;0,00;0,00;J09;Duplo;Hotel João Pessoa;;;
 Ana Mercia;adulto;10;10;;1100,00;F07;Duplo;Hotel Fortaleza;910,00;0,00;J10;Duplo;Hotel João Pessoa;;;
 Antônia;adulto;10;10;19;1100,00;F17;Triplo;Hotel Fortaleza;1000,00;380,00;J21;Triplo;Hotel João Pessoa;;;
@@ -56,6 +56,6 @@ Wandem;adulto;9;10;13;1100,00;F18;Triplo;Hotel Fortaleza;2150,00;2150,00;J17;Dup
 Zilda;adulto;5;10;45;1100,00;F14;Triplo;Hotel Fortaleza;2700,00;0,00;J13;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
 Ismael;adulto;10;10;;1100,00;;;;;;;;;;;
 Cíntia;adulto;10;10;;1100,00;;;;;;;;;;;
-Jéssica;adulto;3;10;;1100,00;;Triplo;Hotel Fortaleza;110,00;110,00;;Triplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Jéssica, Lindemberg e Valentina.
+Jéssica;adulto;3;10;;1100,00;;Triplo;Hotel Fortaleza;3000,00;110,00;;Triplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Jéssica, Lindemberg e Valentina.
 Lindemberg;adulto;3;10;;1100,00;;Triplo;Hotel Fortaleza;0,00;0,00;;Triplo;Hotel João Pessoa;;;
 Valentina;crianca;3;10;;1100,00;;Triplo;Hotel Fortaleza;0,00;0,00;;Triplo;Hotel João Pessoa;;;
