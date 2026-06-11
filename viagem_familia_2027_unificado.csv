@@ -2,7 +2,7 @@ Nome;Categoria;ParcelasOnibus;ParcelasTotalOnibus;Poltrona;ValorOnibus;FamiliaFo
 Francireide;adulto;10;10;15;1100,00;F21;Duplo;Hotel Fortaleza;1820,00;600,00;J22;Duplo;Hotel João Pessoa;;;
 Artur;adulto;10;10;16;1100,00;F21;Duplo;Hotel Fortaleza;0,00;0,00;J22;Duplo;Hotel João Pessoa;;;
 Isadora;adulto;6;10;;1100,00;F06;Quádruplo;Hotel Fortaleza;870,00;340,00;J23;Duplo;Hotel João Pessoa;;;
-Isabela;adulto;6;10;;1100,00;F06;Quádruplo;Hotel Fortaleza;870,00;340,00;J23;Duplo;Hotel João Pessoa;;;
+Isabela;adulto;6;10;;1100,00;F06;Quádruplo;Hotel Fortaleza;870,00;340,00;J07;Duplo;Hotel João Pessoa;;;
 Adeilza;adulto;10;10;51;1100,00;F11;Duplo;Hotel Fortaleza;0,00;0,00;J09;Duplo;Hotel João Pessoa;;;
 Ana Mercia;adulto;10;10;;1100,00;F07;Duplo;Hotel Fortaleza;910,00;0,00;J10;Duplo;Hotel João Pessoa;;;
 Antônia;adulto;10;10;19;1100,00;F17;Triplo;Hotel Fortaleza;1000,00;380,00;J21;Triplo;Hotel João Pessoa;;;
@@ -12,7 +12,7 @@ Cláudio;adulto;5;10;;1100,00;F15;Triplo;Hotel Fortaleza;2700,00;1340,00;J18;Dup
 Davi Lima;crianca;10;10;12;1100,00;F10;Duplo;Hotel Fortaleza;0,00;0,00;J12;Duplo;Hotel João Pessoa;;;Nome padronizado a partir de Davi no bloco de hospedagem.
 Dissér;adulto;5;10;46;1100,00;F14;Triplo;Hotel Fortaleza;0,00;0,00;J13;Duplo;Hotel João Pessoa;;;
 Edina;adulto;10;10;8;1100,00;F03;Duplo;Hotel Fortaleza;0,00;0,00;J04;Duplo;Hotel João Pessoa;;;
-Aninha;adulto;10;10;5;1100,00;F06;Quádruplo;Hotel Fortaleza;0,00;0,00;J07;Duplo;Hotel João Pessoa;;;
+Aninha;adulto;10;10;5;1100,00;F06;Quádruplo;Hotel Fortaleza;0,00;0,00;J23;Duplo;Hotel João Pessoa;;;
 Reinaldo;adulto;10;10;6;1100,00;F06;Quádruplo;Hotel Fortaleza;1820,00;1820,00;J07;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
 Chaguinha;adulto;4;10;17;1100,00;F04;Duplo;Hotel Fortaleza;0,00;0,00;J01;Duplo;Hotel João Pessoa;;;
 Francisca das Chagas Lima;adulto;5;10;;1100,00;F20;Quádruplo;Hotel Fortaleza;890,00;695,00;J14;Duplo;Hotel João Pessoa;;;
