@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Viagem de Família 2027 — Painel único por quarto</title>
+  <title>Viagem de Família 2027 — Painel único e ônibus</title>
   <style>
     :root{
       --bg:#f5f7fb;
@@ -84,6 +84,99 @@
     .progress-meta{display:flex;justify-content:space-between;gap:10px;font-size:.86rem;color:var(--muted)}
     .alert{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:14px;padding:12px;margin-bottom:14px}
     .empty{padding:12px;border-radius:14px;background:#f8fafc;border:1px dashed var(--border);color:var(--muted)}
+
+
+    /* Abas */
+    .tab-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:16px;
+    }
+    .tab-button{
+      border:1px solid var(--border);
+      background:#fff;
+      color:#334155;
+      border-radius:999px;
+      padding:9px 14px;
+      font:inherit;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 4px 12px rgba(15,23,42,.04);
+    }
+    .tab-button:hover,.tab-button:focus{outline:none;border-color:#0ea5e9;background:#f0f9ff}
+    .tab-button.active{background:#0f172a;color:#fff;border-color:#0f172a}
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+
+    /* Aba ônibus */
+    .bus-config-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:14px;align-items:start}
+    .bus-full-board{display:grid;gap:14px;min-width:0}
+    .bus-deck-full{
+      border:1px solid var(--border);
+      border-radius:22px;
+      background:linear-gradient(180deg,#eef2f7,#ffffff 50%,#e2e8f0);
+      padding:14px;
+      overflow:hidden;
+    }
+    .bus-deck-title{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px;color:#334155;font-weight:900}
+    .bus-shell-full{
+      border:2px solid #94a3b8;
+      border-radius:34px 34px 24px 24px;
+      background:linear-gradient(180deg,#e2e8f0,#f8fafc 48%,#e2e8f0);
+      padding:14px;
+      max-width:420px;
+      margin:0 auto;
+      position:relative;
+    }
+    .bus-shell-full.lower{border-radius:24px}
+    .bus-front-full{height:32px;border:2px solid #93c5fd;border-radius:20px 20px 8px 8px;background:#dbeafe;margin:0 auto 12px;max-width:180px}
+    .bus-full-rows{display:grid;gap:7px;justify-content:center}
+    .bus-full-row{display:grid;grid-template-columns:44px 44px 22px 44px 44px;gap:7px;align-items:center;justify-content:center}
+    .bus-seat-full{
+      min-height:44px;
+      border-radius:12px;
+      border:1px solid #cbd5e1;
+      background:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      position:relative;
+      font-weight:900;
+      line-height:1;
+      box-shadow:0 2px 6px rgba(15,23,42,.06);
+      overflow:hidden;
+    }
+    .bus-seat-full.free{background:#f8fafc;border-style:dashed;color:#475569}
+    .bus-seat-full.occupied{background:#dcfce7;border-color:#22c55e;color:#14532d}
+    .bus-seat-full .seat-person{font-size:.52rem;font-weight:800;color:#475569;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px;padding:0 3px}
+    .bus-seat-full.empty{visibility:hidden}
+    .bus-aisle-full{height:44px;border-radius:999px;border:1px dashed #94a3b8;background:#f1f5f9}
+    .bus-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .legend-dot{width:13px;height:13px;border-radius:4px;border:1px solid #cbd5e1;display:inline-block}
+    .legend-dot.free{background:#f8fafc;border-style:dashed}
+    .legend-dot.occupied{background:#dcfce7;border-color:#22c55e}
+    .available-panel{display:grid;gap:10px;position:sticky;top:12px}
+    .available-grid{display:flex;flex-wrap:wrap;gap:6px}
+    .available-seat{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:38px;
+      padding:6px 8px;
+      border-radius:999px;
+      border:1px solid #cbd5e1;
+      background:#fff;
+      font-weight:900;
+      color:#334155;
+      font-size:.82rem;
+    }
+    .occupied-list{display:grid;gap:6px;max-height:420px;overflow:auto;padding-right:2px}
+    .occupied-item{border:1px solid var(--border);border-radius:12px;padding:7px 8px;background:#fff}
+    .occupied-item strong{display:block;overflow-wrap:anywhere}
+    .occupied-item span{font-size:.76rem;color:#64748b}
 
     /* Painel único */
     .single-panel-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
@@ -197,6 +290,9 @@
 
     @media(max-width:1050px){
       .hero,.stats,.top-panel,.twocol,.totals,.room-pair-grid{grid-template-columns:1fr!important}
+
+      .bus-config-layout{grid-template-columns:1fr!important}
+      .available-panel{position:static}
       .fort-side{border-right:0;border-bottom:1px solid var(--border)}
       .zoom-card{position:static}
     }
@@ -204,6 +300,9 @@
       .wrap{padding:14px 10px 24px}
       .pair-status,.joao-room-head{display:block}
       .zoom-row{grid-template-columns:44px 44px 20px 44px 44px;gap:6px}
+      .bus-full-row{grid-template-columns:38px 38px 18px 38px 38px;gap:5px}
+      .bus-seat-full{min-height:38px;font-size:.8rem}
+      .bus-aisle-full{height:38px}
       .zoom-cell{min-height:44px;font-size:.8rem}
       .zoom-aisle{height:44px}
       .progress-meta{display:block}
@@ -217,7 +316,7 @@
       <div>
         <h1>Viagem de Família 2027</h1>
         <div class="subtitle">
-          Painel único por quarto, com Fortaleza como base. O CSV continua sendo individual, mas a visualização agrupa por quarto, mostra os ocupantes, o pagamento individual da hospedagem, o pagamento individual do ônibus e o mini zoom da poltrona dentro do próprio card da hospedagem. A comparação com João Pessoa é feita pelo conjunto de ocupantes, não pelo código F/J.
+          Painel único por quarto, com Fortaleza como base. O CSV continua sendo individual, mas a visualização agrupa por quarto, mostra os ocupantes, o pagamento individual da hospedagem, o pagamento individual do ônibus e o mini zoom da poltrona dentro do próprio card da hospedagem. Há também uma aba específica com a configuração completa do ônibus e as poltronas disponíveis.
         </div>
         <div class="hero-badges">
           <span class="badge" id="badgePeople">👨‍👩‍👧‍👦 0 pessoas</span>
@@ -278,7 +377,12 @@
     </div>
   </section>
 
-  <section class="card">
+  <nav class="tab-nav" aria-label="Abas do painel">
+    <button class="tab-button active" type="button" data-tab="roomsTab">🏨 Painel por quartos</button>
+    <button class="tab-button" type="button" data-tab="busTab">🚌 Configuração do ônibus</button>
+  </nav>
+
+  <section class="card tab-panel active" id="roomsTab">
     <div class="section-head">
       <div>
         <h2>Painel único por quarto — base Fortaleza</h2>
@@ -287,6 +391,29 @@
     </div>
     <div class="summary-row" id="roomsSummary"></div>
     <div id="singleRoomsPanel" class="single-panel-grid"></div>
+  </section>
+
+  <section class="card tab-panel" id="busTab">
+    <div class="section-head">
+      <div>
+        <h2>Configuração completa do ônibus</h2>
+        <p>Mapa integral das poltronas, com ocupadas e disponíveis. A leitura vem exclusivamente do CSV carregado automaticamente.</p>
+      </div>
+    </div>
+    <div class="summary-row" id="busConfigSummary"></div>
+    <div class="bus-config-layout">
+      <div class="bus-full-board" id="busFullBoard"></div>
+      <aside class="available-panel">
+        <div class="card" style="box-shadow:none">
+          <div class="section-head"><div><h2>Poltronas disponíveis</h2><p>Assentos sem ocupante no CSV.</p></div></div>
+          <div class="available-grid" id="availableSeatsList"></div>
+        </div>
+        <div class="card" style="box-shadow:none">
+          <div class="section-head"><div><h2>Poltronas ocupadas</h2><p>Resumo por pessoa.</p></div></div>
+          <div class="occupied-list" id="occupiedSeatsList"></div>
+        </div>
+      </aside>
+    </div>
   </section>
 
   <div class="muted small" style="margin-top:14px">
@@ -753,10 +880,73 @@ function renderInitialSeatZoom(){
   const first = state.rows.find(p => p.poltrona && p.categoria !== "crianca_colo");
   if(first) renderSeatZoom(first.poltrona);
 }
+
+function allSeatNumbers(){
+  return upperLayout.concat(lowerLayout).flat().filter(v => v != null).map(Number).sort((a,b)=>a-b);
+}
+function assignedSeatNumbers(){
+  return new Set(state.rows.filter(p => p.poltrona && p.categoria !== "crianca_colo").map(p => Number(p.poltrona)).filter(Number.isFinite));
+}
+function renderBusSeatCell(cell){
+  if(cell == null) return `<div class="bus-aisle-full" title="Corredor"></div>`;
+  const occupant = passengerBySeat(cell);
+  const cls = ["bus-seat-full", occupant ? "occupied" : "free"].join(" ");
+  return `<div class="${cls}" title="${occupant ? escapeHtml(occupant.nome) : 'Poltrona disponível'}">
+    <span>${cell}</span>
+    ${occupant ? `<span class="seat-person">${escapeHtml(firstName(occupant.nome))}</span>` : `<span class="seat-person">livre</span>`}
+  </div>`;
+}
+function renderBusDeckFull(title, subtitle, layout, lower=false){
+  const rows = layout.map(row => `<div class="bus-full-row">${row.map(renderBusSeatCell).join("")}</div>`).join("");
+  return `<div class="bus-deck-full">
+    <div class="bus-deck-title"><span>${escapeHtml(title)}</span><span class="muted small">${escapeHtml(subtitle)}</span></div>
+    <div class="bus-shell-full ${lower ? 'lower' : ''}">
+      ${lower ? '' : '<div class="bus-front-full" title="Frente do ônibus"></div>'}
+      <div class="bus-full-rows">${rows}</div>
+    </div>
+    <div class="bus-legend">
+      <span class="chip"><span class="legend-dot occupied"></span> Ocupada</span>
+      <span class="chip"><span class="legend-dot free"></span> Disponível</span>
+    </div>
+  </div>`;
+}
+function renderBusConfig(){
+  const allSeats = allSeatNumbers();
+  const occupiedSet = assignedSeatNumbers();
+  const available = allSeats.filter(n => !occupiedSet.has(n));
+  const occupiedPeople = state.rows
+    .filter(p => p.poltrona && p.categoria !== "crianca_colo")
+    .sort((a,b)=>Number(a.poltrona)-Number(b.poltrona));
+
+  document.getElementById("busConfigSummary").innerHTML = [
+    `${allSeats.length} poltronas no mapa`,
+    `${occupiedPeople.length} ocupada(s)`,
+    `${available.length} disponível(is)`,
+    `${state.rows.filter(p => p.categoria === "crianca_colo").length} criança(s) de colo`
+  ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
+
+  document.getElementById("busFullBoard").innerHTML =
+    renderBusDeckFull("Piso superior", "poltronas 1–44", upperLayout, false) +
+    renderBusDeckFull("Piso inferior", "poltronas 45–56", lowerLayout, true);
+
+  document.getElementById("availableSeatsList").innerHTML = available.length
+    ? available.map(n => `<span class="available-seat">${n}</span>`).join("")
+    : `<div class="empty">Nenhuma poltrona disponível no mapa.</div>`;
+
+  document.getElementById("occupiedSeatsList").innerHTML = occupiedPeople.length
+    ? occupiedPeople.map(p => `<div class="occupied-item"><strong>Poltrona ${escapeHtml(p.poltrona)} — ${escapeHtml(p.nome)}</strong><span>${escapeHtml(profileLabel(p.categoria))} • ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}${p.valorOnibus ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span></div>`).join("")
+    : `<div class="empty">Nenhuma poltrona ocupada foi encontrada no CSV.</div>`;
+}
+function setActiveTab(tabId){
+  document.querySelectorAll(".tab-button").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tabId));
+  document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.toggle("active", panel.id === tabId));
+}
+
 function renderAll(){
   renderAlerts();
   renderStats();
   renderSinglePanel();
+  renderBusConfig();
 }
 function loadText(text, source){
   const raw = parseDelimitedText(text);
@@ -772,6 +962,7 @@ function loadText(text, source){
   renderAll();
 }
 document.addEventListener("DOMContentLoaded", async () => {
+  document.querySelectorAll(".tab-button").forEach(btn => btn.addEventListener("click", () => setActiveTab(btn.dataset.tab)));
   const res = await fetchFirstAvailable();
   if(res.text){
     loadText(res.text, res.path);
