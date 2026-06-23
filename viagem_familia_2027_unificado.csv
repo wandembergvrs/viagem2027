@@ -31,7 +31,7 @@ Juninho;adulto;8;10;;1100,00;F15;Triplo;Hotel Fortaleza;0,00;0,00;J11;Duplo;Hote
 Juracy;adulto;10;10;21;1100,00;F01;Duplo;Hotel Fortaleza;1820,00;728,00;J05;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
 Jurandy;adulto;10;10;47;1100,00;F02;Duplo;Hotel Fortaleza;1820,00;1092,00;J06;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
 Leonice;adulto;10;10;;1100,00;F20;Quádruplo;Hotel Fortaleza;890,00;542,00;J15;Duplo;Hotel João Pessoa;;;
-Liz;crianca;10;10;10;1100,00;F18;Triplo;Hotel Fortaleza;0,00;0,00;J17;Duplo;Hotel João Pessoa;;;
+Liz;crianca;10;10;5;1100,00;F18;Triplo;Hotel Fortaleza;0,00;0,00;J17;Duplo;Hotel João Pessoa;;;
 Lourival;adulto;10;10;;1100,00;F20;Quádruplo;Hotel Fortaleza;890,00;542,00;J15;Duplo;Hotel João Pessoa;;;
 Luzanira;adulto;10;10;20;1100,00;F17;Triplo;Hotel Fortaleza;1000,00;400,00;J21;Triplo;Hotel João Pessoa;;;
 Luís;crianca;7;10;;1100,00;F09;Triplo;Hotel Fortaleza;0,00;0,00;J16;Duplo;Hotel João Pessoa;;;Nome padronizado a partir de Luiz no bloco F13.
@@ -49,10 +49,10 @@ Rosa Maria;adulto;7;10;;1100,00;F13;Triplo;Hotel Fortaleza;0,00;0,00;J20;Triplo;
 Suely;adulto;8;10;;1100,00;F15;Triplo;Hotel Fortaleza;0,00;0,00;J18;Duplo;Hotel João Pessoa;;;
 Thayná;adulto;6;10;;1100,00;F08;Duplo;Hotel Fortaleza;0,00;0,00;;;;;;Nome ajustado de Tainá para Thayná.
 Thais;adulto;5;10;;1100,00;F09;Duplo;Hotel Fortaleza;1820,00;728,00;J16;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
-Theo;crianca;10;10;9;1100,00;F18;Triplo;Hotel Fortaleza;0,00;0,00;J17;Duplo;Hotel João Pessoa;;;
+Theo;crianca;10;10;6;1100,00;F18;Triplo;Hotel Fortaleza;0,00;0,00;J17;Duplo;Hotel João Pessoa;;;
 Vera Lúcia;adulto;6;10;;1100,00;F07;Duplo;Hotel Fortaleza;910,00;364,00;J10;Duplo;Hotel João Pessoa;;;
 Walisson;adulto;5;10;;1100,00;F09;Duplo;Hotel Fortaleza;0,00;0,00;J16;Duplo;Hotel João Pessoa;;;
-Wandem;adulto;10;10;13;1100,00;F18;Triplo;Hotel Fortaleza;2150,00;2150,00;J17;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
+Wandem;adulto;10;10;9;1100,00;F18;Triplo;Hotel Fortaleza;2150,00;2150,00;J17;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
 Zilda;adulto;7;10;45;1100,00;F14;Triplo;Hotel Fortaleza;2700,00;0,00;J13;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
 Jéssica;adulto;3;10;;1100,00;F22;Triplo;Hotel Fortaleza;3000,00;110,00;J24;Triplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Jéssica, Lindemberg e Valentina.
 Lindemberg;adulto;3;10;;1100,00;F22;Triplo;Hotel Fortaleza;0,00;0,00;J24;Triplo;Hotel João Pessoa;;;
