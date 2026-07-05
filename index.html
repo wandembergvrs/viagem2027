@@ -85,7 +85,6 @@
     .alert{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:14px;padding:12px;margin-bottom:14px}
     .empty{padding:12px;border-radius:14px;background:#f8fafc;border:1px dashed var(--border);color:var(--muted)}
 
-
     /* Abas */
     .tab-nav{
       display:flex;
@@ -108,6 +107,42 @@
     .tab-button.active{background:#0f172a;color:#fff;border-color:#0f172a}
     .tab-panel{display:none}
     .tab-panel.active{display:block}
+
+    /* Administração */
+    .admin-login{
+      max-width:460px;
+      border:1px solid var(--border);
+      background:#f8fafc;
+      border-radius:16px;
+      padding:14px;
+      display:grid;
+      gap:10px;
+    }
+    .admin-login-row{display:flex;gap:8px;align-items:center}
+    .admin-login input{
+      width:100%;
+      border:1px solid #cbd5e1;
+      border-radius:12px;
+      padding:10px 12px;
+      font:inherit;
+      background:#fff;
+    }
+    .admin-login button,.admin-action{
+      border:1px solid #0f172a;
+      background:#0f172a;
+      color:#fff;
+      border-radius:12px;
+      padding:10px 14px;
+      font:inherit;
+      font-weight:800;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .admin-login button:hover,.admin-login button:focus,.admin-action:hover,.admin-action:focus{outline:none;background:#1e293b}
+    .admin-error{color:#b91c1c;font-size:.84rem;min-height:1.1em}
+    .admin-content[hidden],.admin-login[hidden]{display:none!important}
+    .admin-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:12px}
+    .admin-wide{grid-column:1/-1}
 
     /* Aba ônibus */
     .bus-config-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:14px;align-items:start}
@@ -229,36 +264,6 @@
     .room-section-title{font-size:.92rem;font-weight:900;margin:18px 0 8px;color:#334155}
 
     /* Mini zoom */
-    .zoom-card{position:sticky;top:12px}
-    .zoom-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
-    .zoom-seat-title{font-size:1.4rem;font-weight:900;line-height:1}
-    .zoom-passenger{font-weight:800;margin-top:3px;overflow-wrap:anywhere}
-    .mini-bus{
-      border:1px solid #cbd5e1;border-radius:18px;background:linear-gradient(180deg,#e2e8f0,#f8fafc 48%,#e2e8f0);
-      padding:14px;overflow:hidden;
-    }
-    .mini-front{height:32px;border:2px solid #93c5fd;border-radius:20px 20px 8px 8px;background:#dbeafe;margin:0 auto 14px;max-width:190px}
-    .zoom-row-wrap{display:grid;gap:8px;justify-items:center}
-    .zoom-row-label{font-size:.8rem;color:#475569;font-weight:800}
-    .zoom-row{display:grid;grid-template-columns:54px 54px 28px 54px 54px;gap:8px;align-items:center;justify-content:center}
-    .zoom-cell{
-      min-height:54px;border-radius:14px;border:1px solid #cbd5e1;background:#fff;display:flex;align-items:center;justify-content:center;
-      text-align:center;font-weight:900;position:relative;box-shadow:0 2px 6px rgba(15,23,42,.06);font-size:.9rem;
-    }
-    .zoom-cell.occupied{background:#dcfce7;border-color:#22c55e}
-    .zoom-cell.selected{background:#fef08a;border-color:#ca8a04;box-shadow:0 0 0 3px rgba(250,204,21,.35)}
-    .zoom-cell.empty{visibility:hidden}
-    .zoom-cell .tiny-name{position:absolute;left:3px;right:3px;bottom:3px;font-size:.56rem;font-weight:700;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .zoom-aisle{height:54px;border-radius:999px;border:1px dashed #94a3b8;background:#f1f5f9}
-    .zoom-mini-info{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-    .seat-chip{
-      border:1px solid #bfdbfe;background:#eff6ff;color:#075985;cursor:pointer;
-      border-radius:999px;padding:4px 8px;font-size:.78rem;font-family:inherit;line-height:1;
-    }
-    .seat-chip:hover,.seat-chip:focus{outline:none;border-color:#0284c7;background:#e0f2fe}
-    .seat-chip.active{background:#fef08a;border-color:#ca8a04;color:#713f12}
-
-
     .seat-inline-zoom{
       margin-top:8px;
       border:1px solid #dbeafe;
@@ -289,23 +294,20 @@
     .inline-aisle{height:34px;border-radius:999px;border:1px dashed #94a3b8;background:#f1f5f9}
 
     @media(max-width:1050px){
-      .hero,.stats,.top-panel,.twocol,.totals,.room-pair-grid{grid-template-columns:1fr!important}
-
+      .hero,.stats,.top-panel,.twocol,.totals,.room-pair-grid,.admin-summary{grid-template-columns:1fr!important}
+      .admin-wide{grid-column:auto}
       .bus-config-layout{grid-template-columns:1fr!important}
       .available-panel{position:static}
       .fort-side{border-right:0;border-bottom:1px solid var(--border)}
-      .zoom-card{position:static}
     }
     @media(max-width:640px){
       .wrap{padding:14px 10px 24px}
       .pair-status,.joao-room-head{display:block}
-      .zoom-row{grid-template-columns:44px 44px 20px 44px 44px;gap:6px}
       .bus-full-row{grid-template-columns:38px 38px 18px 38px 38px;gap:5px}
       .bus-seat-full{min-height:38px;font-size:.8rem}
       .bus-aisle-full{height:38px}
-      .zoom-cell{min-height:44px;font-size:.8rem}
-      .zoom-aisle{height:44px}
       .progress-meta{display:block}
+      .admin-login-row{display:grid}
     }
   </style>
 </head>
@@ -321,7 +323,7 @@
         <div class="hero-badges">
           <span class="badge" id="badgePeople">👨‍👩‍👧‍👦 0 pessoas</span>
           <span class="badge" id="badgeRooms">🏨 0 quartos</span>
-          <span class="badge" id="badgeBus">🚌 Ônibus: 0%</span>
+          <span class="badge" id="badgeBus">🚌 0 poltronas marcadas</span>
           <span class="badge" id="badgeDiff">🔀 0 quartos diferentes</span>
         </div>
       </div>
@@ -345,41 +347,10 @@
     <div class="card"><div class="stat-label">Somente ônibus</div><div class="stat-value" id="statOnlyBus">0</div><div class="stat-note">sem quarto atribuído</div></div>
   </div>
 
-  <section class="grid top-panel">
-    <div class="grid twocol">
-      <div class="card">
-        <div class="section-head"><div><h2>Resumo do ônibus</h2><p>Pagamento individual por passageiro.</p></div></div>
-        <div class="totals">
-          <div class="total-box"><div class="k">Pagantes</div><div class="v" id="busPayers">0</div></div>
-          <div class="total-box"><div class="k">Pago</div><div class="v mono" id="busPaid">R$ 0,00</div></div>
-          <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="busPlanned">R$ 0,00</div></div>
-          <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="busPending">R$ 0,00</div></div>
-        </div>
-        <div class="progress-wrap">
-          <div class="progress-track"><div class="progress-fill bus" id="busProgress"></div></div>
-          <div class="progress-meta"><span id="busProgressLabel">0% pago</span><strong id="seatCountLabel">—</strong></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="section-head"><div><h2>Resumo da hospedagem</h2><p>Valores individuais somados por quarto.</p></div></div>
-        <div class="totals">
-          <div class="total-box"><div class="k">Pessoas com quarto</div><div class="v" id="lodgingPeople">0</div></div>
-          <div class="total-box"><div class="k">Pago</div><div class="v mono" id="lodgingPaid">R$ 0,00</div></div>
-          <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="lodgingPlanned">R$ 0,00</div></div>
-          <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="lodgingPending">R$ 0,00</div></div>
-        </div>
-        <div class="progress-wrap">
-          <div class="progress-track"><div class="progress-fill" id="lodgingProgress"></div></div>
-          <div class="progress-meta"><span id="lodgingProgressLabel">0% pago</span><strong id="lodgingRoomsLabel">—</strong></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <nav class="tab-nav" aria-label="Abas do painel">
     <button class="tab-button active" type="button" data-tab="roomsTab">🏨 Painel por quartos</button>
     <button class="tab-button" type="button" data-tab="busTab">🚌 Configuração do ônibus</button>
+    <button class="tab-button" type="button" data-tab="adminTab">⚙️ Administração</button>
   </nav>
 
   <section class="card tab-panel active" id="roomsTab">
@@ -416,6 +387,78 @@
     </div>
   </section>
 
+  <section class="card tab-panel" id="adminTab">
+    <div class="section-head">
+      <div>
+        <h2>Painel de administração</h2>
+        <p>Acesso restrito.</p>
+      </div>
+    </div>
+
+    <div class="admin-login" id="adminLoginBox">
+      <label for="adminPassword"><strong>Senha</strong></label>
+      <div class="admin-login-row">
+        <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Digite a senha" />
+        <button type="button" id="adminLoginButton">Entrar</button>
+      </div>
+      <div class="admin-error" id="adminLoginMessage"></div>
+    </div>
+
+    <div class="admin-content" id="adminContent" hidden>
+      <div class="section-head">
+        <div>
+          <h2>Resumo financeiro</h2>
+          <p>Visão consolidada para acompanhamento interno.</p>
+        </div>
+        <button class="admin-action" type="button" id="adminLogoutButton">Sair</button>
+      </div>
+
+      <div class="admin-summary">
+        <div class="card" style="box-shadow:none">
+          <div class="section-head"><div><h2>Ônibus</h2><p>Pagamento individual por passageiro.</p></div></div>
+          <div class="totals">
+            <div class="total-box"><div class="k">Pagantes</div><div class="v" id="adminBusPayers">0</div></div>
+            <div class="total-box"><div class="k">Pago</div><div class="v mono" id="adminBusPaid">R$ 0,00</div></div>
+            <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="adminBusPlanned">R$ 0,00</div></div>
+            <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="adminBusPending">R$ 0,00</div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill bus" id="adminBusProgress"></div></div>
+            <div class="progress-meta"><span id="adminBusProgressLabel">0% pago</span><strong id="adminSeatCountLabel">—</strong></div>
+          </div>
+        </div>
+
+        <div class="card" style="box-shadow:none">
+          <div class="section-head"><div><h2>Hospedagem</h2><p>Valores individuais somados por destino.</p></div></div>
+          <div class="totals">
+            <div class="total-box"><div class="k">Pessoas com quarto</div><div class="v" id="adminLodgingPeople">0</div></div>
+            <div class="total-box"><div class="k">Pago</div><div class="v mono" id="adminLodgingPaid">R$ 0,00</div></div>
+            <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="adminLodgingPlanned">R$ 0,00</div></div>
+            <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="adminLodgingPending">R$ 0,00</div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" id="adminLodgingProgress"></div></div>
+            <div class="progress-meta"><span id="adminLodgingProgressLabel">0% pago</span><strong id="adminLodgingRoomsLabel">—</strong></div>
+          </div>
+        </div>
+
+        <div class="card admin-wide" style="box-shadow:none">
+          <div class="section-head"><div><h2>Consolidação geral</h2><p>Ônibus + hospedagem.</p></div></div>
+          <div class="totals">
+            <div class="total-box"><div class="k">Pago</div><div class="v mono" id="adminGrandPaid">R$ 0,00</div></div>
+            <div class="total-box"><div class="k">Previsto</div><div class="v mono" id="adminGrandPlanned">R$ 0,00</div></div>
+            <div class="total-box"><div class="k">Saldo</div><div class="v mono" id="adminGrandPending">R$ 0,00</div></div>
+            <div class="total-box"><div class="k">Avanço</div><div class="v mono" id="adminGrandPercent">0%</div></div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" id="adminGrandProgress"></div></div>
+            <div class="progress-meta"><span id="adminGrandProgressLabel">0% pago</span><strong id="adminGrandSourceLabel">CSV carregado automaticamente</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="muted small" style="margin-top:14px">
     Colunas lidas no CSV: <code>Nome</code>, <code>Categoria</code>, <code>ParcelasOnibus</code>, <code>ParcelasTotalOnibus</code>, <code>Poltrona</code>, <code>ValorOnibus</code>, <code>FamiliaFortaleza</code>, <code>QuartoFortaleza</code>, <code>HotelFortaleza</code>, <code>TotalPessoaFortaleza</code>, <code>PagoPessoaFortaleza</code>, <code>FamiliaJoaoPessoa</code>, <code>QuartoJoaoPessoa</code>, <code>HotelJoaoPessoa</code>, <code>TotalPessoaJoaoPessoa</code>, <code>PagoPessoaJoaoPessoa</code> e <code>Observacoes</code>.
   </div>
@@ -431,6 +474,7 @@ const FILE_CANDIDATES = [
 ];
 const DEFAULT_BUS_VALUE = 1100;
 const DEFAULT_BUS_INSTALLMENTS = 10;
+const ADMIN_PASSWORD = "rosendo";
 const state = { rows: [], source: "", issues: [], selectedSeat: null };
 
 const upperLayout = [
@@ -462,7 +506,8 @@ function parseNumber(v){
 function formatMoney(v){ return (Number(v)||0).toLocaleString("pt-BR", {style:"currency", currency:"BRL"}); }
 function pct(v){ return `${Math.round(Number(v)||0)}%`; }
 function firstName(full){ const s=String(full||"").trim(); return s ? s.split(/\s+/)[0] : ""; }
-function setProgress(id, value){ document.getElementById(id).style.width = `${clamp(value,0,100)}%`; }
+function setText(id, value){ const el = document.getElementById(id); if(el) el.textContent = value; }
+function setProgress(id, value){ const el = document.getElementById(id); if(el) el.style.width = `${clamp(value,0,100)}%`; }
 function sortNatural(a,b){ return String(a).localeCompare(String(b), "pt-BR", {numeric:true, sensitivity:"base"}); }
 
 function splitCsvLine(line, delimiter){
@@ -607,7 +652,27 @@ function summarize(){
   const lodgingPaid = people.reduce((s,p)=>s+p.pagoFortaleza+p.pagoJoao,0);
   const rooms = buildRoomData();
   const onlyBus = people.filter(p => !hasAnyRoom(p) && ((p.valorOnibus||0)>0 || p.parcelas>0 || p.poltrona));
-  return { people, busPayers, busPlanned, busPaidTotal, busPending:Math.max(busPlanned-busPaidTotal,0), busPct:busPlanned?busPaidTotal/busPlanned*100:0, lodgingPeople, lodgingPlanned, lodgingPaid, lodgingPending:Math.max(lodgingPlanned-lodgingPaid,0), lodgingPct:lodgingPlanned?lodgingPaid/lodgingPlanned*100:0, rooms, onlyBus };
+  const grandPlanned = busPlanned + lodgingPlanned;
+  const grandPaid = busPaidTotal + lodgingPaid;
+  return {
+    people,
+    busPayers,
+    busPlanned,
+    busPaidTotal,
+    busPending:Math.max(busPlanned-busPaidTotal,0),
+    busPct:busPlanned?busPaidTotal/busPlanned*100:0,
+    lodgingPeople,
+    lodgingPlanned,
+    lodgingPaid,
+    lodgingPending:Math.max(lodgingPlanned-lodgingPaid,0),
+    lodgingPct:lodgingPlanned?lodgingPaid/lodgingPlanned*100:0,
+    grandPlanned,
+    grandPaid,
+    grandPending:Math.max(grandPlanned-grandPaid,0),
+    grandPct:grandPlanned?grandPaid/grandPlanned*100:0,
+    rooms,
+    onlyBus
+  };
 }
 function renderAlerts(){
   const el = document.getElementById("alertBox");
@@ -617,35 +682,82 @@ function renderStats(){
   const s = summarize();
   const seatCount = state.rows.filter(p => p.poltrona && p.categoria !== "crianca_colo").length;
   const diffCount = s.rooms.unmatchedFort.length;
-  document.getElementById("statPeople").textContent = s.people.length;
-  document.getElementById("statPeopleNote").textContent = state.source || "arquivo não carregado";
-  document.getElementById("statRoomsFort").textContent = s.rooms.fortaleza.length;
-  document.getElementById("statRoomsSame").textContent = s.rooms.matchedFort.length;
-  document.getElementById("statOnlyBus").textContent = s.onlyBus.length;
-  document.getElementById("badgePeople").textContent = `👨‍👩‍👧‍👦 ${s.people.length} pessoas`;
-  document.getElementById("badgeRooms").textContent = `🏨 ${s.rooms.fortaleza.length} quartos Fortaleza`;
-  document.getElementById("badgeBus").textContent = `🚌 Ônibus: ${pct(s.busPct)}`;
-  document.getElementById("badgeDiff").textContent = `🔀 ${diffCount} quartos diferentes`;
-  document.getElementById("busPayers").textContent = s.busPayers.length;
-  document.getElementById("busPaid").textContent = formatMoney(s.busPaidTotal);
-  document.getElementById("busPlanned").textContent = formatMoney(s.busPlanned);
-  document.getElementById("busPending").textContent = formatMoney(s.busPending);
-  setProgress("busProgress", s.busPct);
-  document.getElementById("busProgressLabel").textContent = `${pct(s.busPct)} pago`;
-  document.getElementById("seatCountLabel").textContent = `${seatCount} poltrona(s) marcada(s)`;
-  document.getElementById("lodgingPeople").textContent = s.lodgingPeople.length;
-  document.getElementById("lodgingPaid").textContent = formatMoney(s.lodgingPaid);
-  document.getElementById("lodgingPlanned").textContent = formatMoney(s.lodgingPlanned);
-  document.getElementById("lodgingPending").textContent = formatMoney(s.lodgingPending);
-  setProgress("lodgingProgress", s.lodgingPct);
-  document.getElementById("lodgingProgressLabel").textContent = `${pct(s.lodgingPct)} pago`;
-  document.getElementById("lodgingRoomsLabel").textContent = `${s.rooms.fortaleza.length} quarto(s) base`;
+  setText("statPeople", s.people.length);
+  setText("statPeopleNote", state.source || "arquivo não carregado");
+  setText("statRoomsFort", s.rooms.fortaleza.length);
+  setText("statRoomsSame", s.rooms.matchedFort.length);
+  setText("statOnlyBus", s.onlyBus.length);
+  setText("badgePeople", `👨‍👩‍👧‍👦 ${s.people.length} pessoas`);
+  setText("badgeRooms", `🏨 ${s.rooms.fortaleza.length} quartos Fortaleza`);
+  setText("badgeBus", `🚌 ${seatCount} poltrona(s) marcada(s)`);
+  setText("badgeDiff", `🔀 ${diffCount} quartos diferentes`);
+}
+function renderAdminPanel(){
+  const s = summarize();
+  const seatCount = state.rows.filter(p => p.poltrona && p.categoria !== "crianca_colo").length;
+  setText("adminBusPayers", s.busPayers.length);
+  setText("adminBusPaid", formatMoney(s.busPaidTotal));
+  setText("adminBusPlanned", formatMoney(s.busPlanned));
+  setText("adminBusPending", formatMoney(s.busPending));
+  setProgress("adminBusProgress", s.busPct);
+  setText("adminBusProgressLabel", `${pct(s.busPct)} pago`);
+  setText("adminSeatCountLabel", `${seatCount} poltrona(s) marcada(s)`);
+
+  setText("adminLodgingPeople", s.lodgingPeople.length);
+  setText("adminLodgingPaid", formatMoney(s.lodgingPaid));
+  setText("adminLodgingPlanned", formatMoney(s.lodgingPlanned));
+  setText("adminLodgingPending", formatMoney(s.lodgingPending));
+  setProgress("adminLodgingProgress", s.lodgingPct);
+  setText("adminLodgingProgressLabel", `${pct(s.lodgingPct)} pago`);
+  setText("adminLodgingRoomsLabel", `${s.rooms.fortaleza.length} quarto(s) base`);
+
+  setText("adminGrandPaid", formatMoney(s.grandPaid));
+  setText("adminGrandPlanned", formatMoney(s.grandPlanned));
+  setText("adminGrandPending", formatMoney(s.grandPending));
+  setText("adminGrandPercent", pct(s.grandPct));
+  setProgress("adminGrandProgress", s.grandPct);
+  setText("adminGrandProgressLabel", `${pct(s.grandPct)} pago`);
+  setText("adminGrandSourceLabel", state.source ? `Fonte: ${state.source}` : "CSV carregado automaticamente");
+}
+function isAdminAuthenticated(){ return sessionStorage.getItem("viagemFamiliaAdminOk") === "1"; }
+function renderAdminAccess(){
+  const loginBox = document.getElementById("adminLoginBox");
+  const content = document.getElementById("adminContent");
+  if(!loginBox || !content) return;
+  const ok = isAdminAuthenticated();
+  loginBox.hidden = ok;
+  content.hidden = !ok;
+  if(ok) renderAdminPanel();
+}
+function setupAdminPanel(){
+  const input = document.getElementById("adminPassword");
+  const button = document.getElementById("adminLoginButton");
+  const logout = document.getElementById("adminLogoutButton");
+  const message = document.getElementById("adminLoginMessage");
+  const tryLogin = () => {
+    if(!input) return;
+    if(input.value === ADMIN_PASSWORD){
+      sessionStorage.setItem("viagemFamiliaAdminOk", "1");
+      input.value = "";
+      if(message) message.textContent = "";
+      renderAdminAccess();
+    }else{
+      if(message) message.textContent = "Senha incorreta.";
+      input.select();
+    }
+  };
+  if(button) button.addEventListener("click", tryLogin);
+  if(input) input.addEventListener("keydown", ev => { if(ev.key === "Enter") tryLogin(); });
+  if(logout) logout.addEventListener("click", () => {
+    sessionStorage.removeItem("viagemFamiliaAdminOk");
+    renderAdminAccess();
+  });
+  renderAdminAccess();
 }
 function inlineSeatZoom(seat){
   if(!seat) return "";
   const info = findSeatInfo(seat);
   if(!info) return "";
-  const pSeat = passengerBySeat(seat);
   const cells = info.row.map(cell => {
     if(cell == null) return `<div class="inline-aisle" title="Corredor"></div>`;
     const occupant = passengerBySeat(cell);
@@ -842,45 +954,6 @@ function findSeatInfo(seat){
   return null;
 }
 function passengerBySeat(seat){ return state.rows.find(p => String(p.poltrona) === String(seat) && p.categoria !== "crianca_colo"); }
-function renderSeatZoom(seat){
-  const el = document.getElementById("seatZoomPanel");
-  const info = findSeatInfo(seat);
-  const p = passengerBySeat(seat);
-  document.querySelectorAll(".seat-chip.active").forEach(btn => btn.classList.remove("active"));
-  document.querySelectorAll(`.seat-chip[data-seat="${CSS.escape(String(seat))}"]`).forEach(btn => btn.classList.add("active"));
-  if(!info){
-    el.innerHTML = `<div class="mini-front"></div><div class="empty">Poltrona ${escapeHtml(seat)} não encontrada no mapa do ônibus.</div>`;
-    return;
-  }
-  const cells = info.row.map(cell => {
-    if(cell == null) return `<div class="zoom-aisle" title="Corredor"></div>`;
-    const occupant = passengerBySeat(cell);
-    const cls = ["zoom-cell", occupant ? "occupied" : "", Number(cell) === Number(seat) ? "selected" : ""].filter(Boolean).join(" ");
-    return `<div class="${cls}" title="${occupant ? escapeHtml(occupant.nome) : 'Livre'}"><span>${cell}</span>${occupant ? `<span class="tiny-name">${escapeHtml(firstName(occupant.nome))}</span>` : ""}</div>`;
-  }).join("");
-  el.innerHTML = `<div class="mini-front"></div>
-    <div class="zoom-head">
-      <div>
-        <div class="zoom-seat-title">Poltrona ${escapeHtml(info.seat)}</div>
-        <div class="zoom-passenger">${p ? escapeHtml(p.nome) : "Livre"}</div>
-        <div class="muted small">${escapeHtml(info.deck)} • fileira ${info.rowIndex} • ${escapeHtml(info.side)}</div>
-      </div>
-    </div>
-    <div class="zoom-row-wrap">
-      <div class="zoom-row-label">Contexto da fileira</div>
-      <div class="zoom-row">${cells}</div>
-    </div>
-    <div class="zoom-mini-info">
-      ${p ? `<span class="chip info">Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}</span>` : `<span class="chip">assento livre</span>`}
-      ${p && hasFortaleza(p) ? `<span class="chip">Fortaleza: ${escapeHtml(p.familiaFortaleza || "—")}</span>` : ""}
-      ${p && hasJoao(p) ? `<span class="chip">João Pessoa: ${escapeHtml(p.familiaJoao || "—")}</span>` : ""}
-    </div>`;
-}
-function renderInitialSeatZoom(){
-  const first = state.rows.find(p => p.poltrona && p.categoria !== "crianca_colo");
-  if(first) renderSeatZoom(first.poltrona);
-}
-
 function allSeatNumbers(){
   return upperLayout.concat(lowerLayout).flat().filter(v => v != null).map(Number).sort((a,b)=>a-b);
 }
@@ -940,13 +1013,15 @@ function renderBusConfig(){
 function setActiveTab(tabId){
   document.querySelectorAll(".tab-button").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tabId));
   document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.toggle("active", panel.id === tabId));
+  if(tabId === "adminTab") renderAdminAccess();
 }
-
 function renderAll(){
   renderAlerts();
   renderStats();
   renderSinglePanel();
   renderBusConfig();
+  renderAdminPanel();
+  renderAdminAccess();
 }
 function loadText(text, source){
   const raw = parseDelimitedText(text);
@@ -963,6 +1038,7 @@ function loadText(text, source){
 }
 document.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll(".tab-button").forEach(btn => btn.addEventListener("click", () => setActiveTab(btn.dataset.tab)));
+  setupAdminPanel();
   const res = await fetchFirstAvailable();
   if(res.text){
     loadText(res.text, res.path);
