@@ -329,7 +329,7 @@
       </div>
       <div class="hero-box">
         <strong>Arquivo esperado:</strong><br>
-        <code>viagem_familia_2027_unificado_responsaveis.csv</code>
+        <code>viagem_familia_2027_unificado.csv</code>
         <p class="muted small">O painel carrega automaticamente o CSV que estiver na mesma pasta do HTML. Não há atualização nem envio de arquivo pelo site.</p>
         <span class="muted small" id="fileStatus">Tentando carregar automaticamente...</span>
       </div>
@@ -466,7 +466,7 @@
 
 <script>
 const FILE_CANDIDATES = [
-  "viagem_familia_2027_unificado_responsaveis.csv",
+  "viagem_familia_2027_unificado.csv",
   "viagem_familia_2027_unificado.csv",
   "viagem_familia_2027.csv",
   "dados_viagem.csv",
@@ -1043,7 +1043,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if(res.text){
     loadText(res.text, res.path);
   }else{
-    state.issues.push("Não consegui carregar automaticamente o CSV único. Verifique se o arquivo viagem_familia_2027_unificado_responsaveis.csv está na mesma pasta do HTML.");
+    state.issues.push("Não consegui carregar automaticamente o CSV único. Verifique se o arquivo viagem_familia_2027_unificado_responsaveis está na mesma pasta do HTML.");
     document.getElementById("fileStatus").textContent = "CSV não encontrado na mesma pasta";
     renderAll();
   }
