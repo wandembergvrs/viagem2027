@@ -1,5 +1,4 @@
 Nome;Categoria;ParcelasOnibus;ParcelasTotalOnibus;Poltrona;ValorOnibus;FamiliaFortaleza;QuartoFortaleza;HotelFortaleza;TotalPessoaFortaleza;PagoPessoaFortaleza;FamiliaJoaoPessoa;QuartoJoaoPessoa;HotelJoaoPessoa;TotalPessoaJoaoPessoa;PagoPessoaJoaoPessoa;Observacoes
-Wesley;adulto;10;10;40;1100,00;;;;;;;;;;;
 Francireide;adulto;10;10;23;1100,00;F21;Duplo;Hotel Fortaleza;1820,00;1820,00;J22;Duplo;Hotel João Pessoa;;;
 Arthur;adulto;10;10;24;1100,00;F21;Duplo;Hotel Fortaleza;0,00;0,00;J22;Duplo;Hotel João Pessoa;;;
 Isadora;adulto;10;10;25;1100,00;F06;Quádruplo;Hotel Fortaleza;870,00;870,00;J23;Duplo;Hotel João Pessoa;;;Passagem e hospedagem quitadas.
@@ -54,7 +53,8 @@ Theo;crianca;10;10;6;1100,00;F18;Triplo;Hotel Fortaleza;0,00;0,00;J17;Duplo;Hote
 Vera Lúcia;adulto;6;10;;1100,00;F07;Duplo;Hotel Fortaleza;910,00;364,00;J10;Duplo;Hotel João Pessoa;;;
 Walisson;adulto;10;10;37;1100,00;F09;Duplo;Hotel Fortaleza;0,00;0,00;J16;Duplo;Hotel João Pessoa;;;
 Wandem;adulto;10;10;9;1100,00;F18;Triplo;Hotel Fortaleza;2150,00;2150,00;J17;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
-Zilda;adulto;10;10;45;1100,00;F14;Triplo;Hotel Fortaleza;2700,00;540,00;J13;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
+Wesley;adulto;10;10;40;1100,00;;;;;;;;;;;
+Zilda;adulto;10;10;45;1100,00;F14;Triplo;Hotel Fortaleza;2700,00;1080,00;J13;Duplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Fortaleza.
 Jéssica;adulto;3;10;;1100,00;F22;Triplo;Hotel Fortaleza;2700,00;110,00;J24;Triplo;Hotel João Pessoa;;;Pessoa de referência para o pagamento da hospedagem de Jéssica, Lindemberg e Valentina.
 Lindemberg;adulto;3;10;;1100,00;F22;Triplo;Hotel Fortaleza;0,00;0,00;J24;Triplo;Hotel João Pessoa;;;
 Valentina;crianca;3;10;;1100,00;F22;Triplo;Hotel Fortaleza;0,00;0,00;J24;Triplo;Hotel João Pessoa;;;
