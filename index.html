@@ -357,7 +357,7 @@
     <div class="section-head">
       <div>
         <h2>Painel único por quarto — base Fortaleza</h2>
-        <p>Todos os quartos de Fortaleza aparecem à esquerda. À direita, aparece o quarto equivalente em João Pessoa ou o detalhamento dos quartos diferentes.</p>
+        <p>Todos os quartos de Fortaleza aparecem à esquerda. À direita, aparece o quarto equivalente em João Pessoa ou o detalhamento dos quartos diferentes. O controle financeiro da hospedagem é concentrado em Fortaleza, evitando duplicidade de valores entre os destinos.</p>
       </div>
     </div>
     <div class="summary-row" id="roomsSummary"></div>
@@ -803,7 +803,7 @@ function renderJoaoRoomForBase(joaoRoom, baseKeys, same){
         <span class="muted small">${joaoRoom.people.length} ocupante(s) em João Pessoa</span>
       </div>
       <div class="diff-meta">
-        <span class="chip ${joaoRoom.total && joaoRoom.paid >= joaoRoom.total ? 'ok' : (joaoRoom.total ? 'warn' : 'info')}">Hosp. ${formatMoney(joaoRoom.paid)} / ${formatMoney(joaoRoom.total)}</span>
+        <span class="chip info">Hospedagem: pagamento concentrado em Fortaleza</span>
         <span class="chip info">Ônibus ${formatMoney(joaoRoom.busPaid)} / ${formatMoney(joaoRoom.busPlanned)}</span>
       </div>
     </div>
@@ -818,7 +818,7 @@ function renderJoaoRoomForBase(joaoRoom, baseKeys, same){
           <div class="tag-name">${escapeHtml(p.nome)}</div>
           <div class="tag-note">${escapeHtml(note)}</div>
           <div class="values">
-            <span class="chip ${p.totalJoao && p.pagoJoao >= p.totalJoao ? 'ok' : (p.totalJoao ? 'warn' : 'info')}">Hosp. JP ${formatMoney(p.pagoJoao)} / ${formatMoney(p.totalJoao)}</span>
+            <span class="chip info">Hospedagem: financeiro em Fortaleza</span>
             <span class="chip info">Ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}${p.valorOnibus ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span>
             ${p.poltrona && p.categoria !== "crianca_colo" ? `<span class="chip info">poltrona ${escapeHtml(p.poltrona)}</span>` : ""}
           </div>
