@@ -213,6 +213,44 @@
     .occupied-item strong{display:block;overflow-wrap:anywhere}
     .occupied-item span{font-size:.76rem;color:#64748b}
 
+    /* Painel de quartos — estilo hotel */
+    .hotel-board{
+      border:1px solid var(--border);border-radius:22px;
+      background:linear-gradient(180deg,#eef2f7,#ffffff 45%,#e2e8f0);
+      padding:16px;margin-bottom:16px;overflow:hidden;
+    }
+    .hotel-board-title{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;margin-bottom:12px;color:#334155;font-weight:900}
+    .hotel-rooms-grid{display:flex;flex-wrap:wrap;gap:10px}
+    .hotel-room{
+      width:150px;min-height:128px;border-radius:12px 12px 4px 4px;border:2px solid #94a3b8;
+      background:linear-gradient(180deg,#f8fafc,#eef2f7);padding:9px 9px 16px;
+      display:flex;flex-direction:column;gap:4px;position:relative;
+    }
+    .hotel-room::after{
+      content:"";position:absolute;bottom:6px;left:50%;transform:translateX(-50%);
+      width:24px;height:9px;background:#94a3b8;border-radius:5px 5px 0 0;opacity:.55;
+    }
+    .hotel-room.paid{border-color:#22c55e;background:linear-gradient(180deg,#f0fdf4,#dcfce7)}
+    .hotel-room.paid::after{background:#22c55e}
+    .hotel-room.partial{border-color:#f59e0b;background:linear-gradient(180deg,#fff7ed,#fef3c7)}
+    .hotel-room.partial::after{background:#f59e0b}
+    .hotel-room.pending{border-color:#cbd5e1;background:linear-gradient(180deg,#f8fafc,#f1f5f9)}
+    .hotel-room-code{font-weight:900;font-size:.84rem;color:#0f172a}
+    .hotel-room-type{font-size:.66rem;color:#64748b;text-transform:uppercase;letter-spacing:.05em}
+    .hotel-room-beds{font-size:.8rem;letter-spacing:1px;margin:1px 0}
+    .hotel-room-occupants{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
+    .hotel-occupant-tag{
+      font-size:.64rem;font-weight:800;background:rgba(255,255,255,.75);
+      border:1px solid rgba(15,23,42,.1);border-radius:999px;padding:1px 6px;
+      max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#334155;
+    }
+    .hotel-room-status{font-size:.64rem;font-weight:800;margin-top:auto;color:#334155}
+    .hotel-legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:.78rem;color:#334155}
+    .legend-dot.paid{background:#dcfce7;border-color:#22c55e}
+    .legend-dot.partial{background:#fef3c7;border-color:#f59e0b;border-style:dashed}
+    .legend-dot.pending{background:#f1f5f9;border-color:#cbd5e1;border-style:dashed}
+    @media(max-width:640px){ .hotel-room{width:130px} }
+
     /* Painel único */
     .single-panel-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
     .room-pair-card{border:1px solid var(--border);border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 4px 16px rgba(15,23,42,.04)}
@@ -481,6 +519,7 @@
       </div>
     </div>
     <div class="summary-row" id="roomsSummary"></div>
+    <div class="hotel-board" id="hotelBoard"></div>
     <div id="singleRoomsPanel" class="single-panel-grid"></div>
   </section>
 
@@ -1025,6 +1064,52 @@ function renderOnlyBusCard(people){
       </div>
     </div>`;
 }
+function roomCapacity(label, fallback){
+  const v = normalizeText(label);
+  if(v.includes("quintuplo")) return 5;
+  if(v.includes("quadruplo")) return 4;
+  if(v.includes("triplo")) return 3;
+  if(v.includes("duplo")) return 2;
+  if(v.includes("individual") || v.includes("single")) return 1;
+  return Math.max(fallback || 1, 1);
+}
+function hotelRoomStatusClass(room){
+  if(!room.total) return "pending";
+  if(room.paid >= room.total) return "paid";
+  if(room.paid > 0) return "partial";
+  return "pending";
+}
+function renderHotelRoom(room){
+  const cap = roomCapacity(room.quarto, room.people.length);
+  const beds = "🛏️".repeat(Math.min(Math.max(cap,1), 6));
+  const statusClass = hotelRoomStatusClass(room);
+  const statusLabel = statusClass === "paid"
+    ? "quitado"
+    : statusClass === "partial"
+      ? `${pct(room.pct)} pago`
+      : (room.total ? "pendente" : "sem valor");
+  const occupants = room.people.map(p => `<span class="hotel-occupant-tag" title="${escapeHtml(p.nome)}">${escapeHtml(firstName(p.nome))}</span>`).join("");
+  return `<div class="hotel-room ${statusClass}" title="${escapeHtml(roomLabel(room))}">
+    <div class="hotel-room-code">${escapeHtml(room.familia || room.key)}</div>
+    <div class="hotel-room-type">${escapeHtml(room.quarto || "quarto")}</div>
+    <div class="hotel-room-beds">${beds}</div>
+    <div class="hotel-room-occupants">${occupants || '<span class="hotel-occupant-tag">vazio</span>'}</div>
+    <div class="hotel-room-status">${escapeHtml(statusLabel)}</div>
+  </div>`;
+}
+function renderHotelBoard(rooms){
+  const el = document.getElementById("hotelBoard");
+  if(!el) return;
+  const sorted = rooms.slice().sort((a,b)=>sortNatural(a.familia || a.key, b.familia || b.key));
+  el.innerHTML = `
+    <div class="hotel-board-title"><span>🏨 Hotel Fortaleza — mapa de quartos</span><span class="muted small">${sorted.length} quarto(s)</span></div>
+    <div class="hotel-rooms-grid">${sorted.map(renderHotelRoom).join("") || '<div class="empty">Nenhum quarto encontrado no CSV.</div>'}</div>
+    <div class="hotel-legend">
+      <span class="chip"><span class="legend-dot paid"></span> Quitado</span>
+      <span class="chip"><span class="legend-dot partial"></span> Pagamento parcial</span>
+      <span class="chip"><span class="legend-dot pending"></span> Pendente / sem valor</span>
+    </div>`;
+}
 function renderSinglePanel(){
   const s = summarize();
   const rooms = s.rooms;
@@ -1049,6 +1134,8 @@ function renderSinglePanel(){
     `${joaoWithoutFortBase.length} quarto(s) de João Pessoa sem base Fortaleza`,
     `${s.onlyBus.length} pessoa(s) somente ônibus`
   ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
+
+  renderHotelBoard(rooms.fortaleza);
 
   const fortCards = rooms.fortaleza.map(r => renderRoomPair(r, rooms)).join("");
   const joaoExtra = joaoWithoutFortBase.length
