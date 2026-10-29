@@ -263,6 +263,34 @@
     .note-box.warn{border-color:var(--warn-border);background:var(--warn-bg);color:#9a3412}
     .room-section-title{font-size:.92rem;font-weight:900;margin:18px 0 8px;color:#334155}
 
+    /* Roteiro */
+    .phase-block{margin-top:22px}
+    .phase-block:first-child{margin-top:0}
+    .phase-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .phase-dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 0 4px rgba(15,23,42,.05)}
+    .phase-dot.fortaleza{background:#0ea5e9}
+    .phase-dot.sertao{background:#ca8a04}
+    .phase-dot.joao{background:#16a34a}
+    .phase-title{font-weight:900;font-size:1rem}
+    .phase-sub{color:var(--muted);font-size:.82rem}
+    .timeline{position:relative;display:grid;gap:12px;padding-left:26px;border-left:2px solid var(--border);margin-left:5px}
+    .timeline-item{position:relative;background:#fff;border:1px solid var(--border);border-radius:16px;padding:12px 14px;box-shadow:0 4px 14px rgba(15,23,42,.05)}
+    .timeline-item::before{content:"";position:absolute;left:-33px;top:16px;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #94a3b8}
+    .timeline-item.fortaleza::before{border-color:#0ea5e9}
+    .timeline-item.sertao::before{border-color:#ca8a04}
+    .timeline-item.joao::before{border-color:#16a34a}
+    .timeline-item.optional{border-style:dashed}
+    .timeline-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
+    .timeline-day{font-weight:900;font-size:.92rem}
+    .timeline-date{color:var(--muted);font-size:.78rem;font-weight:700}
+    .timeline-title{font-weight:800;margin-top:4px}
+    .timeline-desc{color:#334155;font-size:.86rem;margin-top:4px;line-height:1.45}
+    .timeline-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+    @media(max-width:640px){
+      .timeline{padding-left:20px}
+      .timeline-item::before{left:-27px}
+    }
+
     /* Mini zoom */
     .seat-inline-zoom{
       margin-top:8px;
@@ -348,12 +376,104 @@
   </div>
 
   <nav class="tab-nav" aria-label="Abas do painel">
-    <button class="tab-button active" type="button" data-tab="roomsTab">🏨 Painel por quartos</button>
+    <button class="tab-button active" type="button" data-tab="roteiroTab">🗺️ Roteiro</button>
+    <button class="tab-button" type="button" data-tab="roomsTab">🏨 Painel por quartos</button>
     <button class="tab-button" type="button" data-tab="busTab">🚌 Configuração do ônibus</button>
     <button class="tab-button" type="button" data-tab="adminTab">⚙️ Administração</button>
   </nav>
 
-  <section class="card tab-panel active" id="roomsTab">
+  <section class="card tab-panel active" id="roteiroTab">
+    <div class="section-head">
+      <div>
+        <h2>Roteiro da viagem</h2>
+        <p>Chegada em Fortaleza em 04/01/2027. Programação dia a dia até o encerramento em João Pessoa. Passeios marcados como opcionais não fazem parte do pacote fechado do grupo.</p>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-head">
+        <span class="phase-dot fortaleza"></span>
+        <div><div class="phase-title">Fortaleza (CE)</div><div class="phase-sub">04 a 07/01</div></div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item fortaleza">
+          <div class="timeline-head"><span class="timeline-day">Dia 04</span><span class="timeline-date mono">04/01</span></div>
+          <div class="timeline-title">Chegada em Fortaleza</div>
+          <div class="timeline-desc">Dia livre para chegada, acomodação e descanso.</div>
+        </div>
+        <div class="timeline-item fortaleza optional">
+          <div class="timeline-head"><span class="timeline-day">Dia 05</span><span class="timeline-date mono">05/01</span></div>
+          <div class="timeline-title">Praia das Dunas</div>
+          <div class="timeline-tags"><span class="chip info">Beach Park (opcional)</span></div>
+        </div>
+        <div class="timeline-item fortaleza">
+          <div class="timeline-head"><span class="timeline-day">Dia 06</span><span class="timeline-date mono">06/01</span></div>
+          <div class="timeline-title">Praia do Cumbuco</div>
+        </div>
+        <div class="timeline-item fortaleza">
+          <div class="timeline-head"><span class="timeline-day">Dia 07</span><span class="timeline-date mono">07/01</span></div>
+          <div class="timeline-title">Praia do Futuro e saída para o sertão</div>
+          <div class="timeline-desc">Manhã na Praia do Futuro até 11h. Às 12h, saída do hotel passando pela Praia de Iracema até o Mercado Central. Em seguida, saída do Mercado Central rumo ao sertão da Paraíba.</div>
+          <div class="timeline-tags"><span class="chip warn">Dia de transição</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-head">
+        <span class="phase-dot sertao"></span>
+        <div><div class="phase-title">Sertão da Paraíba</div><div class="phase-sub">08 a 11/01</div></div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item sertao">
+          <div class="timeline-head"><span class="timeline-day">Dia 08</span><span class="timeline-date mono">08/01</span></div>
+          <div class="timeline-title">Chegada ao sertão</div>
+        </div>
+        <div class="timeline-item sertao optional">
+          <div class="timeline-head"><span class="timeline-day">Dia 09</span><span class="timeline-date mono">09/01</span></div>
+          <div class="timeline-title">Parque West Rio Grande do Norte</div>
+          <div class="timeline-tags"><span class="chip info">Passeio opcional</span></div>
+        </div>
+        <div class="timeline-item sertao">
+          <div class="timeline-head"><span class="timeline-day">Dia 10</span><span class="timeline-date mono">10/01</span></div>
+          <div class="timeline-title">Dia livre no sertão</div>
+          <div class="timeline-desc">Sem atividade específica informada até o momento.</div>
+        </div>
+        <div class="timeline-item sertao">
+          <div class="timeline-head"><span class="timeline-day">Dia 11</span><span class="timeline-date mono">11/01</span></div>
+          <div class="timeline-title">Saída do sertão para João Pessoa</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-head">
+        <span class="phase-dot joao"></span>
+        <div><div class="phase-title">João Pessoa (PB)</div><div class="phase-sub">11 a 15/01</div></div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item joao">
+          <div class="timeline-head"><span class="timeline-day">Dia 12</span><span class="timeline-date mono">12/01</span></div>
+          <div class="timeline-title">Praia de Cabo Branco</div>
+        </div>
+        <div class="timeline-item joao">
+          <div class="timeline-head"><span class="timeline-day">Dia 13</span><span class="timeline-date mono">13/01</span></div>
+          <div class="timeline-title">Praia de Coqueirinho</div>
+        </div>
+        <div class="timeline-item joao">
+          <div class="timeline-head"><span class="timeline-day">Dia 14</span><span class="timeline-date mono">14/01</span></div>
+          <div class="timeline-title">Praia de Cabedelo</div>
+        </div>
+        <div class="timeline-item joao">
+          <div class="timeline-head"><span class="timeline-day">Dia 15</span><span class="timeline-date mono">15/01</span></div>
+          <div class="timeline-title">Almoço no Bar do Cuscuz</div>
+          <div class="timeline-desc">Encerramento da viagem.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card tab-panel" id="roomsTab">
     <div class="section-head">
       <div>
         <h2>Painel único por quarto — base Fortaleza</h2>
