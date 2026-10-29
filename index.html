@@ -256,6 +256,10 @@
     .legend-dot.jp-same{background:var(--ok-bg);border-color:var(--ok-border)}
     .legend-dot.jp-diff{background:var(--warn-bg);border-color:var(--warn-border);border-style:dashed}
     .hotel-board.joao{background:linear-gradient(180deg,#f8fafc,#ffffff 45%,#eef2f7)}
+    .details-toggle-row{display:flex;justify-content:center;margin:6px 0 14px}
+    .details-toggle{background:#fff;color:#334155;border-color:var(--border)}
+    .details-toggle:hover,.details-toggle:focus{background:#f0f9ff;border-color:#0ea5e9}
+    .details-toggle[aria-expanded="true"]{background:#0f172a;color:#fff;border-color:#0f172a}
     @media(max-width:640px){ .hotel-room{width:130px} }
 
     /* Painel único */
@@ -528,7 +532,11 @@
     <div class="summary-row" id="roomsSummary"></div>
     <div class="hotel-board" id="hotelBoard"></div>
     <div class="hotel-board joao" id="hotelBoardJoao"></div>
-    <div id="singleRoomsPanel" class="single-panel-grid"></div>
+
+    <div class="details-toggle-row">
+      <button class="admin-action details-toggle" type="button" id="roomDetailsToggle" aria-expanded="false" aria-controls="singleRoomsPanel">Ver detalhes por pessoa e pagamento</button>
+    </div>
+    <div id="singleRoomsPanel" class="single-panel-grid" hidden></div>
   </section>
 
   <section class="card tab-panel" id="busTab">
@@ -1280,9 +1288,21 @@ function loadText(text, source){
   document.getElementById("fileStatus").textContent = state.rows.length ? `Carregado: ${source}` : "Arquivo sem dados reconhecidos";
   renderAll();
 }
+function setupRoomDetailsToggle(){
+  const button = document.getElementById("roomDetailsToggle");
+  const panel = document.getElementById("singleRoomsPanel");
+  if(!button || !panel) return;
+  button.addEventListener("click", () => {
+    const expanded = button.getAttribute("aria-expanded") === "true";
+    button.setAttribute("aria-expanded", String(!expanded));
+    panel.hidden = expanded;
+    button.textContent = expanded ? "Ver detalhes por pessoa e pagamento" : "Ocultar detalhes por pessoa e pagamento";
+  });
+}
 document.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll(".tab-button").forEach(btn => btn.addEventListener("click", () => setActiveTab(btn.dataset.tab)));
   setupAdminPanel();
+  setupRoomDetailsToggle();
   const res = await fetchFirstAvailable();
   if(res.text){
     loadText(res.text, res.path);
