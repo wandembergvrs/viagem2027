@@ -249,6 +249,13 @@
     .legend-dot.paid{background:#dcfce7;border-color:#22c55e}
     .legend-dot.partial{background:#fef3c7;border-color:#f59e0b;border-style:dashed}
     .legend-dot.pending{background:#f1f5f9;border-color:#cbd5e1;border-style:dashed}
+    .hotel-room.jp-same{border-color:var(--ok-border);background:linear-gradient(180deg,var(--ok-bg),#dcfce7)}
+    .hotel-room.jp-same::after{background:var(--ok)}
+    .hotel-room.jp-diff{border-color:var(--warn-border);background:linear-gradient(180deg,var(--warn-bg),#fed7aa)}
+    .hotel-room.jp-diff::after{background:var(--warn)}
+    .legend-dot.jp-same{background:var(--ok-bg);border-color:var(--ok-border)}
+    .legend-dot.jp-diff{background:var(--warn-bg);border-color:var(--warn-border);border-style:dashed}
+    .hotel-board.joao{background:linear-gradient(180deg,#f8fafc,#ffffff 45%,#eef2f7)}
     @media(max-width:640px){ .hotel-room{width:130px} }
 
     /* Painel único */
@@ -520,6 +527,7 @@
     </div>
     <div class="summary-row" id="roomsSummary"></div>
     <div class="hotel-board" id="hotelBoard"></div>
+    <div class="hotel-board joao" id="hotelBoardJoao"></div>
     <div id="singleRoomsPanel" class="single-panel-grid"></div>
   </section>
 
@@ -1110,6 +1118,34 @@ function renderHotelBoard(rooms){
       <span class="chip"><span class="legend-dot pending"></span> Pendente / sem valor</span>
     </div>`;
 }
+function renderHotelRoomJoao(room){
+  const cap = roomCapacity(room.quarto, room.people.length);
+  const beds = "🛏️".repeat(Math.min(Math.max(cap,1), 6));
+  const statusClass = room.isMatched ? "jp-same" : "jp-diff";
+  const statusLabel = room.isMatched ? "igual à Fortaleza" : "composição diferente";
+  const occupants = room.people.map(p => `<span class="hotel-occupant-tag" title="${escapeHtml(p.nome)}">${escapeHtml(firstName(p.nome))}</span>`).join("");
+  return `<div class="hotel-room ${statusClass}" title="${escapeHtml(roomLabel(room))}">
+    <div class="hotel-room-code">${escapeHtml(room.familia || room.key)}</div>
+    <div class="hotel-room-type">${escapeHtml(room.quarto || "quarto")}</div>
+    <div class="hotel-room-beds">${beds}</div>
+    <div class="hotel-room-occupants">${occupants || '<span class="hotel-occupant-tag">vazio</span>'}</div>
+    <div class="hotel-room-status">${escapeHtml(statusLabel)}</div>
+  </div>`;
+}
+function renderHotelBoardJoao(rooms){
+  const el = document.getElementById("hotelBoardJoao");
+  if(!el) return;
+  const sorted = rooms.slice().sort((a,b)=>sortNatural(a.familia || a.key, b.familia || b.key));
+  const diffCount = sorted.filter(r=>!r.isMatched).length;
+  el.innerHTML = `
+    <div class="hotel-board-title"><span>🏨 Hotel João Pessoa — mapa de quartos</span><span class="muted small">${sorted.length} quarto(s) • ${diffCount} com composição diferente de Fortaleza</span></div>
+    <div class="hotel-rooms-grid">${sorted.map(renderHotelRoomJoao).join("") || '<div class="empty">Nenhum quarto encontrado no CSV.</div>'}</div>
+    <div class="hotel-legend">
+      <span class="chip"><span class="legend-dot jp-same"></span> Mesma composição de Fortaleza</span>
+      <span class="chip"><span class="legend-dot jp-diff"></span> Composição diferente</span>
+      <span class="chip info">Pagamento da hospedagem é controlado em Fortaleza</span>
+    </div>`;
+}
 function renderSinglePanel(){
   const s = summarize();
   const rooms = s.rooms;
@@ -1136,6 +1172,7 @@ function renderSinglePanel(){
   ].map(x=>`<span class="summary-pill">${escapeHtml(x)}</span>`).join("");
 
   renderHotelBoard(rooms.fortaleza);
+  renderHotelBoardJoao(rooms.joao);
 
   const fortCards = rooms.fortaleza.map(r => renderRoomPair(r, rooms)).join("");
   const joaoExtra = joaoWithoutFortBase.length
