@@ -314,6 +314,26 @@
     .room-section-title{font-size:.92rem;font-weight:900;margin:18px 0 8px;color:#334155}
 
     /* Roteiro */
+    .bus-times{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-bottom:6px}
+    .bus-time{border:1px solid var(--border);border-radius:12px;padding:8px 10px;background:var(--soft);font-size:.84rem}
+    .bus-time strong{display:block;font-size:.95rem}
+    .checklist{margin-top:18px;border:1px solid var(--border);border-radius:14px;padding:10px 14px;background:var(--soft)}
+    .checklist summary{cursor:pointer;font-weight:800}
+    .checklist-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:4px 18px;margin-top:8px;font-size:.86rem;color:#334155}
+    .checklist-grid h3{font-size:.88rem;margin:8px 0 2px;color:var(--text)}
+    .checklist-grid p{margin:0;line-height:1.45}
+    .park-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+    .tour-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+    .tour-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(15,23,42,.05);min-width:0}
+    .tour-img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--soft)}
+    .tour-credit{font-size:.68rem;color:var(--muted);padding:4px 12px 0;overflow-wrap:anywhere}
+    .tour-credit a{color:inherit}
+    .tour-body{padding:8px 14px 14px}
+    .tour-place{color:var(--muted);font-size:.8rem;margin-top:2px}
+    .tour-facts{margin:8px 0 0;padding-left:18px;font-size:.86rem;line-height:1.5;color:#334155}
+    .tour-names{margin-top:10px}
+    .tour-names summary{cursor:pointer;font-weight:800;font-size:.86rem}
+    .tour-names .room-sub{margin-bottom:0}
     .phase-block{margin-top:22px}
     .phase-block:first-child{margin-top:0}
     .phase-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
@@ -427,6 +447,7 @@
 
   <nav class="tab-nav" aria-label="Abas do painel">
     <button class="tab-button active" type="button" data-tab="roteiroTab">🗺️ Roteiro</button>
+    <button class="tab-button" type="button" data-tab="passeiosTab">🏖️ Passeios</button>
     <button class="tab-button" type="button" data-tab="roomsTab">🏨 Painel por quartos</button>
     <button class="tab-button" type="button" data-tab="busTab">🚌 Configuração do ônibus</button>
     <button class="tab-button" type="button" data-tab="adminTab">⚙️ Administração</button>
@@ -439,6 +460,14 @@
         <p>Chegada em Fortaleza em 04/01/2027. Programação dia a dia até o encerramento em João Pessoa. Passeios marcados como opcionais não fazem parte do pacote fechado do grupo.</p>
       </div>
     </div>
+
+    <div class="bus-times" aria-label="Saídas do ônibus">
+      <div class="bus-time"><strong>02/01 · 17h</strong>Brasília → Fortaleza</div>
+      <div class="bus-time"><strong>07/01 · 22h</strong>Fortaleza → Bom Sucesso (PB)</div>
+      <div class="bus-time"><strong>11/01 · 23h</strong>Bom Sucesso → João Pessoa</div>
+      <div class="bus-time"><strong>15/01 · 14h</strong>João Pessoa → Brasília</div>
+    </div>
+    <p class="muted small">Horários de saída informados no grupo em 04/09.</p>
 
     <div class="phase-block">
       <div class="phase-head">
@@ -454,6 +483,7 @@
         <div class="timeline-item fortaleza optional">
           <div class="timeline-head"><span class="timeline-day">Dia 05</span><span class="timeline-date mono">05/01</span></div>
           <div class="timeline-title">Praia das Dunas</div>
+          <div class="timeline-desc">Beach Park, opcional: das 11h às 17h, ingresso a R$ 159,00 na promoção. Detalhes na aba Passeios.</div>
           <div class="timeline-tags"><span class="chip info">Beach Park (opcional)</span></div>
         </div>
         <div class="timeline-item fortaleza">
@@ -463,7 +493,7 @@
         <div class="timeline-item fortaleza">
           <div class="timeline-head"><span class="timeline-day">Dia 07</span><span class="timeline-date mono">07/01</span></div>
           <div class="timeline-title">Praia do Futuro e saída para o sertão</div>
-          <div class="timeline-desc">Manhã na Praia do Futuro até 11h. Às 12h, saída do hotel passando pela Praia de Iracema até o Mercado Central. Em seguida, saída do Mercado Central rumo ao sertão da Paraíba.</div>
+          <div class="timeline-desc">Manhã na Praia do Futuro até 11h. Às 12h, saída do hotel passando pela Praia de Iracema até o Mercado Central. Em seguida, saída do Mercado Central rumo ao sertão da Paraíba, com ônibus previsto para as 22h.</div>
           <div class="timeline-tags"><span class="chip warn">Dia de transição</span></div>
         </div>
       </div>
@@ -482,6 +512,7 @@
         <div class="timeline-item sertao optional">
           <div class="timeline-head"><span class="timeline-day">Dia 09</span><span class="timeline-date mono">09/01</span></div>
           <div class="timeline-title">Parque West Rio Grande do Norte</div>
+          <div class="timeline-desc">West Acqua Park, em Umarizal (RN): das 9h às 17h, R$ 50,00 em grupo. Detalhes na aba Passeios.</div>
           <div class="timeline-tags"><span class="chip info">Passeio opcional</span></div>
         </div>
         <div class="timeline-item sertao">
@@ -520,6 +551,145 @@
           <div class="timeline-desc">Encerramento da viagem.</div>
         </div>
       </div>
+    </div>
+
+    <details class="checklist">
+      <summary>🎒 Checklist da bagagem de mão: 36 horas de ônibus</summary>
+      <div class="checklist-grid">
+        <div><h3>Documentos e essenciais</h3><p>RG ou CNH, cartões e dinheiro em espécie, celular, carregador, fone e power bank.</p></div>
+        <div><h3>Higiene</h3><p>Escova e creme dental, fio dental, desodorante, lenços, álcool em gel, papel higiênico, pente, hidratante labial, protetor solar, absorventes e sacolinha para lixo.</p></div>
+        <div><h3>Roupas e conforto</h3><p>Troca completa de roupa, camiseta e roupa íntima extras, meias, casaco, chinelo, máscara para dormir, travesseiro de pescoço, manta e almofada lombar.</p></div>
+        <div><h3>Alimentação</h3><p>Água, sanduíches naturais bem acondicionados, biscoitos, barrinhas, castanhas, frutas resistentes, frutas secas, guardanapos e talheres. Evite alimentos de cheiro forte e use bolsa térmica para perecíveis.</p></div>
+        <div><h3>Farmacinha</h3><p>Medicamentos de uso contínuo, remédio para enjoo (se já indicado), curativos, antisséptico, remédios das crianças e receita médica, se aplicável.</p></div>
+        <div><h3>Entretenimento</h3><p>Livros, jogos, filmes e músicas baixados, palavras cruzadas, jogos de cartas e brinquedos pequenos, livrinhos e lápis para as crianças.</p></div>
+        <div><h3>Crianças</h3><p>Fraldas, lenços umedecidos, mudas de roupa, garrafinha, naninha, casaco e meia extra, sacos para roupa suja e kit de distração.</p></div>
+        <div><h3>Segurança e organização</h3><p>Dinheiro em pequenas quantias, bolsa para documentos, sacos plásticos e etiqueta de identificação na mochila.</p></div>
+      </div>
+    </details>
+  </section>
+
+  <section class="card tab-panel" id="passeiosTab">
+    <div class="section-head">
+      <div>
+        <h2>Passeios da viagem</h2>
+        <p>Os parques são opcionais e organizados pela Jéssica, e a participação não é obrigatória. Lista de interessados atualizada em 08/11/2026.</p>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-head"><span class="phase-dot sertao"></span><div><div class="phase-title">Parques aquáticos (opcionais)</div><div class="phase-sub">Ingressos pagos por cada pessoa</div></div></div>
+      <div class="park-grid">
+        <article class="tour-card">
+          <img class="tour-img" src="img/passeios/beach-park.jpg" alt="Entrada de uma atração do Beach Park" loading="lazy"><div class="tour-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Beach_Park_-_Fortaleza_CE_-_panoramio.jpg" target="_blank" rel="noopener">Paulo JC Nogueira</a> · CC BY-SA 3.0</div>
+          <div class="tour-body">
+            <div class="timeline-head"><span class="timeline-day">🌊 Beach Park</span><span class="timeline-date mono">ter, 05/01</span></div>
+            <div class="tour-place">Porto das Dunas, Aquiraz (Grande Fortaleza)</div>
+            <div class="timeline-tags"><span class="chip info">Opcional</span><span class="chip">11h às 17h</span><span class="chip ok">R$ 159,00</span></div>
+            <ul class="tour-facts">
+              <li>Valor da promoção de Black Friday, que abre em 24/11. Fora dela, o ingresso é R$ 250,00.</li>
+              <li>Cada pessoa compra o próprio ingresso, por Pix ou cartão. A Jéssica enviará o link no grupo quando a promoção abrir.</li>
+              <li>Criança de até 1 metro, acompanhada de adulto pagante, não paga.</li>
+              <li>O valor cobre só a entrada no parque.</li>
+            </ul>
+            <details class="tour-names"><summary>Lista de interessados (<span id="beachCount">0</span>)</summary><div class="room-sub" id="beachNames"></div></details>
+            <div class="note-box"><a href="https://beachpark.com.br/experiencias/aqua-park/atracoes/" target="_blank" rel="noopener">Ver as atrações no site do parque</a></div>
+          </div>
+        </article>
+        <article class="tour-card">
+          <img class="tour-img" src="img/passeios/umarizal.jpg" alt="Vista aérea da região serrana de Umarizal, no Rio Grande do Norte" loading="lazy"><div class="tour-credit">Região de Umarizal, não o parque. Foto: <a href="https://commons.wikimedia.org/wiki/File:Umarizal,_Rio_Grande_do_Norte,_Brasil.JPG" target="_blank" rel="noopener">Marcos Elias de Oliveira Júnior</a> · CC0</div>
+          <div class="tour-body">
+            <div class="timeline-head"><span class="timeline-day">🌴 West Acqua Park</span><span class="timeline-date mono">sáb, 09/01</span></div>
+            <div class="tour-place">RN-117, Umarizal (RN), na estrada para Martins</div>
+            <div class="timeline-tags"><span class="chip info">Opcional</span><span class="chip">9h às 17h</span><span class="chip ok">R$ 50,00 em grupo</span></div>
+            <ul class="tour-facts">
+              <li>Inteira: R$ 100,00. Com mais de 15 ingressos, todos pagam meia, R$ 50,00 aos fins de semana e feriados.</li>
+              <li>Crianças de 0 a 5 anos não pagam.</li>
+              <li>Não é permitido entrar com comida ou bebida.</li>
+              <li>O valor cobre só a entrada. Alimentação e demais despesas são à parte.</li>
+              <li>Atrações citadas pelo parque: Navio Pirata, tirolesa, Acqua Kids e tobogã gigante.</li>
+            </ul>
+            <details class="tour-names"><summary>Lista de interessados (<span id="westCount">0</span>)</summary><div class="room-sub" id="westNames"></div></details>
+            <div class="note-box"><a href="https://westacquapark.com.br/atracoes/" target="_blank" rel="noopener">Ver fotos e atrações no site do parque</a></div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-head"><span class="phase-dot fortaleza"></span><div><div class="phase-title">Fortaleza (CE)</div><div class="phase-sub">05 a 07/01</div></div></div>
+      <div class="tour-grid">
+        <article class="tour-card">
+          <img class="tour-img" src="img/passeios/porto-das-dunas.jpg" alt="Praia de Porto das Dunas vista do alto" loading="lazy"><div class="tour-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Prai_park_24_10_06_108.jpg" target="_blank" rel="noopener">David Anderson Silva</a> · Public domain</div>
+          <div class="tour-body">
+            <div class="timeline-head"><span class="timeline-day">Praia das Dunas</span><span class="timeline-date mono">05/01</span></div>
+            <div class="tour-place">Porto das Dunas, Aquiraz (CE)</div>
+            <div class="timeline-desc">Faixa de areia ao lado do Beach Park. Quem não for ao parque fica na praia.</div>
+          </div>
+        </article>
+        <article class="tour-card">
+          <img class="tour-img" src="img/passeios/cumbuco.jpg" alt="Kitesurfe na praia do Cumbuco" loading="lazy"><div class="tour-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Praia_do_cumbuco.jpg" target="_blank" rel="noopener">Fabiobarros</a> · CC BY-SA 4.0</div>
+          <div class="tour-body">
+            <div class="timeline-head"><span class="timeline-day">Praia do Cumbuco</span><span class="timeline-date mono">06/01</span></div>
+            <div class="tour-place">Caucaia (CE)</div>
+            <div class="timeline-desc">Praia conhecida pelo kitesurfe e pelas dunas.</div>
+          </div>
+        </article>
+        <article class="tour-card">
+          <img class="tour-img" src="img/passeios/praia-do-futuro.jpg" alt="Faixa de areia da Praia do Futuro" loading="lazy"><div class="tour-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Praia_do_Futuro,_Fortaleza,_setembro_de_2023_(1).jpg" target="_blank" rel="noopener">Fronteira</a> · CC BY-SA 4.0</div>
+          <div class="tour-body">
+            <div class="timeline-head"><span class="timeline-day">Praia do Futuro</span><span class="timeline-date mono">07/01</span></div>
+            <div class="tour-place">Fortaleza (CE)</div>
+            <div class="timeline-desc">Manhã na praia, até as 11h.</div>
+          </div>
+        </article>
+        <article class="tour-card">
+          <img class="tour-img" src="img/passeios/praia-de-iracema.jpg" alt="Ponte dos Ingleses, na Praia de Iracema" loading="lazy"><div class="tour-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Ponte_dos_Ingleses_em_Fortaleza_37.jpg" target="_blank" rel="noopener">GLandovsky</a> · CC BY-SA 4.0</div>
+          <div class="tour-body">
+            <div class="timeline-head"><span class="timeline-day">Praia de Iracema</span><span class="timeline-date mono">07/01</span></div>
+            <div class="tour-place">Fortaleza (CE)</div>
+            <div class="timeline-desc">Passagem depois da saída do hotel, às 12h. Na foto, a Ponte dos Ingleses.</div>
+          </div>
+        </article>
+        <article class="tour-card">
+          <img class="tour-img" src="img/passeios/mercado-central.jpg" alt="Interior do Mercado Central de Fortaleza" loading="lazy"><div class="tour-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Mar2024._Mercado_Central_de_Fortaleza,_Cear%C3%A1,_Brazil_05.jpg" target="_blank" rel="noopener">Ridiculopathy</a> · CC0</div>
+          <div class="tour-body">
+            <div class="timeline-head"><span class="timeline-day">Mercado Central</span><span class="timeline-date mono">07/01</span></div>
+            <div class="tour-place">Fortaleza (CE)</div>
+            <div class="timeline-desc">Artesanato, castanhas e lembranças, antes da saída para o sertão.</div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-head"><span class="phase-dot joao"></span><div><div class="phase-title">João Pessoa (PB)</div><div class="phase-sub">12 a 15/01</div></div></div>
+      <div class="tour-grid">
+        <article class="tour-card">
+          <img class="tour-img" src="img/passeios/cabo-branco.jpg" alt="Monumento do Farol do Cabo Branco" loading="lazy"><div class="tour-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Farol_de_Cabo_Branco,_Praia_de_Cabo_Branco,_Jo%C3%A3o_Pessoa,_Para%C3%ADba,_Nordeste,_Brasil_(5166351427).jpg" target="_blank" rel="noopener">lubasi</a> · CC BY-SA 2.0</div>
+          <div class="tour-body">
+            <div class="timeline-head"><span class="timeline-day">Praia de Cabo Branco</span><span class="timeline-date mono">12/01</span></div>
+            <div class="tour-place">João Pessoa (PB)</div>
+            <div class="timeline-desc">Orla da capital. Na foto, o Farol do Cabo Branco.</div>
+          </div>
+        </article>
+        <article class="tour-card">
+          <img class="tour-img" src="img/passeios/coqueirinho.jpg" alt="Vista do mirante sobre a praia de Coqueirinho" loading="lazy"><div class="tour-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Mirante_dedo_de_Deus_em_praia_de_coqueirinho_na_paraiba.jpg" target="_blank" rel="noopener">Matheus Jampa da Silva</a> · CC BY-SA 4.0</div>
+          <div class="tour-body">
+            <div class="timeline-head"><span class="timeline-day">Praia de Coqueirinho</span><span class="timeline-date mono">13/01</span></div>
+            <div class="tour-place">Conde (PB)</div>
+            <div class="timeline-desc">Litoral sul da Paraíba, com falésias e coqueirais.</div>
+          </div>
+        </article>
+        <article class="tour-card">
+          <img class="tour-img" src="img/passeios/cabedelo.jpg" alt="Margem do rio Paraíba na Praia do Jacaré" loading="lazy"><div class="tour-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Praia_do_Jacar%C3%A9_-_Cabedelo_-_Para%C3%ADba_-_Brasil_(11408145615).jpg" target="_blank" rel="noopener">Marinelson Almeida - Traveling through Brazil from Niteroi, Brasil</a> · CC BY 2.0</div>
+          <div class="tour-body">
+            <div class="timeline-head"><span class="timeline-day">Praia de Cabedelo</span><span class="timeline-date mono">14/01</span></div>
+            <div class="tour-place">Cabedelo (PB)</div>
+            <div class="timeline-desc">Litoral norte da Grande João Pessoa. Na foto, a Praia do Jacaré, em Cabedelo.</div>
+          </div>
+        </article>
+      </div>
+      <div class="note-box">Em 15/01, almoço no Bar do Cuscuz antes da saída para Brasília.</div>
     </div>
   </section>
 
@@ -1263,6 +1433,22 @@ function renderBusConfig(){
     ? occupiedPeople.map(p => `<div class="occupied-item"><strong>Poltrona ${escapeHtml(p.poltrona)} — ${escapeHtml(p.nome)}</strong><span>${escapeHtml(profileLabel(p.categoria))} • ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}${p.valorOnibus ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span></div>`).join("")
     : `<div class="empty">Nenhuma poltrona ocupada foi encontrada no CSV.</div>`;
 }
+const TOUR_LIST = [
+  ["Walisson","BW"],["Thais","BW"],["Luís","B"],["Cíntia","BW"],["Jean","BW"],["Rosa Maria","BW"],["Rhalisson","BW"],["Francisco","BW"],
+  ["Francireide","BW"],["Neto","BW"],["Arthur","BW"],["Lindemberg","BW"],["Jéssica","BW"],["Angelina","BW"],["Valentina","BW"],["Thayná","BW"],
+  ["Maicon","BW"],["Neném","BW"],["Raíssa","BW"],["Bosco","W"],["Carmem","BW"],["Davi","BW"],["Pedro","B"],["Janduy","W"],["Gabriel","BW"],
+  ["Zilda","W"],["Dissér","W"],["Onofre","W"],["Chaguinha","W"],["Luzenira","W"],["Antônia","W"],["Reinaldo","BW"],["Ana Lúcia","BW"],
+  ["Isadora","BW"],["Isabela","BW"],["Jurandy","W"],["Lêda","W"],["Juracy","W"],["Cida","W"],["Joel","W"],["Edina","W"],["Maria","BW"],["Israel","BW"]
+];
+function renderTourLists(){
+  [["B","beach"],["W","west"]].forEach(([code,key]) => {
+    const names = TOUR_LIST.filter(p => p[1].includes(code)).map(p => p[0]).sort((a,b) => a.localeCompare(b,"pt-BR"));
+    setText(key + "Count", names.length);
+    const box = document.getElementById(key + "Names");
+    if(box) box.innerHTML = names.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join("");
+  });
+}
+
 function setActiveTab(tabId){
   document.querySelectorAll(".tab-button").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tabId));
   document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.toggle("active", panel.id === tabId));
@@ -1302,6 +1488,7 @@ function setupRoomDetailsToggle(){
 }
 document.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll(".tab-button").forEach(btn => btn.addEventListener("click", () => setActiveTab(btn.dataset.tab)));
+  renderTourLists();
   setupAdminPanel();
   setupRoomDetailsToggle();
   const res = await fetchFirstAvailable();
