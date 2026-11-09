@@ -3,17 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Viagem de Família 2027 — Painel único e ônibus</title>
+  <title>Do Litoral ao Sertão · Viagem de Família 2027</title>
+  <meta name="description" content="Roteiro, passeios, quartos e ônibus da viagem de família de janeiro de 2027." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
   <style>
     :root{
-      --bg:#f5f7fb;
+      --bg:#faf6ef;
       --card:#ffffff;
-      --text:#0f172a;
-      --muted:#64748b;
-      --border:#dbe2ea;
-      --soft:#f8fafc;
-      --accent:#166534;
-      --accent2:#0ea5e9;
+      --text:#12302f;
+      --muted:#5c6f6d;
+      --border:#e7dfd1;
+      --soft:#f6f1e7;
+      --accent:#0e6b6b;
+      --accent2:#0e8a93;
       --warn:#b45309;
       --danger:#b91c1c;
       --ok:#166534;
@@ -27,20 +31,18 @@
       --danger-border:#fecaca;
       --shadow:0 12px 32px rgba(15,23,42,.08);
       --radius:18px;
+      --deep:#0a3a3d;
+      --sun:#f0793a;
+      --display:"Fraunces",Georgia,serif;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:linear-gradient(180deg,#eef2f7 0%,var(--bg) 100%);
+      font-family:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:var(--bg);
       color:var(--text);
     }
-    header{
-      background:linear-gradient(135deg,#facc15 0%,#86efac 42%,#dbeafe 100%);
-      border-bottom:1px solid rgba(15,23,42,.08);
-    }
     .wrap{max-width:1320px;margin:0 auto;padding:18px 14px 30px}
-    .hero{display:grid;grid-template-columns:1.3fr .7fr;gap:18px;align-items:center}
     h1{font-size:clamp(1.8rem,3vw,2.65rem);line-height:1.05;margin:0 0 8px}
     h2{font-size:1.12rem;margin:0}
     h3{font-size:.98rem;margin:0}
@@ -48,22 +50,20 @@
     .muted{color:var(--muted)}
     .small{font-size:.82rem}
     .mono{font-variant-numeric:tabular-nums;white-space:nowrap}
-    .hero-box,.card{
+    .card{
       background:var(--card);
       border:1px solid var(--border);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       padding:14px;
     }
-    .hero-box{background:rgba(255,255,255,.76);border-color:rgba(255,255,255,.9)}
-    .hero-badges,.summary-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .summary-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
     .badge,.summary-pill{
       display:inline-flex;align-items:center;gap:6px;
       padding:6px 10px;border-radius:999px;background:#f8fafc;
       border:1px solid var(--border);font-size:.84rem;color:#334155;
     }
     code{background:#f8fafc;border:1px solid var(--border);padding:2px 5px;border-radius:8px}
-    main section{margin-top:16px}
     .grid{display:grid;gap:14px}
     .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
     .top-panel{grid-template-columns:1fr;align-items:start}
@@ -85,28 +85,6 @@
     .alert{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:14px;padding:12px;margin-bottom:14px}
     .empty{padding:12px;border-radius:14px;background:#f8fafc;border:1px dashed var(--border);color:var(--muted)}
 
-    /* Abas */
-    .tab-nav{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:16px;
-    }
-    .tab-button{
-      border:1px solid var(--border);
-      background:#fff;
-      color:#334155;
-      border-radius:999px;
-      padding:9px 14px;
-      font:inherit;
-      font-weight:800;
-      cursor:pointer;
-      box-shadow:0 4px 12px rgba(15,23,42,.04);
-    }
-    .tab-button:hover,.tab-button:focus{outline:none;border-color:#0ea5e9;background:#f0f9ff}
-    .tab-button.active{background:#0f172a;color:#fff;border-color:#0f172a}
-    .tab-panel{display:none}
-    .tab-panel.active{display:block}
 
     /* Administração */
     .admin-login{
@@ -193,7 +171,7 @@
     .legend-dot{width:13px;height:13px;border-radius:4px;border:1px solid #cbd5e1;display:inline-block}
     .legend-dot.free{background:#f8fafc;border-style:dashed}
     .legend-dot.occupied{background:#dcfce7;border-color:#22c55e}
-    .available-panel{display:grid;gap:10px;position:sticky;top:12px}
+    .available-panel{display:grid;gap:10px;position:sticky;top:76px}
     .available-grid{display:flex;flex-wrap:wrap;gap:6px}
     .available-seat{
       display:inline-flex;
@@ -392,7 +370,7 @@
     .inline-aisle{height:34px;border-radius:999px;border:1px dashed #94a3b8;background:#f1f5f9}
 
     @media(max-width:1050px){
-      .hero,.stats,.top-panel,.twocol,.totals,.room-pair-grid,.admin-summary{grid-template-columns:1fr!important}
+      .top-panel,.twocol,.totals,.room-pair-grid,.admin-summary{grid-template-columns:1fr!important}
       .admin-wide{grid-column:auto}
       .bus-config-layout{grid-template-columns:1fr!important}
       .available-panel{position:static}
@@ -407,57 +385,127 @@
       .progress-meta{display:block}
       .admin-login-row{display:grid}
     }
+    /* Página única */
+    html{scroll-behavior:smooth}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+    .eyebrow{margin:0 0 8px;font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    .topnav{position:sticky;top:0;z-index:50;background:rgba(250,246,239,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+    .topnav-inner{max-width:1320px;margin:0 auto;padding:0 14px;display:flex;align-items:center;gap:18px;min-height:60px}
+    .brand{font-family:var(--display);font-weight:700;font-size:1.12rem;color:var(--deep);text-decoration:none;white-space:nowrap}
+    .nav-links{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+    .nav-links::-webkit-scrollbar{display:none}
+    .nav-links a{padding:8px 12px;border-radius:999px;color:var(--text);text-decoration:none;font-weight:700;font-size:.9rem;white-space:nowrap}
+    .nav-links a:hover,.nav-links a:focus-visible{background:var(--soft)}
+    .nav-links a.current{background:var(--deep);color:#fff}
+    .cover{position:relative;min-height:min(84svh,780px);display:flex;align-items:flex-end;color:#fff;overflow:hidden;background:var(--deep)}
+    .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,38,40,.22) 0%,rgba(6,38,40,.42) 48%,rgba(6,38,40,.88) 100%)}
+    .cover-inner{position:relative;z-index:1;width:100%;max-width:1320px;margin:0 auto;padding:56px 14px 104px}
+    .cover h1{font-family:var(--display);font-weight:700;font-size:clamp(3.2rem,10vw,7.2rem);line-height:.98;letter-spacing:-.02em;margin:0 0 16px}
+    .cover-lead{max-width:600px;font-size:clamp(1.02rem,1.6vw,1.22rem);line-height:1.5;margin:0 0 20px}
+    .route{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;list-style:none;margin:0 0 24px;padding:0;font-weight:700}
+    .route li+li::before{content:"→";margin-right:10px;color:#ffc9a8}
+    .cover-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+    .cta{display:inline-block;background:var(--sun);color:#25130a;text-decoration:none;font-weight:800;padding:12px 22px;border-radius:999px}
+    .cta:hover,.cta:focus-visible{background:#ffa06b}
+    .countdown{font-weight:800}
+    .cover-credit{position:absolute;z-index:1;right:12px;bottom:58px;font-size:.66rem;color:rgba(255,255,255,.75)}
+    .cover-credit a{color:inherit}
+    main.wrap{padding-top:0;padding-bottom:0}
+    .facts{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:-44px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .fact{padding:18px 20px;border-left:1px solid var(--border)}
+    .fact:first-child{border-left:0}
+    .fact-value{font-family:var(--display);font-weight:700;font-size:2.1rem;line-height:1;color:var(--deep)}
+    .fact-label{margin-top:6px;color:var(--muted);font-size:.86rem}
+    #alertBox:not(:empty){margin-top:16px}
+    .page-section{padding:64px 0;scroll-margin-top:60px}
+    .page-section.alt{background:#fff;box-shadow:0 0 0 100vmax #fff;clip-path:inset(0 -100vmax)}
+    .page-section>.section-head{margin-bottom:26px}
+    .page-section>.section-head .eyebrow{color:#c2541f;font-size:.76rem;margin:0 0 8px}
+    .page-section>.section-head h2{font-family:var(--display);font-weight:700;font-size:clamp(2rem,4vw,3rem);line-height:1.06;letter-spacing:-.01em;color:var(--deep)}
+    .page-section>.section-head p:last-child{margin-top:10px;max-width:680px;font-size:1rem;line-height:1.5}
+    .bus-times{background:var(--deep);color:#fff;border-radius:var(--radius);padding:6px;gap:0;grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:8px}
+    .bus-time{background:transparent;border:0;border-left:1px solid rgba(255,255,255,.18);border-radius:0;padding:14px 16px;color:#d5e6e4}
+    .bus-time:first-child{border-left:0}
+    .bus-time strong{color:#fff;font-size:1.05rem;margin-bottom:2px}
+    .phase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-top:28px;align-items:start}
+    .phase-grid .phase-block{margin-top:0}
+    .phase-title{font-family:var(--display);font-weight:700;font-size:1.3rem}
+    .tour-card{transition:transform .18s ease,box-shadow .18s ease}
+    .tour-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+    .tour-grid .tour-img{aspect-ratio:4/3}
+    .checklist{background:#fff}
+    .site-foot{background:var(--deep);color:#d5e6e4;margin-top:0}
+    .site-foot-inner{max-width:1320px;margin:0 auto;padding:30px 14px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;font-size:.88rem}
+    .site-foot strong{font-family:var(--display);color:#fff;font-size:1.08rem}
+    @media(max-width:1050px){
+      .phase-grid{grid-template-columns:1fr}
+      .bus-times{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .bus-time:nth-child(3){border-left:0}
+    }
+    @media(max-width:640px){
+      .brand{display:none}
+      .nav-links{margin-left:0}
+      .topnav-inner{padding:0 8px;min-height:54px}
+      .page-section{padding:44px 0;scroll-margin-top:54px}
+      .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .fact{padding:14px 16px}
+      .fact:nth-child(3){border-left:0}
+      .fact:nth-child(n+3){border-top:1px solid var(--border)}
+      .cover-credit{bottom:52px}
+    }
   </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div class="hero">
-      <div>
-        <h1>Viagem de Família 2027</h1>
-        <div class="subtitle">
-          Painel único por quarto, com Fortaleza como base. O CSV continua sendo individual, mas a visualização agrupa por quarto, mostra os ocupantes, o pagamento individual da hospedagem, o pagamento individual do ônibus e o mini zoom da poltrona dentro do próprio card da hospedagem. Há também uma aba específica com a configuração completa do ônibus e as poltronas disponíveis.
-        </div>
-        <div class="hero-badges">
-          <span class="badge" id="badgePeople">👨‍👩‍👧‍👦 0 pessoas</span>
-          <span class="badge" id="badgeRooms">🏨 0 quartos</span>
-          <span class="badge" id="badgeBus">🚌 0 poltronas marcadas</span>
-          <span class="badge" id="badgeDiff">🔀 0 quartos diferentes</span>
-        </div>
-      </div>
-      <div class="hero-box">
-        <strong>Arquivo esperado:</strong><br>
-        <code>viagem_familia_2027_unificado.csv</code>
-        <p class="muted small">O painel carrega automaticamente o CSV que estiver na mesma pasta do HTML. Não há atualização nem envio de arquivo pelo site.</p>
-        <span class="muted small" id="fileStatus">Tentando carregar automaticamente...</span>
-      </div>
+<nav class="topnav" aria-label="Seções da página">
+  <div class="topnav-inner">
+    <a class="brand" href="#inicio">Do Litoral ao Sertão</a>
+    <div class="nav-links">
+      <a href="#roteiro">Roteiro</a>
+      <a href="#passeios">Passeios</a>
+      <a href="#quartos">Quartos</a>
+      <a href="#onibus">Ônibus</a>
+      <a href="#administracao">Administração</a>
     </div>
   </div>
+</nav>
+
+<header class="cover" id="inicio">
+  <img class="cover-img" src="img/passeios/hero.jpg" alt="Vista do mirante sobre a praia de Coqueirinho, na Paraíba" />
+  <div class="cover-inner">
+    <p class="eyebrow">Viagem de família · 02 a 15 de janeiro de 2027</p>
+    <h1>Do Litoral<br />ao Sertão</h1>
+    <p class="cover-lead">Estrada, praia e família: de Brasília a Fortaleza, ao sertão da Paraíba e a João Pessoa.</p>
+    <ol class="route">
+      <li>Brasília</li>
+      <li>Fortaleza</li>
+      <li>Bom Sucesso</li>
+      <li>João Pessoa</li>
+      <li>Brasília</li>
+    </ol>
+    <div class="cover-actions">
+      <a class="cta" href="#roteiro">Ver o roteiro</a>
+      <span class="countdown" id="countdown"></span>
+    </div>
+  </div>
+  <div class="cover-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Mirante_dedo_de_Deus_em_praia_de_coqueirinho_na_paraiba.jpg" target="_blank" rel="noopener">Matheus Jampa da Silva</a> · CC BY-SA 4.0</div>
 </header>
 
 <main class="wrap">
+  <div class="facts">
+    <div class="fact"><div class="fact-value">14</div><div class="fact-label">dias de viagem</div></div>
+    <div class="fact"><div class="fact-value" id="statPeople">0</div><div class="fact-label">pessoas no grupo</div></div>
+    <div class="fact"><div class="fact-value" id="statRoomsFort">0</div><div class="fact-label">quartos em Fortaleza</div></div>
+    <div class="fact"><div class="fact-value" id="statSeats">0</div><div class="fact-label">poltronas marcadas</div></div>
+  </div>
   <div id="alertBox"></div>
 
-  <div class="grid stats">
-    <div class="card"><div class="stat-label">Pessoas no CSV</div><div class="stat-value" id="statPeople">0</div><div class="stat-note" id="statPeopleNote">—</div></div>
-    <div class="card"><div class="stat-label">Quartos Fortaleza</div><div class="stat-value" id="statRoomsFort">0</div><div class="stat-note">base do painel</div></div>
-    <div class="card"><div class="stat-label">Quartos com mesma composição</div><div class="stat-value" id="statRoomsSame">0</div><div class="stat-note">Fortaleza ↔ João Pessoa</div></div>
-    <div class="card"><div class="stat-label">Somente ônibus</div><div class="stat-value" id="statOnlyBus">0</div><div class="stat-note">sem quarto atribuído</div></div>
-  </div>
-
-  <nav class="tab-nav" aria-label="Abas do painel">
-    <button class="tab-button active" type="button" data-tab="roteiroTab">🗺️ Roteiro</button>
-    <button class="tab-button" type="button" data-tab="passeiosTab">🏖️ Passeios</button>
-    <button class="tab-button" type="button" data-tab="roomsTab">🏨 Painel por quartos</button>
-    <button class="tab-button" type="button" data-tab="busTab">🚌 Configuração do ônibus</button>
-    <button class="tab-button" type="button" data-tab="adminTab">⚙️ Administração</button>
-  </nav>
-
-  <section class="card tab-panel active" id="roteiroTab">
+  <section class="page-section" id="roteiro">
     <div class="section-head">
       <div>
-        <h2>Roteiro da viagem</h2>
-        <p>Chegada em Fortaleza em 04/01/2027. Programação dia a dia até o encerramento em João Pessoa. Passeios marcados como opcionais não fazem parte do pacote fechado do grupo.</p>
+        <p class="eyebrow">01 · Roteiro</p>
+        <h2>Dia a dia da viagem</h2>
+        <p>De 02 a 15 de janeiro. Os passeios marcados como opcionais não fazem parte do pacote do grupo.</p>
       </div>
     </div>
 
@@ -469,6 +517,7 @@
     </div>
     <p class="muted small">Horários de saída informados no grupo em 04/09.</p>
 
+    <div class="phase-grid">
     <div class="phase-block">
       <div class="phase-head">
         <span class="phase-dot fortaleza"></span>
@@ -483,7 +532,7 @@
         <div class="timeline-item fortaleza optional">
           <div class="timeline-head"><span class="timeline-day">Dia 05</span><span class="timeline-date mono">05/01</span></div>
           <div class="timeline-title">Praia das Dunas</div>
-          <div class="timeline-desc">Beach Park, opcional: das 11h às 17h, ingresso a R$ 159,00 na promoção. Detalhes na aba Passeios.</div>
+          <div class="timeline-desc">Beach Park, opcional: das 11h às 17h, ingresso a R$ 159,00 na promoção. <a href="#passeios">Detalhes em Passeios</a>.</div>
           <div class="timeline-tags"><span class="chip info">Beach Park (opcional)</span></div>
         </div>
         <div class="timeline-item fortaleza">
@@ -512,7 +561,7 @@
         <div class="timeline-item sertao optional">
           <div class="timeline-head"><span class="timeline-day">Dia 09</span><span class="timeline-date mono">09/01</span></div>
           <div class="timeline-title">Parque West Rio Grande do Norte</div>
-          <div class="timeline-desc">West Acqua Park, em Umarizal (RN): das 9h às 17h, R$ 50,00 em grupo. Detalhes na aba Passeios.</div>
+          <div class="timeline-desc">West Acqua Park, em Umarizal (RN): das 9h às 17h, R$ 50,00 em grupo. <a href="#passeios">Detalhes em Passeios</a>.</div>
           <div class="timeline-tags"><span class="chip info">Passeio opcional</span></div>
         </div>
         <div class="timeline-item sertao">
@@ -553,6 +602,8 @@
       </div>
     </div>
 
+    </div>
+
     <details class="checklist">
       <summary>🎒 Checklist da bagagem de mão: 36 horas de ônibus</summary>
       <div class="checklist-grid">
@@ -568,11 +619,12 @@
     </details>
   </section>
 
-  <section class="card tab-panel" id="passeiosTab">
+  <section class="page-section alt" id="passeios">
     <div class="section-head">
       <div>
-        <h2>Passeios da viagem</h2>
-        <p>Os parques são opcionais e organizados pela Jéssica, e a participação não é obrigatória. Lista de interessados atualizada em 08/11/2026.</p>
+        <p class="eyebrow">02 · Passeios</p>
+        <h2>Praias e parques</h2>
+        <p>Os parques são opcionais e organizados pela Jéssica. Lista de interessados atualizada em 08/11/2026.</p>
       </div>
     </div>
 
@@ -693,11 +745,12 @@
     </div>
   </section>
 
-  <section class="card tab-panel" id="roomsTab">
+  <section class="page-section" id="quartos">
     <div class="section-head">
       <div>
-        <h2>Painel único por quarto — base Fortaleza</h2>
-        <p>Todos os quartos de Fortaleza aparecem à esquerda. À direita, aparece o quarto equivalente em João Pessoa ou o detalhamento dos quartos diferentes. O controle financeiro da hospedagem é concentrado em Fortaleza, evitando duplicidade de valores entre os destinos.</p>
+        <p class="eyebrow">03 · Quartos</p>
+        <h2>Quem fica com quem</h2>
+        <p>Os quartos de Fortaleza e o quarto correspondente em João Pessoa.</p>
       </div>
     </div>
     <div class="summary-row" id="roomsSummary"></div>
@@ -710,11 +763,12 @@
     <div id="singleRoomsPanel" class="single-panel-grid" hidden></div>
   </section>
 
-  <section class="card tab-panel" id="busTab">
+  <section class="page-section alt" id="onibus">
     <div class="section-head">
       <div>
-        <h2>Configuração completa do ônibus</h2>
-        <p>Mapa integral das poltronas, com ocupadas e disponíveis. A leitura vem exclusivamente do CSV carregado automaticamente.</p>
+        <p class="eyebrow">04 · Ônibus</p>
+        <h2>Mapa das poltronas</h2>
+        <p>Poltronas ocupadas e disponíveis nos dois andares.</p>
       </div>
     </div>
     <div class="summary-row" id="busConfigSummary"></div>
@@ -733,11 +787,12 @@
     </div>
   </section>
 
-  <section class="card tab-panel" id="adminTab">
+  <section class="page-section" id="administracao">
     <div class="section-head">
       <div>
-        <h2>Painel de administração</h2>
-        <p>Acesso restrito.</p>
+        <p class="eyebrow">05 · Administração</p>
+        <h2>Área restrita</h2>
+        <p>Resumo financeiro, com acesso por senha.</p>
       </div>
     </div>
 
@@ -805,10 +860,14 @@
     </div>
   </section>
 
-  <div class="muted small" style="margin-top:14px">
-    Colunas lidas no CSV: <code>Nome</code>, <code>Categoria</code>, <code>ParcelasOnibus</code>, <code>ParcelasTotalOnibus</code>, <code>Poltrona</code>, <code>ValorOnibus</code>, <code>FamiliaFortaleza</code>, <code>QuartoFortaleza</code>, <code>HotelFortaleza</code>, <code>TotalPessoaFortaleza</code>, <code>PagoPessoaFortaleza</code>, <code>FamiliaJoaoPessoa</code>, <code>QuartoJoaoPessoa</code>, <code>HotelJoaoPessoa</code>, <code>TotalPessoaJoaoPessoa</code>, <code>PagoPessoaJoaoPessoa</code> e <code>Observacoes</code>.
-  </div>
 </main>
+
+<footer class="site-foot">
+  <div class="site-foot-inner">
+    <strong>Do Litoral ao Sertão</strong>
+    <span>Viagem de Família 2027 · Dados atualizados em 08/11/2026<span id="fileStatus" hidden></span></span>
+  </div>
+</footer>
 
 <script>
 const FILE_CANDIDATES = [
@@ -1027,16 +1086,9 @@ function renderAlerts(){
 function renderStats(){
   const s = summarize();
   const seatCount = state.rows.filter(p => p.poltrona && p.categoria !== "crianca_colo").length;
-  const diffCount = s.rooms.unmatchedFort.length;
   setText("statPeople", s.people.length);
-  setText("statPeopleNote", state.source || "arquivo não carregado");
   setText("statRoomsFort", s.rooms.fortaleza.length);
-  setText("statRoomsSame", s.rooms.matchedFort.length);
-  setText("statOnlyBus", s.onlyBus.length);
-  setText("badgePeople", `👨‍👩‍👧‍👦 ${s.people.length} pessoas`);
-  setText("badgeRooms", `🏨 ${s.rooms.fortaleza.length} quartos Fortaleza`);
-  setText("badgeBus", `🚌 ${seatCount} poltrona(s) marcada(s)`);
-  setText("badgeDiff", `🔀 ${diffCount} quartos diferentes`);
+  setText("statSeats", seatCount);
 }
 function renderAdminPanel(){
   const s = summarize();
@@ -1449,10 +1501,27 @@ function renderTourLists(){
   });
 }
 
-function setActiveTab(tabId){
-  document.querySelectorAll(".tab-button").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tabId));
-  document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.toggle("active", panel.id === tabId));
-  if(tabId === "adminTab") renderAdminAccess();
+function setupNav(){
+  const links = Array.from(document.querySelectorAll(".nav-links a"));
+  const byId = new Map(links.map(a => [a.getAttribute("href").slice(1), a]));
+  if(!("IntersectionObserver" in window)) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(!entry.isIntersecting) return;
+      links.forEach(a => a.classList.remove("current"));
+      const link = byId.get(entry.target.id);
+      if(link){
+        link.classList.add("current");
+        const bar = link.parentElement;
+        bar.scrollTo({left: link.offsetLeft - bar.offsetLeft - 8, behavior: "smooth"});
+      }
+    });
+  }, {rootMargin: "-45% 0px -50% 0px"});
+  document.querySelectorAll(".page-section, #inicio").forEach(el => observer.observe(el));
+}
+function renderCountdown(){
+  const days = Math.ceil((new Date("2027-01-02T17:00:00-03:00") - new Date()) / 86400000);
+  setText("countdown", days > 1 ? `Faltam ${days} dias` : days === 1 ? "Falta 1 dia" : "Boa viagem!");
 }
 function renderAll(){
   renderAlerts();
@@ -1487,7 +1556,8 @@ function setupRoomDetailsToggle(){
   });
 }
 document.addEventListener("DOMContentLoaded", async () => {
-  document.querySelectorAll(".tab-button").forEach(btn => btn.addEventListener("click", () => setActiveTab(btn.dataset.tab)));
+  setupNav();
+  renderCountdown();
   renderTourLists();
   setupAdminPanel();
   setupRoomDetailsToggle();
