@@ -624,7 +624,7 @@
       <div>
         <p class="eyebrow">02 · Passeios</p>
         <h2>Praias e parques</h2>
-        <p>Os parques são opcionais e organizados pela Jéssica. Lista de interessados atualizada em 08/11/2026.</p>
+        <p>Os parques são opcionais e organizados pela Jéssica. Lista de interessados atualizada em <span id="tourUpdated">08/11/2026</span>.</p>
       </div>
     </div>
 
@@ -865,7 +865,7 @@
 <footer class="site-foot">
   <div class="site-foot-inner">
     <strong>Do Litoral ao Sertão</strong>
-    <span>Viagem de Família 2027 · Dados atualizados em 08/11/2026<span id="fileStatus" hidden></span></span>
+    <span>Viagem de Família 2027 · Dados atualizados em <span id="dataUpdated">08/11/2026</span><span id="fileStatus" hidden></span></span>
   </div>
 </footer>
 
@@ -1485,20 +1485,21 @@ function renderBusConfig(){
     ? occupiedPeople.map(p => `<div class="occupied-item"><strong>Poltrona ${escapeHtml(p.poltrona)} — ${escapeHtml(p.nome)}</strong><span>${escapeHtml(profileLabel(p.categoria))} • ônibus ${formatMoney(busPaid(p))} / ${formatMoney(p.valorOnibus || 0)}${p.valorOnibus ? ` (${p.parcelas}/${p.parcelasTotal})` : ""}</span></div>`).join("")
     : `<div class="empty">Nenhuma poltrona ocupada foi encontrada no CSV.</div>`;
 }
-const TOUR_LIST = [
-  ["Walisson","BW"],["Thais","BW"],["Luís","B"],["Cíntia","BW"],["Jean","BW"],["Rosa Maria","BW"],["Rhalisson","BW"],["Francisco","BW"],
-  ["Francireide","BW"],["Neto","BW"],["Arthur","BW"],["Lindemberg","BW"],["Jéssica","BW"],["Angelina","BW"],["Valentina","BW"],["Thayná","BW"],
-  ["Maicon","BW"],["Neném","BW"],["Raíssa","BW"],["Bosco","W"],["Carmem","BW"],["Davi","BW"],["Pedro","B"],["Janduy","W"],["Gabriel","BW"],
-  ["Zilda","W"],["Dissér","W"],["Onofre","W"],["Chaguinha","W"],["Luzenira","W"],["Antônia","W"],["Reinaldo","BW"],["Ana Lúcia","BW"],
-  ["Isadora","BW"],["Isabela","BW"],["Jurandy","W"],["Lêda","W"],["Juracy","W"],["Cida","W"],["Joel","W"],["Edina","W"],["Maria","BW"],["Israel","BW"]
-];
-function renderTourLists(){
+async function renderTourLists(){
+  let data = {};
+  try{
+    const res = await fetch("passeios_lista.json", {cache:"no-store"});
+    if(res.ok) data = await res.json();
+  }catch(err){}
+  const lista = Array.isArray(data.lista) ? data.lista : [];
   [["B","beach"],["W","west"]].forEach(([code,key]) => {
-    const names = TOUR_LIST.filter(p => p[1].includes(code)).map(p => p[0]).sort((a,b) => a.localeCompare(b,"pt-BR"));
+    const names = lista.filter(p => p[1].includes(code)).map(p => p[0]).sort((a,b) => a.localeCompare(b,"pt-BR"));
     setText(key + "Count", names.length);
     const box = document.getElementById(key + "Names");
     if(box) box.innerHTML = names.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join("");
   });
+  if(data.atualizado_lista) setText("tourUpdated", data.atualizado_lista);
+  if(data.atualizado_dados) setText("dataUpdated", data.atualizado_dados);
 }
 
 function setupNav(){
